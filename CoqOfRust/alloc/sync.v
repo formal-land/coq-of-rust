@@ -112,6 +112,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -138,6 +139,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_ptr_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -179,6 +181,7 @@ Module sync.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -190,6 +193,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "new",
+                              [],
                               []
                             |),
                             [ Value.Integer IntegerKind.Usize 1 ]
@@ -199,6 +203,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "new",
+                              [],
                               []
                             |),
                             [ Value.Integer IntegerKind.Usize 1 ]
@@ -213,6 +218,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "from_inner",
+                  [],
                   []
                 |),
                 [
@@ -223,6 +229,7 @@ Module sync.
                         (Ty.path "&mut")
                         []
                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -230,6 +237,7 @@ Module sync.
                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                       ],
                       "into",
+                      [],
                       []
                     |),
                     [
@@ -243,6 +251,7 @@ Module sync.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "leak",
+                          [],
                           []
                         |),
                         [ M.read (| x |) ]
@@ -276,6 +285,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_cyclic_in",
+              [],
               [ F ]
             |),
             [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -313,6 +323,7 @@ Module sync.
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
+              [],
               []
             |),
             [
@@ -326,6 +337,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -357,6 +369,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -378,7 +391,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
                                         [],
+                                        [],
                                         "allocate",
+                                        [],
                                         []
                                       |),
                                       [
@@ -393,6 +408,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::ArcInner")
@@ -437,6 +453,7 @@ Module sync.
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
+              [],
               []
             |),
             [
@@ -450,6 +467,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -481,6 +499,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -502,7 +521,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
                                         [],
+                                        [],
                                         "allocate_zeroed",
+                                        [],
                                         []
                                       |),
                                       [
@@ -517,6 +538,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::ArcInner")
@@ -553,6 +575,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
               "new_unchecked",
+              [],
               []
             |),
             [
@@ -560,6 +583,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| data |) ]
@@ -599,6 +623,7 @@ Module sync.
                             [ T; Ty.path "alloc::alloc::Global" ]
                         ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -619,7 +644,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -630,6 +657,7 @@ Module sync.
                                       []
                                       [ T; Ty.path "alloc::alloc::Global" ],
                                     "try_new",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| data |) ]
@@ -669,6 +697,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -679,6 +708,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -753,7 +783,9 @@ Module sync.
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -767,6 +799,7 @@ Module sync.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "try_new",
+                                [],
                                 []
                               |),
                               [
@@ -778,6 +811,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -787,6 +821,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -825,6 +860,7 @@ Module sync.
                                               [ T; Ty.path "alloc::alloc::Global" ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -835,6 +871,7 @@ Module sync.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -867,6 +904,7 @@ Module sync.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "from_inner",
+                          [],
                           []
                         |),
                         [
@@ -877,6 +915,7 @@ Module sync.
                                 (Ty.path "&mut")
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -884,6 +923,7 @@ Module sync.
                                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                               ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -897,6 +937,7 @@ Module sync.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "leak",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| x |) ]
@@ -952,6 +993,7 @@ Module sync.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "from_ptr",
+                      [],
                       []
                     |),
                     [
@@ -982,7 +1024,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -999,6 +1043,7 @@ Module sync.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "try_allocate_for_layout",
+                                    [],
                                     [
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -1035,6 +1080,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
+                                        [],
                                         [ T ]
                                       |),
                                       []
@@ -1056,7 +1102,9 @@ Module sync.
                                                           "core::alloc::Allocator",
                                                           Ty.path "alloc::alloc::Global",
                                                           [],
+                                                          [],
                                                           "allocate",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1075,6 +1123,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::sync::ArcInner")
@@ -1126,6 +1175,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -1136,6 +1186,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1204,6 +1255,7 @@ Module sync.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "from_ptr",
+                      [],
                       []
                     |),
                     [
@@ -1234,7 +1286,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1251,6 +1305,7 @@ Module sync.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "try_allocate_for_layout",
+                                    [],
                                     [
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -1287,6 +1342,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
+                                        [],
                                         [ T ]
                                       |),
                                       []
@@ -1308,7 +1364,9 @@ Module sync.
                                                           "core::alloc::Allocator",
                                                           Ty.path "alloc::alloc::Global",
                                                           [],
+                                                          [],
                                                           "allocate_zeroed",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1327,6 +1385,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::sync::ArcInner")
@@ -1378,6 +1437,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -1388,6 +1448,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1434,6 +1495,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -1465,6 +1527,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "increment_strong_count_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -1496,6 +1559,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "decrement_strong_count_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -1560,6 +1624,7 @@ Module sync.
                         Ty.path "core::alloc::AllocError"
                       ],
                     "unwrap_or_else",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
@@ -1574,8 +1639,10 @@ Module sync.
                       M.get_trait_method (|
                         "core::ops::function::FnOnce",
                         impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_,
+                        [],
                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ],
                         "call_once",
+                        [],
                         []
                       |),
                       [ M.read (| allocate |); Value.Tuple [ M.read (| layout |) ] ]
@@ -1613,6 +1680,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "initialize_arcinner",
+                  [],
                   [ impl_FnOnce__mut_u8__arrow__mut_ArcInner_T_ ]
                 |),
                 [ M.read (| ptr |); M.read (| layout |); M.read (| mem_to_arcinner |) ]
@@ -1687,7 +1755,9 @@ Module sync.
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1695,8 +1765,10 @@ Module sync.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_,
+                                [],
                                 [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| allocate |); Value.Tuple [ M.read (| layout |) ] ]
@@ -1732,6 +1804,7 @@ Module sync.
                                               ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1742,6 +1815,7 @@ Module sync.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1772,6 +1846,7 @@ Module sync.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "initialize_arcinner",
+                        [],
                         [ impl_FnOnce__mut_u8__arrow__mut_ArcInner_T_ ]
                       |),
                       [ M.read (| ptr |); M.read (| layout |); M.read (| mem_to_arcinner |) ]
@@ -1824,8 +1899,10 @@ Module sync.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     impl_FnOnce__mut_u8__arrow__mut_ArcInner_T_,
+                    [],
                     [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ],
                     "call_once",
+                    [],
                     []
                   |),
                   [
@@ -1836,6 +1913,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [
@@ -1846,6 +1924,7 @@ Module sync.
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 "as_non_null_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| ptr |) ]
@@ -1874,6 +1953,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "for_value_raw",
+                                      [],
                                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                     |),
                                     [
@@ -1905,8 +1985,10 @@ Module sync.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
                                                     Ty.path "core::alloc::layout::Layout",
+                                                    [],
                                                     [ Ty.path "core::alloc::layout::Layout" ],
                                                     "eq",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| left_val |); M.read (| right_val |) ]
@@ -1966,6 +2048,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
                       "write",
+                      [],
                       []
                     |),
                     [
@@ -1978,6 +2061,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
                           "new",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -1991,6 +2075,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
                       "write",
+                      [],
                       []
                     |),
                     [
@@ -2003,6 +2088,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
                           "new",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -2051,6 +2137,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -2069,7 +2156,9 @@ Module sync.
                             []
                             [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ this ]
@@ -2090,7 +2179,9 @@ Module sync.
                               []
                               [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [ this ]
@@ -2157,6 +2248,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
               "from_inner_in",
+              [],
               []
             |),
             [
@@ -2167,6 +2259,7 @@ Module sync.
                     []
                     [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                   "new_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| ptr |) ]
@@ -2213,6 +2306,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]; A ],
                     "new_in",
+                    [],
                     []
                   |),
                   [
@@ -2224,6 +2318,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "new",
+                              [],
                               []
                             |),
                             [ Value.Integer IntegerKind.Usize 1 ]
@@ -2233,6 +2328,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "new",
+                              [],
                               []
                             |),
                             [ Value.Integer IntegerKind.Usize 1 ]
@@ -2252,6 +2348,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]; A ],
                     "into_unique",
+                    [],
                     []
                   |),
                   [ M.read (| x |) ]
@@ -2269,6 +2366,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "from_inner_in",
+                          [],
                           []
                         |),
                         [
@@ -2279,6 +2377,7 @@ Module sync.
                                 (Ty.path "core::ptr::unique::Unique")
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -2286,6 +2385,7 @@ Module sync.
                                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                               ],
                               "into",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -2336,6 +2436,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
               "from_ptr_in",
+              [],
               []
             |),
             [
@@ -2349,6 +2450,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -2380,6 +2482,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -2401,7 +2504,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         A,
                                         [],
+                                        [],
                                         "allocate",
+                                        [],
                                         []
                                       |),
                                       [ alloc; M.read (| layout |) ]
@@ -2413,6 +2518,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::ArcInner")
@@ -2464,6 +2570,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
               "from_ptr_in",
+              [],
               []
             |),
             [
@@ -2477,6 +2584,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -2508,6 +2616,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -2529,7 +2638,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         A,
                                         [],
+                                        [],
                                         "allocate_zeroed",
+                                        [],
                                         []
                                       |),
                                       [ alloc; M.read (| layout |) ]
@@ -2541,6 +2652,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::ArcInner")
@@ -2649,6 +2761,7 @@ Module sync.
                         A
                       ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [
@@ -2666,6 +2779,7 @@ Module sync.
                             A
                           ],
                         "new_in",
+                        [],
                         []
                       |),
                       [
@@ -2677,6 +2791,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::sync::atomic::AtomicUsize",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ Value.Integer IntegerKind.Usize 0 ]
@@ -2686,6 +2801,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::sync::atomic::AtomicUsize",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ Value.Integer IntegerKind.Usize 1 ]
@@ -2698,6 +2814,7 @@ Module sync.
                                     []
                                     [ T ],
                                   "uninit",
+                                  [],
                                   []
                                 |),
                                 []
@@ -2735,6 +2852,7 @@ Module sync.
                                       [ T ]
                                   ]
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -2752,6 +2870,7 @@ Module sync.
                                 ]
                             ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| uninit_raw_ptr |) ]
@@ -2776,6 +2895,7 @@ Module sync.
                                   ]
                               ],
                             "cast",
+                            [],
                             [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                           |),
                           [ M.read (| uninit_ptr |) ]
@@ -2793,6 +2913,7 @@ Module sync.
                           M.get_trait_method (|
                             "core::ops::function::FnOnce",
                             F,
+                            [],
                             [
                               Ty.tuple
                                 [
@@ -2803,6 +2924,7 @@ Module sync.
                                 ]
                             ],
                             "call_once",
+                            [],
                             []
                           |),
                           [ M.read (| data_fn |); Value.Tuple [ weak ] ]
@@ -2819,6 +2941,7 @@ Module sync.
                                   []
                                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| init_ptr |) ]
@@ -2844,6 +2967,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::sync::atomic::AtomicUsize",
                                 "fetch_add",
+                                [],
                                 []
                               |),
                               [
@@ -2933,6 +3057,7 @@ Module sync.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2972,6 +3097,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                                     "into_raw_with_allocator",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| weak |) ]
@@ -2985,6 +3111,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                               "from_inner_in",
+                              [],
                               []
                             |),
                             [ M.read (| init_ptr |); M.read (| alloc |) ]
@@ -3024,6 +3151,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
               "new_unchecked",
+              [],
               []
             |),
             [
@@ -3031,6 +3159,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "new_in",
+                  [],
                   []
                 |),
                 [ M.read (| data |); M.read (| alloc |) ]
@@ -3071,6 +3200,7 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -3088,7 +3218,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -3096,6 +3228,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                     "try_new_in",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| data |); M.read (| alloc |) ]
@@ -3135,6 +3268,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -3145,6 +3279,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -3221,7 +3356,9 @@ Module sync.
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3232,6 +3369,7 @@ Module sync.
                                   []
                                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]; A ],
                                 "try_new_in",
+                                [],
                                 []
                               |),
                               [
@@ -3243,6 +3381,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -3252,6 +3391,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ Value.Integer IntegerKind.Usize 1 ]
@@ -3288,6 +3428,7 @@ Module sync.
                                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3298,6 +3439,7 @@ Module sync.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3328,6 +3470,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]; A ],
                         "into_unique",
+                        [],
                         []
                       |),
                       [ M.read (| x |) ]
@@ -3348,6 +3491,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                   "from_inner_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3358,6 +3502,7 @@ Module sync.
                                         (Ty.path "core::ptr::unique::Unique")
                                         []
                                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
@@ -3365,6 +3510,7 @@ Module sync.
                                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                       ],
                                       "into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |) ]
@@ -3422,6 +3568,7 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                       "from_ptr_in",
+                      [],
                       []
                     |),
                     [
@@ -3452,7 +3599,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -3469,6 +3618,7 @@ Module sync.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "try_allocate_for_layout",
+                                    [],
                                     [
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -3505,6 +3655,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
+                                        [],
                                         [ T ]
                                       |),
                                       []
@@ -3526,7 +3677,9 @@ Module sync.
                                                           "core::alloc::Allocator",
                                                           A,
                                                           [],
+                                                          [],
                                                           "allocate",
+                                                          [],
                                                           []
                                                         |),
                                                         [ alloc; M.read (| layout |) ]
@@ -3538,6 +3691,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::sync::ArcInner")
@@ -3589,6 +3743,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -3599,6 +3754,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -3669,6 +3825,7 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                       "from_ptr_in",
+                      [],
                       []
                     |),
                     [
@@ -3699,7 +3856,9 @@ Module sync.
                                     Ty.path "core::alloc::AllocError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -3716,6 +3875,7 @@ Module sync.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "try_allocate_for_layout",
+                                    [],
                                     [
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -3752,6 +3912,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
+                                        [],
                                         [ T ]
                                       |),
                                       []
@@ -3773,7 +3934,9 @@ Module sync.
                                                           "core::alloc::Allocator",
                                                           A,
                                                           [],
+                                                          [],
                                                           "allocate_zeroed",
+                                                          [],
                                                           []
                                                         |),
                                                         [ alloc; M.read (| layout |) ]
@@ -3785,6 +3948,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::sync::ArcInner")
@@ -3836,6 +4000,7 @@ Module sync.
                                                   ];
                                                 Ty.path "core::alloc::AllocError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -3846,6 +4011,7 @@ Module sync.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -3922,6 +4088,7 @@ Module sync.
                                       []
                                       [ Ty.path "usize"; Ty.path "usize" ],
                                     "is_err",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3930,6 +4097,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "compare_exchange",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3938,6 +4106,7 @@ Module sync.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                                 "inner",
+                                                [],
                                                 []
                                               |),
                                               [ this ]
@@ -3991,6 +4160,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| this |) ]
@@ -4009,6 +4179,7 @@ Module sync.
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [
@@ -4021,7 +4192,9 @@ Module sync.
                                       []
                                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ this ]
@@ -4051,7 +4224,9 @@ Module sync.
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ this ]
@@ -4078,7 +4253,9 @@ Module sync.
                                     []
                                     [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ this ]
@@ -4146,6 +4323,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| this |) ]
@@ -4165,6 +4343,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.path "core::sync::atomic::AtomicUsize",
                                       "fetch_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4173,6 +4352,7 @@ Module sync.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                             "inner",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4189,7 +4369,9 @@ Module sync.
                                                       [ T; A ]
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ this ]
@@ -4234,6 +4416,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                             "get_mut_unchecked",
+                            [],
                             []
                           |),
                           [
@@ -4245,7 +4428,9 @@ Module sync.
                                   []
                                   [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                                 [],
+                                [],
                                 "deref_mut",
+                                [],
                                 []
                               |),
                               [ this ]
@@ -4269,7 +4454,9 @@ Module sync.
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ this ]
@@ -4303,7 +4490,9 @@ Module sync.
                                         []
                                         [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ this ]
@@ -4371,6 +4560,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -4381,6 +4571,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [
@@ -4392,7 +4583,9 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ this ]
@@ -4438,6 +4631,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -4449,6 +4643,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -4460,7 +4655,9 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ this ]
@@ -4482,7 +4679,9 @@ Module sync.
                             []
                             [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ this ]
@@ -4528,6 +4727,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -4592,6 +4792,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_sub",
+                      [],
                       []
                     |),
                     [ M.read (| ptr |); M.read (| offset |) ]
@@ -4602,6 +4803,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "from_ptr_in",
+                  [],
                   []
                 |),
                 [ M.read (| arc_ptr |); M.read (| alloc |) ]
@@ -4668,6 +4870,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.path "core::sync::atomic::AtomicUsize",
                         "load",
+                        [],
                         []
                       |),
                       [
@@ -4676,6 +4879,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                               "inner",
+                              [],
                               []
                             |),
                             [ M.read (| this |) ]
@@ -4732,6 +4936,7 @@ Module sync.
                                                 M.get_associated_function (|
                                                   Ty.path "core::sync::atomic::AtomicUsize",
                                                   "load",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4743,6 +4948,7 @@ Module sync.
                                                           []
                                                           [ T; A ],
                                                         "inner",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| this |) ]
@@ -4792,6 +4998,7 @@ Module sync.
                                           M.get_associated_function (|
                                             Self,
                                             "panic_cold_display.downgrade",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4811,6 +5018,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::sync::atomic::AtomicUsize",
                                   "compare_exchange_weak",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4819,6 +5027,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                         "inner",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| this |) ]
@@ -4900,6 +5109,7 @@ Module sync.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "as_ptr",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -4969,7 +5179,9 @@ Module sync.
                                                     "core::clone::Clone",
                                                     A,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5031,6 +5243,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.path "core::sync::atomic::AtomicUsize",
                     "load",
+                    [],
                     []
                   |),
                   [
@@ -5039,6 +5252,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "inner",
+                          [],
                           []
                         |),
                         [ M.read (| this |) ]
@@ -5097,13 +5311,19 @@ Module sync.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "load", [] |),
+            M.get_associated_function (|
+              Ty.path "core::sync::atomic::AtomicUsize",
+              "load",
+              [],
+              []
+            |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                     "inner",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -5154,6 +5374,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -5161,6 +5382,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                         "from_raw_in",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |); M.read (| alloc |) ]
@@ -5178,7 +5400,9 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [ arc ]
@@ -5224,6 +5448,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                         "from_raw_in",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |); M.read (| alloc |) ]
@@ -5263,6 +5488,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
               "as_ref",
+              [],
               []
             |),
             [
@@ -5309,6 +5535,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                         "get_mut_unchecked",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -5391,6 +5618,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -5412,6 +5640,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -5460,6 +5689,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
+              [],
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -5486,6 +5716,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "for_value_raw",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| ptr |) ]
@@ -5507,7 +5738,9 @@ Module sync.
                                     "core::alloc::Allocator",
                                     A,
                                     [],
+                                    [],
                                     "allocate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| alloc |); M.read (| layout |) ]
@@ -5532,6 +5765,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "with_metadata_of",
+                                    [],
                                     [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                   |),
                                   [ M.read (| mem |); M.rust_cast (M.read (| ptr |)) ]
@@ -5591,6 +5825,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                     "allocate_for_ptr_in",
+                    [],
                     []
                   |),
                   [
@@ -5599,6 +5834,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                         "allocator",
+                        [],
                         []
                       |),
                       [ src ]
@@ -5632,6 +5868,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| src |) ]
@@ -5659,6 +5896,7 @@ Module sync.
                                 Ty.apply (Ty.path "&") [] [ A ]
                               ],
                             "from_raw_in",
+                            [],
                             []
                           |),
                           [
@@ -5668,7 +5906,9 @@ Module sync.
                                 "core::alloc::Allocator",
                                 A,
                                 [],
+                                [],
                                 "by_ref",
+                                [],
                                 []
                               |),
                               [ alloc ]
@@ -5703,6 +5943,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "from_ptr_in",
+                          [],
                           []
                         |),
                         [ M.read (| ptr |); M.read (| alloc |) ]
@@ -5807,7 +6048,9 @@ Module sync.
                         "core::ops::deref::Deref",
                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| this |) ]
@@ -5831,6 +6074,7 @@ Module sync.
                                   []
                                   [ Ty.path "usize"; Ty.path "usize" ],
                                 "is_err",
+                                [],
                                 []
                               |),
                               [
@@ -5839,6 +6083,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.path "core::sync::atomic::AtomicUsize",
                                       "compare_exchange",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5847,6 +6092,7 @@ Module sync.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                             "inner",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| this |) ]
@@ -5872,7 +6118,9 @@ Module sync.
                               "core::ops::deref::Deref",
                               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| this |) ]
@@ -5884,12 +6132,21 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ],
                               "new",
+                              [],
                               []
                             |),
                             [
                               M.read (| this_data_ref |);
                               M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  A,
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| this |),
@@ -5910,7 +6167,9 @@ Module sync.
                                   "core::clone::CloneToUninit",
                                   T,
                                   [],
+                                  [],
                                   "clone_to_uninit",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5919,6 +6178,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ],
                                       "data_ptr",
+                                      [],
                                       []
                                     |),
                                     [ in_progress ]
@@ -5931,6 +6191,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ],
                                 "into_arc",
+                                [],
                                 []
                               |),
                               [ M.read (| in_progress |) ]
@@ -5954,6 +6215,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.path "core::sync::atomic::AtomicUsize",
                                           "load",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5962,6 +6224,7 @@ Module sync.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                                 "inner",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| this |) ]
@@ -6001,7 +6264,9 @@ Module sync.
                                             "core::clone::Clone",
                                             A,
                                             [],
+                                            [],
                                             "clone",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6020,6 +6285,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6028,7 +6294,9 @@ Module sync.
                                           "core::ops::deref::Deref",
                                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| this |) ]
@@ -6038,7 +6306,9 @@ Module sync.
                                           "core::clone::Clone",
                                           A,
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6065,6 +6335,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ T ],
                                           "cast",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -6076,7 +6347,9 @@ Module sync.
                                                   "core::ops::deref::Deref",
                                                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| this |) ]
@@ -6089,6 +6362,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                           "cast",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -6099,6 +6373,7 @@ Module sync.
                                                 []
                                                 [ T; A ],
                                               "data_ptr",
+                                              [],
                                               []
                                             |),
                                             [ in_progress ]
@@ -6126,6 +6401,7 @@ Module sync.
                                             []
                                             [ T; A ],
                                           "into_arc",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| in_progress |) ]
@@ -6142,6 +6418,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.path "core::sync::atomic::AtomicUsize",
                                       "store",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6150,6 +6427,7 @@ Module sync.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                             "inner",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| this |) ]
@@ -6172,6 +6450,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "get_mut_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| this |) ]
@@ -6207,6 +6486,7 @@ Module sync.
                 []
                 [ T; Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
               "unwrap_or_else",
+              [],
               [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ] ] T ]
             |),
             [
@@ -6214,6 +6494,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "try_unwrap",
+                  [],
                   []
                 |),
                 [ M.read (| this |) ]
@@ -6231,14 +6512,24 @@ Module sync.
                               ltac:(M.monadic
                                 (let arc := M.copy (| γ |) in
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    T,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ arc ]
@@ -6290,6 +6581,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                               "is_unique",
+                              [],
                               []
                             |),
                             [ M.read (| this |) ]
@@ -6304,6 +6596,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                               "get_mut_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| this |) ]
@@ -6348,6 +6641,7 @@ Module sync.
                   []
                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -6417,6 +6711,7 @@ Module sync.
                                 []
                                 [ Ty.path "usize"; Ty.path "usize" ],
                               "is_ok",
+                              [],
                               []
                             |),
                             [
@@ -6425,6 +6720,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.path "core::sync::atomic::AtomicUsize",
                                     "compare_exchange",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6433,6 +6729,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                           "inner",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -6458,6 +6755,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "load",
+                              [],
                               []
                             |),
                             [
@@ -6466,6 +6764,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                     "inner",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -6485,6 +6784,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicUsize",
                             "store",
+                            [],
                             []
                           |),
                           [
@@ -6493,6 +6793,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                   "inner",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6600,11 +6901,11 @@ Module sync.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [ M.alloc (| Value.Array [ M.read (| Value.String "(Weak)" |) ] |) ]
               |)
             ]
@@ -6653,7 +6954,12 @@ Module sync.
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "pad_to_align", [] |),
+          M.get_associated_function (|
+            Ty.path "core::alloc::layout::Layout",
+            "pad_to_align",
+            [],
+            []
+          |),
           [
             M.SubPointer.get_tuple_field (|
               M.alloc (|
@@ -6667,6 +6973,7 @@ Module sync.
                         Ty.path "core::alloc::layout::LayoutError"
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -6674,6 +6981,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "extend",
+                        [],
                         []
                       |),
                       [
@@ -6682,6 +6990,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "new",
+                              [],
                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ Ty.tuple [] ] ]
                             |),
                             []
@@ -6765,6 +7074,7 @@ Module sync.
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
+              [],
               []
             |),
             [
@@ -6781,6 +7091,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_slice",
+                  [],
                   []
                 |),
                 [ M.read (| len |) ]
@@ -6832,6 +7143,7 @@ Module sync.
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
+              [],
               []
             |),
             [
@@ -6848,6 +7160,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -6891,6 +7204,7 @@ Module sync.
                           Ty.path "core::alloc::layout::LayoutError"
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -6898,6 +7212,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "array",
+                          [],
                           [ T ]
                         |),
                         [ M.read (| len |) ]
@@ -6921,7 +7236,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
                                         [],
+                                        [],
                                         "allocate_zeroed",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6997,6 +7314,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
+              [],
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -7034,6 +7352,7 @@ Module sync.
                       Ty.path "core::alloc::layout::LayoutError"
                     ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -7041,6 +7360,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "array",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| len |) ]
@@ -7064,7 +7384,9 @@ Module sync.
                                     "core::alloc::Allocator",
                                     Ty.path "alloc::alloc::Global",
                                     [],
+                                    [],
                                     "allocate",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7100,6 +7422,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "cast",
+                                          [],
                                           [ T ]
                                         |),
                                         [ M.read (| mem |) ]
@@ -7152,6 +7475,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_slice",
+                    [],
                     []
                   |),
                   [
@@ -7159,6 +7483,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -7175,6 +7500,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -7189,6 +7515,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -7204,6 +7531,7 @@ Module sync.
                     []
                     [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                   "from_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| ptr |) ]
@@ -7285,6 +7613,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_slice",
+                    [],
                     []
                   |),
                   [ M.read (| len |) ]
@@ -7297,6 +7626,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value_raw",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::ArcInner")
@@ -7326,6 +7656,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                           "new_unchecked",
+                          [],
                           []
                         |),
                         [ M.read (| mem |) ]
@@ -7347,7 +7678,9 @@ Module sync.
                           []
                           [ impl_Iterator_Item___T_ ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -7356,7 +7689,9 @@ Module sync.
                             "core::iter::traits::iterator::Iterator",
                             impl_Iterator_Item___T_,
                             [],
+                            [],
                             "enumerate",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -7381,7 +7716,9 @@ Module sync.
                                         []
                                         [ impl_Iterator_Item___T_ ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -7416,6 +7753,7 @@ Module sync.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| elems |); M.read (| i |) ]
@@ -7464,6 +7802,7 @@ Module sync.
                     []
                     [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                   "from_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| ptr |) ]
@@ -7512,6 +7851,7 @@ Module sync.
                   A
                 ],
               "from_ptr_in",
+              [],
               []
             |),
             [
@@ -7528,6 +7868,7 @@ Module sync.
                       A
                     ],
                   "allocate_for_slice_in",
+                  [],
                   []
                 |),
                 [ M.read (| len |); alloc ]
@@ -7584,6 +7925,7 @@ Module sync.
                   A
                 ],
               "from_ptr_in",
+              [],
               []
             |),
             [
@@ -7600,6 +7942,7 @@ Module sync.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
+                  [],
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -7643,6 +7986,7 @@ Module sync.
                           Ty.path "core::alloc::layout::LayoutError"
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -7650,6 +7994,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "array",
+                          [],
                           [ T ]
                         |),
                         [ M.read (| len |) ]
@@ -7673,7 +8018,9 @@ Module sync.
                                         "core::alloc::Allocator",
                                         A,
                                         [],
+                                        [],
                                         "allocate_zeroed",
+                                        [],
                                         []
                                       |),
                                       [ alloc; M.read (| layout |) ]
@@ -7706,6 +8053,7 @@ Module sync.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "cast",
+                                              [],
                                               [ T ]
                                             |),
                                             [ M.read (| mem |) ]
@@ -7758,6 +8106,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
+              [],
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -7795,6 +8144,7 @@ Module sync.
                       Ty.path "core::alloc::layout::LayoutError"
                     ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -7802,6 +8152,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "array",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| len |) ]
@@ -7825,7 +8176,9 @@ Module sync.
                                     "core::alloc::Allocator",
                                     A,
                                     [],
+                                    [],
                                     "allocate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| alloc |); M.read (| layout |) ]
@@ -7858,6 +8211,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "cast",
+                                          [],
                                           [ T ]
                                         |),
                                         [ M.read (| mem |) ]
@@ -7908,6 +8262,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                     "into_inner_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -7925,6 +8280,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "from_inner_in",
+                          [],
                           []
                         |),
                         [
@@ -7945,6 +8301,7 @@ Module sync.
                                     ]
                                 ],
                               "cast",
+                              [],
                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                             |),
                             [ M.read (| ptr |) ]
@@ -8005,6 +8362,7 @@ Module sync.
                         A
                       ],
                     "into_inner_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -8025,6 +8383,7 @@ Module sync.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                           "from_ptr_in",
+                          [],
                           []
                         |),
                         [
@@ -8051,6 +8410,7 @@ Module sync.
                                       ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| ptr |) ]
@@ -8104,6 +8464,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "from_iter_exact",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -8117,18 +8478,25 @@ Module sync.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                   [],
+                  [],
                   "cloned",
+                  [],
                   [ T ]
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter",
+                      [],
+                      []
+                    |),
                     [ M.read (| v |) ]
                   |)
                 ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [], [] |),
                 [ M.read (| v |) ]
               |)
             ]
@@ -8170,6 +8538,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "copy_from_slice",
+              [],
               []
             |),
             [ M.read (| v |) ]
@@ -8239,6 +8608,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.path "core::sync::atomic::AtomicUsize",
                     "fetch_add",
+                    [],
                     []
                   |),
                   [
@@ -8247,6 +8617,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "inner",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -8290,6 +8661,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "from_inner_in",
+                  [],
                   []
                 |),
                 [
@@ -8301,7 +8673,7 @@ Module sync.
                     |)
                   |);
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -8348,6 +8720,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                 "inner",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -8498,6 +8871,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.path "core::sync::atomic::AtomicUsize",
                                       "fetch_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8506,6 +8880,7 @@ Module sync.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                             "inner",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -8590,6 +8965,7 @@ Module sync.
                                                               [ T ]
                                                           ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8630,6 +9006,7 @@ Module sync.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -8661,6 +9038,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                         "drop_slow",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -8735,6 +9113,7 @@ Module sync.
                                   ("core::marker::Sync::AutoTrait", [])
                                 ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [
@@ -8754,7 +9133,9 @@ Module sync.
                                       A
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -8780,6 +9161,7 @@ Module sync.
                                 A
                               ],
                             "into_inner_with_allocator",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -8800,6 +9182,7 @@ Module sync.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                       "from_inner_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8822,6 +9205,7 @@ Module sync.
                                                 ]
                                             ],
                                           "cast",
+                                          [],
                                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                         |),
                                         [ M.read (| ptr |) ]
@@ -8888,6 +9272,7 @@ Module sync.
                         A
                       ],
                     "into_inner_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -8905,6 +9290,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                           "from_inner_in",
+                          [],
                           []
                         |),
                         [
@@ -8927,6 +9313,7 @@ Module sync.
                                     ]
                                 ],
                               "cast",
+                              [],
                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                             |),
                             [ M.read (| ptr |) ]
@@ -8976,6 +9363,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -9010,6 +9398,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
+              [],
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -9052,6 +9441,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -9128,6 +9518,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -9196,6 +9587,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
               "as_ptr",
+              [],
               []
             |),
             [
@@ -9207,7 +9599,9 @@ Module sync.
                     []
                     [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [
@@ -9219,6 +9613,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9265,6 +9660,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -9276,6 +9672,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -9287,7 +9684,9 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ this ]
@@ -9309,7 +9708,9 @@ Module sync.
                             []
                             [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ this ]
@@ -9390,6 +9791,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [] [ T ],
                                 "byte_sub",
+                                [],
                                 []
                               |),
                               [ M.read (| ptr |); M.read (| offset |) ]
@@ -9410,6 +9812,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |) ]
@@ -9480,6 +9883,7 @@ Module sync.
                                     []
                                     [ Ty.path "usize"; Ty.path "usize" ],
                                   "is_ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9488,6 +9892,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicUsize",
                                         "fetch_update",
+                                        [],
                                         [
                                           Ty.function
                                             [ Ty.path "usize" ]
@@ -9510,7 +9915,9 @@ Module sync.
                                                       []
                                                       [ Ty.path "alloc::sync::WeakInner" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9521,6 +9928,7 @@ Module sync.
                                                           []
                                                           [ T; A ],
                                                         "inner",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -9554,6 +9962,7 @@ Module sync.
                                                                       []
                                                                       [ T; A ]
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
@@ -9564,6 +9973,7 @@ Module sync.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -9597,6 +10007,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Self,
                                           "checked_increment.upgrade",
+                                          [],
                                           []
                                         |)
                                       ]
@@ -9615,6 +10026,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                                   "from_inner_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9630,7 +10042,9 @@ Module sync.
                                       "core::clone::Clone",
                                       A,
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9687,6 +10101,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                             "inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -9704,6 +10119,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
                           "load",
+                          [],
                           []
                         |),
                         [
@@ -9767,6 +10183,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                             "inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -9785,6 +10202,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicUsize",
                             "load",
+                            [],
                             []
                           |),
                           [
@@ -9805,6 +10223,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicUsize",
                             "load",
+                            [],
                             []
                           |),
                           [
@@ -9885,6 +10304,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -9982,6 +10402,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -10003,6 +10424,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -10080,6 +10502,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                               "inner",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -10098,6 +10521,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.path "core::sync::atomic::AtomicUsize",
                               "fetch_add",
+                              [],
                               []
                             |),
                             [
@@ -10159,7 +10583,7 @@ Module sync.
                     |));
                   ("alloc",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -10201,6 +10625,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             []
@@ -10271,6 +10696,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
                                     "inner",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -10305,6 +10731,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.path "core::sync::atomic::AtomicUsize",
                                     "fetch_sub",
+                                    [],
                                     []
                                   |),
                                   [
@@ -10395,6 +10822,7 @@ Module sync.
                                                                       [ T ]
                                                                   ],
                                                                 "as_ptr",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -10439,6 +10867,7 @@ Module sync.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_const",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -10470,7 +10899,9 @@ Module sync.
                               "core::alloc::Allocator",
                               A,
                               [],
+                              [],
                               "deallocate",
+                              [],
                               []
                             |),
                             [
@@ -10486,6 +10917,7 @@ Module sync.
                                     []
                                     [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                                   "cast",
+                                  [],
                                   [ Ty.path "u8" ]
                                 |),
                                 [
@@ -10502,6 +10934,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "for_value_raw",
+                                  [],
                                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                 |),
                                 [
@@ -10514,6 +10947,7 @@ Module sync.
                                           []
                                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                                         "as_ptr",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10567,14 +11001,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10584,7 +11020,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -10607,14 +11045,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10624,7 +11064,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -10664,20 +11106,23 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                 "ptr_eq",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -10687,7 +11132,9 @@ Module sync.
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -10716,6 +11163,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "ptr_eq",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -10723,14 +11171,16 @@ Module sync.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -10740,7 +11190,9 @@ Module sync.
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -10780,8 +11232,10 @@ Module sync.
             M.get_trait_method (|
               "alloc::sync::ArcEqIdent",
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
+              [],
               [ T; A ],
               "eq",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| other |) ]
@@ -10805,8 +11259,10 @@ Module sync.
             M.get_trait_method (|
               "alloc::sync::ArcEqIdent",
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
+              [],
               [ T; A ],
               "ne",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| other |) ]
@@ -10840,14 +11296,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10857,7 +11315,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -10880,14 +11340,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10897,7 +11359,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -10920,14 +11384,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10937,7 +11403,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -10960,14 +11428,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -10977,7 +11447,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -11000,14 +11472,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -11017,7 +11491,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -11059,14 +11535,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -11076,7 +11554,9 @@ Module sync.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -11123,14 +11603,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -11166,14 +11648,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -11213,7 +11697,9 @@ Module sync.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -11223,7 +11709,9 @@ Module sync.
                     "core::ops::deref::Deref",
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -11262,11 +11750,12 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                 []
               |)
             ]
@@ -11318,6 +11807,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicUsize",
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 1 ]
@@ -11327,6 +11817,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicUsize",
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 1 ]
@@ -11367,7 +11858,9 @@ Module sync.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -11401,6 +11894,7 @@ Module sync.
                                                 Ty.path "core::str::error::Utf8Error"
                                               ],
                                             "is_ok",
+                                            [],
                                             []
                                           |),
                                           [
@@ -11426,7 +11920,9 @@ Module sync.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
+                                                      [],
                                                       "deref",
+                                                      [],
                                                       []
                                                     |),
                                                     [ arc ]
@@ -11475,6 +11971,7 @@ Module sync.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "into_inner_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| arc |) ]
@@ -11495,6 +11992,7 @@ Module sync.
                             []
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                           "from_ptr_in",
+                          [],
                           []
                         |),
                         [
@@ -11511,6 +12009,7 @@ Module sync.
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| ptr |) ]
@@ -11576,6 +12075,7 @@ Module sync.
                               [ Ty.path "u8" ]
                           ]
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -11593,6 +12093,7 @@ Module sync.
                         ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -11623,6 +12124,7 @@ Module sync.
                           ]
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -11638,6 +12140,7 @@ Module sync.
                               [ Ty.path "core::ffi::c_str::CStr" ]
                           ],
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -11654,6 +12157,7 @@ Module sync.
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                 ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| inner |) ]
@@ -11677,6 +12181,7 @@ Module sync.
                           [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ]
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -11687,6 +12192,7 @@ Module sync.
                           []
                           [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                         "from_inner",
+                        [],
                         []
                       |),
                       [ M.read (| inner |) ]
@@ -11703,7 +12209,9 @@ Module sync.
                     []
                     [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -11720,7 +12228,9 @@ Module sync.
                             [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ this ]
@@ -11810,6 +12320,7 @@ Module sync.
                                           (Ty.path "core::ptr::non_null::NonNull")
                                           []
                                           [ Ty.path "alloc::sync::SliceArcInnerForStatic" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -11817,6 +12328,7 @@ Module sync.
                                             [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
                                         ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11835,6 +12347,7 @@ Module sync.
                                           []
                                           [ Ty.path "alloc::sync::SliceArcInnerForStatic" ],
                                         "cast",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::sync::ArcInner")
@@ -11870,6 +12383,7 @@ Module sync.
                                               ]
                                           ],
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11886,6 +12400,7 @@ Module sync.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "from_inner",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| inner |) ]
@@ -11908,7 +12423,9 @@ Module sync.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11931,7 +12448,9 @@ Module sync.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ this ]
@@ -11954,8 +12473,10 @@ Module sync.
                         (Ty.path "alloc::sync::Arc")
                         []
                         [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
                       "from",
+                      [],
                       []
                     |),
                     [ M.read (| arr |) ]
@@ -11991,14 +12512,16 @@ Module sync.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
+            M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -12037,6 +12560,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ M.read (| t |) ]
@@ -12084,8 +12608,10 @@ Module sync.
                 (Ty.path "alloc::sync::Arc")
                 []
                 [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
               "from",
+              [],
               []
             |),
             [ M.read (| v |) ]
@@ -12127,8 +12653,10 @@ Module sync.
                 (Ty.path "alloc::sync::Arc")
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+              [],
               [ T ],
               "from_slice",
+              [],
               []
             |),
             [ M.read (| v |) ]
@@ -12174,14 +12702,16 @@ Module sync.
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| v |) ]
                     |)
                   ]
@@ -12195,6 +12725,7 @@ Module sync.
                     []
                     [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                   "from_raw",
+                  [],
                   []
                 |),
                 [
@@ -12209,6 +12740,7 @@ Module sync.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "into_raw",
+                        [],
                         []
                       |),
                       [ M.read (| arc |) ]
@@ -12249,8 +12781,10 @@ Module sync.
                 (Ty.path "alloc::sync::Arc")
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
@@ -12258,8 +12792,10 @@ Module sync.
                 M.get_trait_method (|
                   "core::ops::index::Index",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index",
+                  [],
                   []
                 |),
                 [ v; Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -12295,6 +12831,7 @@ Module sync.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
               "from_box_in",
+              [],
               []
             |),
             [ M.read (| v |) ]
@@ -12344,6 +12881,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "into_raw_parts_with_alloc",
+                    [],
                     []
                   |),
                   [ M.read (| v |) ]
@@ -12369,6 +12907,7 @@ Module sync.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                             "allocate_for_slice_in",
+                            [],
                             []
                           |),
                           [ M.read (| len |); alloc ]
@@ -12399,6 +12938,7 @@ Module sync.
                               []
                               [ T; Ty.apply (Ty.path "&") [] [ A ] ],
                             "from_raw_parts_in",
+                            [],
                             []
                           |),
                           [
@@ -12420,6 +12960,7 @@ Module sync.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                                   "from_ptr_in",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| rc_ptr |); M.read (| alloc |) ]
@@ -12481,8 +13022,10 @@ Module sync.
                             (Ty.path "alloc::sync::Arc")
                             []
                             [ B; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ B ] ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -12501,8 +13044,10 @@ Module sync.
                             (Ty.path "alloc::sync::Arc")
                             []
                             [ B; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ Ty.associated ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -12548,6 +13093,7 @@ Module sync.
                 []
                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
               "from_raw",
+              [],
               []
             |),
             [
@@ -12559,6 +13105,7 @@ Module sync.
                       []
                       [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                     "into_raw",
+                    [],
                     []
                   |),
                   [ M.read (| rc |) ]
@@ -12624,6 +13171,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [
@@ -12635,7 +13183,9 @@ Module sync.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ boxed_slice ]
@@ -12655,6 +13205,7 @@ Module sync.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                             "into_inner_with_allocator",
+                            [],
                             []
                           |),
                           [ M.read (| boxed_slice |) ]
@@ -12678,6 +13229,7 @@ Module sync.
                                         []
                                         [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                                       "from_inner_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12693,6 +13245,7 @@ Module sync.
                                                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                             ],
                                           "cast",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::sync::ArcInner")
@@ -12759,8 +13312,10 @@ Module sync.
             M.get_trait_method (|
               "alloc::sync::ToArcSlice",
               Ty.associated,
+              [],
               [ T ],
               "to_arc_slice",
+              [],
               []
             |),
             [
@@ -12769,7 +13324,9 @@ Module sync.
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]
@@ -12814,6 +13371,7 @@ Module sync.
             M.get_trait_method (|
               "core::convert::Into",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
@@ -12821,6 +13379,7 @@ Module sync.
                   [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
               ],
               "into",
+              [],
               []
             |),
             [
@@ -12829,7 +13388,9 @@ Module sync.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "collect",
+                  [],
                   [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
                 |),
                 [ M.read (| self |) ]
@@ -12895,7 +13456,9 @@ Module sync.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "size_hint",
+                    [],
                     []
                   |),
                   [ self ]
@@ -13000,6 +13563,7 @@ Module sync.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_v1",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -13020,6 +13584,7 @@ Module sync.
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
                                                                                       "new_debug",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.tuple
                                                                                           [
@@ -13077,6 +13642,7 @@ Module sync.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "from_iter_exact",
+                                  [],
                                   [ I ]
                                 |),
                                 [ M.read (| self |); M.read (| low |) ]
@@ -13093,6 +13659,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13142,7 +13709,9 @@ Module sync.
               "core::ops::deref::Deref",
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -13178,7 +13747,9 @@ Module sync.
               "core::ops::deref::Deref",
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -13255,6 +13826,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "new",
+                  [],
                   [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ Ty.tuple [] ] ]
                 |),
                 []
@@ -13263,13 +13835,19 @@ Module sync.
           M.alloc (|
             BinOp.Wrap.add (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::alloc::layout::Layout",
+                  "size",
+                  [],
+                  []
+                |),
                 [ layout ]
               |),
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "padding_needed_for",
+                  [],
                   []
                 |),
                 [ layout; M.read (| align |) ]
@@ -13331,6 +13909,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value",
+                    [],
                     [ T ]
                   |),
                   [ M.read (| for_value |) ]
@@ -13342,6 +13921,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_layout",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
@@ -13382,7 +13962,9 @@ Module sync.
                                           "core::alloc::Allocator",
                                           A,
                                           [],
+                                          [],
                                           "allocate",
+                                          [],
                                           []
                                         |),
                                         [ alloc; M.read (| layout_for_arcinner |) ]
@@ -13407,6 +13989,7 @@ Module sync.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "with_metadata_of",
+                                          [],
                                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                         |),
                                         [
@@ -13442,6 +14025,7 @@ Module sync.
                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                           ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -13452,6 +14036,7 @@ Module sync.
                               []
                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                             "new",
+                            [],
                             []
                           |),
                           [ M.read (| ptr |) ]
@@ -13492,6 +14077,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
+                        [],
                         []
                       |),
                       [
@@ -13514,6 +14100,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "byte_add",
+                    [],
                     []
                   |),
                   [
@@ -13524,6 +14111,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [
@@ -13575,6 +14163,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -13589,6 +14178,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -13602,7 +14192,9 @@ Module sync.
                               []
                               [ Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ] ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [ this ]
@@ -13620,6 +14212,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ A ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -13627,6 +14220,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                         "take",
+                        [],
                         []
                       |),
                       [
@@ -13639,7 +14233,9 @@ Module sync.
                                 []
                                 [ Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ] ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [ this ]
@@ -13657,6 +14253,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
                   "from_ptr_in",
+                  [],
                   []
                 |),
                 [ M.read (| ptr |); M.read (| alloc |) ]
@@ -13698,13 +14295,22 @@ Module sync.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
+                  M.get_trait_method (|
+                    "core::alloc::Allocator",
+                    A,
+                    [],
+                    [],
+                    "deallocate",
+                    [],
+                    []
+                  |),
                   [
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ A ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -13712,6 +14318,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ A ],
                               "take",
+                              [],
                               []
                             |),
                             [
@@ -13732,6 +14339,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                         "cast",
+                        [],
                         [ Ty.path "u8" ]
                       |),
                       [
@@ -13789,14 +14397,16 @@ Module sync.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -13818,14 +14428,16 @@ Module sync.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "cause", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -13847,14 +14459,16 @@ Module sync.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -13880,7 +14494,7 @@ Module sync.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::error::Error", T, [], "provide", [] |),
+                  M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -13890,7 +14504,9 @@ Module sync.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]

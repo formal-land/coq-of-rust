@@ -241,6 +241,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "search_node",
+                                      [],
                                       [ Q ]
                                     |),
                                     [ M.read (| self |); M.read (| key |) ]
@@ -299,6 +300,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "force",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| handle |) ]
@@ -357,6 +359,7 @@ Module collections.
                                                           "alloc::collections::btree::node::marker::Edge"
                                                       ],
                                                     "descend",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| internal |) ]
@@ -473,7 +476,9 @@ Module collections.
                             "alloc::collections::btree::set_val::IsSetVal",
                             V,
                             [],
+                            [],
                             "is_set_val",
+                            [],
                             []
                           |),
                           []
@@ -487,8 +492,10 @@ Module collections.
                               M.get_trait_method (|
                                 "core::ops::range::RangeBounds",
                                 R,
+                                [],
                                 [ Q ],
                                 "start_bound",
+                                [],
                                 []
                               |),
                               [ M.read (| range |) ]
@@ -497,8 +504,10 @@ Module collections.
                               M.get_trait_method (|
                                 "core::ops::range::RangeBounds",
                                 R,
+                                [],
                                 [ Q ],
                                 "end_bound",
+                                [],
                                 []
                               |),
                               [ M.read (| range |) ]
@@ -540,8 +549,10 @@ Module collections.
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply (Ty.path "&") [] [ Q ],
+                                              [],
                                               [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                               "eq",
+                                              [],
                                               []
                                             |),
                                             [ s; e ]
@@ -576,6 +587,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_const",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -609,6 +621,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_const",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -657,156 +670,148 @@ Module collections.
                                               let s := M.copy (| γ0_0 |) in
                                               Value.Tuple [ s ]))
                                         ],
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ s ] =>
-                                                ltac:(M.monadic
-                                                  (M.find_or_pattern (|
-                                                    γ0_1,
-                                                    [
-                                                      fun γ =>
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ s ] =>
+                                              ltac:(M.monadic
+                                                (M.find_or_pattern (|
+                                                  γ0_1,
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::range::Bound::Included",
+                                                            0
+                                                          |) in
+                                                        let e := M.copy (| γ0_0 |) in
+                                                        Value.Tuple [ e ]));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::range::Bound::Excluded",
+                                                            0
+                                                          |) in
+                                                        let e := M.copy (| γ0_0 |) in
+                                                        Value.Tuple [ e ]))
+                                                  ],
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ e ] =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::range::Bound::Included",
-                                                              0
+                                                          (let γ :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::cmp::PartialOrd",
+                                                                  Ty.apply (Ty.path "&") [] [ Q ],
+                                                                  [],
+                                                                  [ Ty.apply (Ty.path "&") [] [ Q ]
+                                                                  ],
+                                                                  "gt",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [ s; M.alloc (| M.read (| e |) |) ]
+                                                              |)
                                                             |) in
-                                                          let e := M.copy (| γ0_0 |) in
-                                                          Value.Tuple [ e ]));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::range::Bound::Excluded",
-                                                              0
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
                                                             |) in
-                                                          let e := M.copy (| γ0_0 |) in
-                                                          Value.Tuple [ e ]))
-                                                    ],
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [ e ] =>
-                                                            ltac:(M.monadic
-                                                              (let γ :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::cmp::PartialOrd",
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Q ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
+                                                          M.match_operator (|
+                                                            M.alloc (| Value.Tuple [] |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ := M.use is_set in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "core::panicking::panic_fmt",
+                                                                          [],
                                                                           []
-                                                                          [ Q ]
-                                                                      ],
-                                                                      "gt",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      s;
-                                                                      M.alloc (| M.read (| e |) |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              let _ :=
-                                                                M.is_constant_or_break_match (|
-                                                                  M.read (| γ |),
-                                                                  Value.Bool true
-                                                                |) in
-                                                              M.match_operator (|
-                                                                M.alloc (| Value.Tuple [] |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ := M.use is_set in
-                                                                      let _ :=
-                                                                        M.is_constant_or_break_match (|
-                                                                          M.read (| γ |),
-                                                                          Value.Bool true
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
+                                                                        |),
+                                                                        [
                                                                           M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::panicking::panic_fmt",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_const",
                                                                               [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::Arguments",
-                                                                                  "new_const",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "range start is greater than range end in BTreeSet"
-                                                                                        |)
-                                                                                      ]
-                                                                                  |)
-                                                                                ]
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "range start is greater than range end in BTreeSet"
+                                                                                    |)
+                                                                                  ]
                                                                               |)
                                                                             ]
                                                                           |)
-                                                                        |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        M.never_to_any (|
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "core::panicking::panic_fmt",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
                                                                           M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::panicking::panic_fmt",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_const",
                                                                               [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::Arguments",
-                                                                                  "new_const",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "range start is greater than range end in BTreeMap"
-                                                                                        |)
-                                                                                      ]
-                                                                                  |)
-                                                                                ]
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "range start is greater than range end in BTreeMap"
+                                                                                    |)
+                                                                                  ]
                                                                               |)
                                                                             ]
                                                                           |)
-                                                                        |)
-                                                                      |)))
-                                                                ]
-                                                              |)))
-                                                          | _ =>
-                                                            M.impossible "wrong number of arguments"
-                                                          end))
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
+                                                      end)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end)
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -820,6 +825,7 @@ Module collections.
                                       []
                                       [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                     "from_range",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| start |) ]
@@ -834,6 +840,7 @@ Module collections.
                                       []
                                       [ Ty.apply (Ty.path "&") [] [ Q ] ],
                                     "from_range",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| end_ |) ]
@@ -859,6 +866,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::LeafOrInternal"
                                                 ],
                                               "find_lower_bound_index",
+                                              [],
                                               [ Q ]
                                             |),
                                             [ self; M.read (| lower_bound |) ]
@@ -888,6 +896,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                                         ],
                                                       "find_upper_bound_index",
+                                                      [],
                                                       [ Q ]
                                                     |),
                                                     [
@@ -1112,6 +1121,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::Edge"
                                                                 ],
                                                               "new_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1144,6 +1154,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::Edge"
                                                                 ],
                                                               "force",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| common_edge |) ]
@@ -1206,6 +1217,7 @@ Module collections.
                                                                             "alloc::collections::btree::node::marker::Edge"
                                                                         ],
                                                                       "descend",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| common_edge |) ]
@@ -1287,6 +1299,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "find_lower_bound_index",
+                        [],
                         [ Q ]
                       |),
                       [ self; M.read (| bound |) ]
@@ -1320,6 +1333,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Edge"
                                   ],
                                 "new_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| edge_idx |) ]
@@ -1380,6 +1394,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "find_upper_bound_index",
+                        [],
                         [ Q ]
                       |),
                       [ self; M.read (| bound |); Value.Integer IntegerKind.Usize 0 ]
@@ -1413,6 +1428,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Edge"
                                   ],
                                 "new_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| edge_idx |) ]
@@ -1474,6 +1490,7 @@ Module collections.
                           []
                           [ BorrowType; K; V; Type_ ],
                         "find_key_index",
+                        [],
                         [ Q ]
                       |),
                       [ self; M.read (| key |); Value.Integer IntegerKind.Usize 0 ]
@@ -1506,6 +1523,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
                                   "new_kv",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| idx |) ]
@@ -1538,6 +1556,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "new_edge",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| idx |) ]
@@ -1601,6 +1620,7 @@ Module collections.
                               []
                               [ BorrowType; K; V; Type_ ],
                             "reborrow",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1620,6 +1640,7 @@ Module collections.
                                 Type_
                               ],
                             "keys",
+                            [],
                             []
                           |),
                           [ node ]
@@ -1653,6 +1674,7 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [] [ K ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| keys |) ]
@@ -1697,7 +1719,9 @@ Module collections.
                                   []
                                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ K ] ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -1706,7 +1730,9 @@ Module collections.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ K ],
                                     [],
+                                    [],
                                     "enumerate",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1714,6 +1740,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ K ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1721,6 +1748,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ K ],
                                             "get_unchecked",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
@@ -1765,7 +1793,9 @@ Module collections.
                                                     [ K ]
                                                 ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -1803,7 +1833,9 @@ Module collections.
                                                       "core::cmp::Ord",
                                                       Q,
                                                       [],
+                                                      [],
                                                       "cmp",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1812,8 +1844,10 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::borrow::Borrow",
                                                           K,
+                                                          [],
                                                           [ Q ],
                                                           "borrow",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| k |) ]
@@ -1892,6 +1926,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ K ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| keys |) ]
@@ -1967,6 +2002,7 @@ Module collections.
                                   []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
+                                [],
                                 [ Q ]
                               |),
                               [
@@ -2025,6 +2061,7 @@ Module collections.
                                   []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
+                                [],
                                 [ Q ]
                               |),
                               [
@@ -2101,6 +2138,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V; Type_ ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -2182,6 +2220,7 @@ Module collections.
                                   []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
+                                [],
                                 [ Q ]
                               |),
                               [ M.read (| self |); M.read (| key |); M.read (| start_index |) ]
@@ -2239,6 +2278,7 @@ Module collections.
                                   []
                                   [ BorrowType; K; V; Type_ ],
                                 "find_key_index",
+                                [],
                                 [ Q ]
                               |),
                               [ M.read (| self |); M.read (| key |); M.read (| start_index |) ]
@@ -2292,6 +2332,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V; Type_ ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]

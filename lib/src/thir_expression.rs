@@ -186,7 +186,7 @@ fn build_inner_match(
                                     .map(|pattern| {
                                         Rc::new(Expr::Lambda {
                                             is_for_match: true,
-                                            is_internal: true,
+                                            form: LambdaForm::Function,
                                             args: vec![("γ".to_string(), None)],
                                             body: build_inner_match(
                                                 vec![("γ".to_string(), pattern.clone())],
@@ -204,7 +204,7 @@ fn build_inner_match(
                             }),
                             Rc::new(Expr::Lambda {
                                 is_for_match: true,
-                                is_internal: false,
+                                form: LambdaForm::ListFunction,
                                 args: free_vars.iter().map(|name| (name.clone(), None)).collect(),
                                 body,
                             }),
@@ -368,7 +368,7 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
 
                     Rc::new(Expr::Lambda {
                         is_for_match: true,
-                        is_internal: true,
+                        form: LambdaForm::Function,
                         args: vec![("γ".to_string(), None)],
                         body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
                     })
@@ -475,6 +475,7 @@ pub(crate) fn compile_expr<'a>(
                         ],
                     }),
                     func: "new".to_string(),
+                    generic_consts: vec![],
                     generic_tys: vec![],
                 }),
                 args: vec![value],
@@ -908,7 +909,7 @@ pub(crate) fn compile_expr<'a>(
                     args,
                     body,
                     is_for_match: false,
-                    is_internal: false,
+                    form: LambdaForm::Closure,
                 })
                 .alloc()
             });
@@ -958,6 +959,16 @@ pub(crate) fn compile_expr<'a>(
                             let func = symbol.unwrap().to_string();
                             // We remove [nb_parent_generics] elements from the start of [generic_args]
                             // as these are already inferred from the `Self` type.
+                            let generic_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect();
                             let generic_tys = generic_args
                                 .iter()
                                 .skip(nb_parent_generics)
@@ -972,6 +983,7 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetAssociatedFunction {
                                 ty,
                                 func,
+                                generic_consts,
                                 generic_tys,
                             })
                             .alloc()
@@ -994,7 +1006,27 @@ pub(crate) fn compile_expr<'a>(
                                 [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
                                 _ => panic!("Expected at least one element"),
                             };
+                            let trait_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
                             let method_name = symbol.unwrap().to_string();
+                            let generic_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
                             let generic_tys = generic_args
                                 .iter()
                                 .skip(nb_parent_generics)
@@ -1009,8 +1041,10 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetTraitMethod {
                                 trait_name: parent_path,
                                 self_ty,
+                                trait_consts,
                                 trait_tys,
                                 method_name,
+                                generic_consts,
                                 generic_tys,
                             })
                             .alloc()
@@ -1058,6 +1092,7 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetAssociatedFunction {
                                 ty: CoqType::var("Self"),
                                 func: format!("{}.{}", symbol.unwrap(), parent_symbol),
+                                generic_consts: vec![],
                                 generic_tys: vec![],
                             })
                             .alloc()

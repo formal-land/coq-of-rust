@@ -122,7 +122,9 @@ Module str.
                                 []
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -131,7 +133,9 @@ Module str.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| bytes |) ]
@@ -160,6 +164,7 @@ Module str.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u32" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -167,6 +172,7 @@ Module str.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -232,6 +238,7 @@ Module str.
                           []
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                         "unwrap_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -240,7 +247,9 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             I,
                             [],
+                            [],
                             "next",
+                            [],
                             []
                           |),
                           [ M.read (| bytes |) ]
@@ -277,6 +286,7 @@ Module str.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "unwrap_unchecked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -285,7 +295,9 @@ Module str.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| bytes |) ]
@@ -349,6 +361,7 @@ Module str.
                                             []
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                           "unwrap_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
@@ -357,7 +370,9 @@ Module str.
                                               "core::iter::traits::iterator::Iterator",
                                               I,
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -459,7 +474,9 @@ Module str.
                                   []
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -468,7 +485,9 @@ Module str.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     I,
                                     [],
+                                    [],
                                     "next_back",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| bytes |) ]
@@ -497,6 +516,7 @@ Module str.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "u32" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -504,6 +524,7 @@ Module str.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -566,6 +587,7 @@ Module str.
                           []
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                         "unwrap_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -574,7 +596,9 @@ Module str.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             I,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [ M.read (| bytes |) ]
@@ -619,6 +643,7 @@ Module str.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "unwrap_unchecked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -627,7 +652,9 @@ Module str.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| bytes |) ]
@@ -679,6 +706,7 @@ Module str.
                                               []
                                               [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                             "unwrap_unchecked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -687,7 +715,9 @@ Module str.
                                                 "core::iter::traits::double_ended::DoubleEndedIterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "next_back",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| bytes |) ]
@@ -761,7 +791,7 @@ Module str.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 128 ]
             |)
           |))).
@@ -921,6 +951,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -970,6 +1001,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
+                        [],
                         []
                       |),
                       [
@@ -977,6 +1009,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| v |) ]
@@ -1323,19 +1356,16 @@ Module str.
                                                                     |) in
                                                                   Value.Tuple []))
                                                             ],
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [] =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)))
-                                                                  | _ =>
-                                                                    M.impossible
-                                                                      "wrong number of arguments"
-                                                                  end))
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
+                                                                end)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -1631,19 +1661,16 @@ Module str.
                                                                     |) in
                                                                   Value.Tuple []))
                                                             ],
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [] =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)))
-                                                                  | _ =>
-                                                                    M.impossible
-                                                                      "wrong number of arguments"
-                                                                  end))
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
+                                                                end)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -1985,6 +2012,7 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.path "usize",
                                                                 "wrapping_sub",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2012,6 +2040,7 @@ Module str.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "as_ptr",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| v |) ]
@@ -2049,6 +2078,7 @@ Module str.
                                                                           []
                                                                           [ Ty.path "u8" ],
                                                                         "add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2089,6 +2119,7 @@ Module str.
                                                                               []
                                                                               [ Ty.path "usize" ],
                                                                             "add",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [

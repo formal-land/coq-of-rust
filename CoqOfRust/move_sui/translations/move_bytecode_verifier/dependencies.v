@@ -98,6 +98,7 @@ Module dependencies.
             M.get_associated_function (|
               Ty.path "move_bytecode_verifier::dependencies::Context",
               "new",
+              [],
               [ impl_IntoIterator_Item____'b_CompiledModule_ ]
             |),
             [ M.read (| module |); M.read (| dependencies |) ]
@@ -225,6 +226,7 @@ Module dependencies.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "self_id",
+                    [],
                     []
                   |),
                   [ M.read (| module |) ]
@@ -236,6 +238,7 @@ Module dependencies.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "self_handle_idx",
+                    [],
                     []
                   |),
                   [ M.read (| module |) ]
@@ -247,6 +250,7 @@ Module dependencies.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "function_defs",
+                    [],
                     []
                   |),
                   [ M.read (| module |) ]
@@ -306,7 +310,9 @@ Module dependencies.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -351,7 +357,9 @@ Module dependencies.
                               (Ty.path "bool")
                           ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -387,7 +395,9 @@ Module dependencies.
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "filter",
+                            [],
                             [
                               Ty.function
                                 [
@@ -416,7 +426,9 @@ Module dependencies.
                                 "core::iter::traits::collect::IntoIterator",
                                 impl_IntoIterator_Item____'b_CompiledModule_,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| dependencies |) ]
@@ -438,11 +450,13 @@ Module dependencies.
                                                   "core::cmp::PartialEq",
                                                   Ty.path
                                                     "move_core_types::language_storage::ModuleId",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_core_types::language_storage::ModuleId"
                                                   ],
                                                   "ne",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -452,6 +466,7 @@ Module dependencies.
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
                                                         "self_id",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| M.read (| d |) |) ]
@@ -485,6 +500,7 @@ Module dependencies.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "self_id",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| d |) ]
@@ -515,6 +531,7 @@ Module dependencies.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "version",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| module |) ]
@@ -543,6 +560,7 @@ Module dependencies.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -578,6 +596,7 @@ Module dependencies.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -598,6 +617,7 @@ Module dependencies.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -614,6 +634,7 @@ Module dependencies.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -639,6 +660,7 @@ Module dependencies.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -668,7 +690,9 @@ Module dependencies.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -706,7 +730,9 @@ Module dependencies.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -746,7 +772,9 @@ Module dependencies.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "collect",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path
@@ -772,7 +800,9 @@ Module dependencies.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -781,6 +811,7 @@ Module dependencies.
                                                       Ty.path
                                                         "move_binary_format::file_format::CompiledModule",
                                                       "immediate_friends",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| M.read (| module |) |) ]
@@ -810,7 +841,9 @@ Module dependencies.
                                                         ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -819,6 +852,7 @@ Module dependencies.
                                                       Ty.path
                                                         "move_binary_format::file_format::CompiledModule",
                                                       "struct_defs",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| M.read (| module |) |) ]
@@ -847,7 +881,9 @@ Module dependencies.
                                                                       "move_binary_format::file_format::StructDefinition"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -883,6 +919,7 @@ Module dependencies.
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
                                                                         "struct_handle_at",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -906,6 +943,7 @@ Module dependencies.
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
                                                                         "identifier_at",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -946,6 +984,7 @@ Module dependencies.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "insert",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -962,7 +1001,9 @@ Module dependencies.
                                                                                 Ty.path
                                                                                   "move_core_types::language_storage::ModuleId",
                                                                                 [],
+                                                                                [],
                                                                                 "clone",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -977,7 +1018,9 @@ Module dependencies.
                                                                                 Ty.path
                                                                                   "move_core_types::identifier::IdentStr",
                                                                                 [],
+                                                                                [],
                                                                                 "to_owned",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1023,7 +1066,9 @@ Module dependencies.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "into_iter",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1032,6 +1077,7 @@ Module dependencies.
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
                                                     "function_defs",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| M.read (| module |) |) ]
@@ -1059,7 +1105,9 @@ Module dependencies.
                                                                     "move_binary_format::file_format::FunctionDefinition"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
                                                             [ iter ]
@@ -1094,6 +1142,7 @@ Module dependencies.
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
                                                                       "function_handle_at",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1117,6 +1166,7 @@ Module dependencies.
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
                                                                       "identifier_at",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1159,6 +1209,7 @@ Module dependencies.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       "insert",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1171,7 +1222,9 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "move_core_types::language_storage::ModuleId",
                                                                               [],
+                                                                              [],
                                                                               "clone",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| module_id |)
@@ -1183,7 +1236,9 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "move_core_types::identifier::IdentStr",
                                                                               [],
+                                                                              [],
                                                                               "to_owned",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| func_name |)
@@ -1250,6 +1305,7 @@ Module dependencies.
                                                                                       "alloc::alloc::Global"
                                                                                   ],
                                                                                 "contains",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_core_types::language_storage::ModuleId"
@@ -1308,6 +1364,7 @@ Module dependencies.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "insert",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1324,7 +1381,9 @@ Module dependencies.
                                                                                       Ty.path
                                                                                         "move_core_types::language_storage::ModuleId",
                                                                                       [],
+                                                                                      [],
                                                                                       "clone",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1339,7 +1398,9 @@ Module dependencies.
                                                                                       Ty.path
                                                                                         "move_core_types::identifier::IdentStr",
                                                                                       [],
+                                                                                      [],
                                                                                       "to_owned",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1400,7 +1461,9 @@ Module dependencies.
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| self_function_defs |) ]
@@ -1426,7 +1489,9 @@ Module dependencies.
                                             "move_binary_format::file_format::FunctionDefinition"
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -1464,6 +1529,7 @@ Module dependencies.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "insert",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1530,6 +1596,7 @@ Module dependencies.
                                                             ]
                                                         ],
                                                       "map",
+                                                      [],
                                                       [
                                                         Ty.path "bool";
                                                         Ty.function
@@ -1574,6 +1641,7 @@ Module dependencies.
                                                                 ]
                                                             ],
                                                           "as_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1609,6 +1677,7 @@ Module dependencies.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             "insert",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1660,7 +1729,9 @@ Module dependencies.
                               [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -1672,7 +1743,9 @@ Module dependencies.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                             [],
+                            [],
                             "enumerate",
+                            [],
                             []
                           |),
                           [
@@ -1683,6 +1756,7 @@ Module dependencies.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -1690,6 +1764,7 @@ Module dependencies.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "function_handles",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1734,7 +1809,9 @@ Module dependencies.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -1774,11 +1851,13 @@ Module dependencies.
                                                           "core::cmp::PartialEq",
                                                           Ty.path
                                                             "move_binary_format::file_format::ModuleHandleIndex",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::file_format::ModuleHandleIndex"
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1809,6 +1888,7 @@ Module dependencies.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "module_id_for_handle",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1824,6 +1904,7 @@ Module dependencies.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "module_handle_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1853,6 +1934,7 @@ Module dependencies.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "identifier_at",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1897,6 +1979,7 @@ Module dependencies.
                                                         ]
                                                     ],
                                                   "unwrap",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1919,6 +2002,7 @@ Module dependencies.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "get",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_core_types::language_storage::ModuleId"
@@ -1950,7 +2034,9 @@ Module dependencies.
                                                   "alloc::borrow::ToOwned",
                                                   Ty.path "move_core_types::identifier::IdentStr",
                                                   [],
+                                                  [],
                                                   "to_owned",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| function_name |) ]
@@ -1983,6 +2069,7 @@ Module dependencies.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "get",
+                                                [],
                                                 [
                                                   Ty.tuple
                                                     [
@@ -2049,6 +2136,7 @@ Module dependencies.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "insert",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2115,6 +2203,7 @@ Module dependencies.
                                                                     ]
                                                                 ],
                                                               "map",
+                                                              [],
                                                               [
                                                                 Ty.path "bool";
                                                                 Ty.function
@@ -2160,6 +2249,7 @@ Module dependencies.
                                                                         ]
                                                                     ],
                                                                   "as_mut",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2196,6 +2286,7 @@ Module dependencies.
                                                                                           "alloc::alloc::Global"
                                                                                       ],
                                                                                     "insert",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -2257,6 +2348,7 @@ Module dependencies.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -2289,6 +2381,7 @@ Module dependencies.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2300,6 +2393,7 @@ Module dependencies.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -2348,6 +2442,7 @@ Module dependencies.
                       M.get_associated_function (|
                         Ty.path "move_bytecode_verifier::dependencies::Context",
                         "module",
+                        [],
                         [ impl_IntoIterator_Item____'a_CompiledModule_ ]
                       |),
                       [ M.read (| module |); M.read (| dependencies |) ]
@@ -2365,7 +2460,9 @@ Module dependencies.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2404,6 +2501,7 @@ Module dependencies.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2414,6 +2512,7 @@ Module dependencies.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2445,7 +2544,9 @@ Module dependencies.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2484,6 +2585,7 @@ Module dependencies.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2494,6 +2596,7 @@ Module dependencies.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2525,7 +2628,9 @@ Module dependencies.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2564,6 +2669,7 @@ Module dependencies.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2574,6 +2680,7 @@ Module dependencies.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2644,6 +2751,7 @@ Module dependencies.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
+                      [],
                       []
                     |),
                     [
@@ -2674,7 +2782,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2686,7 +2796,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -2697,6 +2809,7 @@ Module dependencies.
                                     []
                                     [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2704,6 +2817,7 @@ Module dependencies.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "module_handles",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2748,7 +2862,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2781,6 +2897,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "module_id_for_handle",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2809,11 +2926,13 @@ Module dependencies.
                                                             "core::cmp::PartialEq",
                                                             Ty.path
                                                               "move_binary_format::file_format::ModuleHandleIndex",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex"
                                                             ],
                                                             "ne",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2846,6 +2965,7 @@ Module dependencies.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "contains_key",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_core_types::language_storage::ModuleId"
@@ -2974,6 +3094,7 @@ Module dependencies.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
+                      [],
                       []
                     |),
                     [
@@ -3004,7 +3125,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::StructHandle" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -3016,7 +3139,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::StructHandle" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -3027,6 +3152,7 @@ Module dependencies.
                                     []
                                     [ Ty.path "move_binary_format::file_format::StructHandle" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3034,6 +3160,7 @@ Module dependencies.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_handles",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3078,7 +3205,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -3118,11 +3247,13 @@ Module dependencies.
                                                             "core::cmp::PartialEq",
                                                             Ty.path
                                                               "move_binary_format::file_format::ModuleHandleIndex",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex"
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3156,6 +3287,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "module_id_for_handle",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3171,6 +3303,7 @@ Module dependencies.
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
                                                     "module_handle_at",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3216,6 +3349,7 @@ Module dependencies.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_core_types::language_storage::ModuleId"
@@ -3256,6 +3390,7 @@ Module dependencies.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "with_message",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3264,6 +3399,7 @@ Module dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3294,6 +3430,7 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3312,6 +3449,7 @@ Module dependencies.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "none",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -3356,6 +3494,7 @@ Module dependencies.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3375,6 +3514,7 @@ Module dependencies.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_debug",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
@@ -3415,6 +3555,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "identifier_at",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3456,6 +3597,7 @@ Module dependencies.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "get",
+                                                [],
                                                 [
                                                   Ty.tuple
                                                     [
@@ -3482,7 +3624,9 @@ Module dependencies.
                                                           Ty.path
                                                             "move_core_types::identifier::IdentStr",
                                                           [],
+                                                          [],
                                                           "to_owned",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| struct_name |) ]
@@ -3509,6 +3653,7 @@ Module dependencies.
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
                                                         "struct_handle_at",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3576,7 +3721,9 @@ Module dependencies.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "deref",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3603,7 +3750,9 @@ Module dependencies.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "deref",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3811,6 +3960,7 @@ Module dependencies.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
+                      [],
                       []
                     |),
                     [
@@ -3841,7 +3991,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -3853,7 +4005,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -3864,6 +4018,7 @@ Module dependencies.
                                     []
                                     [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3871,6 +4026,7 @@ Module dependencies.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_handles",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3915,7 +4071,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -3955,11 +4113,13 @@ Module dependencies.
                                                             "core::cmp::PartialEq",
                                                             Ty.path
                                                               "move_binary_format::file_format::ModuleHandleIndex",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex"
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3993,6 +4153,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "module_id_for_handle",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4008,6 +4169,7 @@ Module dependencies.
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
                                                     "module_handle_at",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4037,6 +4199,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "identifier_at",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4080,6 +4243,7 @@ Module dependencies.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_core_types::language_storage::ModuleId"
@@ -4120,6 +4284,7 @@ Module dependencies.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "with_message",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4128,6 +4293,7 @@ Module dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -4158,6 +4324,7 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -4176,6 +4343,7 @@ Module dependencies.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "none",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -4220,6 +4388,7 @@ Module dependencies.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4239,6 +4408,7 @@ Module dependencies.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_debug",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
@@ -4293,6 +4463,7 @@ Module dependencies.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "get",
+                                                [],
                                                 [
                                                   Ty.tuple
                                                     [
@@ -4318,7 +4489,9 @@ Module dependencies.
                                                           Ty.path
                                                             "move_core_types::language_storage::ModuleId",
                                                           [],
+                                                          [],
                                                           "clone",
+                                                          [],
                                                           []
                                                         |),
                                                         [ owner_module_id ]
@@ -4329,7 +4502,9 @@ Module dependencies.
                                                           Ty.path
                                                             "move_core_types::identifier::IdentStr",
                                                           [],
+                                                          [],
                                                           "to_owned",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| function_name |) ]
@@ -4356,6 +4531,7 @@ Module dependencies.
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
                                                         "function_handle_at",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4395,7 +4571,9 @@ Module dependencies.
                                                                                 "alloc::alloc::Global"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "deref",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4422,7 +4600,9 @@ Module dependencies.
                                                                                 "alloc::alloc::Global"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "deref",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4483,6 +4663,7 @@ Module dependencies.
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
                                                         "signature_at",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4526,6 +4707,7 @@ Module dependencies.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "get",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_core_types::language_storage::ModuleId"
@@ -4557,6 +4739,7 @@ Module dependencies.
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
                                                                   "signature_at",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4625,7 +4808,9 @@ Module dependencies.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4640,6 +4825,7 @@ Module dependencies.
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
                                                               "map_err",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError";
@@ -4677,7 +4863,9 @@ Module dependencies.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "deref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4701,7 +4889,9 @@ Module dependencies.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "deref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4735,6 +4925,7 @@ Module dependencies.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
                                                                                     "at_index",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -4785,6 +4976,7 @@ Module dependencies.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4798,6 +4990,7 @@ Module dependencies.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -4825,6 +5018,7 @@ Module dependencies.
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
                                                         "signature_at",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4868,6 +5062,7 @@ Module dependencies.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "get",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_core_types::language_storage::ModuleId"
@@ -4899,6 +5094,7 @@ Module dependencies.
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
                                                                   "signature_at",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4967,7 +5163,9 @@ Module dependencies.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4982,6 +5180,7 @@ Module dependencies.
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
                                                               "map_err",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError";
@@ -5019,7 +5218,9 @@ Module dependencies.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "deref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5043,7 +5244,9 @@ Module dependencies.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "deref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5077,6 +5280,7 @@ Module dependencies.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
                                                                                     "at_index",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -5127,6 +5331,7 @@ Module dependencies.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -5140,6 +5345,7 @@ Module dependencies.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -5238,6 +5444,7 @@ Module dependencies.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format::AbilitySet",
             "is_subset",
+            [],
             []
           |),
           [ M.read (| local_struct_abilities_declaration |); M.read (| defined_struct_abilities |) ]
@@ -5291,6 +5498,7 @@ Module dependencies.
                   []
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| local_type_parameters_declaration |) ]
@@ -5302,6 +5510,7 @@ Module dependencies.
                   []
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| defined_type_parameters |) ]
@@ -5325,7 +5534,9 @@ Module dependencies.
                       [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                   ],
                 [],
+                [],
                 "all",
+                [],
                 [
                   Ty.function
                     [
@@ -5357,7 +5568,9 @@ Module dependencies.
                         []
                         [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&")
@@ -5378,6 +5591,7 @@ Module dependencies.
                             []
                             [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| local_type_parameters_declaration |) ]
@@ -5471,6 +5685,7 @@ Module dependencies.
                   []
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| local_type_parameters_declaration |) ]
@@ -5482,6 +5697,7 @@ Module dependencies.
                   []
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| defined_type_parameters |) ]
@@ -5505,7 +5721,9 @@ Module dependencies.
                       [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ],
                 [],
+                [],
                 "all",
+                [],
                 [
                   Ty.function
                     [
@@ -5537,7 +5755,9 @@ Module dependencies.
                         []
                         [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&")
@@ -5558,6 +5778,7 @@ Module dependencies.
                             []
                             [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| local_type_parameters_declaration |) ]
@@ -5659,6 +5880,7 @@ Module dependencies.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format::AbilitySet",
             "is_subset",
+            [],
             []
           |),
           [
@@ -5768,6 +5990,7 @@ Module dependencies.
                                       []
                                       [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| handle_sig |) ]
@@ -5779,6 +6002,7 @@ Module dependencies.
                                       []
                                       [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| def_sig |) ]
@@ -5798,6 +6022,7 @@ Module dependencies.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5835,7 +6060,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -5847,7 +6074,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&")
@@ -5868,6 +6097,7 @@ Module dependencies.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| handle_sig |) ]
@@ -5910,7 +6140,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -5951,7 +6183,9 @@ Module dependencies.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5996,6 +6230,7 @@ Module dependencies.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -6008,6 +6243,7 @@ Module dependencies.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6280,17 +6516,16 @@ Module dependencies.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6417,7 +6652,9 @@ Module dependencies.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -6462,6 +6699,7 @@ Module dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -6474,6 +6712,7 @@ Module dependencies.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -6515,7 +6754,9 @@ Module dependencies.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| inst1 |) ]
@@ -6532,7 +6773,9 @@ Module dependencies.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| inst2 |) ]
@@ -6593,29 +6836,28 @@ Module dependencies.
                               let ty2 := M.alloc (| γ2_0 |) in
                               Value.Tuple [ ty1; ty2 ]))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ ty1; ty2 ] =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "move_bytecode_verifier::dependencies::compare_types",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (| context |);
-                                        M.read (| M.read (| ty1 |) |);
-                                        M.read (| M.read (| ty2 |) |);
-                                        M.read (| def_module |)
-                                      ]
-                                    |)
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ ty1; ty2 ] =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "move_bytecode_verifier::dependencies::compare_types",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| context |);
+                                      M.read (| M.read (| ty1 |) |);
+                                      M.read (| M.read (| ty2 |) |);
+                                      M.read (| def_module |)
+                                    ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6649,8 +6891,10 @@ Module dependencies.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [ idx1; idx2 ]
@@ -6669,6 +6913,7 @@ Module dependencies.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6863,32 +7108,32 @@ Module dependencies.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "move_binary_format::errors::PartialVMError",
-                                            "new",
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
+                                          "new",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
                                             []
-                                          |),
-                                          [
-                                            Value.StructTuple
-                                              "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
-                                              []
-                                          ]
-                                        |)
-                                      ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                                        ]
+                                      |)
+                                    ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)))
                 ]
               |)
@@ -6941,6 +7186,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_handle_at",
+                  [],
                   []
                 |),
                 [
@@ -6961,6 +7207,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_handle_at",
+                  [],
                   []
                 |),
                 [
@@ -6987,6 +7234,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_id_for_handle",
+                  [],
                   []
                 |),
                 [
@@ -7007,6 +7255,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "identifier_at",
+                  [],
                   []
                 |),
                 [
@@ -7033,6 +7282,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_handle_at",
+                  [],
                   []
                 |),
                 [ M.read (| def_module |); M.read (| idx2 |) ]
@@ -7044,6 +7294,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_handle_at",
+                  [],
                   []
                 |),
                 [
@@ -7064,6 +7315,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_id_for_handle",
+                  [],
                   []
                 |),
                 [ M.read (| def_module |); M.read (| def_module_handle |) ]
@@ -7075,6 +7327,7 @@ Module dependencies.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "identifier_at",
+                  [],
                   []
                 |),
                 [
@@ -7102,8 +7355,10 @@ Module dependencies.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "move_core_types::language_storage::ModuleId",
+                              [],
                               [ Ty.path "move_core_types::language_storage::ModuleId" ],
                               "ne",
+                              [],
                               []
                             |),
                             [ module_id; def_module_id ]
@@ -7116,6 +7371,7 @@ Module dependencies.
                                   (Ty.path "&")
                                   []
                                   [ Ty.path "move_core_types::identifier::IdentStr" ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -7123,6 +7379,7 @@ Module dependencies.
                                     [ Ty.path "move_core_types::identifier::IdentStr" ]
                                 ],
                                 "ne",
+                                [],
                                 []
                               |),
                               [ struct_name; def_struct_name ]
@@ -7138,6 +7395,7 @@ Module dependencies.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -7264,6 +7522,7 @@ Module dependencies.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "version",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -7334,7 +7593,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -7346,7 +7607,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -7358,6 +7621,7 @@ Module dependencies.
                                     [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7365,6 +7629,7 @@ Module dependencies.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_defs",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| m |) ]
@@ -7401,7 +7666,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7485,7 +7752,9 @@ Module dependencies.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -7526,7 +7795,9 @@ Module dependencies.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| code |) ]
@@ -7561,6 +7832,7 @@ Module dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -7573,6 +7845,7 @@ Module dependencies.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -7679,7 +7952,9 @@ Module dependencies.
                                 [ Ty.path "move_binary_format::file_format::Bytecode" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -7691,7 +7966,9 @@ Module dependencies.
                                 []
                                 [ Ty.path "move_binary_format::file_format::Bytecode" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -7702,6 +7979,7 @@ Module dependencies.
                                     []
                                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| code |) ]
@@ -7734,7 +8012,9 @@ Module dependencies.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7794,6 +8074,7 @@ Module dependencies.
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
                                                             "function_instantiation_at",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7832,6 +8113,7 @@ Module dependencies.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "contains",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::FunctionHandleIndex"
@@ -7885,6 +8167,7 @@ Module dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "with_message",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -7893,6 +8176,7 @@ Module dependencies.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
                                                                     "at_code_offset",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7901,6 +8185,7 @@ Module dependencies.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -7918,7 +8203,9 @@ Module dependencies.
                                                                     "alloc::string::ToString",
                                                                     Ty.path "str",
                                                                     [],
+                                                                    [],
                                                                     "to_string",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [

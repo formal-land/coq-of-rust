@@ -80,8 +80,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
+                [],
                 []
               |),
               [ M.read (| Value.String "green" |) ]
@@ -110,6 +112,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -128,6 +131,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [ color ]
@@ -152,8 +156,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call",
+                [],
                 []
               |),
               [ print; Value.Tuple [] ]
@@ -166,8 +172,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call",
+                [],
                 []
               |),
               [ print; Value.Tuple [] ]
@@ -208,6 +216,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -226,6 +235,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "i32" ]
                                                       |),
                                                       [ count ]
@@ -251,8 +261,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_mut",
+                [],
                 []
               |),
               [ inc; Value.Tuple [] ]
@@ -264,8 +276,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_mut",
+                [],
                 []
               |),
               [ inc; Value.Tuple [] ]
@@ -281,6 +295,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 3 ]
@@ -310,6 +325,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -328,6 +344,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_debug",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::boxed::Box")
@@ -377,8 +394,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_once",
+                [],
                 []
               |),
               [ M.read (| consume |); Value.Tuple [] ]

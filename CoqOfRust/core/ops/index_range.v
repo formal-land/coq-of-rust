@@ -25,7 +25,15 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -36,7 +44,15 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -71,6 +87,7 @@ Module ops.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -243,6 +260,7 @@ Module ops.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.new_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| start |); M.read (| end_ |) ]
@@ -338,7 +356,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -454,7 +472,7 @@ Module ops.
                     "start"
                   |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+                    M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
                     [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
@@ -546,7 +564,7 @@ Module ops.
               let~ value :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                    M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -617,7 +635,9 @@ Module ops.
                                         []
                                         [ Ty.path "core::ops::index_range::IndexRange" ],
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -628,7 +648,12 @@ Module ops.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "usize",
+                                "unchecked_add",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -724,7 +749,9 @@ Module ops.
                                         []
                                         [ Ty.path "core::ops::index_range::IndexRange" ],
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -735,7 +762,12 @@ Module ops.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                              M.get_associated_function (|
+                                Ty.path "usize",
+                                "unchecked_sub",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -830,7 +862,9 @@ Module ops.
                                     []
                                     [ Ty.path "core::ops::index_range::IndexRange" ],
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -847,6 +881,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "next_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -880,6 +915,7 @@ Module ops.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -915,6 +951,7 @@ Module ops.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_prefix",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| n |) ]
@@ -928,6 +965,7 @@ Module ops.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -952,6 +990,7 @@ Module ops.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -961,6 +1000,7 @@ Module ops.
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
+                              [],
                               []
                             |),
                             [ taken ]
@@ -1027,7 +1067,9 @@ Module ops.
                                     []
                                     [ Ty.path "core::ops::index_range::IndexRange" ],
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1044,6 +1086,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "next_back_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1078,6 +1121,7 @@ Module ops.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_suffix",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| n |) ]
@@ -1091,6 +1135,7 @@ Module ops.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -1115,6 +1160,7 @@ Module ops.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -1124,6 +1170,7 @@ Module ops.
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
+                              [],
                               []
                             |),
                             [ taken ]
@@ -1169,6 +1216,7 @@ Module ops.
               M.get_associated_function (|
                 Ty.path "core::ops::index_range::IndexRange",
                 "len",
+                [],
                 []
               |),
               [ M.read (| self |) ]

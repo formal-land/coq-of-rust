@@ -109,13 +109,14 @@ Module OneElementTuple.
   (** There are no tuples of one element in Coq so we have to create it. This is different than the
       type itself in the sense that the [Link] instance should not be the same and use Rust tuples
       of one element instead. *)
-  Inductive t (A : Set) `{Link A} : Set :=
-  | Make (a : A).
-  Arguments Make {_ _}.
+  Record t {A : Set} `{Link A} : Set := {
+    value : A;
+  }.
+  Arguments t _ {_}.
 
   Global Instance IsLink {A : Set} `{Link A} : Link (t A) := {
     Φ := Ty.tuple [Φ A];
-    φ '(Make a) := Value.Tuple [φ a];
+    φ '{| value := value |} := Value.Tuple [φ value];
   }.
 End OneElementTuple.
 
@@ -334,11 +335,19 @@ End IsSubPointer.
 Definition output_pure (Output : Set) `{Link Output} (output : Output) : Value.t + Exception.t :=
   inl (φ output).
 
-Definition output_with_panic (Output : Set) `{Link Output} (output : Output + Panic.t) :
+Module Output.
+  Inductive t (Output : Set) `{Link Output} : Set :=
+  | Success (output : Output) : t Output
+  | Panic (panic : Panic.t) : t Output.
+  Arguments Success {_ _}.
+  Arguments Panic {_ _}.
+End Output.
+
+Definition output_with_panic (Output : Set) `{Link Output} (output : Output.t Output) :
     Value.t + Exception.t :=
   match output with
-  | inl output => inl (φ output)
-  | inr panic => inr (Exception.Panic panic)
+  | Output.Success output => inl (φ output)
+  | Output.Panic panic => inr (Exception.Panic panic)
   end.
 
 Definition output_with_exception (Output : Set) `{Link Output} (output : Output + Exception.t) :
@@ -462,11 +471,11 @@ Module Run.
     M.IsAssociatedFunction ty name associated_function ->
     {{ k closure ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive
-        (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
+        (Primitive.GetAssociatedFunction ty name generic_consts generic_tys) k ⇓
         output_to_value
     }}
   | CallPrimitiveGetTraitMethod
-      (trait_name : string) (self_ty : Ty.t) (trait_tys : list Ty.t)
+      (trait_name : string) (self_ty : Ty.t) (trait_consts : list Value.t) (trait_tys : list Ty.t)
       (method_name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
       (method : PolymorphicFunction.t)
       (k : Value.t -> M) :
@@ -477,9 +486,12 @@ Module Run.
         (Primitive.GetTraitMethod
           trait_name
           self_ty
+          trait_consts
           trait_tys
           method_name
-          generic_tys)
+          generic_consts
+          generic_tys
+        )
         k ⇓
         output_to_value
     }}
@@ -508,6 +520,8 @@ Module Run.
 
   where "{{ e ⇓ output_to_value }}" :=
     (t output_to_value e).
+
+  Notation "{{ e 🔽 Output }}" := {{ e ⇓ output_with_panic Output }}.
 End Run.
 
 Import Run.
@@ -742,6 +756,9 @@ Ltac run_symbolic_mutable :=
   (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
   unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
 
+Ltac run_panic :=
+  run_symbolic; try apply Output.Panic; try reflexivity.
+
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)
 Ltac run_sub_pointer sub_pointer_is_valid :=
@@ -753,18 +770,22 @@ Module Function.
       (output_to_value : Output -> Value.t + Exception.t) :
       Set := {
     f : list Value.t -> M;
-    run_f : forall (args : Args),
+    run : forall (args : Args),
       {{ f (args_to_value args) ⇓ output_to_value }};
   }.
 End Function.
 
 Module Function2.
-  Record t (A1 A2 Output : Set)
-      `{Link A1} `{Link A2}
-      (output_to_value : Output -> Value.t + Exception.t) :
-      Set := {
+  Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {
     f : list Value.t -> M;
-    run_f : forall (a1 : A1) (a2 : A2),
-      {{ f [ φ a1; φ a2 ] ⇓ output_to_value }};
+    run : forall (a1 : A1) (a2 : A2),
+      {{ f [ φ a1; φ a2 ] 🔽 Output }};
+  }.
+  Arguments t _ _ _ {_ _ _}.
+
+  Global Instance IsLink (A1 A2 Output : Set) `{Link A1} `{Link A2} `{Link Output} :
+      Link (t A1 A2 Output) := {
+    Φ := Ty.function [Φ A1; Φ A2] (Φ Output);
+    φ x := Value.Closure (existS (_, _) x.(f));
   }.
 End Function2.

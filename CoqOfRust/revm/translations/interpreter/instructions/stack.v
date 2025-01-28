@@ -36,6 +36,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -44,7 +45,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -76,7 +79,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -105,7 +110,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
@@ -171,6 +178,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -179,7 +187,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "spec_id",
+                                          [],
                                           []
                                         |),
                                         [
@@ -209,7 +219,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -245,6 +257,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -253,7 +266,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -285,7 +300,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -322,7 +339,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -348,7 +367,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -418,6 +439,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -426,7 +448,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -458,7 +482,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -495,7 +521,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -521,7 +549,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -550,7 +580,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn_top",
+                        [],
                         []
                       |),
                       [
@@ -581,7 +613,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Immediates",
                                 Ty.associated,
                                 [],
+                                [],
                                 "read_slice",
+                                [],
                                 []
                               |),
                               [
@@ -616,7 +650,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
                                 [],
+                                [],
                                 "relative_jump",
+                                [],
                                 []
                               |),
                               [
@@ -680,6 +716,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -688,7 +725,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -720,7 +759,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -756,7 +797,9 @@ Module instructions.
                                     "revm_interpreter::interpreter_types::StackTrait",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "dup",
+                                    [],
                                     []
                                   |),
                                   [
@@ -783,7 +826,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::LoopControl",
                                 Ty.associated,
                                 [],
+                                [],
                                 "set_instruction_result",
+                                [],
                                 []
                               |),
                               [
@@ -846,6 +891,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -854,7 +900,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -886,7 +934,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -955,7 +1005,9 @@ Module instructions.
                                     "revm_interpreter::interpreter_types::StackTrait",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "exchange",
+                                    [],
                                     []
                                   |),
                                   [
@@ -983,7 +1035,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::LoopControl",
                                 Ty.associated,
                                 [],
+                                [],
                                 "set_instruction_result",
+                                [],
                                 []
                               |),
                               [
@@ -1049,7 +1103,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1074,7 +1130,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1110,6 +1168,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1118,7 +1177,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1150,7 +1211,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1179,7 +1242,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Immediates",
                         Ty.associated,
                         [],
+                        [],
                         "read_u8",
+                        [],
                         []
                       |),
                       [
@@ -1206,7 +1271,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "dup",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1232,7 +1299,9 @@ Module instructions.
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "set_instruction_result",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1258,7 +1327,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "relative_jump",
+                        [],
                         []
                       |),
                       [
@@ -1319,7 +1390,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1344,7 +1417,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1380,6 +1455,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1388,7 +1464,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1420,7 +1498,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1449,7 +1529,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Immediates",
                         Ty.associated,
                         [],
+                        [],
                         "read_u8",
+                        [],
                         []
                       |),
                       [
@@ -1476,7 +1558,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "exchange",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1503,7 +1587,9 @@ Module instructions.
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "set_instruction_result",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1529,7 +1615,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "relative_jump",
+                        [],
                         []
                       |),
                       [
@@ -1592,7 +1680,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1617,7 +1707,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1653,6 +1745,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1661,7 +1754,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1693,7 +1788,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1722,7 +1819,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Immediates",
                         Ty.associated,
                         [],
+                        [],
                         "read_u8",
+                        [],
                         []
                       |),
                       [
@@ -1763,7 +1862,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "exchange",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1787,7 +1888,9 @@ Module instructions.
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "set_instruction_result",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1813,7 +1916,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "relative_jump",
+                        [],
                         []
                       |),
                       [

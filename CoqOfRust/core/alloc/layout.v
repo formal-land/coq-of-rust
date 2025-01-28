@@ -89,6 +89,7 @@ Module alloc.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -164,8 +165,10 @@ Module alloc.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "core::ptr::alignment::Alignment",
+                    [],
                     [ Ty.path "core::ptr::alignment::Alignment" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -249,7 +252,9 @@ Module alloc.
                       "core::hash::Hash",
                       Ty.path "usize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -268,7 +273,9 @@ Module alloc.
                     "core::hash::Hash",
                     Ty.path "core::ptr::alignment::Alignment",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -325,6 +332,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "is_size_align_valid",
+                                [],
                                 []
                               |),
                               [ M.read (| size |); M.read (| align |) ]
@@ -391,6 +399,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| align |) ]
@@ -421,6 +430,7 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 "max_size_for_align",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| align |) ]
@@ -489,6 +499,7 @@ Module alloc.
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
+                    [],
                     []
                   |),
                   [ M.read (| align |) ]
@@ -535,6 +546,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| align |) ]
@@ -622,6 +634,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.from_size_align_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| size |); M.read (| align |) ]
@@ -690,6 +703,7 @@ Module alloc.
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_usize",
+                [],
                 []
               |),
               [
@@ -740,6 +754,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -792,6 +807,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -845,6 +861,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -874,6 +891,7 @@ Module alloc.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -884,6 +902,7 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -924,6 +943,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::ptr::alignment::Alignment",
                               "new",
+                              [],
                               []
                             |),
                             [ M.read (| align |) ]
@@ -941,6 +961,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
+                            [],
                             []
                           |),
                           [
@@ -955,6 +976,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "max",
+                                [],
                                 []
                               |),
                               [
@@ -1008,6 +1030,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| align |) ]
@@ -1029,6 +1052,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "size_rounded_up_to_custom_align",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| align |) ]
@@ -1109,6 +1133,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "as_usize",
+                          [],
                           []
                         |),
                         [ M.read (| align |) ]
@@ -1174,6 +1199,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
+                      [],
                       []
                     |),
                     [
@@ -1193,6 +1219,7 @@ Module alloc.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_align_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -1201,6 +1228,7 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1238,6 +1266,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "pad_to_align",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1254,6 +1283,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "repeat_packed",
+                              [],
                               []
                             |),
                             [ padded; M.read (| n |) ]
@@ -1277,6 +1307,7 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "size",
+                                    [],
                                     []
                                   |),
                                   [ padded ]
@@ -1330,6 +1361,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "max",
+                      [],
                       []
                     |),
                     [
@@ -1356,6 +1388,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
+                      [],
                       []
                     |),
                     [
@@ -1397,6 +1430,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "from_size_alignment",
+                              [],
                               []
                             |),
                             [ M.read (| new_size |); M.read (| new_align |) ]
@@ -1454,7 +1488,7 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_mul", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -1479,6 +1513,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
+                            [],
                             []
                           |),
                           [
@@ -1552,6 +1587,7 @@ Module alloc.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_alignment",
+                    [],
                     []
                   |),
                   [
@@ -1616,7 +1652,7 @@ Module alloc.
                   M.read (|
                     M.return_ (|
                       M.call_closure (|
-                        M.get_associated_function (| Self, "inner.array", [] |),
+                        M.get_associated_function (| Self, "inner.array", [], [] |),
                         [
                           M.read (|
                             M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |)
@@ -1736,7 +1772,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1776,7 +1812,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (| Value.String "invalid parameters to Layout::from_size_align" |)

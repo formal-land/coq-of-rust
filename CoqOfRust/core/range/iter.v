@@ -27,6 +27,7 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -72,7 +73,9 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -470,7 +473,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -500,7 +505,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -530,7 +537,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -559,7 +568,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
@@ -590,7 +601,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -621,7 +634,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "min",
+                [],
                 []
               |),
               [
@@ -652,7 +667,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "max",
+                [],
                 []
               |),
               [
@@ -696,7 +713,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "advance_by",
+                [],
                 []
               |),
               [
@@ -736,10 +755,18 @@ Module range.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::range::Step", A, [], "forward_unchecked", [] |),
+              M.get_trait_method (|
+                "core::iter::range::Step",
+                A,
+                [],
+                [],
+                "forward_unchecked",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.SubPointer.get_struct_tuple_field (|
@@ -800,7 +827,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -831,7 +860,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
@@ -868,7 +899,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "advance_back_by",
+                [],
                 []
               |),
               [
@@ -951,8 +984,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::Range") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::Range") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -999,6 +1034,7 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1044,7 +1080,9 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1106,6 +1144,7 @@ Module range.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1196,7 +1235,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -1226,7 +1267,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -1256,7 +1299,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -1289,7 +1334,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
@@ -1320,7 +1367,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -1355,7 +1404,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "min",
+                [],
                 []
               |),
               [
@@ -1390,7 +1441,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "max",
+                [],
                 []
               |),
               [
@@ -1438,7 +1491,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "advance_by",
+                [],
                 []
               |),
               [
@@ -1494,7 +1549,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -1525,7 +1582,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
@@ -1562,7 +1621,9 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "advance_back_by",
+                [],
                 []
               |),
               [
@@ -1646,8 +1707,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1790,6 +1853,7 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1835,7 +1899,9 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1921,7 +1987,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -1951,7 +2019,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -1982,7 +2052,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
@@ -2066,8 +2138,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeFrom") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]

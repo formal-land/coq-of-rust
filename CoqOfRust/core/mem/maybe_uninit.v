@@ -64,7 +64,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
@@ -112,6 +112,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| val |) ]
@@ -192,6 +193,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -203,6 +205,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "write_bytes",
+                      [],
                       []
                     |),
                     [
@@ -210,6 +213,7 @@ Module mem.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ u ]
@@ -250,6 +254,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| val |) ]
@@ -260,6 +265,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -342,6 +348,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                     "into_inner",
+                    [],
                     []
                   |),
                   [
@@ -394,12 +401,18 @@ Module mem.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    "read",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -441,6 +454,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -488,6 +502,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -535,6 +550,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -686,6 +702,7 @@ Module mem.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| this |) ]
@@ -721,6 +738,7 @@ Module mem.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                   "as_mut_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| this |) ]
@@ -790,6 +808,7 @@ Module mem.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "copy_from_slice",
+                      [],
                       []
                     |),
                     [ M.read (| this |); M.read (| uninit_src |) ]
@@ -800,6 +819,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -869,6 +889,7 @@ Module mem.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| this |) ]
@@ -879,6 +900,7 @@ Module mem.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| src |) ]
@@ -938,6 +960,7 @@ Module mem.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -973,6 +996,7 @@ Module mem.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| this |) ]
@@ -984,8 +1008,10 @@ Module mem.
                     M.get_trait_method (|
                       "core::ops::index::Index",
                       Ty.apply (Ty.path "slice") [] [ T ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -1012,7 +1038,9 @@ Module mem.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1042,7 +1070,9 @@ Module mem.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1074,6 +1104,7 @@ Module mem.
                                                   []
                                                   [ T ],
                                                 "write",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1092,7 +1123,9 @@ Module mem.
                                                     "core::clone::Clone",
                                                     T,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1142,6 +1175,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -1182,8 +1216,10 @@ Module mem.
                         (Ty.path "slice")
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      [],
                       [ T ],
                       "spec_fill",
+                      [],
                       []
                     |),
                     [ M.read (| this |); M.read (| value |) ]
@@ -1194,6 +1230,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -1254,7 +1291,9 @@ Module mem.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1266,6 +1305,7 @@ Module mem.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "iter_mut",
+                              [],
                               []
                             |),
                             [
@@ -1303,7 +1343,9 @@ Module mem.
                                               [ T ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1335,6 +1377,7 @@ Module mem.
                                                   []
                                                   [ T ],
                                                 "write",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1343,8 +1386,10 @@ Module mem.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [ f; Value.Tuple [] ]
@@ -1389,6 +1434,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| this |) ]
@@ -1444,7 +1490,9 @@ Module mem.
                       "core::iter::traits::collect::IntoIterator",
                       I,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| it |) ]
@@ -1478,7 +1526,9 @@ Module mem.
                               Ty.associated
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1491,7 +1541,9 @@ Module mem.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [ Ty.associated ]
                             |),
                             [
@@ -1507,6 +1559,7 @@ Module mem.
                                         [ T ]
                                     ],
                                   "iter_mut",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1553,7 +1606,9 @@ Module mem.
                                             Ty.associated
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1588,6 +1643,7 @@ Module mem.
                                                   []
                                                   [ T ],
                                                 "write",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| element |); M.read (| val |) ]
@@ -1642,6 +1698,7 @@ Module mem.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "split_at_mut_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| this |); M.read (| initialized_len |) ]
@@ -1661,6 +1718,7 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "slice_assume_init_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| initted |) ]
@@ -1704,6 +1762,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1752,6 +1811,7 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1818,6 +1878,7 @@ Module mem.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| this |) ]
@@ -1886,6 +1947,7 @@ Module mem.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| this |) ]
@@ -2053,8 +2115,10 @@ Module mem.
                         (Ty.path "slice")
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index_mut",
+                      [],
                       []
                     |),
                     [
@@ -2093,6 +2157,7 @@ Module mem.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "slice_assume_init_mut",
+                          [],
                           []
                         |),
                         [ M.read (| initialized_part |) ]
@@ -2176,6 +2241,7 @@ Module mem.
                                       [ T ]
                                   ],
                                 "split_last_mut",
+                                [],
                                 []
                               |),
                               [
@@ -2221,7 +2287,9 @@ Module mem.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| elems |) ]
@@ -2250,7 +2318,9 @@ Module mem.
                                                         [ T ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -2286,6 +2356,7 @@ Module mem.
                                                             []
                                                             [ T ],
                                                           "write",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2295,7 +2366,9 @@ Module mem.
                                                               "core::clone::Clone",
                                                               T,
                                                               [],
+                                                              [],
                                                               "clone",
+                                                              [],
                                                               []
                                                             |),
                                                             [ value ]
@@ -2330,6 +2403,7 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "write",
+                                [],
                                 []
                               |),
                               [ M.read (| last |); M.read (| value |) ]
@@ -2393,6 +2467,7 @@ Module mem.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "fill",
+                      [],
                       []
                     |),
                     [
@@ -2401,6 +2476,7 @@ Module mem.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| value |) ]

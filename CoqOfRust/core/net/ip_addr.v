@@ -186,6 +186,7 @@ Module net.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -193,6 +194,7 @@ Module net.
                                         [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -226,6 +228,7 @@ Module net.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -233,6 +236,7 @@ Module net.
                                         [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -294,7 +298,9 @@ Module net.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -319,7 +325,9 @@ Module net.
                             "core::hash::Hash",
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -341,7 +349,9 @@ Module net.
                             "core::hash::Hash",
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -422,8 +432,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv4Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -454,8 +466,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv6Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -468,8 +482,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ __self_discr; __arg1_discr ]
@@ -525,7 +541,15 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
                     [ __self_discr; __arg1_discr ]
                   |)
                 |),
@@ -562,7 +586,9 @@ Module net.
                                     "core::cmp::Ord",
                                     Ty.path "core::net::ip_addr::Ipv4Addr",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -594,7 +620,9 @@ Module net.
                                     "core::cmp::Ord",
                                     Ty.path "core::net::ip_addr::Ipv6Addr",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -704,9 +732,11 @@ Module net.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+                [],
                 [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -785,11 +815,19 @@ Module net.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u32",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ H ]
+                    |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [] |),
+                          M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -892,9 +930,11 @@ Module net.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
+                [],
                 [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -973,11 +1013,19 @@ Module net.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u128", [], "hash", [ H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u128",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ H ]
+                    |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [] |),
+                          M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -1191,7 +1239,15 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -1218,7 +1274,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -1339,6 +1395,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_unspecified",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1359,6 +1416,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_unspecified",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1405,6 +1463,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_loopback",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1425,6 +1484,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_loopback",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1470,6 +1530,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_global",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1490,6 +1551,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_global",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1535,6 +1597,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_multicast",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1555,6 +1618,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_multicast",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1601,6 +1665,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_documentation",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1621,6 +1686,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_documentation",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1667,6 +1733,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_benchmarking",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1687,6 +1754,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_benchmarking",
+                            [],
                             []
                           |),
                           [ M.read (| ip |) ]
@@ -1809,6 +1877,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "to_canonical",
+                            [],
                             []
                           |),
                           [ M.read (| v6 |) ]
@@ -1869,7 +1938,7 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+              M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -1900,7 +1969,7 @@ Module net.
               [
                 ("octets",
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u32", "to_be_bytes", [] |),
+                    M.get_associated_function (| Ty.path "u32", "to_be_bytes", [], [] |),
                     [ M.read (| bits |) ]
                   |))
               ]))
@@ -1916,7 +1985,12 @@ Module net.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                  "new",
+                  [],
+                  []
+                |),
                 [
                   Value.Integer IntegerKind.U8 127;
                   Value.Integer IntegerKind.U8 0;
@@ -1936,7 +2010,12 @@ Module net.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                  "new",
+                  [],
+                  []
+                |),
                 [
                   Value.Integer IntegerKind.U8 0;
                   Value.Integer IntegerKind.U8 0;
@@ -1956,7 +2035,12 @@ Module net.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                  "new",
+                  [],
+                  []
+                |),
                 [
                   Value.Integer IntegerKind.U8 255;
                   Value.Integer IntegerKind.U8 255;
@@ -2003,7 +2087,7 @@ Module net.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -2040,6 +2124,7 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "octets",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2077,6 +2162,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2157,6 +2243,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2231,6 +2318,7 @@ Module net.
                                           M.get_associated_function (|
                                             Ty.path "core::net::ip_addr::Ipv4Addr",
                                             "octets",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -2246,6 +2334,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv4Addr",
                                       "is_private",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -2256,6 +2345,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.path "core::net::ip_addr::Ipv4Addr",
                                     "is_shared",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -2266,6 +2356,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.path "core::net::ip_addr::Ipv4Addr",
                                   "is_loopback",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -2276,6 +2367,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::ip_addr::Ipv4Addr",
                                 "is_link_local",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -2294,6 +2386,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::net::ip_addr::Ipv4Addr",
                                               "octets",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -2313,6 +2406,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::net::ip_addr::Ipv4Addr",
                                                 "octets",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -2333,6 +2427,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::net::ip_addr::Ipv4Addr",
                                               "octets",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -2353,6 +2448,7 @@ Module net.
                                           M.get_associated_function (|
                                             Ty.path "core::net::ip_addr::Ipv4Addr",
                                             "octets",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -2373,6 +2469,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::ip_addr::Ipv4Addr",
                                           "octets",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -2390,6 +2487,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "is_documentation",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -2400,6 +2498,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv4Addr",
                           "is_benchmarking",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2410,6 +2509,7 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "is_reserved",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2420,6 +2520,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "is_broadcast",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2450,6 +2551,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv4Addr",
                           "octets",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2470,6 +2572,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv4Addr",
                               "octets",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -2506,6 +2609,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv4Addr",
                           "octets",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2526,6 +2630,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv4Addr",
                               "octets",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -2564,6 +2669,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "octets",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -2581,6 +2687,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "is_broadcast",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2611,6 +2718,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv4Addr",
                           "octets",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2630,6 +2738,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             "octets",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -2659,12 +2768,13 @@ Module net.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2672,12 +2782,13 @@ Module net.
                 ]
               |),
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.get_constant (| "core::net::ip_addr::BROADCAST" |) ]
@@ -2708,6 +2819,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2786,13 +2898,12 @@ Module net.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -2822,6 +2933,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2891,6 +3003,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2980,7 +3093,9 @@ Module net.
                             "core::fmt::Display",
                             Ty.path "core::net::ip_addr::Ipv4Addr",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| ip |); M.read (| fmt |) ]
@@ -3002,7 +3117,9 @@ Module net.
                             "core::fmt::Display",
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| ip |); M.read (| fmt |) ]
@@ -3041,7 +3158,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::ip_addr::IpAddr",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]
@@ -3142,6 +3261,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -3160,6 +3280,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3168,6 +3289,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "precision",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| fmt |) ]
@@ -3183,6 +3305,7 @@ Module net.
                                       []
                                       [ Ty.path "usize" ],
                                     "is_none",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3191,6 +3314,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "width",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fmt |) ]
@@ -3206,6 +3330,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -3214,6 +3339,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -3233,6 +3359,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -3246,6 +3373,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -3259,6 +3387,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -3272,6 +3401,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -3299,6 +3429,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 15 ]
                                 [],
                               "new",
+                              [ Value.Integer IntegerKind.Usize 15 ],
                               []
                             |),
                             []
@@ -3313,6 +3444,7 @@ Module net.
                                 []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -3324,7 +3456,9 @@ Module net.
                                     [ Value.Integer IntegerKind.Usize 15 ]
                                     [],
                                   [],
+                                  [],
                                   "write_fmt",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3333,6 +3467,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3352,6 +3487,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -3365,6 +3501,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -3378,6 +3515,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -3391,6 +3529,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -3411,7 +3550,12 @@ Module net.
                         |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "pad",
+                            [],
+                            []
+                          |),
                           [
                             M.read (| fmt |);
                             M.call_closure (|
@@ -3421,6 +3565,7 @@ Module net.
                                   [ Value.Integer IntegerKind.Usize 15 ]
                                   [],
                                 "as_str",
+                                [ Value.Integer IntegerKind.Usize 15 ],
                                 []
                               |),
                               [ buf ]
@@ -3461,7 +3606,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]
@@ -3513,9 +3660,11 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                             ],
                             "eq",
+                            [],
                             []
                           |),
                           [ v4; other ]
@@ -3581,9 +3730,11 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                             ],
                             "eq",
+                            [],
                             []
                           |),
                           [ self; v4 ]
@@ -3635,7 +3786,9 @@ Module net.
                     "core::cmp::Ord",
                     Ty.path "core::net::ip_addr::Ipv4Addr",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -3688,8 +3841,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv4Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| v4 |); M.read (| other |) ]
@@ -3759,8 +3914,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv4Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| v4 |) ]
@@ -3813,7 +3970,9 @@ Module net.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
@@ -3854,7 +4013,12 @@ Module net.
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "to_bits", [] |),
+              M.get_associated_function (|
+                Ty.path "core::net::ip_addr::Ipv4Addr",
+                "to_bits",
+                [],
+                []
+              |),
               [ M.read (| ip |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3885,6 +4049,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 "from_bits",
+                [],
                 []
               |),
               [ M.read (| ip |) ]
@@ -3949,6 +4114,7 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "core::net::ip_addr::Ipv4Addr",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -3956,6 +4122,7 @@ Module net.
                         [ Ty.path "u8" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| octets |) ]
@@ -4016,35 +4183,35 @@ Module net.
                   Value.Array
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| a |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| b |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| c |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| d |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| e |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| f |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| g |) ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                        M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                         [ M.read (| h |) ]
                       |)
                     ]
@@ -4097,7 +4264,7 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+              M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -4128,7 +4295,7 @@ Module net.
               [
                 ("octets",
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u128", "to_be_bytes", [] |),
+                    M.get_associated_function (| Ty.path "u128", "to_be_bytes", [], [] |),
                     [ M.read (| bits |) ]
                   |))
               ]))
@@ -4144,7 +4311,12 @@ Module net.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::net::ip_addr::Ipv6Addr",
+                  "new",
+                  [],
+                  []
+                |),
                 [
                   Value.Integer IntegerKind.U16 0;
                   Value.Integer IntegerKind.U16 0;
@@ -4168,7 +4340,12 @@ Module net.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::net::ip_addr::Ipv6Addr",
+                  "new",
+                  [],
+                  []
+                |),
                 [
                   Value.Integer IntegerKind.U16 0;
                   Value.Integer IntegerKind.U16 0;
@@ -4260,35 +4437,35 @@ Module net.
                         Value.Array
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| a |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| b |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| c |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| d |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| e |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| f |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| g |) ]
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                              M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                               [ M.read (| h |) ]
                             |)
                           ]
@@ -4313,12 +4490,13 @@ Module net.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4326,12 +4504,13 @@ Module net.
                 ]
               |),
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.get_constant (| "core::net::ip_addr::UNSPECIFIED" |) ]
@@ -4357,12 +4536,13 @@ Module net.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4370,12 +4550,13 @@ Module net.
                 ]
               |),
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.get_constant (| "core::net::ip_addr::LOCALHOST" |) ]
@@ -4440,6 +4621,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.path "core::net::ip_addr::Ipv6Addr",
                                     "is_unspecified",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -4449,6 +4631,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "is_loopback",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4462,6 +4645,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::ip_addr::Ipv6Addr",
                                           "segments",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -4522,6 +4706,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::net::ip_addr::Ipv6Addr",
                                         "segments",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -4567,6 +4752,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "segments",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4618,6 +4804,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "segments",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4668,6 +4855,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "u128",
                                               "from_be_bytes",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4675,6 +4863,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::ip_addr::Ipv6Addr",
                                                   "octets",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| self |) ]
@@ -4691,6 +4880,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "u128",
                                                 "from_be_bytes",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4698,6 +4888,7 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::net::ip_addr::Ipv6Addr",
                                                     "octets",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |) ]
@@ -4717,6 +4908,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::ip_addr::Ipv6Addr",
                                                   "segments",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| self |) ]
@@ -4766,6 +4958,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::net::ip_addr::Ipv6Addr",
                                                 "segments",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -4820,6 +5013,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::net::ip_addr::Ipv6Addr",
                                               "segments",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -4884,6 +5078,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.path "core::net::ip_addr::Ipv6Addr",
                                   "segments",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -4916,6 +5111,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "is_documentation",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4926,6 +5122,7 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "is_unique_local",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4936,6 +5133,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "is_unicast_link_local",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4966,6 +5164,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "segments",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4998,6 +5197,7 @@ Module net.
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",
                   "is_multicast",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -5027,6 +5227,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "segments",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -5063,6 +5264,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "segments",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -5082,6 +5284,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "segments",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5119,6 +5322,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "segments",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5138,6 +5342,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv6Addr",
                               "segments",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -5158,6 +5363,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "segments",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5201,6 +5407,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_unicast",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5211,6 +5418,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::ip_addr::Ipv6Addr",
                                 "is_loopback",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -5223,6 +5431,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv6Addr",
                               "is_unicast_link_local",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -5235,6 +5444,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_unique_local",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5247,6 +5457,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "is_unspecified",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -5259,6 +5470,7 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "is_documentation",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -5271,6 +5483,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "is_benchmarking",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -5319,6 +5532,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::ip_addr::Ipv6Addr",
                                 "is_multicast",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -5335,6 +5549,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "segments",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -5494,6 +5709,7 @@ Module net.
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "segments",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -5528,6 +5744,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "segments",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -5607,6 +5824,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "octets",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -5703,6 +5921,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::ip_addr::Ipv4Addr",
                                 "new",
+                                [],
                                 []
                               |),
                               [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ]
@@ -5749,6 +5968,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv6Addr",
                               "segments",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -5807,77 +6027,79 @@ Module net.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (let ab := M.copy (| γ0_6 |) in
-                                  let cd := M.copy (| γ0_7 |) in
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "u16",
-                                          "to_be_bytes",
-                                          []
-                                        |),
-                                        [ M.read (| ab |) ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                          let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
-                                          let a := M.copy (| γ0_0 |) in
-                                          let b := M.copy (| γ0_1 |) in
-                                          M.match_operator (|
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "u16",
-                                                  "to_be_bytes",
-                                                  []
-                                                |),
-                                                [ M.read (| cd |) ]
-                                              |)
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_slice_index (| γ, 0 |) in
-                                                  let γ0_1 :=
-                                                    M.SubPointer.get_slice_index (| γ, 1 |) in
-                                                  let c := M.copy (| γ0_0 |) in
-                                                  let d := M.copy (| γ0_1 |) in
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::net::ip_addr::Ipv4Addr",
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| a |);
-                                                            M.read (| b |);
-                                                            M.read (| c |);
-                                                            M.read (| d |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (let ab := M.copy (| γ0_6 |) in
+                                let cd := M.copy (| γ0_7 |) in
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "u16",
+                                        "to_be_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| ab |) ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                        let a := M.copy (| γ0_0 |) in
+                                        let b := M.copy (| γ0_1 |) in
+                                        M.match_operator (|
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "u16",
+                                                "to_be_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| cd |) ]
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_slice_index (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_slice_index (| γ, 1 |) in
+                                                let c := M.copy (| γ0_0 |) in
+                                                let d := M.copy (| γ0_1 |) in
+                                                M.alloc (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::net::ip_addr::Ipv4Addr",
+                                                          "new",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| a |);
+                                                          M.read (| b |);
+                                                          M.read (| c |);
+                                                          M.read (| d |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5918,6 +6140,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.path "core::net::ip_addr::Ipv6Addr",
                                     "to_ipv4_mapped",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -6080,6 +6303,7 @@ Module net.
                                         []
                                         [ Ty.path "usize" ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6088,6 +6312,7 @@ Module net.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "precision",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |) ]
@@ -6103,6 +6328,7 @@ Module net.
                                           []
                                           [ Ty.path "usize" ],
                                         "is_none",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6111,6 +6337,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Formatter",
                                               "width",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| f |) ]
@@ -6128,6 +6355,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.path "core::net::ip_addr::Ipv6Addr",
                                   "segments",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6144,6 +6372,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::ip_addr::Ipv6Addr",
                                           "to_ipv4_mapped",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -6161,6 +6390,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6169,6 +6399,7 @@ Module net.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6182,6 +6413,7 @@ Module net.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                                     |),
                                                     [ ipv4 ]
@@ -6204,7 +6436,9 @@ Module net.
                                               "core::default::Default",
                                               Ty.path "core::net::ip_addr::fmt::Span",
                                               [],
+                                              [],
                                               "default",
+                                              [],
                                               []
                                             |),
                                             []
@@ -6217,7 +6451,9 @@ Module net.
                                               "core::default::Default",
                                               Ty.path "core::net::ip_addr::fmt::Span",
                                               [],
+                                              [],
                                               "default",
+                                              [],
                                               []
                                             |),
                                             []
@@ -6241,7 +6477,9 @@ Module net.
                                                         [ Ty.path "u16" ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6253,7 +6491,9 @@ Module net.
                                                         []
                                                         [ Ty.path "u16" ],
                                                       [],
+                                                      [],
                                                       "enumerate",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6264,6 +6504,7 @@ Module net.
                                                             []
                                                             [ Ty.path "u16" ],
                                                           "iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [ segments ]
@@ -6297,7 +6538,9 @@ Module net.
                                                                       [ Ty.path "u16" ]
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -6486,7 +6729,9 @@ Module net.
                                                                                 Ty.path
                                                                                   "core::net::ip_addr::fmt::Span",
                                                                                 [],
+                                                                                [],
                                                                                 "default",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               []
@@ -6540,7 +6785,9 @@ Module net.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6548,6 +6795,7 @@ Module net.
                                                       M.get_associated_function (|
                                                         Self,
                                                         "fmt_subslice.fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6559,6 +6807,7 @@ Module net.
                                                               (Ty.path "array")
                                                               [ Value.Integer IntegerKind.Usize 8 ]
                                                               [ Ty.path "u16" ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
@@ -6567,6 +6816,7 @@ Module net.
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6614,6 +6864,7 @@ Module net.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -6625,6 +6876,7 @@ Module net.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -6656,7 +6908,9 @@ Module net.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6664,6 +6918,7 @@ Module net.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "write_str",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6698,6 +6953,7 @@ Module net.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -6709,6 +6965,7 @@ Module net.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -6734,6 +6991,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Self,
                                                 "fmt_subslice.fmt",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -6745,6 +7003,7 @@ Module net.
                                                       (Ty.path "array")
                                                       [ Value.Integer IntegerKind.Usize 8 ]
                                                       [ Ty.path "u16" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
@@ -6752,6 +7011,7 @@ Module net.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6789,6 +7049,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Self,
                                                 "fmt_subslice.fmt",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| f |); segments ]
@@ -6809,6 +7070,7 @@ Module net.
                                     [ Value.Integer IntegerKind.Usize 39 ]
                                     [],
                                   "new",
+                                  [ Value.Integer IntegerKind.Usize 39 ],
                                   []
                                 |),
                                 []
@@ -6823,6 +7085,7 @@ Module net.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   "unwrap",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6834,7 +7097,9 @@ Module net.
                                         [ Value.Integer IntegerKind.Usize 39 ]
                                         [],
                                       [],
+                                      [],
                                       "write_fmt",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6843,6 +7108,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6856,6 +7122,7 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -6879,6 +7146,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "pad",
+                                [],
                                 []
                               |),
                               [
@@ -6890,6 +7158,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 39 ]
                                       [],
                                     "as_str",
+                                    [ Value.Integer IntegerKind.Usize 39 ],
                                     []
                                   |),
                                   [ buf ]
@@ -6931,7 +7200,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]
@@ -6993,9 +7264,11 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                             ],
                             "eq",
+                            [],
                             []
                           |),
                           [ self; v6 ]
@@ -7061,9 +7334,11 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                             ],
                             "eq",
+                            [],
                             []
                           |),
                           [ v6; other ]
@@ -7105,7 +7380,9 @@ Module net.
                     "core::cmp::Ord",
                     Ty.path "core::net::ip_addr::Ipv6Addr",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -7172,8 +7449,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv6Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| v6 |); M.read (| other |) ]
@@ -7243,8 +7522,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::ip_addr::Ipv6Addr",
+                            [],
                             [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| v6 |) ]
@@ -7283,7 +7564,9 @@ Module net.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u16" ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
@@ -7292,6 +7575,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "segments",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -7302,6 +7586,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "segments",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -7334,7 +7619,12 @@ Module net.
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "to_bits", [] |),
+              M.get_associated_function (|
+                Ty.path "core::net::ip_addr::Ipv6Addr",
+                "to_bits",
+                [],
+                []
+              |),
               [ M.read (| ip |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7365,6 +7655,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 "from_bits",
+                [],
                 []
               |),
               [ M.read (| ip |) ]
@@ -7450,6 +7741,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -7502,6 +7794,7 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "core::net::ip_addr::Ipv6Addr",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -7509,6 +7802,7 @@ Module net.
                         [ Ty.path "u8" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| octets |) ]
@@ -7549,6 +7843,7 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "core::net::ip_addr::Ipv6Addr",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -7556,6 +7851,7 @@ Module net.
                         [ Ty.path "u16" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| segments |) ]
@@ -7613,7 +7909,9 @@ Module net.
                                 [ Ty.path "u8" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -7642,7 +7940,9 @@ Module net.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7713,7 +8013,9 @@ Module net.
                 "core::ops::bit::Not",
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 [],
+                [],
                 "not",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |) ]
@@ -7767,7 +8069,9 @@ Module net.
                                 [ Ty.path "u8" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -7796,7 +8100,9 @@ Module net.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7867,7 +8173,9 @@ Module net.
                 "core::ops::bit::Not",
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 [],
+                [],
                 "not",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |) ]
@@ -7918,7 +8226,9 @@ Module net.
                               [ Ty.path "u8" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -7986,7 +8296,9 @@ Module net.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -8018,8 +8330,10 @@ Module net.
                                             M.get_trait_method (|
                                               "core::ops::bit::BitAndAssign",
                                               Ty.path "u8",
+                                              [],
                                               [ Ty.path "u8" ],
                                               "bitand_assign",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| lhs |); M.read (| rhs |) ]
@@ -8065,8 +8379,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
@@ -8111,8 +8427,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| rhs |) ]
@@ -8157,8 +8475,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| M.read (| rhs |) |) ]
@@ -8207,8 +8527,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| rhs |) ]
@@ -8256,8 +8578,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| M.read (| rhs |) |) ]
@@ -8312,7 +8636,9 @@ Module net.
                               [ Ty.path "u8" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -8380,7 +8706,9 @@ Module net.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -8412,8 +8740,10 @@ Module net.
                                             M.get_trait_method (|
                                               "core::ops::bit::BitOrAssign",
                                               Ty.path "u8",
+                                              [],
                                               [ Ty.path "u8" ],
                                               "bitor_assign",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| lhs |); M.read (| rhs |) ]
@@ -8459,8 +8789,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
@@ -8505,8 +8837,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| rhs |) ]
@@ -8551,8 +8885,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| M.read (| rhs |) |) ]
@@ -8601,8 +8937,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| rhs |) ]
@@ -8650,8 +8988,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| M.read (| rhs |) |) ]
@@ -8706,7 +9046,9 @@ Module net.
                               [ Ty.path "u8" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -8774,7 +9116,9 @@ Module net.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -8806,8 +9150,10 @@ Module net.
                                             M.get_trait_method (|
                                               "core::ops::bit::BitAndAssign",
                                               Ty.path "u8",
+                                              [],
                                               [ Ty.path "u8" ],
                                               "bitand_assign",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| lhs |); M.read (| rhs |) ]
@@ -8853,8 +9199,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
@@ -8899,8 +9247,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| rhs |) ]
@@ -8945,8 +9295,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| M.read (| rhs |) |) ]
@@ -8995,8 +9347,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| rhs |) ]
@@ -9044,8 +9398,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitAndAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitand_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| M.read (| rhs |) |) ]
@@ -9100,7 +9456,9 @@ Module net.
                               [ Ty.path "u8" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -9168,7 +9526,9 @@ Module net.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -9200,8 +9560,10 @@ Module net.
                                             M.get_trait_method (|
                                               "core::ops::bit::BitOrAssign",
                                               Ty.path "u8",
+                                              [],
                                               [ Ty.path "u8" ],
                                               "bitor_assign",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| lhs |); M.read (| rhs |) ]
@@ -9247,8 +9609,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
@@ -9293,8 +9657,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| rhs |) ]
@@ -9339,8 +9705,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ self; M.read (| M.read (| rhs |) |) ]
@@ -9389,8 +9757,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| rhs |) ]
@@ -9438,8 +9808,10 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::bit::BitOrAssign",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "bitor_assign",
+                      [],
                       []
                     |),
                     [ lhs; M.read (| M.read (| rhs |) |) ]

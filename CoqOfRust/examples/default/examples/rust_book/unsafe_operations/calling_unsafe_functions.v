@@ -26,6 +26,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -43,6 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -70,6 +72,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                 "as_ptr",
+                [],
                 []
               |),
               [ some_vector ]
@@ -84,6 +87,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                 "len",
+                [],
                 []
               |),
               [ some_vector ]
@@ -109,6 +113,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                         "as_slice",
+                        [],
                         []
                       |),
                       [ some_vector ]
@@ -140,6 +145,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "&")
                                         []
                                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -147,6 +153,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]

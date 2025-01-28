@@ -50,7 +50,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "alloc::string::ToString",
                 Ty.path "str",
                 [],
+                [],
                 "to_string",
+                [],
                 []
               |),
               [ M.read (| Value.String "Rc examples" |) ]
@@ -63,7 +65,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "--- rc_a is created ---
@@ -84,6 +91,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ M.read (| rc_examples |) ]
@@ -96,7 +104,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -113,6 +126,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -127,6 +141,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "strong_count",
+                                      [],
                                       []
                                     |),
                                     [ rc_a ]
@@ -153,6 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
@@ -177,7 +193,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     []
                     [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [ rc_a ]
@@ -190,7 +208,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -207,6 +230,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [
@@ -221,6 +245,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "strong_count",
+                                        [],
                                         []
                                       |),
                                       [ rc_b ]
@@ -243,7 +268,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -260,6 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [
@@ -274,6 +305,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "strong_count",
+                                        [],
                                         []
                                       |),
                                       [ rc_a ]
@@ -296,7 +328,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -313,6 +350,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "bool" ]
                                 |),
                                 [
@@ -327,6 +365,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Ty.path "alloc::string::String";
                                             Ty.path "alloc::alloc::Global"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::rc::Rc")
@@ -337,6 +376,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ rc_a; rc_b ]
@@ -359,7 +399,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -376,6 +421,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [
@@ -384,6 +430,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
@@ -398,7 +445,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ rc_a ]
@@ -423,7 +472,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -440,6 +494,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
@@ -470,6 +525,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
@@ -492,7 +548,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -509,6 +570,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -523,6 +585,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "strong_count",
+                                      [],
                                       []
                                     |),
                                     [ rc_a ]
@@ -545,7 +608,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array

@@ -41,6 +41,7 @@ Module control_flow_v5.
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                       "unwrap_or",
+                      [],
                       []
                     |),
                     [
@@ -62,7 +63,9 @@ Module control_flow_v5.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -108,6 +111,7 @@ Module control_flow_v5.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -118,6 +122,7 @@ Module control_flow_v5.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -214,6 +219,7 @@ Module control_flow_v5.
                     []
                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                   "last",
+                  [],
                   []
                 |),
                 [
@@ -228,7 +234,9 @@ Module control_flow_v5.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [ M.read (| code |) ]
@@ -248,6 +256,7 @@ Module control_flow_v5.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -270,6 +279,7 @@ Module control_flow_v5.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Bytecode",
                             "is_unconditional_branch",
+                            [],
                             []
                           |),
                           [ M.read (| last |) ]
@@ -285,6 +295,7 @@ Module control_flow_v5.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "at_code_offset",
+                            [],
                             []
                           |),
                           [
@@ -292,6 +303,7 @@ Module control_flow_v5.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -313,6 +325,7 @@ Module control_flow_v5.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| code |) ]
@@ -449,7 +462,9 @@ Module control_flow_v5.
                     [ Ty.path "move_binary_format::file_format::Bytecode" ]
                 ],
               [],
+              [],
               "map",
+              [],
               [
                 Ty.tuple
                   [
@@ -492,7 +507,9 @@ Module control_flow_v5.
                     []
                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                   [],
+                  [],
                   "enumerate",
+                  [],
                   []
                 |),
                 [
@@ -503,6 +520,7 @@ Module control_flow_v5.
                         []
                         [ Ty.path "move_binary_format::file_format::Bytecode" ],
                       "iter",
+                      [],
                       []
                     |),
                     [
@@ -517,7 +535,9 @@ Module control_flow_v5.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -561,6 +581,7 @@ Module control_flow_v5.
                                             Ty.path "core::num::error::TryFromIntError"
                                           ],
                                         "unwrap",
+                                        [],
                                         []
                                       |),
                                       [
@@ -568,8 +589,10 @@ Module control_flow_v5.
                                           M.get_trait_method (|
                                             "core::convert::TryInto",
                                             Ty.path "usize",
+                                            [],
                                             [ Ty.path "u16" ],
                                             "try_into",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| idx |) ]
@@ -619,7 +642,9 @@ Module control_flow_v5.
                     [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
                 ],
               [],
+              [],
               "map",
+              [],
               [
                 Ty.tuple
                   [
@@ -674,7 +699,9 @@ Module control_flow_v5.
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
                   [],
+                  [],
                   "zip",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "&")
@@ -692,6 +719,7 @@ Module control_flow_v5.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                       "code",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -746,6 +774,7 @@ Module control_flow_v5.
             M.get_associated_function (|
               Ty.path "move_binary_format::errors::PartialVMError",
               "at_code_offset",
+              [],
               []
             |),
             [
@@ -753,6 +782,7 @@ Module control_flow_v5.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::errors::PartialVMError",
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| status |) ]
@@ -814,7 +844,9 @@ Module control_flow_v5.
                         (Ty.path "move_bytecode_verifier::control_flow_v5::Label")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -831,7 +863,9 @@ Module control_flow_v5.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_bytecode_verifier::control_flow_v5::Label";
                         Ty.function
@@ -855,6 +889,7 @@ Module control_flow_v5.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [
@@ -924,8 +959,10 @@ Module control_flow_v5.
                                                       "move_bytecode_verifier::control_flow_v5::Label";
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
+                                                [],
                                                 [ Ty.path "usize" ],
                                                 "index_mut",
+                                                [],
                                                 []
                                               |),
                                               [ labels; M.rust_cast (M.read (| loop_idx |)) ]
@@ -951,7 +988,9 @@ Module control_flow_v5.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.associated,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -959,6 +998,7 @@ Module control_flow_v5.
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                           "code",
+                          [],
                           []
                         |),
                         [ M.read (| context |) ]
@@ -980,7 +1020,9 @@ Module control_flow_v5.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -1046,60 +1088,61 @@ Module control_flow_v5.
                                                     let prev := M.alloc (| γ1_0 |) in
                                                     Value.Tuple [ prev ]))
                                               ],
-                                              M.closure
-                                                (fun γ =>
-                                                  ltac:(M.monadic
-                                                    match γ with
-                                                    | [ prev ] =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "move_bytecode_verifier::control_flow_v5::is_back_edge",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (| i |);
-                                                                M.read (| M.read (| prev |) |)
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  match γ with
+                                                  | [ prev ] =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
                                                         M.alloc (|
                                                           M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnMut",
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "u16"; Ty.path "u16" ]
-                                                                ]
-                                                                (Ty.tuple []),
-                                                              [
-                                                                Ty.tuple
-                                                                  [ Ty.path "u16"; Ty.path "u16" ]
-                                                              ],
-                                                              "call_mut",
+                                                            M.get_function (|
+                                                              "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              loop_continue;
-                                                              Value.Tuple
-                                                                [
-                                                                  M.read (| M.read (| prev |) |);
-                                                                  M.read (| i |)
-                                                                ]
+                                                              M.read (| i |);
+                                                              M.read (| M.read (| prev |) |)
                                                             ]
                                                           |)
-                                                        |)))
-                                                    | _ => M.impossible "wrong number of arguments"
-                                                    end))
+                                                        |) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::FnMut",
+                                                            Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [ Ty.path "u16"; Ty.path "u16" ]
+                                                              ]
+                                                              (Ty.tuple []),
+                                                            [],
+                                                            [
+                                                              Ty.tuple
+                                                                [ Ty.path "u16"; Ty.path "u16" ]
+                                                            ],
+                                                            "call_mut",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            loop_continue;
+                                                            Value.Tuple
+                                                              [
+                                                                M.read (| M.read (| prev |) |);
+                                                                M.read (| i |)
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |)))
+                                                  | _ => M.impossible "wrong number of arguments"
+                                                  end)
                                             |)));
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
@@ -1158,7 +1201,9 @@ Module control_flow_v5.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1181,7 +1226,9 @@ Module control_flow_v5.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ labels ]
@@ -1215,6 +1262,7 @@ Module control_flow_v5.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1225,6 +1273,7 @@ Module control_flow_v5.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1256,7 +1305,9 @@ Module control_flow_v5.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1279,7 +1330,9 @@ Module control_flow_v5.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ labels ]
@@ -1313,6 +1366,7 @@ Module control_flow_v5.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1323,6 +1377,7 @@ Module control_flow_v5.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1363,7 +1418,9 @@ Module control_flow_v5.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ labels ]
@@ -1382,7 +1439,9 @@ Module control_flow_v5.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1405,7 +1464,9 @@ Module control_flow_v5.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ labels ]
@@ -1418,7 +1479,9 @@ Module control_flow_v5.
                                   []
                                   [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ loop_depth ]
@@ -1452,6 +1515,7 @@ Module control_flow_v5.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1462,6 +1526,7 @@ Module control_flow_v5.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1503,7 +1568,9 @@ Module control_flow_v5.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ labels ]
@@ -1516,7 +1583,9 @@ Module control_flow_v5.
                           []
                           [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ loop_depth ]
@@ -1586,6 +1655,7 @@ Module control_flow_v5.
                         [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -1600,7 +1670,9 @@ Module control_flow_v5.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.associated,
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1609,6 +1681,7 @@ Module control_flow_v5.
                               Ty.path
                                 "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                               "labeled_code",
+                              [],
                               []
                             |),
                             [ M.read (| context |); M.read (| labels |) ]
@@ -1630,7 +1703,9 @@ Module control_flow_v5.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1686,6 +1761,7 @@ Module control_flow_v5.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1720,7 +1796,9 @@ Module control_flow_v5.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1728,6 +1806,7 @@ Module control_flow_v5.
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       F,
+                                                      [],
                                                       [
                                                         Ty.tuple
                                                           [
@@ -1756,6 +1835,7 @@ Module control_flow_v5.
                                                           ]
                                                       ],
                                                       "call_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1796,6 +1876,7 @@ Module control_flow_v5.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -1808,6 +1889,7 @@ Module control_flow_v5.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1870,283 +1952,182 @@ Module control_flow_v5.
                                                         let target := M.alloc (| γ1_0 |) in
                                                         Value.Tuple [ target ]))
                                                   ],
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ target ] =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ target ] =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| cur_instr |);
+                                                                  M.read (| M.read (| target |) |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          M.match_operator (|
+                                                            M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path "u16";
+                                                                            Ty.path "u16"
+                                                                          ]
+                                                                      ],
+                                                                    "last",
                                                                     [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| cur_instr |);
-                                                                    M.read (| M.read (| target |) |)
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.path "u16";
+                                                                                Ty.path "u16"
+                                                                              ];
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        [],
+                                                                        [],
+                                                                        "deref",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ loop_stack ]
+                                                                    |)
                                                                   ]
                                                                 |)
-                                                              |) in
-                                                            let _ :=
-                                                              M.is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.match_operator (|
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.path "u16";
-                                                                              Ty.path "u16"
-                                                                            ]
-                                                                        ],
-                                                                      "last",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::vec::Vec")
-                                                                            []
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.path "u16";
-                                                                                  Ty.path "u16"
-                                                                                ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          [],
-                                                                          "deref",
-                                                                          []
-                                                                        |),
-                                                                        [ loop_stack ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::option::Option::Some",
-                                                                          0
-                                                                        |) in
-                                                                      let x := M.copy (| γ0_0 |) in
-                                                                      x));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let _ :=
-                                                                        M.is_struct_tuple (|
-                                                                          γ,
-                                                                          "core::option::Option::None"
-                                                                        |) in
-                                                                      let~ err :=
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "with_message",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_binary_format::errors::PartialVMError",
-                                                                                  "new",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  Value.StructTuple
-                                                                                    "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                    []
-                                                                                ]
-                                                                              |);
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::hint::must_use",
-                                                                                  [],
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "alloc::string::String"
-                                                                                  ]
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    let~ res :=
-                                                                                      M.alloc (|
-                                                                                        M.call_closure (|
-                                                                                          M.get_function (|
-                                                                                            "alloc::fmt::format",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::Arguments",
-                                                                                                "new_v1",
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.alloc (|
-                                                                                                  Value.Array
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        Value.String
-                                                                                                          "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                |);
-                                                                                                M.alloc (|
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "none",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    []
-                                                                                                  |)
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      |) in
-                                                                                    res
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |) in
-                                                                      M.match_operator (|
-                                                                        M.alloc (|
-                                                                          Value.Tuple []
-                                                                        |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let γ :=
-                                                                                M.use
-                                                                                  (M.alloc (|
-                                                                                    Value.Bool true
-                                                                                  |)) in
-                                                                              let _ :=
-                                                                                M.is_constant_or_break_match (|
-                                                                                  M.read (| γ |),
-                                                                                  Value.Bool true
-                                                                                |) in
-                                                                              M.alloc (|
-                                                                                M.never_to_any (|
-                                                                                  M.call_closure (|
-                                                                                    M.get_function (|
-                                                                                      "core::panicking::panic_fmt",
-                                                                                      [],
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::Arguments",
-                                                                                          "new_v1",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    ""
-                                                                                                |)
-                                                                                              ]
-                                                                                          |);
-                                                                                          M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_debug",
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "move_binary_format::errors::PartialVMError"
-                                                                                                    ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    err
-                                                                                                  ]
-                                                                                                |)
-                                                                                              ]
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                |)
-                                                                              |)));
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (M.alloc (|
-                                                                                M.never_to_any (|
-                                                                                  M.read (|
-                                                                                    M.return_ (|
-                                                                                      Value.StructTuple
-                                                                                        "core::result::Result::Err"
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            err
-                                                                                          |)
-                                                                                        ]
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
-                                                                              |)))
-                                                                        ]
-                                                                      |)))
-                                                                ]
                                                               |),
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
-                                                                    let γ1_0 :=
-                                                                      M.SubPointer.get_tuple_field (|
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
+                                                                        "core::option::Option::Some",
                                                                         0
                                                                       |) in
-                                                                    let γ1_1 :=
-                                                                      M.SubPointer.get_tuple_field (|
+                                                                    let x := M.copy (| γ0_0 |) in
+                                                                    x));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let _ :=
+                                                                      M.is_struct_tuple (|
                                                                         γ,
-                                                                        1
+                                                                        "core::option::Option::None"
                                                                       |) in
-                                                                    let _cur_loop_head :=
-                                                                      M.alloc (| γ1_0 |) in
-                                                                    let last_continue :=
-                                                                      M.alloc (| γ1_1 |) in
+                                                                    let~ err :=
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "with_message",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
+                                                                                "new",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                Value.StructTuple
+                                                                                  "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                                  []
+                                                                              ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::hint::must_use",
+                                                                                [],
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "alloc::string::String"
+                                                                                ]
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  let~ res :=
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_function (|
+                                                                                          "alloc::fmt::format",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::Arguments",
+                                                                                              "new_v1",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.alloc (|
+                                                                                                Value.Array
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      Value.String
+                                                                                                        "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
+                                                                                                    |)
+                                                                                                  ]
+                                                                                              |);
+                                                                                              M.alloc (|
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "none",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  []
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |) in
+                                                                                  res
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |) in
                                                                     M.match_operator (|
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
@@ -2155,62 +2136,170 @@ Module control_flow_v5.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  BinOp.eq (|
-                                                                                    M.read (|
-                                                                                      cur_instr
-                                                                                    |),
-                                                                                    M.read (|
-                                                                                      M.read (|
-                                                                                        last_continue
-                                                                                      |)
-                                                                                    |)
-                                                                                  |)
+                                                                                  Value.Bool true
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
-                                                                            let~ _ :=
-                                                                              M.alloc (|
+                                                                            M.alloc (|
+                                                                              M.never_to_any (|
                                                                                 M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u16";
-                                                                                            Ty.path
-                                                                                              "u16"
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    "pop",
+                                                                                  M.get_function (|
+                                                                                    "core::panicking::panic_fmt",
+                                                                                    [],
                                                                                     []
                                                                                   |),
-                                                                                  [ loop_stack ]
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::Arguments",
+                                                                                        "new_v1",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  ""
+                                                                                              |)
+                                                                                            ]
+                                                                                        |);
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_debug",
+                                                                                                  [],
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  err
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              Value.Tuple []
+                                                                              |)
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.alloc (|
-                                                                              Value.Tuple []
+                                                                              M.never_to_any (|
+                                                                                M.read (|
+                                                                                  M.return_ (|
+                                                                                    Value.StructTuple
+                                                                                      "core::result::Result::Err"
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          err
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             |)))
                                                                       ]
                                                                     |)))
                                                               ]
-                                                            |)))
-                                                        | _ =>
-                                                          M.impossible "wrong number of arguments"
-                                                        end))
+                                                            |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ := M.read (| γ |) in
+                                                                  let γ1_0 :=
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      0
+                                                                    |) in
+                                                                  let γ1_1 :=
+                                                                    M.SubPointer.get_tuple_field (|
+                                                                      γ,
+                                                                      1
+                                                                    |) in
+                                                                  let _cur_loop_head :=
+                                                                    M.alloc (| γ1_0 |) in
+                                                                  let last_continue :=
+                                                                    M.alloc (| γ1_1 |) in
+                                                                  M.match_operator (|
+                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ :=
+                                                                            M.use
+                                                                              (M.alloc (|
+                                                                                BinOp.eq (|
+                                                                                  M.read (|
+                                                                                    cur_instr
+                                                                                  |),
+                                                                                  M.read (|
+                                                                                    M.read (|
+                                                                                      last_continue
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)) in
+                                                                          let _ :=
+                                                                            M.is_constant_or_break_match (|
+                                                                              M.read (| γ |),
+                                                                              Value.Bool true
+                                                                            |) in
+                                                                          let~ _ :=
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u16";
+                                                                                          Ty.path
+                                                                                            "u16"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  "pop",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [ loop_stack ]
+                                                                              |)
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
+                                                      end)
                                                 |)));
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
@@ -2379,298 +2468,192 @@ Module control_flow_v5.
                                                                 let target := M.alloc (| γ1_0 |) in
                                                                 Value.Tuple [ target ]))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ target ] =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [ target ] =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (| cur_instr |);
+                                                                          M.read (|
+                                                                            M.read (| target |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.match_operator (|
+                                                                    M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
-                                                                          M.get_function (|
-                                                                            "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path "u16"
+                                                                                  ]
+                                                                              ],
+                                                                            "last",
                                                                             [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.read (| cur_instr |);
-                                                                            M.read (|
-                                                                              M.read (| target |)
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u16";
+                                                                                        Ty.path
+                                                                                          "u16"
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [],
+                                                                                [],
+                                                                                "deref",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  loop_stack
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           ]
                                                                         |)
-                                                                      |) in
-                                                                    let _ :=
-                                                                      M.is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
-                                                                    M.match_operator (|
-                                                                      M.match_operator (|
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path "u16";
-                                                                                      Ty.path "u16"
-                                                                                    ]
-                                                                                ],
-                                                                              "last",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::deref::Deref",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::vec::Vec")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.tuple
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u16";
-                                                                                          Ty.path
-                                                                                            "u16"
-                                                                                        ];
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ],
-                                                                                  [],
-                                                                                  "deref",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    loop_stack
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let γ0_0 :=
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  γ,
-                                                                                  "core::option::Option::Some",
-                                                                                  0
-                                                                                |) in
-                                                                              let x :=
-                                                                                M.copy (| γ0_0 |) in
-                                                                              x));
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let _ :=
-                                                                                M.is_struct_tuple (|
-                                                                                  γ,
-                                                                                  "core::option::Option::None"
-                                                                                |) in
-                                                                              let~ err :=
-                                                                                M.alloc (|
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "move_binary_format::errors::PartialVMError",
-                                                                                      "with_message",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "move_binary_format::errors::PartialVMError",
-                                                                                          "new",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          Value.StructTuple
-                                                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                            []
-                                                                                        ]
-                                                                                      |);
-                                                                                      M.call_closure (|
-                                                                                        M.get_function (|
-                                                                                          "core::hint::must_use",
-                                                                                          [],
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "alloc::string::String"
-                                                                                          ]
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            let~
-                                                                                                  res :=
-                                                                                              M.alloc (|
-                                                                                                M.call_closure (|
-                                                                                                  M.get_function (|
-                                                                                                    "alloc::fmt::format",
-                                                                                                    [],
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.call_closure (|
-                                                                                                      M.get_associated_function (|
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Arguments",
-                                                                                                        "new_v1",
-                                                                                                        []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.alloc (|
-                                                                                                          Value.Array
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                Value.String
-                                                                                                                  "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                        |);
-                                                                                                        M.alloc (|
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::rt::Argument",
-                                                                                                              "none",
-                                                                                                              []
-                                                                                                            |),
-                                                                                                            []
-                                                                                                          |)
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              |) in
-                                                                                            res
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                |) in
-                                                                              M.match_operator (|
-                                                                                M.alloc (|
-                                                                                  Value.Tuple []
-                                                                                |),
-                                                                                [
-                                                                                  fun γ =>
-                                                                                    ltac:(M.monadic
-                                                                                      (let γ :=
-                                                                                        M.use
-                                                                                          (M.alloc (|
-                                                                                            Value.Bool
-                                                                                              true
-                                                                                          |)) in
-                                                                                      let _ :=
-                                                                                        M.is_constant_or_break_match (|
-                                                                                          M.read (|
-                                                                                            γ
-                                                                                          |),
-                                                                                          Value.Bool
-                                                                                            true
-                                                                                        |) in
-                                                                                      M.alloc (|
-                                                                                        M.never_to_any (|
-                                                                                          M.call_closure (|
-                                                                                            M.get_function (|
-                                                                                              "core::panicking::panic_fmt",
-                                                                                              [],
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::Arguments",
-                                                                                                  "new_v1",
-                                                                                                  []
-                                                                                                |),
-                                                                                                [
-                                                                                                  M.alloc (|
-                                                                                                    Value.Array
-                                                                                                      [
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            ""
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                  |);
-                                                                                                  M.alloc (|
-                                                                                                    Value.Array
-                                                                                                      [
-                                                                                                        M.call_closure (|
-                                                                                                          M.get_associated_function (|
-                                                                                                            Ty.path
-                                                                                                              "core::fmt::rt::Argument",
-                                                                                                            "new_debug",
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "move_binary_format::errors::PartialVMError"
-                                                                                                            ]
-                                                                                                          |),
-                                                                                                          [
-                                                                                                            err
-                                                                                                          ]
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                              |)
-                                                                                            ]
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)));
-                                                                                  fun γ =>
-                                                                                    ltac:(M.monadic
-                                                                                      (M.alloc (|
-                                                                                        M.never_to_any (|
-                                                                                          M.read (|
-                                                                                            M.return_ (|
-                                                                                              Value.StructTuple
-                                                                                                "core::result::Result::Err"
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    err
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)))
-                                                                                ]
-                                                                              |)))
-                                                                        ]
                                                                       |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let γ1_0 :=
-                                                                              M.SubPointer.get_tuple_field (|
+                                                                            (let γ0_0 :=
+                                                                              M.SubPointer.get_struct_tuple_field (|
                                                                                 γ,
+                                                                                "core::option::Option::Some",
                                                                                 0
                                                                               |) in
-                                                                            let γ1_1 :=
-                                                                              M.SubPointer.get_tuple_field (|
+                                                                            let x :=
+                                                                              M.copy (| γ0_0 |) in
+                                                                            x));
+                                                                        fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            (let _ :=
+                                                                              M.is_struct_tuple (|
                                                                                 γ,
-                                                                                1
+                                                                                "core::option::Option::None"
                                                                               |) in
-                                                                            let cur_loop_head :=
-                                                                              M.alloc (| γ1_0 |) in
-                                                                            let _last_continue :=
-                                                                              M.alloc (| γ1_1 |) in
+                                                                            let~ err :=
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    "with_message",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
+                                                                                        "new",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        Value.StructTuple
+                                                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                                          []
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      M.get_function (|
+                                                                                        "core::hint::must_use",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "alloc::string::String"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          let~
+                                                                                                res :=
+                                                                                            M.alloc (|
+                                                                                              M.call_closure (|
+                                                                                                M.get_function (|
+                                                                                                  "alloc::fmt::format",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.call_closure (|
+                                                                                                    M.get_associated_function (|
+                                                                                                      Ty.path
+                                                                                                        "core::fmt::Arguments",
+                                                                                                      "new_v1",
+                                                                                                      [],
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.alloc (|
+                                                                                                        Value.Array
+                                                                                                          [
+                                                                                                            M.read (|
+                                                                                                              Value.String
+                                                                                                                "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                      |);
+                                                                                                      M.alloc (|
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::rt::Argument",
+                                                                                                            "none",
+                                                                                                            [],
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          []
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            |) in
+                                                                                          res
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |) in
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 Value.Tuple []
@@ -2681,35 +2664,8 @@ Module control_flow_v5.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          M.call_closure (|
-                                                                                            M.get_trait_method (|
-                                                                                              "core::cmp::PartialEq",
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "u16"
-                                                                                                ],
-                                                                                              [
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "&")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "u16"
-                                                                                                  ]
-                                                                                              ],
-                                                                                              "ne",
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              target;
-                                                                                              cur_loop_head
-                                                                                            ]
-                                                                                          |)
+                                                                                          Value.Bool
+                                                                                            true
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -2720,48 +2676,192 @@ Module control_flow_v5.
                                                                                           true
                                                                                       |) in
                                                                                     M.alloc (|
-                                                                                      Value.StructTuple
-                                                                                        "core::result::Result::Err"
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                                                                                              "error",
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                context
-                                                                                              |);
-                                                                                              Value.StructTuple
-                                                                                                "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
-                                                                                                [];
-                                                                                              M.read (|
-                                                                                                cur_instr
-                                                                                              |)
-                                                                                            ]
-                                                                                          |)
-                                                                                        ]
+                                                                                      M.never_to_any (|
+                                                                                        M.call_closure (|
+                                                                                          M.get_function (|
+                                                                                            "core::panicking::panic_fmt",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::Arguments",
+                                                                                                "new_v1",
+                                                                                                [],
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.alloc (|
+                                                                                                  Value.Array
+                                                                                                    [
+                                                                                                      M.read (|
+                                                                                                        Value.String
+                                                                                                          ""
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                |);
+                                                                                                M.alloc (|
+                                                                                                  Value.Array
+                                                                                                    [
+                                                                                                      M.call_closure (|
+                                                                                                        M.get_associated_function (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::rt::Argument",
+                                                                                                          "new_debug",
+                                                                                                          [],
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                                          ]
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          err
+                                                                                                        ]
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                |)
+                                                                                              ]
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      |)
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
-                                                                                      Value.StructTuple
-                                                                                        "core::result::Result::Ok"
-                                                                                        [
-                                                                                          Value.Tuple
-                                                                                            []
-                                                                                        ]
+                                                                                      M.never_to_any (|
+                                                                                        M.read (|
+                                                                                          M.return_ (|
+                                                                                            Value.StructTuple
+                                                                                              "core::result::Result::Err"
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  err
+                                                                                                |)
+                                                                                              ]
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |)))
                                                                               ]
                                                                             |)))
                                                                       ]
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ :=
+                                                                            M.read (| γ |) in
+                                                                          let γ1_0 :=
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              γ,
+                                                                              0
+                                                                            |) in
+                                                                          let γ1_1 :=
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              γ,
+                                                                              1
+                                                                            |) in
+                                                                          let cur_loop_head :=
+                                                                            M.alloc (| γ1_0 |) in
+                                                                          let _last_continue :=
+                                                                            M.alloc (| γ1_1 |) in
+                                                                          M.match_operator (|
+                                                                            M.alloc (|
+                                                                              Value.Tuple []
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.use
+                                                                                      (M.alloc (|
+                                                                                        M.call_closure (|
+                                                                                          M.get_trait_method (|
+                                                                                            "core::cmp::PartialEq",
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u16"
+                                                                                              ],
+                                                                                            [],
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u16"
+                                                                                                ]
+                                                                                            ],
+                                                                                            "ne",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            target;
+                                                                                            cur_loop_head
+                                                                                          ]
+                                                                                        |)
+                                                                                      |)) in
+                                                                                  let _ :=
+                                                                                    M.is_constant_or_break_match (|
+                                                                                      M.read (|
+                                                                                        γ
+                                                                                      |),
+                                                                                      Value.Bool
+                                                                                        true
+                                                                                    |) in
+                                                                                  M.alloc (|
+                                                                                    Value.StructTuple
+                                                                                      "core::result::Result::Err"
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                                                                                            "error",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              context
+                                                                                            |);
+                                                                                            Value.StructTuple
+                                                                                              "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
+                                                                                              [];
+                                                                                            M.read (|
+                                                                                              cur_instr
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (M.alloc (|
+                                                                                    Value.StructTuple
+                                                                                      "core::result::Result::Ok"
+                                                                                      [
+                                                                                        Value.Tuple
+                                                                                          []
+                                                                                      ]
+                                                                                  |)))
+                                                                            ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -2923,116 +3023,159 @@ Module control_flow_v5.
                                                                 let target := M.alloc (| γ1_0 |) in
                                                                 Value.Tuple [ target ]))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [ target ] =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
-                                                                      M.alloc (|
-                                                                        UnOp.not (|
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [ target ] =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.alloc (|
+                                                                      UnOp.not (|
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (| cur_instr |);
+                                                                            M.read (|
+                                                                              M.read (| target |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.match_operator (|
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [
+                                                                                  Ty.path "u16";
+                                                                                  Ty.path "u16"
+                                                                                ]
+                                                                            ],
+                                                                          "last",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
                                                                           M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::vec::Vec")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple
+                                                                                    [
+                                                                                      Ty.path "u16";
+                                                                                      Ty.path "u16"
+                                                                                    ];
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ],
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
                                                                               [],
                                                                               []
                                                                             |),
                                                                             [
                                                                               M.read (|
-                                                                                cur_instr
-                                                                              |);
-                                                                              M.read (|
-                                                                                M.read (| target |)
+                                                                                loop_stack
                                                                               |)
                                                                             ]
                                                                           |)
-                                                                        |)
-                                                                      |) in
-                                                                    let _ :=
-                                                                      M.is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
-                                                                    M.match_operator (|
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
-                                                                              []
-                                                                              [
-                                                                                Ty.tuple
+                                                                        ]
+                                                                      |)
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::option::Option::Some",
+                                                                              0
+                                                                            |) in
+                                                                          let γ0_0 :=
+                                                                            M.read (| γ0_0 |) in
+                                                                          let γ2_0 :=
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              γ0_0,
+                                                                              0
+                                                                            |) in
+                                                                          let γ2_1 :=
+                                                                            M.SubPointer.get_tuple_field (|
+                                                                              γ0_0,
+                                                                              1
+                                                                            |) in
+                                                                          let _cur_loop_head :=
+                                                                            M.alloc (| γ2_0 |) in
+                                                                          let last_continue :=
+                                                                            M.alloc (| γ2_1 |) in
+                                                                          let γ :=
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::cmp::PartialOrd",
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "u16"
+                                                                                    ],
+                                                                                  [],
                                                                                   [
-                                                                                    Ty.path "u16";
-                                                                                    Ty.path "u16"
-                                                                                  ]
-                                                                              ],
-                                                                            "last",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::deref::Deref",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloc::vec::Vec")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.tuple
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
-                                                                                          "u16";
-                                                                                        Ty.path
                                                                                           "u16"
-                                                                                      ];
-                                                                                    Ty.path
-                                                                                      "alloc::alloc::Global"
+                                                                                      ]
                                                                                   ],
-                                                                                [],
-                                                                                "deref",
-                                                                                []
-                                                                              |),
-                                                                              [
+                                                                                  "gt",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  target;
+                                                                                  M.alloc (|
+                                                                                    M.read (|
+                                                                                      last_continue
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |) in
+                                                                          let _ :=
+                                                                            M.is_constant_or_break_match (|
+                                                                              M.read (| γ |),
+                                                                              Value.Bool true
+                                                                            |) in
+                                                                          let γ :=
+                                                                            M.alloc (|
+                                                                              BinOp.ne (|
                                                                                 M.read (|
-                                                                                  loop_stack
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::option::Option::Some",
-                                                                                0
-                                                                              |) in
-                                                                            let γ0_0 :=
-                                                                              M.read (| γ0_0 |) in
-                                                                            let γ2_0 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ0_0,
-                                                                                0
-                                                                              |) in
-                                                                            let γ2_1 :=
-                                                                              M.SubPointer.get_tuple_field (|
-                                                                                γ0_0,
-                                                                                1
-                                                                              |) in
-                                                                            let _cur_loop_head :=
-                                                                              M.alloc (| γ2_0 |) in
-                                                                            let last_continue :=
-                                                                              M.alloc (| γ2_1 |) in
-                                                                            let γ :=
-                                                                              M.alloc (|
+                                                                                  M.read (|
+                                                                                    target
+                                                                                  |)
+                                                                                |),
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
-                                                                                    "core::cmp::PartialOrd",
+                                                                                    "core::ops::arith::Add",
                                                                                     Ty.apply
                                                                                       (Ty.path "&")
                                                                                       []
@@ -3040,114 +3183,68 @@ Module control_flow_v5.
                                                                                         Ty.path
                                                                                           "u16"
                                                                                       ],
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u16"
-                                                                                        ]
+                                                                                    [],
+                                                                                    [ Ty.path "u16"
                                                                                     ],
-                                                                                    "gt",
+                                                                                    "add",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    target;
-                                                                                    M.alloc (|
-                                                                                      M.read (|
-                                                                                        last_continue
-                                                                                      |)
+                                                                                    M.read (|
+                                                                                      last_continue
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.U16
+                                                                                      1
+                                                                                  ]
+                                                                                |)
+                                                                              |)
+                                                                            |) in
+                                                                          let _ :=
+                                                                            M.is_constant_or_break_match (|
+                                                                              M.read (| γ |),
+                                                                              Value.Bool true
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            Value.StructTuple
+                                                                              "core::result::Result::Err"
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                                                                                    "error",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      context
+                                                                                    |);
+                                                                                    Value.StructTuple
+                                                                                      "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
+                                                                                      [];
+                                                                                    M.read (|
+                                                                                      cur_instr
                                                                                     |)
                                                                                   ]
                                                                                 |)
-                                                                              |) in
-                                                                            let _ :=
-                                                                              M.is_constant_or_break_match (|
-                                                                                M.read (| γ |),
-                                                                                Value.Bool true
-                                                                              |) in
-                                                                            let γ :=
-                                                                              M.alloc (|
-                                                                                BinOp.ne (|
-                                                                                  M.read (|
-                                                                                    M.read (|
-                                                                                      target
-                                                                                    |)
-                                                                                  |),
-                                                                                  M.call_closure (|
-                                                                                    M.get_trait_method (|
-                                                                                      "core::ops::arith::Add",
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "&")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u16"
-                                                                                        ],
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "u16"
-                                                                                      ],
-                                                                                      "add",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        last_continue
-                                                                                      |);
-                                                                                      Value.Integer
-                                                                                        IntegerKind.U16
-                                                                                        1
-                                                                                    ]
-                                                                                  |)
-                                                                                |)
-                                                                              |) in
-                                                                            let _ :=
-                                                                              M.is_constant_or_break_match (|
-                                                                                M.read (| γ |),
-                                                                                Value.Bool true
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              Value.StructTuple
-                                                                                "core::result::Result::Err"
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                                                                                      "error",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        context
-                                                                                      |);
-                                                                                      Value.StructTuple
-                                                                                        "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
-                                                                                        [];
-                                                                                      M.read (|
-                                                                                        cur_instr
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (M.alloc (|
-                                                                              Value.StructTuple
-                                                                                "core::result::Result::Ok"
-                                                                                [ Value.Tuple [] ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                              ]
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.alloc (|
+                                                                            Value.StructTuple
+                                                                              "core::result::Result::Ok"
+                                                                              [ Value.Tuple [] ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -3249,6 +3346,7 @@ Module control_flow_v5.
                                                     []
                                                     [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3263,7 +3361,9 @@ Module control_flow_v5.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
+                                                      [],
                                                       "deref",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| loop_stack |) ]
@@ -3416,63 +3516,32 @@ Module control_flow_v5.
                                                                     let j := M.alloc (| γ1_0 |) in
                                                                     Value.Tuple [ j ]))
                                                               ],
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [ j ] =>
-                                                                      ltac:(M.monadic
-                                                                        (let γ :=
-                                                                          M.alloc (|
-                                                                            BinOp.gt (|
-                                                                              M.read (|
-                                                                                M.read (| j |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
-                                                                          |) in
-                                                                        let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.Bool true
-                                                                          |) in
-                                                                        let γ :=
-                                                                          M.alloc (|
-                                                                            UnOp.not (|
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::function::Fn",
-                                                                                  Ty.function
-                                                                                    [
-                                                                                      Ty.tuple
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "alloc::vec::Vec")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.tuple
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "u16";
-                                                                                                      Ty.path
-                                                                                                        "u16"
-                                                                                                    ];
-                                                                                                  Ty.path
-                                                                                                    "alloc::alloc::Global"
-                                                                                                ]
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "u16"
-                                                                                        ]
-                                                                                    ]
-                                                                                    (Ty.path
-                                                                                      "bool"),
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  match γ with
+                                                                  | [ j ] =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ :=
+                                                                        M.alloc (|
+                                                                          BinOp.gt (|
+                                                                            M.read (|
+                                                                              M.read (| j |)
+                                                                            |),
+                                                                            M.read (| i |)
+                                                                          |)
+                                                                        |) in
+                                                                      let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      let γ :=
+                                                                        M.alloc (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::function::Fn",
+                                                                                Ty.function
                                                                                   [
                                                                                     Ty.tuple
                                                                                       [
@@ -3500,184 +3569,206 @@ Module control_flow_v5.
                                                                                         Ty.path
                                                                                           "u16"
                                                                                       ]
-                                                                                  ],
-                                                                                  "call",
-                                                                                  []
-                                                                                |),
+                                                                                  ]
+                                                                                  (Ty.path "bool"),
+                                                                                [],
                                                                                 [
-                                                                                  is_break;
-                                                                                  Value.Tuple
+                                                                                  Ty.tuple
                                                                                     [
-                                                                                      M.read (|
-                                                                                        loop_stack
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        M.read (|
-                                                                                          j
-                                                                                        |)
-                                                                                      |)
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u16";
+                                                                                                  Ty.path
+                                                                                                    "u16"
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path "u16"
                                                                                     ]
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |) in
-                                                                        let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.Bool true
-                                                                          |) in
-                                                                        let~ j :=
-                                                                          M.copy (|
-                                                                            M.read (| j |)
-                                                                          |) in
-                                                                        let~ before_depth :=
-                                                                          M.copy (|
-                                                                            M.SubPointer.get_array_field (|
-                                                                              M.read (|
-                                                                                loop_depth
-                                                                              |),
-                                                                              M.alloc (|
-                                                                                M.rust_cast
-                                                                                  (M.read (| i |))
-                                                                              |)
-                                                                            |)
-                                                                          |) in
-                                                                        let~ after_depth :=
-                                                                          M.copy (|
-                                                                            M.match_operator (|
-                                                                              M.alloc (|
-                                                                                M.SubPointer.get_array_field (|
-                                                                                  M.read (|
-                                                                                    labels
-                                                                                  |),
-                                                                                  M.alloc (|
-                                                                                    M.rust_cast
-                                                                                      (M.read (|
-                                                                                        j
-                                                                                      |))
-                                                                                  |)
-                                                                                |)
+                                                                                ],
+                                                                                "call",
+                                                                                [],
+                                                                                []
                                                                               |),
                                                                               [
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (let γ :=
-                                                                                      M.read (|
-                                                                                        γ
-                                                                                      |) in
-                                                                                    let _ :=
-                                                                                      M.is_struct_tuple (|
-                                                                                        γ,
-                                                                                        "move_bytecode_verifier::control_flow_v5::Label::Loop"
-                                                                                      |) in
-                                                                                    M.alloc (|
-                                                                                      BinOp.Wrap.sub (|
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_array_field (|
-                                                                                            M.read (|
-                                                                                              loop_depth
-                                                                                            |),
-                                                                                            M.alloc (|
-                                                                                              M.rust_cast
-                                                                                                (M.read (|
-                                                                                                  j
-                                                                                                |))
-                                                                                            |)
-                                                                                          |)
-                                                                                        |),
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      |)
-                                                                                    |)));
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (let γ :=
-                                                                                      M.read (|
-                                                                                        γ
-                                                                                      |) in
-                                                                                    let _ :=
-                                                                                      M.is_struct_tuple (|
-                                                                                        γ,
-                                                                                        "move_bytecode_verifier::control_flow_v5::Label::Code"
-                                                                                      |) in
-                                                                                    M.SubPointer.get_array_field (|
-                                                                                      M.read (|
-                                                                                        loop_depth
-                                                                                      |),
-                                                                                      M.alloc (|
-                                                                                        M.rust_cast
-                                                                                          (M.read (|
-                                                                                            j
-                                                                                          |))
-                                                                                      |)
-                                                                                    |)))
+                                                                                is_break;
+                                                                                Value.Tuple
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      loop_stack
+                                                                                    |);
+                                                                                    M.read (|
+                                                                                      M.read (| j |)
+                                                                                    |)
+                                                                                  ]
                                                                               ]
                                                                             |)
-                                                                          |) in
-                                                                        M.match_operator (|
-                                                                          M.alloc (|
-                                                                            Value.Tuple []
-                                                                          |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let γ :=
-                                                                                  M.use
-                                                                                    (M.alloc (|
-                                                                                      BinOp.ne (|
-                                                                                        M.read (|
-                                                                                          before_depth
-                                                                                        |),
-                                                                                        M.read (|
-                                                                                          after_depth
-                                                                                        |)
-                                                                                      |)
-                                                                                    |)) in
-                                                                                let _ :=
-                                                                                  M.is_constant_or_break_match (|
-                                                                                    M.read (| γ |),
-                                                                                    Value.Bool true
-                                                                                  |) in
+                                                                          |)
+                                                                        |) in
+                                                                      let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      let~ j :=
+                                                                        M.copy (|
+                                                                          M.read (| j |)
+                                                                        |) in
+                                                                      let~ before_depth :=
+                                                                        M.copy (|
+                                                                          M.SubPointer.get_array_field (|
+                                                                            M.read (| loop_depth |),
+                                                                            M.alloc (|
+                                                                              M.rust_cast
+                                                                                (M.read (| i |))
+                                                                            |)
+                                                                          |)
+                                                                        |) in
+                                                                      let~ after_depth :=
+                                                                        M.copy (|
+                                                                          M.match_operator (|
+                                                                            M.alloc (|
+                                                                              M.SubPointer.get_array_field (|
+                                                                                M.read (| labels |),
                                                                                 M.alloc (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Err"
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                                                                                          "error",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
+                                                                                  M.rust_cast
+                                                                                    (M.read (| j |))
+                                                                                |)
+                                                                              |)
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.read (|
+                                                                                      γ
+                                                                                    |) in
+                                                                                  let _ :=
+                                                                                    M.is_struct_tuple (|
+                                                                                      γ,
+                                                                                      "move_bytecode_verifier::control_flow_v5::Label::Loop"
+                                                                                    |) in
+                                                                                  M.alloc (|
+                                                                                    BinOp.Wrap.sub (|
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_array_field (|
                                                                                           M.read (|
-                                                                                            context
-                                                                                          |);
-                                                                                          Value.StructTuple
-                                                                                            "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
-                                                                                            [];
-                                                                                          M.read (|
-                                                                                            i
+                                                                                            loop_depth
+                                                                                          |),
+                                                                                          M.alloc (|
+                                                                                            M.rust_cast
+                                                                                              (M.read (|
+                                                                                                j
+                                                                                              |))
                                                                                           |)
-                                                                                        ]
+                                                                                        |)
+                                                                                      |),
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        1
+                                                                                    |)
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.read (|
+                                                                                      γ
+                                                                                    |) in
+                                                                                  let _ :=
+                                                                                    M.is_struct_tuple (|
+                                                                                      γ,
+                                                                                      "move_bytecode_verifier::control_flow_v5::Label::Code"
+                                                                                    |) in
+                                                                                  M.SubPointer.get_array_field (|
+                                                                                    M.read (|
+                                                                                      loop_depth
+                                                                                    |),
+                                                                                    M.alloc (|
+                                                                                      M.rust_cast
+                                                                                        (M.read (|
+                                                                                          j
+                                                                                        |))
+                                                                                    |)
+                                                                                  |)))
+                                                                            ]
+                                                                          |)
+                                                                        |) in
+                                                                      M.match_operator (|
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
+                                                                        |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let γ :=
+                                                                                M.use
+                                                                                  (M.alloc (|
+                                                                                    BinOp.ne (|
+                                                                                      M.read (|
+                                                                                        before_depth
+                                                                                      |),
+                                                                                      M.read (|
+                                                                                        after_depth
                                                                                       |)
-                                                                                    ]
-                                                                                |)));
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (M.alloc (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Ok"
-                                                                                    [ Value.Tuple []
-                                                                                    ]
-                                                                                |)))
-                                                                          ]
-                                                                        |)))
-                                                                    | _ =>
-                                                                      M.impossible
-                                                                        "wrong number of arguments"
-                                                                    end))
+                                                                                    |)
+                                                                                  |)) in
+                                                                              let _ :=
+                                                                                M.is_constant_or_break_match (|
+                                                                                  M.read (| γ |),
+                                                                                  Value.Bool true
+                                                                                |) in
+                                                                              M.alloc (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Err"
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                                                                                        "error",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          context
+                                                                                        |);
+                                                                                        Value.StructTuple
+                                                                                          "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
+                                                                                          [];
+                                                                                        M.read (|
+                                                                                          i
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)));
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (M.alloc (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Ok"
+                                                                                  [ Value.Tuple [] ]
+                                                                              |)))
+                                                                        ]
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
+                                                                  end)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -3877,6 +3968,7 @@ Module control_flow_v5.
                                                                                   Ty.path
                                                                                     "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                                                                                   "error",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3979,7 +4071,9 @@ Module control_flow_v5.
                         (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ])
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "std::collections::hash::set::HashSet")
@@ -3996,7 +4090,9 @@ Module control_flow_v5.
                         []
                         [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
                       [],
+                      [],
                       "filter_map",
+                      [],
                       [
                         Ty.path "u16";
                         Ty.function
@@ -4020,6 +4116,7 @@ Module control_flow_v5.
                             []
                             [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| labels |) ]
@@ -4090,6 +4187,7 @@ Module control_flow_v5.
                     []
                     [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -4112,7 +4210,9 @@ Module control_flow_v5.
                             [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -4124,7 +4224,9 @@ Module control_flow_v5.
                             []
                             [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
                           [],
+                          [],
                           "enumerate",
+                          [],
                           []
                         |),
                         [
@@ -4135,6 +4237,7 @@ Module control_flow_v5.
                                 []
                                 [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
                               "iter",
+                              [],
                               []
                             |),
                             [ M.read (| labels |) ]
@@ -4167,7 +4270,9 @@ Module control_flow_v5.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -4224,6 +4329,7 @@ Module control_flow_v5.
                                               []
                                               [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                                             "push",
+                                            [],
                                             []
                                           |),
                                           [ counts; M.read (| count |) ]
@@ -4248,6 +4354,7 @@ Module control_flow_v5.
                                                           Ty.path "std::hash::random::RandomState"
                                                         ],
                                                       "contains",
+                                                      [],
                                                       [ Ty.path "u16" ]
                                                     |),
                                                     [
@@ -4264,6 +4371,7 @@ Module control_flow_v5.
                                                                   "core::num::error::TryFromIntError"
                                                               ],
                                                             "unwrap",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4271,8 +4379,10 @@ Module control_flow_v5.
                                                               M.get_trait_method (|
                                                                 "core::convert::TryInto",
                                                                 Ty.path "usize",
+                                                                [],
                                                                 [ Ty.path "u16" ],
                                                                 "try_into",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| idx |) ]

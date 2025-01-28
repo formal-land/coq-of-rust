@@ -146,7 +146,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -363,7 +363,15 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "isize",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
               [ __self_discr; M.read (| state |) ]
             |)
           |)
@@ -414,7 +422,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [ __self_discr; __arg1_discr ]
             |)
           |)
@@ -525,8 +533,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
               [ __self_discr; __arg1_discr ]
@@ -800,7 +810,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| desc |) ]
             |)
           |)
@@ -881,7 +891,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -992,7 +1002,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [ __self_discr; __arg1_discr ]
             |)
           |)
@@ -1103,8 +1113,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
               [ __self_discr; __arg1_discr ]
@@ -1182,7 +1194,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| desc |) ]
             |)
           |)

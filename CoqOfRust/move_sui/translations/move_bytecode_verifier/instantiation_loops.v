@@ -75,8 +75,10 @@ Module instantiation_loops.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+                [],
                 [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -139,7 +141,9 @@ Module instantiation_loops.
                     "core::hash::Hash",
                     Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -154,7 +158,15 @@ Module instantiation_loops.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u16",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
@@ -333,6 +345,7 @@ Module instantiation_loops.
                         Ty.path "u32"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -349,6 +362,7 @@ Module instantiation_loops.
                         Ty.path "std::hash::random::RandomState"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -394,7 +408,9 @@ Module instantiation_loops.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
@@ -420,7 +436,9 @@ Module instantiation_loops.
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -460,7 +478,9 @@ Module instantiation_loops.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             [],
+                            [],
                             "enumerate",
+                            [],
                             []
                           |),
                           [
@@ -471,6 +491,7 @@ Module instantiation_loops.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -478,6 +499,7 @@ Module instantiation_loops.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "function_defs",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| module |) ]
@@ -515,6 +537,7 @@ Module instantiation_loops.
                                                   Ty.path
                                                     "move_binary_format::file_format::FunctionDefinitionIndex",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.rust_cast (M.read (| def_idx |)) ]
@@ -551,6 +574,7 @@ Module instantiation_loops.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -563,6 +587,7 @@ Module instantiation_loops.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| module |) ]
@@ -583,6 +608,7 @@ Module instantiation_loops.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -595,6 +621,7 @@ Module instantiation_loops.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -659,6 +686,7 @@ Module instantiation_loops.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| module |) ]
@@ -670,6 +698,7 @@ Module instantiation_loops.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                     "build_graph",
+                    [],
                     []
                   |),
                   [ checker ]
@@ -681,6 +710,7 @@ Module instantiation_loops.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                     "find_non_trivial_components",
+                    [],
                     []
                   |),
                   [ checker ]
@@ -720,6 +750,7 @@ Module instantiation_loops.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [ components ]
@@ -748,6 +779,7 @@ Module instantiation_loops.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
                             "join",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [
@@ -760,7 +792,9 @@ Module instantiation_loops.
                                   [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -798,7 +832,9 @@ Module instantiation_loops.
                                               [ Ty.path "alloc::string::String" ])
                                         ],
                                       [],
+                                      [],
                                       "collect",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -824,7 +860,9 @@ Module instantiation_loops.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "filter_map",
+                                          [],
                                           [
                                             Ty.path "alloc::string::String";
                                             Ty.function
@@ -858,7 +896,9 @@ Module instantiation_loops.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edges |) ]
@@ -894,6 +934,7 @@ Module instantiation_loops.
                                                                             ]
                                                                         ],
                                                                       "unwrap",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -913,6 +954,7 @@ Module instantiation_loops.
                                                                               Ty.path "u32"
                                                                             ],
                                                                           "edge_weight",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -946,6 +988,7 @@ Module instantiation_loops.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                                                 "format_edge",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -988,6 +1031,7 @@ Module instantiation_loops.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
                             "join",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [
@@ -1000,7 +1044,9 @@ Module instantiation_loops.
                                   [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -1035,7 +1081,9 @@ Module instantiation_loops.
                                             (Ty.path "alloc::string::String")
                                         ],
                                       [],
+                                      [],
                                       "collect",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -1061,7 +1109,9 @@ Module instantiation_loops.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "map",
+                                          [],
                                           [
                                             Ty.path "alloc::string::String";
                                             Ty.function
@@ -1092,7 +1142,9 @@ Module instantiation_loops.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| nodes |) ]
@@ -1114,6 +1166,7 @@ Module instantiation_loops.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                                 "format_node",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ checker; M.read (| node_idx |) ]
@@ -1152,6 +1205,7 @@ Module instantiation_loops.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1172,6 +1226,7 @@ Module instantiation_loops.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [ msg_edges ]
@@ -1180,6 +1235,7 @@ Module instantiation_loops.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [ msg_nodes ]
@@ -1204,6 +1260,7 @@ Module instantiation_loops.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "with_message",
+                              [],
                               []
                             |),
                             [
@@ -1211,6 +1268,7 @@ Module instantiation_loops.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1265,6 +1323,7 @@ Module instantiation_loops.
                         Ty.path "std::hash::random::RandomState"
                       ],
                     "entry",
+                    [],
                     []
                   |),
                   [
@@ -1300,6 +1359,7 @@ Module instantiation_loops.
                               [ Ty.path "u32" ]
                           ],
                         "get",
+                        [],
                         []
                       |),
                       [ entry ]
@@ -1327,6 +1387,7 @@ Module instantiation_loops.
                                 Ty.path "u32"
                               ],
                             "add_node",
+                            [],
                             []
                           |),
                           [
@@ -1354,6 +1415,7 @@ Module instantiation_loops.
                                   [ Ty.path "u32" ]
                               ],
                             "insert",
+                            [],
                             []
                           |),
                           [ M.read (| entry |); M.read (| idx |) ]
@@ -1412,6 +1474,7 @@ Module instantiation_loops.
                       []
                       [ Ty.path "u16"; Ty.path "std::hash::random::RandomState" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -1420,7 +1483,7 @@ Module instantiation_loops.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Self, "rec.extract_type_parameters", [] |),
+                  M.get_associated_function (| Self, "rec.extract_type_parameters", [], [] |),
                   [ type_params; M.read (| ty |) ]
                 |)
               |) in
@@ -1454,6 +1517,7 @@ Module instantiation_loops.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                     "get_or_add_node",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| node_from |) ]
@@ -1465,6 +1529,7 @@ Module instantiation_loops.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                     "get_or_add_node",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| node_to |) ]
@@ -1484,6 +1549,7 @@ Module instantiation_loops.
                         Ty.path "u32"
                       ],
                     "add_edge",
+                    [],
                     []
                   |),
                   [
@@ -1551,6 +1617,7 @@ Module instantiation_loops.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "signature_at",
+                      [],
                       []
                     |),
                     [
@@ -1584,7 +1651,9 @@ Module instantiation_loops.
                             [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -1596,7 +1665,9 @@ Module instantiation_loops.
                             []
                             [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           [],
+                          [],
                           "enumerate",
+                          [],
                           []
                         |),
                         [
@@ -1607,6 +1678,7 @@ Module instantiation_loops.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               "iter",
+                              [],
                               []
                             |),
                             [
@@ -1621,7 +1693,9 @@ Module instantiation_loops.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| type_actuals |) ]
@@ -1658,7 +1732,9 @@ Module instantiation_loops.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -1703,6 +1779,7 @@ Module instantiation_loops.
                                                   Ty.path
                                                     "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                   "add_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1742,7 +1819,9 @@ Module instantiation_loops.
                                                           Ty.path "std::hash::random::RandomState"
                                                         ],
                                                       [],
+                                                      [],
                                                       "into_iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1751,6 +1830,7 @@ Module instantiation_loops.
                                                           Ty.path
                                                             "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                           "extract_type_parameters",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| self |); M.read (| ty |) ]
@@ -1776,7 +1856,9 @@ Module instantiation_loops.
                                                                       []
                                                                       [ Ty.path "u16" ],
                                                                     [],
+                                                                    [],
                                                                     "next",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ iter ]
@@ -1812,6 +1894,7 @@ Module instantiation_loops.
                                                                             Ty.path
                                                                               "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                                             "add_edge",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1934,7 +2017,9 @@ Module instantiation_loops.
                                     ]
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -1964,7 +2049,9 @@ Module instantiation_loops.
                                               [ Ty.path "move_binary_format::file_format::Bytecode"
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -2011,6 +2098,7 @@ Module instantiation_loops.
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
                                                             "function_instantiation_at",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2049,6 +2137,7 @@ Module instantiation_loops.
                                                                           "std::hash::random::RandomState"
                                                                       ],
                                                                     "get",
+                                                                    [],
                                                                     [
                                                                       Ty.path
                                                                         "move_binary_format::file_format::FunctionHandleIndex"
@@ -2085,6 +2174,7 @@ Module instantiation_loops.
                                                                   Ty.path
                                                                     "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                                                   "build_graph_call",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2189,7 +2279,9 @@ Module instantiation_loops.
                             (Ty.path "bool")
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -2206,7 +2298,9 @@ Module instantiation_loops.
                                 [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                             ],
                           [],
+                          [],
                           "filter",
+                          [],
                           [
                             Ty.function
                               [
@@ -2242,7 +2336,9 @@ Module instantiation_loops.
                                 []
                                 [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -2254,6 +2350,7 @@ Module instantiation_loops.
                                     [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2261,6 +2358,7 @@ Module instantiation_loops.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_defs",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2298,6 +2396,7 @@ Module instantiation_loops.
                                                   Ty.path
                                                     "move_binary_format::file_format::FunctionDefinition",
                                                   "is_native",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| M.read (| def |) |) ]
@@ -2365,7 +2464,9 @@ Module instantiation_loops.
                                           (Ty.path "bool")
                                       ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -2395,6 +2496,7 @@ Module instantiation_loops.
                                           Ty.path
                                             "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                                           "build_graph_function_def",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2404,6 +2506,7 @@ Module instantiation_loops.
                                               Ty.path
                                                 "move_binary_format::file_format::FunctionDefinitionIndex",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.rust_cast (M.read (| def_idx |)) ]
@@ -2533,7 +2636,9 @@ Module instantiation_loops.
                       ])
                 ],
               [],
+              [],
               "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -2584,7 +2689,9 @@ Module instantiation_loops.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "filter_map",
+                  [],
                   [
                     Ty.tuple
                       [
@@ -2676,7 +2783,9 @@ Module instantiation_loops.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -2744,7 +2853,9 @@ Module instantiation_loops.
                                                     ]
                                                 ],
                                               [],
+                                              [],
                                               "collect",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::set::HashSet")
@@ -2772,7 +2883,9 @@ Module instantiation_loops.
                                                         [ Ty.path "u32" ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "cloned",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "petgraph::graph_impl::NodeIndex")
@@ -2794,6 +2907,7 @@ Module instantiation_loops.
                                                             [ Ty.path "u32" ]
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2812,7 +2926,9 @@ Module instantiation_loops.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [ nodes ]
@@ -2940,7 +3056,9 @@ Module instantiation_loops.
                                                       ])
                                                 ],
                                               [],
+                                              [],
                                               "collect",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -2968,7 +3086,9 @@ Module instantiation_loops.
                                                         [ Ty.path "u32" ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "flat_map",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path
@@ -3082,6 +3202,7 @@ Module instantiation_loops.
                                                             [ Ty.path "u32" ]
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3100,7 +3221,9 @@ Module instantiation_loops.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [ nodes ]
@@ -3135,7 +3258,9 @@ Module instantiation_loops.
                                                                             Ty.path "u32"
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "filter_map",
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -3187,6 +3312,7 @@ Module instantiation_loops.
                                                                                 Ty.path "u32"
                                                                               ],
                                                                             "edges",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3251,6 +3377,7 @@ Module instantiation_loops.
                                                                                                                     "std::hash::random::RandomState"
                                                                                                                 ],
                                                                                                               "contains",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -3279,7 +3406,9 @@ Module instantiation_loops.
                                                                                                                           "u32"
                                                                                                                       ],
                                                                                                                     [],
+                                                                                                                    [],
                                                                                                                     "target",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -3317,7 +3446,9 @@ Module instantiation_loops.
                                                                                                                     "u32"
                                                                                                                 ],
                                                                                                               [],
+                                                                                                              [],
                                                                                                               "id",
+                                                                                                              [],
                                                                                                               []
                                                                                                             |),
                                                                                                             [
@@ -3377,7 +3508,9 @@ Module instantiation_loops.
                                                               [ Ty.path "u32" ]
                                                           ],
                                                         [],
+                                                        [],
                                                         "any",
+                                                        [],
                                                         [
                                                           Ty.function
                                                             [
@@ -3413,6 +3546,7 @@ Module instantiation_loops.
                                                                     [ Ty.path "u32" ]
                                                                 ],
                                                               "iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3431,7 +3565,9 @@ Module instantiation_loops.
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "deref",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ edges ]
@@ -3472,6 +3608,7 @@ Module instantiation_loops.
                                                                                           ]
                                                                                       ],
                                                                                     "unwrap",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -3492,6 +3629,7 @@ Module instantiation_loops.
                                                                                               "u32"
                                                                                           ],
                                                                                         "edge_weight",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -3618,6 +3756,7 @@ Module instantiation_loops.
                           [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ]
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -3633,6 +3772,7 @@ Module instantiation_loops.
                             Ty.path "u32"
                           ],
                         "node_weight",
+                        [],
                         []
                       |),
                       [
@@ -3683,6 +3823,7 @@ Module instantiation_loops.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3700,6 +3841,7 @@ Module instantiation_loops.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -3716,6 +3858,7 @@ Module instantiation_loops.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                                 |),
                                                 [ param_idx ]
@@ -3780,6 +3923,7 @@ Module instantiation_loops.
                           ]
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -3795,6 +3939,7 @@ Module instantiation_loops.
                             Ty.path "u32"
                           ],
                         "edge_endpoints",
+                        [],
                         []
                       |),
                       [
@@ -3823,6 +3968,7 @@ Module instantiation_loops.
                             Ty.path
                               "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                             "format_node",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| node_idx_1 |) ]
@@ -3835,6 +3981,7 @@ Module instantiation_loops.
                             Ty.path
                               "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                             "format_node",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| node_idx_2 |) ]
@@ -3854,6 +4001,7 @@ Module instantiation_loops.
                                   [ Ty.path "move_bytecode_verifier::instantiation_loops::Edge" ]
                               ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -3869,6 +4017,7 @@ Module instantiation_loops.
                                     Ty.path "u32"
                                   ],
                                 "edge_weight",
+                                [],
                                 []
                               |),
                               [
@@ -3912,6 +4061,7 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3930,6 +4080,7 @@ Module instantiation_loops.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ node_1 ]
@@ -3938,6 +4089,7 @@ Module instantiation_loops.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_debug",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -3959,6 +4111,7 @@ Module instantiation_loops.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ node_2 ]
@@ -4001,6 +4154,7 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4018,6 +4172,7 @@ Module instantiation_loops.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ node_1 ]
@@ -4026,6 +4181,7 @@ Module instantiation_loops.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ node_2 ]

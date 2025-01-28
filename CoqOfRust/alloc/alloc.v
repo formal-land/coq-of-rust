@@ -90,7 +90,7 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| f |); M.read (| Value.String "Global" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -134,13 +134,19 @@ Module alloc.
               M.get_function (| "alloc::alloc::__rust_alloc", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "size",
+                    [],
+                    []
+                  |),
                   [ layout ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "align",
+                    [],
                     []
                   |),
                   [ layout ]
@@ -170,11 +176,16 @@ Module alloc.
           [
             M.read (| ptr |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
               [ layout ]
             |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "align",
+                [],
+                []
+              |),
               [ layout ]
             |)
           ]
@@ -201,11 +212,16 @@ Module alloc.
           [
             M.read (| ptr |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
               [ layout ]
             |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "align",
+                [],
+                []
+              |),
               [ layout ]
             |);
             M.read (| new_size |)
@@ -246,13 +262,19 @@ Module alloc.
               M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "size",
+                    [],
+                    []
+                  |),
                   [ layout ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "align",
+                    [],
                     []
                   |),
                   [ layout ]
@@ -298,6 +320,7 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
                       [ layout ]
@@ -322,6 +345,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [
@@ -329,6 +353,7 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "dangling",
+                                      [],
                                       []
                                     |),
                                     [ layout ]
@@ -389,7 +414,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -405,6 +432,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -415,6 +443,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -457,6 +486,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -467,6 +497,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -499,6 +530,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| size |) ]
@@ -596,6 +628,7 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
                                                 [ new_layout ]
@@ -604,6 +637,7 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
                                                 [ old_layout ]
@@ -625,6 +659,7 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -656,6 +691,7 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
                       [ old_layout ]
@@ -674,6 +710,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "alloc::alloc::Global",
                               "alloc_impl",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| new_layout |); M.read (| zeroed |) ]
@@ -689,6 +726,7 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
                                 [ old_layout ]
@@ -697,6 +735,7 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
                                 [ new_layout ]
@@ -711,6 +750,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
+                                [],
                                 []
                               |),
                               [ new_layout ]
@@ -727,6 +767,7 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
+                                      [],
                                       []
                                     |),
                                     [ old_layout ]
@@ -747,6 +788,7 @@ Module alloc.
                                       []
                                       [ Ty.path "u8" ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -774,7 +816,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -790,6 +834,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -800,6 +845,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -842,6 +888,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -852,6 +899,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -891,6 +939,7 @@ Module alloc.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "write_bytes",
+                                          [],
                                           []
                                         |),
                                         [
@@ -898,6 +947,7 @@ Module alloc.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
@@ -925,6 +975,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| new_size |) ]
@@ -952,7 +1003,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -960,6 +1013,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "alloc::alloc::Global",
                                         "alloc_impl",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1003,6 +1057,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1013,6 +1068,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1052,6 +1108,7 @@ Module alloc.
                                         []
                                         [ Ty.path "u8" ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |) ]
@@ -1063,6 +1120,7 @@ Module alloc.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -1078,7 +1136,9 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
@@ -1112,7 +1172,7 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
             [ M.read (| self |); M.read (| layout |); Value.Bool false ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1130,7 +1190,7 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
             [ M.read (| self |); M.read (| layout |); Value.Bool true ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1166,6 +1226,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
+                                [],
                                 []
                               |),
                               [ layout ]
@@ -1182,6 +1243,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -1217,7 +1279,7 @@ Module alloc.
           let old_layout := M.alloc (| old_layout |) in
           let new_layout := M.alloc (| new_layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
               M.read (| self |);
               M.read (| ptr |);
@@ -1249,7 +1311,7 @@ Module alloc.
           let old_layout := M.alloc (| old_layout |) in
           let new_layout := M.alloc (| new_layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
               M.read (| self |);
               M.read (| ptr |);
@@ -1339,6 +1401,7 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
                                                 [ new_layout ]
@@ -1347,6 +1410,7 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
                                                 [ old_layout ]
@@ -1368,6 +1432,7 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1399,6 +1464,7 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
                       [ new_layout ]
@@ -1419,7 +1485,9 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
@@ -1436,6 +1504,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1443,6 +1512,7 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "dangling",
+                                      [],
                                       []
                                     |),
                                     [ new_layout ]
@@ -1462,6 +1532,7 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
                                 [ old_layout ]
@@ -1470,6 +1541,7 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
                                 [ new_layout ]
@@ -1489,6 +1561,7 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
+                                      [],
                                       []
                                     |),
                                     [ old_layout ]
@@ -1509,6 +1582,7 @@ Module alloc.
                                       []
                                       [ Ty.path "u8" ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -1536,7 +1610,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1552,6 +1628,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -1562,6 +1639,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -1604,6 +1682,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1614,6 +1693,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1646,6 +1726,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| new_size |) ]
@@ -1673,7 +1754,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1682,7 +1765,9 @@ Module alloc.
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
                                         [],
+                                        [],
                                         "allocate",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |); M.read (| new_layout |) ]
@@ -1722,6 +1807,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1732,6 +1818,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1771,6 +1858,7 @@ Module alloc.
                                         []
                                         [ Ty.path "u8" ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |) ]
@@ -1782,6 +1870,7 @@ Module alloc.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -1797,7 +1886,9 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
@@ -1851,6 +1942,7 @@ Module alloc.
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "from_size_align_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| size |); M.read (| align |) ]
@@ -1863,7 +1955,9 @@ Module alloc.
                   "core::alloc::Allocator",
                   Ty.path "alloc::alloc::Global",
                   [],
+                  [],
                   "allocate",
+                  [],
                   []
                 |),
                 [ M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |); M.read (| layout |) ]
@@ -1883,6 +1977,7 @@ Module alloc.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |) ]
@@ -1986,6 +2081,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -2019,11 +2115,21 @@ Module alloc.
             M.get_function (| "alloc::alloc::__rust_alloc_error_handler", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::alloc::layout::Layout",
+                  "size",
+                  [],
+                  []
+                |),
                 [ layout ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::alloc::layout::Layout",
+                  "align",
+                  [],
+                  []
+                |),
                 [ layout ]
               |)
             ]
@@ -2088,6 +2194,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -2105,6 +2212,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [ size ]
@@ -2126,6 +2234,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -2143,6 +2252,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [ size ]

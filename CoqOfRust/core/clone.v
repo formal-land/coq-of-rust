@@ -14,7 +14,7 @@ Module clone.
             M.write (|
               M.read (| self |),
               M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", Self, [], "clone", [] |),
+                M.get_trait_method (| "core::clone::Clone", Self, [], [], "clone", [], [] |),
                 [ M.read (| source |) ]
               |)
             |)
@@ -67,7 +67,15 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_one", [] |),
+            M.get_trait_method (|
+              "core::clone::uninit::CopySpec",
+              T,
+              [],
+              [],
+              "clone_one",
+              [],
+              []
+            |),
             [ M.read (| self |); M.read (| dst |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -104,7 +112,15 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_slice", [] |),
+            M.get_trait_method (|
+              "core::clone::uninit::CopySpec",
+              T,
+              [],
+              [],
+              "clone_slice",
+              [],
+              []
+            |),
             [ M.read (| self |); M.read (| dst |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -139,12 +155,14 @@ Module clone.
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               [],
+              [],
               "clone_to_uninit",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |);
               M.rust_cast (M.read (| dst |))
@@ -184,7 +202,9 @@ Module clone.
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               [],
+              [],
               "clone_to_uninit",
+              [],
               []
             |),
             [
@@ -192,6 +212,7 @@ Module clone.
                 M.get_associated_function (|
                   Ty.path "core::ffi::c_str::CStr",
                   "to_bytes_with_nul",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]

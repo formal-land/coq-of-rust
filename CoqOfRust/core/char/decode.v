@@ -28,7 +28,7 @@ Module char.
               [
                 ("iter",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -43,7 +43,9 @@ Module char.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -83,6 +85,7 @@ Module char.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -138,6 +141,7 @@ Module char.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -178,7 +182,15 @@ Module char.
               [
                 ("code",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u16",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -297,7 +309,9 @@ Module char.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -370,6 +384,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               "take",
+                              [],
                               []
                             |),
                             [
@@ -405,7 +420,9 @@ Module char.
                                         []
                                         [ Ty.path "u16" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -414,7 +431,9 @@ Module char.
                                           "core::iter::traits::iterator::Iterator",
                                           I,
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [
@@ -458,6 +477,7 @@ Module char.
                                                             "core::char::decode::DecodeUtf16Error"
                                                         ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -465,6 +485,7 @@ Module char.
                                                       [ Ty.path "core::convert::Infallible" ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -501,6 +522,7 @@ Module char.
                                     M.get_associated_function (|
                                       Ty.path "u16",
                                       "is_utf16_surrogate",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| u |) ]
@@ -520,6 +542,7 @@ Module char.
                                       M.get_associated_function (|
                                         Ty.path "char",
                                         "from_u32_unchecked",
+                                        [],
                                         []
                                       |),
                                       [ M.rust_cast (M.read (| u |)) ]
@@ -571,7 +594,9 @@ Module char.
                                               "core::iter::traits::iterator::Iterator",
                                               I,
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [
@@ -711,6 +736,7 @@ Module char.
                                               M.get_associated_function (|
                                                 Ty.path "char",
                                                 "from_u32_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| c |) ]
@@ -774,7 +800,9 @@ Module char.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "size_hint",
+                      [],
                       []
                     |),
                     [
@@ -827,6 +855,7 @@ Module char.
                                         M.get_associated_function (|
                                           Ty.path "u16",
                                           "is_utf16_surrogate",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| u |) ]
@@ -863,6 +892,7 @@ Module char.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "usize" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -870,6 +900,7 @@ Module char.
                                             [ Ty.path "usize" ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -926,6 +957,7 @@ Module char.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "div_ceil",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| low |); Value.Integer IntegerKind.Usize 2 ]
@@ -942,6 +974,7 @@ Module char.
                                         []
                                         [ Ty.path "usize" ],
                                       "and_then",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.function
@@ -970,6 +1003,7 @@ Module char.
                                                           M.get_associated_function (|
                                                             Ty.path "usize",
                                                             "checked_add",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| h |); M.read (| high_buf |) ]
@@ -1059,11 +1093,11 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array [ M.read (| Value.String "unpaired surrogate found: " |) ]
@@ -1075,6 +1109,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_lower_hex",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [

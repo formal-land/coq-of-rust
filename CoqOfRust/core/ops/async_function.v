@@ -37,8 +37,10 @@ Module ops.
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
+                  [],
                   [ A ],
                   "async_call",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -87,8 +89,10 @@ Module ops.
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
+                  [],
                   [ A ],
                   "async_call",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -139,8 +143,10 @@ Module ops.
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
+                  [],
                   [ A ],
                   "async_call",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| args |) ]
@@ -194,8 +200,10 @@ Module ops.
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,
+                  [],
                   [ A ],
                   "async_call_mut",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -246,8 +254,10 @@ Module ops.
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,
+                  [],
                   [ A ],
                   "async_call_mut",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| args |) ]

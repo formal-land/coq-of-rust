@@ -75,7 +75,7 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -278,7 +278,9 @@ Module locals_safety.
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -301,7 +303,9 @@ Module locals_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -325,7 +329,9 @@ Module locals_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -363,6 +369,7 @@ Module locals_safety.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field3_finish",
+                [],
                 []
               |),
               [
@@ -479,6 +486,7 @@ Module locals_safety.
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -486,6 +494,7 @@ Module locals_safety.
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -512,6 +521,7 @@ Module locals_safety.
                           Ty.path "move_binary_format::file_format::AbilitySet";
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -522,6 +532,7 @@ Module locals_safety.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -549,6 +560,7 @@ Module locals_safety.
                         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -560,6 +572,7 @@ Module locals_safety.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -632,6 +645,7 @@ Module locals_safety.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::Signature",
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -639,6 +653,7 @@ Module locals_safety.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "parameters",
+                              [],
                               []
                             |),
                             [ M.read (| function_context |) ]
@@ -654,6 +669,7 @@ Module locals_safety.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Signature",
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -661,6 +677,7 @@ Module locals_safety.
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "locals",
+                                [],
                                 []
                               |),
                               [ M.read (| function_context |) ]
@@ -685,7 +702,9 @@ Module locals_safety.
                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -703,7 +722,9 @@ Module locals_safety.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
@@ -796,7 +817,9 @@ Module locals_safety.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -848,7 +871,9 @@ Module locals_safety.
                                           ])
                                     ],
                                   [],
+                                  [],
                                   "collect",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -889,7 +914,9 @@ Module locals_safety.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -932,7 +959,9 @@ Module locals_safety.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           [],
+                                          [],
                                           "chain",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
@@ -954,6 +983,7 @@ Module locals_safety.
                                                     "move_binary_format::file_format::SignatureToken"
                                                 ],
                                               "iter",
+                                              [],
                                               []
                                             |),
                                             [
@@ -969,7 +999,9 @@ Module locals_safety.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -979,6 +1011,7 @@ Module locals_safety.
                                                         Ty.path
                                                           "move_bytecode_verifier::absint::FunctionContext",
                                                         "parameters",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| function_context |) ]
@@ -1000,6 +1033,7 @@ Module locals_safety.
                                                     "move_binary_format::file_format::SignatureToken"
                                                 ],
                                               "iter",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1015,7 +1049,9 @@ Module locals_safety.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1025,6 +1061,7 @@ Module locals_safety.
                                                         Ty.path
                                                           "move_bytecode_verifier::absint::FunctionContext",
                                                         "locals",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| function_context |) ]
@@ -1055,6 +1092,7 @@ Module locals_safety.
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
                                                             "abilities",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1065,6 +1103,7 @@ Module locals_safety.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::absint::FunctionContext",
                                                                 "type_parameters",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| function_context |) ]
@@ -1107,6 +1146,7 @@ Module locals_safety.
                                                 "move_bytecode_verifier::locals_safety::abstract_state::AbstractState";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -1117,6 +1157,7 @@ Module locals_safety.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -1150,6 +1191,7 @@ Module locals_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| function_context |) ]
@@ -1188,8 +1230,10 @@ Module locals_safety.
                       Ty.path "move_binary_format::file_format::AbilitySet";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [ Ty.path "usize" ],
                   "index",
+                  [],
                   []
                 |),
                 [
@@ -1251,8 +1295,10 @@ Module locals_safety.
                       Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [ Ty.path "usize" ],
                   "index",
+                  [],
                   []
                 |),
                 [
@@ -1314,8 +1360,10 @@ Module locals_safety.
                         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.path "usize" ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -1366,11 +1414,13 @@ Module locals_safety.
                                     "core::cmp::PartialEq",
                                     Ty.path
                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
+                                    [],
                                     [
                                       Ty.path
                                         "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1385,8 +1435,10 @@ Module locals_safety.
                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                                             Ty.path "alloc::alloc::Global"
                                           ],
+                                        [],
                                         [ Ty.path "usize" ],
                                         "index",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1436,8 +1488,10 @@ Module locals_safety.
                         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.path "usize" ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -1479,6 +1533,7 @@ Module locals_safety.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
+                [],
                 []
               |),
               [
@@ -1486,6 +1541,7 @@ Module locals_safety.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| status |) ]
@@ -1497,6 +1553,7 @@ Module locals_safety.
                       []
                       [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                     "unwrap_or",
+                    [],
                     []
                   |),
                   [
@@ -1584,6 +1641,7 @@ Module locals_safety.
                                         Ty.path
                                           "move_binary_format::file_format::FunctionDefinitionIndex"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -1594,6 +1652,7 @@ Module locals_safety.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1650,6 +1709,7 @@ Module locals_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1670,6 +1730,7 @@ Module locals_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1723,6 +1784,7 @@ Module locals_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1744,6 +1806,7 @@ Module locals_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1796,7 +1859,9 @@ Module locals_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1863,7 +1928,9 @@ Module locals_safety.
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState")
                         ],
                       [],
+                      [],
                       "collect",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -1899,7 +1966,9 @@ Module locals_safety.
                                 ]
                             ],
                           [],
+                          [],
                           "map",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
@@ -1942,7 +2011,9 @@ Module locals_safety.
                                     "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                 ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&")
@@ -1970,6 +2041,7 @@ Module locals_safety.
                                         "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1985,7 +2057,9 @@ Module locals_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2234,21 +2308,20 @@ Module locals_safety.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
-                                                                      []
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
+                                                                    []
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -2353,7 +2426,9 @@ Module locals_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2362,7 +2437,9 @@ Module locals_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -2404,6 +2481,7 @@ Module locals_safety.
                                             Ty.path "move_bytecode_verifier::absint::JoinResult";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2414,6 +2492,7 @@ Module locals_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2445,7 +2524,9 @@ Module locals_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2454,7 +2535,9 @@ Module locals_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add_items",
+                                [],
                                 []
                               |),
                               [
@@ -2478,6 +2561,7 @@ Module locals_safety.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2517,6 +2601,7 @@ Module locals_safety.
                                             Ty.path "move_bytecode_verifier::absint::JoinResult";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2527,6 +2612,7 @@ Module locals_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2554,6 +2640,7 @@ Module locals_safety.
                           Ty.path
                             "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                           "join_",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| state |) ]
@@ -2581,6 +2668,7 @@ Module locals_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2602,6 +2690,7 @@ Module locals_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2658,7 +2747,9 @@ Module locals_safety.
                                 ]
                             ],
                           [],
+                          [],
                           "all",
+                          [],
                           [
                             Ty.function
                               [
@@ -2699,7 +2790,9 @@ Module locals_safety.
                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                   ],
                                 [],
+                                [],
                                 "zip",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -2727,6 +2820,7 @@ Module locals_safety.
                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2742,7 +2836,9 @@ Module locals_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2788,6 +2884,7 @@ Module locals_safety.
                                                     Ty.path
                                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -2798,6 +2895,7 @@ Module locals_safety.
                                                     ]
                                                 ],
                                                 "eq",
+                                                [],
                                                 []
                                               |),
                                               [ self_state; other_state ]

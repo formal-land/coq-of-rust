@@ -50,7 +50,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -107,6 +109,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
@@ -125,6 +128,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "OnceWith(Some(_))" |) ]
@@ -137,6 +141,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "OnceWith(None)" |) ]
@@ -188,7 +193,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -196,6 +203,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                     "take",
+                                    [],
                                     []
                                   |),
                                   [
@@ -227,6 +235,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -234,6 +243,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -263,8 +273,10 @@ Module iter.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [] ]
@@ -297,7 +309,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -306,6 +320,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         "iter",
+                        [],
                         []
                       |),
                       [
@@ -361,7 +376,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -398,7 +415,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -407,6 +426,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         "iter",
+                        [],
                         []
                       |),
                       [

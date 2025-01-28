@@ -30,6 +30,7 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_desugared",
+                [],
                 [ I ]
               |),
               [ M.read (| self |); M.read (| iter |) ]
@@ -70,6 +71,7 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_trusted",
+                [],
                 [ I ]
               |),
               [ M.read (| self |); M.read (| iterator |) ]
@@ -117,6 +119,7 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "append_elements",
+                        [],
                         []
                       |),
                       [
@@ -131,6 +134,7 @@ Module vec.
                                     []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "as_slice",
+                                  [],
                                   []
                                 |),
                                 [ iterator ]
@@ -150,6 +154,7 @@ Module vec.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "forget_remaining_elements",
+                      [],
                       []
                     |),
                     [ iterator ]
@@ -201,8 +206,10 @@ Module vec.
               M.get_trait_method (|
                 "alloc::vec::spec_extend::SpecExtend",
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                [],
                 [ T; Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ] ],
                 "spec_extend",
+                [],
                 []
               |),
               [
@@ -212,7 +219,9 @@ Module vec.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "cloned",
+                    [],
                     [ T ]
                   |),
                   [ M.read (| iterator |) ]
@@ -259,6 +268,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "as_slice",
+                      [],
                       []
                     |),
                     [ iterator ]
@@ -270,6 +280,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append_elements",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| slice |) ]

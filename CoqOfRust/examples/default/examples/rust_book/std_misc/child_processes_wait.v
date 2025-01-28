@@ -23,16 +23,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
                 "unwrap",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "std::process::Command",
                         "arg",
+                        [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [
@@ -41,6 +43,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "std::process::Command",
                               "new",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ M.read (| Value.String "sleep" |) ]
@@ -63,11 +66,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
                 "unwrap",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Child", "wait", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Child", "wait", [], [] |),
                   [ child ]
                 |)
               ]
@@ -80,7 +84,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "reached end of main
 " |) ] |)
                     ]

@@ -42,7 +42,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       [],
+                      [],
                       "branch",
+                      [],
                       []
                     |),
                     [
@@ -50,6 +52,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -58,6 +61,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -69,6 +73,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ begin ]
@@ -103,6 +108,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     (Ty.path "core::result::Result")
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -113,6 +119,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       ]
                                   ],
                                   "from_residual",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| residual |) ]
@@ -140,7 +147,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     "core::iter::traits::collect::IntoIterator",
                     impl_IntoIterator_Item___T_,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| items |) ]
@@ -159,7 +168,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               "core::iter::traits::iterator::Iterator",
                               Ty.associated,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [ items ]
@@ -183,7 +194,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   []
                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -191,6 +204,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
+                                    [],
                                     []
                                   |),
                                   [
@@ -199,6 +213,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
+                                        [],
                                         []
                                       |),
                                       [
@@ -210,6 +225,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [ T ]
                                                 |),
                                                 [ x ]
@@ -244,6 +260,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -254,6 +271,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -282,7 +300,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.associated,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| items |) ]
@@ -302,7 +322,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -340,7 +362,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -348,6 +372,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Formatter",
                                                             "write_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -356,6 +381,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -372,6 +398,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_display",
+                                                                          [],
                                                                           [ T ]
                                                                         |),
                                                                         [ x ]
@@ -410,6 +437,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -422,6 +450,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -463,7 +492,9 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         []
                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       [],
+                      [],
                       "branch",
+                      [],
                       []
                     |),
                     [
@@ -471,6 +502,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -479,6 +511,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -490,6 +523,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ end_ ]
@@ -524,6 +558,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     (Ty.path "core::result::Result")
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -534,6 +569,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       ]
                                   ],
                                   "from_residual",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| residual |) ]

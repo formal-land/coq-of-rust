@@ -60,6 +60,7 @@ Module code_unit_verifier.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -72,6 +73,7 @@ Module code_unit_verifier.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
                   "verify_module_impl",
+                  [],
                   [ impl_Meter__plus___Sized ]
                 |),
                 [ M.read (| verifier_config |); M.read (| module |); M.read (| meter |) ]
@@ -92,6 +94,7 @@ Module code_unit_verifier.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -104,6 +107,7 @@ Module code_unit_verifier.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -179,6 +183,7 @@ Module code_unit_verifier.
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -201,7 +206,9 @@ Module code_unit_verifier.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -213,7 +220,9 @@ Module code_unit_verifier.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -227,6 +236,7 @@ Module code_unit_verifier.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -234,6 +244,7 @@ Module code_unit_verifier.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_defs",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| module |) ]
@@ -270,7 +281,9 @@ Module code_unit_verifier.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -306,6 +319,7 @@ Module code_unit_verifier.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "function_handle_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -335,6 +349,7 @@ Module code_unit_verifier.
                                                       Ty.path "std::hash::random::RandomState"
                                                     ],
                                                   "insert",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -377,7 +392,9 @@ Module code_unit_verifier.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -389,7 +406,9 @@ Module code_unit_verifier.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -403,6 +422,7 @@ Module code_unit_verifier.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -410,6 +430,7 @@ Module code_unit_verifier.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_defs",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| module |) ]
@@ -446,7 +467,9 @@ Module code_unit_verifier.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -497,7 +520,9 @@ Module code_unit_verifier.
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -512,6 +537,7 @@ Module code_unit_verifier.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           "map_err",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError";
@@ -533,6 +559,7 @@ Module code_unit_verifier.
                                                               Ty.path
                                                                 "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
                                                               "verify_function",
+                                                              [],
                                                               [ impl_Meter__plus___Sized ]
                                                             |),
                                                             [
@@ -562,6 +589,7 @@ Module code_unit_verifier.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "at_index",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -614,6 +642,7 @@ Module code_unit_verifier.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -627,6 +656,7 @@ Module code_unit_verifier.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -713,6 +743,7 @@ Module code_unit_verifier.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -825,7 +856,9 @@ Module code_unit_verifier.
                         "move_bytecode_verifier_meter::Meter",
                         impl_Meter__plus___Sized,
                         [],
+                        [],
                         "enter_scope",
+                        [],
                         []
                       |),
                       [
@@ -834,6 +867,7 @@ Module code_unit_verifier.
                           M.get_associated_function (|
                             Ty.path "move_core_types::identifier::IdentStr",
                             "as_str",
+                            [],
                             []
                           |),
                           [
@@ -841,6 +875,7 @@ Module code_unit_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "identifier_at",
+                                [],
                                 []
                               |),
                               [
@@ -851,6 +886,7 @@ Module code_unit_verifier.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_handle_at",
+                                        [],
                                         []
                                       |),
                                       [
@@ -931,7 +967,9 @@ Module code_unit_verifier.
                                 Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -977,6 +1015,7 @@ Module code_unit_verifier.
                                             Ty.path "usize";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -987,6 +1026,7 @@ Module code_unit_verifier.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1043,6 +1083,7 @@ Module code_unit_verifier.
                                                 []
                                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1053,7 +1094,9 @@ Module code_unit_verifier.
                                                     Ty.path
                                                       "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                                     [],
+                                                    [],
                                                     "blocks",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1062,6 +1105,7 @@ Module code_unit_verifier.
                                                         Ty.path
                                                           "move_bytecode_verifier::absint::FunctionContext",
                                                         "cfg",
+                                                        [],
                                                         []
                                                       |),
                                                       [ function_context ]
@@ -1091,6 +1135,7 @@ Module code_unit_verifier.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "at_code_offset",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1099,6 +1144,7 @@ Module code_unit_verifier.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1129,7 +1175,9 @@ Module code_unit_verifier.
                         "move_binary_format::control_flow_graph::ControlFlowGraph",
                         Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                         [],
+                        [],
                         "num_back_edges",
+                        [],
                         []
                       |),
                       [
@@ -1137,6 +1185,7 @@ Module code_unit_verifier.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "cfg",
+                            [],
                             []
                           |),
                           [ function_context ]
@@ -1193,6 +1242,7 @@ Module code_unit_verifier.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "at_code_offset",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1201,6 +1251,7 @@ Module code_unit_verifier.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1245,7 +1296,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1254,6 +1307,7 @@ Module code_unit_verifier.
                               Ty.path
                                 "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
                               "verify_common",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [ code_unit_verifier; M.read (| verifier_config |); M.read (| meter |) ]
@@ -1285,6 +1339,7 @@ Module code_unit_verifier.
                                           Ty.path "usize";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1295,6 +1350,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1326,7 +1382,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1335,6 +1393,7 @@ Module code_unit_verifier.
                               Ty.path
                                 "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                               "verify",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -1371,6 +1430,7 @@ Module code_unit_verifier.
                                           Ty.path "usize";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1381,6 +1441,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1412,7 +1473,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1421,7 +1484,9 @@ Module code_unit_verifier.
                               "move_bytecode_verifier_meter::Meter",
                               impl_Meter__plus___Sized,
                               [],
+                              [],
                               "transfer",
+                              [],
                               []
                             |),
                             [
@@ -1458,6 +1523,7 @@ Module code_unit_verifier.
                                           Ty.path "usize";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1468,6 +1534,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1537,7 +1604,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1546,6 +1615,7 @@ Module code_unit_verifier.
                               Ty.path
                                 "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                               "verify",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -1592,6 +1662,7 @@ Module code_unit_verifier.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1602,6 +1673,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1633,7 +1705,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1686,6 +1760,7 @@ Module code_unit_verifier.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1696,6 +1771,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1727,7 +1803,9 @@ Module code_unit_verifier.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1780,6 +1858,7 @@ Module code_unit_verifier.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1790,6 +1869,7 @@ Module code_unit_verifier.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]

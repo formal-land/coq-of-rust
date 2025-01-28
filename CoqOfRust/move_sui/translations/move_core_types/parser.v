@@ -256,8 +256,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -288,8 +290,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -320,8 +324,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -352,8 +358,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -384,8 +392,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -416,8 +426,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -448,8 +460,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -480,8 +494,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -512,8 +528,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -544,8 +562,10 @@ Module parser.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -592,6 +612,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8Type" |) ]
@@ -606,6 +627,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16Type" |) ]
@@ -620,6 +642,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32Type" |) ]
@@ -634,6 +657,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64Type" |) ]
@@ -649,6 +673,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128Type" |) ]
@@ -664,6 +689,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256Type" |) ]
@@ -679,6 +705,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BoolType" |) ]
@@ -694,6 +721,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "AddressType" |) ]
@@ -709,6 +737,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VectorType" |) ]
@@ -724,6 +753,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "SignerType" |) ]
@@ -744,6 +774,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Whitespace" |); __self_0 ]
@@ -764,6 +795,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Name" |); __self_0 ]
@@ -784,6 +816,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
@@ -804,6 +837,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
@@ -824,6 +858,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
@@ -844,6 +879,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
@@ -864,6 +900,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
@@ -884,6 +921,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
@@ -904,6 +942,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
@@ -924,6 +963,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
@@ -938,6 +978,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "True" |) ]
@@ -952,6 +993,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "False" |) ]
@@ -967,6 +1009,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ColonColon" |) ]
@@ -981,6 +1024,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Lt" |) ]
@@ -995,6 +1039,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Gt" |) ]
@@ -1009,6 +1054,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Comma" |) ]
@@ -1023,6 +1069,7 @@ Module parser.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "EOF" |) ]
@@ -1128,7 +1175,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u8" |) ]
@@ -1144,7 +1193,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u16" |) ]
@@ -1160,7 +1211,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u32" |) ]
@@ -1176,7 +1229,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u64" |) ]
@@ -1192,7 +1247,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u128" |) ]
@@ -1208,7 +1265,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "u256" |) ]
@@ -1224,7 +1283,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "bool" |) ]
@@ -1243,7 +1304,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "address" |) ]
@@ -1262,7 +1325,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "vector" |) ]
@@ -1278,7 +1343,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "true" |) ]
@@ -1294,7 +1361,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "false" |) ]
@@ -1313,7 +1382,9 @@ Module parser.
                                 "alloc::string::ToString",
                                 Ty.path "str",
                                 [],
+                                [],
                                 "to_string",
+                                [],
                                 []
                               |),
                               [ M.read (| Value.String "signer" |) ]
@@ -1456,95 +1527,97 @@ Module parser.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "anyhow::Error",
-                                                      "msg",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Invalid token. Expected a name but got "
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "anyhow::Error",
+                                                    "msg",
+                                                    [],
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [],
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "Invalid token. Expected a name but got "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_debug",
+                                                                                [],
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_debug",
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_core_types::parser::Token"
-                                                                                  ]
-                                                                                |),
-                                                                                [ tok ]
-                                                                              |)
-                                                                            ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                            |)
+                                                                                    "move_core_types::parser::Token"
+                                                                                ]
+                                                                              |),
+                                                                              [ tok ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)))
                     ]
                   |)
@@ -1585,7 +1658,7 @@ Module parser.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [] |),
+                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [], [] |),
                 [ s ]
               |)
             |),
@@ -1710,14 +1783,14 @@ Module parser.
               let~ num :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                    M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                     []
                   |)
                 |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "alloc::string::String", "push", [] |),
+                    M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                     [ num; M.read (| initial |) ]
                   |)
                 |) in
@@ -1733,7 +1806,9 @@ Module parser.
                                 "core::iter::traits::iterator::Iterator",
                                 impl_Iterator_Item___char_,
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [ it ]
@@ -1756,6 +1831,7 @@ Module parser.
                                         M.get_associated_function (|
                                           Ty.path "char",
                                           "is_ascii_digit",
+                                          [],
                                           []
                                         |),
                                         [ c ]
@@ -1774,6 +1850,7 @@ Module parser.
                                     M.get_associated_function (|
                                       Ty.path "alloc::string::String",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [ num; M.read (| c |) ]
@@ -1794,6 +1871,7 @@ Module parser.
                                       M.get_associated_function (|
                                         Ty.path "char",
                                         "is_alphanumeric",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| c |) ]
@@ -1810,6 +1888,7 @@ Module parser.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       []
@@ -1821,6 +1900,7 @@ Module parser.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [ suffix; M.read (| c |) ]
@@ -1838,7 +1918,9 @@ Module parser.
                                                   "core::iter::traits::iterator::Iterator",
                                                   impl_Iterator_Item___char_,
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ it ]
@@ -1860,6 +1942,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "is_ascii_alphanumeric",
+                                                          [],
                                                           []
                                                         |),
                                                         [ c ]
@@ -1875,6 +1958,7 @@ Module parser.
                                                       M.get_associated_function (|
                                                         Ty.path "alloc::string::String",
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
                                                       [ suffix; M.read (| c |) ]
@@ -1892,6 +1976,7 @@ Module parser.
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ num ]
@@ -1900,6 +1985,7 @@ Module parser.
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ suffix ]
@@ -1914,6 +2000,7 @@ Module parser.
                                                                   M.get_associated_function (|
                                                                     Ty.path "alloc::string::String",
                                                                     "as_str",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ suffix ]
@@ -2016,6 +2103,7 @@ Module parser.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_const",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -2072,6 +2160,7 @@ Module parser.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ num ]
@@ -2213,12 +2302,14 @@ Module parser.
                       "core::iter::traits::iterator::Iterator",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "peekable",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "chars", [] |),
+                        M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                         [ M.read (| s |) ]
                       |)
                     ]
@@ -2234,7 +2325,9 @@ Module parser.
                         []
                         [ Ty.path "core::str::iter::Chars" ],
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [ it ]
@@ -2335,7 +2428,9 @@ Module parser.
                                                     []
                                                     [ Ty.path "core::str::iter::Chars" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ it ]
@@ -2388,6 +2483,7 @@ Module parser.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2432,6 +2528,7 @@ Module parser.
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -2444,6 +2541,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "eq",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2456,6 +2554,7 @@ Module parser.
                                                             []
                                                             [ Ty.path "core::str::iter::Chars" ],
                                                           "peek",
+                                                          [],
                                                           []
                                                         |),
                                                         [ it ]
@@ -2481,6 +2580,7 @@ Module parser.
                                                             []
                                                             [ Ty.path "char" ]
                                                         ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -2493,6 +2593,7 @@ Module parser.
                                                           ]
                                                       ],
                                                       "eq",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2505,6 +2606,7 @@ Module parser.
                                                               []
                                                               [ Ty.path "core::str::iter::Chars" ],
                                                             "peek",
+                                                            [],
                                                             []
                                                           |),
                                                           [ it ]
@@ -2533,6 +2635,7 @@ Module parser.
                                                     []
                                                     [ Ty.path "char" ],
                                                   "unwrap",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2545,7 +2648,9 @@ Module parser.
                                                         []
                                                         [ Ty.path "core::str::iter::Chars" ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ it ]
@@ -2564,7 +2669,9 @@ Module parser.
                                                     []
                                                     [ Ty.path "core::str::iter::Chars" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ it ]
@@ -2586,6 +2693,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "is_ascii_hexdigit",
+                                                          [],
                                                           []
                                                         |),
                                                         [ c ]
@@ -2602,6 +2710,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         []
@@ -2613,6 +2722,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [ r; Value.UnicodeChar 48 ]
@@ -2624,6 +2734,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [ r; Value.UnicodeChar 120 ]
@@ -2635,6 +2746,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [ r; M.read (| c |) ]
@@ -2654,7 +2766,9 @@ Module parser.
                                                                 [ Ty.path "core::str::iter::Chars"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "into_iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| it |) ]
@@ -2681,7 +2795,9 @@ Module parser.
                                                                                   "core::str::iter::Chars"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "next",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ iter ]
@@ -2727,6 +2843,7 @@ Module parser.
                                                                                               Ty.path
                                                                                                 "char",
                                                                                               "is_ascii_hexdigit",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [ c ]
@@ -2747,6 +2864,7 @@ Module parser.
                                                                                             Ty.path
                                                                                               "alloc::string::String",
                                                                                             "push",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -2783,6 +2901,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ r ]
@@ -2821,6 +2940,7 @@ Module parser.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2856,6 +2976,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_digit",
+                                                  [],
                                                   []
                                                 |),
                                                 [ c ]
@@ -2883,7 +3004,9 @@ Module parser.
                                                       Ty.path "anyhow::Error"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2938,6 +3061,7 @@ Module parser.
                                                                     ];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -2949,6 +3073,7 @@ Module parser.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -2986,6 +3111,7 @@ Module parser.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -2994,6 +3120,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3006,6 +3133,7 @@ Module parser.
                                                           []
                                                           [ Ty.path "core::str::iter::Chars" ],
                                                         "peek",
+                                                        [],
                                                         []
                                                       |),
                                                       [ it ]
@@ -3033,6 +3161,7 @@ Module parser.
                                                     []
                                                     [ Ty.path "char" ],
                                                   "unwrap",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3045,7 +3174,9 @@ Module parser.
                                                         []
                                                         [ Ty.path "core::str::iter::Chars" ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ it ]
@@ -3059,6 +3190,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -3078,7 +3210,9 @@ Module parser.
                                                           []
                                                           [ Ty.path "core::str::iter::Chars" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ it ]
@@ -3118,6 +3252,7 @@ Module parser.
                                                               M.get_associated_function (|
                                                                 Ty.path "char",
                                                                 "is_ascii",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ c ]
@@ -3133,6 +3268,7 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ r; M.read (| c |) ]
@@ -3162,6 +3298,7 @@ Module parser.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_const",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3196,6 +3333,7 @@ Module parser.
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ r ]
@@ -3238,6 +3376,7 @@ Module parser.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -3246,6 +3385,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3258,6 +3398,7 @@ Module parser.
                                                           []
                                                           [ Ty.path "core::str::iter::Chars" ],
                                                         "peek",
+                                                        [],
                                                         []
                                                       |),
                                                       [ it ]
@@ -3285,6 +3426,7 @@ Module parser.
                                                     []
                                                     [ Ty.path "char" ],
                                                   "unwrap",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3297,7 +3439,9 @@ Module parser.
                                                         []
                                                         [ Ty.path "core::str::iter::Chars" ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ it ]
@@ -3311,6 +3455,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -3330,7 +3475,9 @@ Module parser.
                                                           []
                                                           [ Ty.path "core::str::iter::Chars" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ it ]
@@ -3370,6 +3517,7 @@ Module parser.
                                                               M.get_associated_function (|
                                                                 Ty.path "char",
                                                                 "is_ascii_hexdigit",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ c ]
@@ -3385,6 +3533,7 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ r; M.read (| c |) ]
@@ -3414,6 +3563,7 @@ Module parser.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_const",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3448,6 +3598,7 @@ Module parser.
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ r ]
@@ -3473,6 +3624,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_whitespace",
+                                                  [],
                                                   []
                                                 |),
                                                 [ c ]
@@ -3489,6 +3641,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -3500,6 +3653,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
                                                 [ r; M.read (| c |) ]
@@ -3518,7 +3672,9 @@ Module parser.
                                                         []
                                                         [ Ty.path "core::str::iter::Chars" ],
                                                       [],
+                                                      [],
                                                       "into_iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| it |) ]
@@ -3545,7 +3701,9 @@ Module parser.
                                                                           "core::str::iter::Chars"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "next",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ iter ]
@@ -3586,6 +3744,7 @@ Module parser.
                                                                                       Ty.path
                                                                                         "char",
                                                                                       "is_ascii_whitespace",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ c ]
@@ -3603,6 +3762,7 @@ Module parser.
                                                                                     Ty.path
                                                                                       "alloc::string::String",
                                                                                     "push",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -3637,6 +3797,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ r ]
@@ -3660,6 +3821,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_alphabetic",
+                                                  [],
                                                   []
                                                 |),
                                                 [ c ]
@@ -3676,6 +3838,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -3687,6 +3850,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
                                                 [ r; M.read (| c |) ]
@@ -3705,7 +3869,9 @@ Module parser.
                                                         []
                                                         [ Ty.path "core::str::iter::Chars" ],
                                                       [],
+                                                      [],
                                                       "into_iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| it |) ]
@@ -3732,7 +3898,9 @@ Module parser.
                                                                           "core::str::iter::Chars"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "next",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ iter ]
@@ -3790,6 +3958,7 @@ Module parser.
                                                                                     Ty.path
                                                                                       "alloc::string::String",
                                                                                     "push",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -3824,6 +3993,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ r ]
@@ -3866,6 +4036,7 @@ Module parser.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3933,6 +4104,7 @@ Module parser.
                         [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -3969,7 +4141,9 @@ Module parser.
                                           Ty.path "anyhow::Error"
                                         ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4014,6 +4188,7 @@ Module parser.
                                                         ];
                                                       Ty.path "anyhow::Error"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -4024,6 +4199,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -4066,6 +4242,7 @@ Module parser.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ v; M.read (| tok |) ]
@@ -4078,6 +4255,7 @@ Module parser.
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.path "str",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeFrom")
@@ -4085,6 +4263,7 @@ Module parser.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4152,7 +4331,9 @@ Module parser.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "peekable",
+                    [],
                     []
                   |),
                   [
@@ -4161,7 +4342,9 @@ Module parser.
                         "core::iter::traits::collect::IntoIterator",
                         T,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -4198,7 +4381,9 @@ Module parser.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
@@ -4247,6 +4432,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4297,6 +4483,7 @@ Module parser.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
               "peek",
+              [],
               []
             |),
             [
@@ -4345,7 +4532,9 @@ Module parser.
                               []
                               [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -4353,6 +4542,7 @@ Module parser.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                 "next",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4381,6 +4571,7 @@ Module parser.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -4391,6 +4582,7 @@ Module parser.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -4425,8 +4617,10 @@ Module parser.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "move_core_types::parser::Token",
+                                    [],
                                     [ Ty.path "move_core_types::parser::Token" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [ t; tok ]
@@ -4445,6 +4639,7 @@ Module parser.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -4469,6 +4664,7 @@ Module parser.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4489,6 +4685,7 @@ Module parser.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_core_types::parser::Token"
@@ -4501,6 +4698,7 @@ Module parser.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_core_types::parser::Token"
@@ -4592,6 +4790,7 @@ Module parser.
                           []
                           [ R; Ty.path "alloc::alloc::Global" ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -4619,6 +4818,7 @@ Module parser.
                                             []
                                             [ Ty.path "move_core_types::parser::Token" ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -4631,6 +4831,7 @@ Module parser.
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4642,6 +4843,7 @@ Module parser.
                                               []
                                               [ I ],
                                             "peek",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -4667,6 +4869,7 @@ Module parser.
                                         []
                                         [ R; Ty.path "alloc::alloc::Global" ],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4682,7 +4885,9 @@ Module parser.
                                                   []
                                                   [ R; Ty.path "anyhow::Error" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4690,6 +4895,7 @@ Module parser.
                                                   M.get_trait_method (|
                                                     "core::ops::function::Fn",
                                                     F,
+                                                    [],
                                                     [
                                                       Ty.tuple
                                                         [
@@ -4706,6 +4912,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "call",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4746,6 +4953,7 @@ Module parser.
                                                                   ];
                                                                 Ty.path "anyhow::Error"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -4757,6 +4965,7 @@ Module parser.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -4802,6 +5011,7 @@ Module parser.
                                                         []
                                                         [ Ty.path "move_core_types::parser::Token" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -4815,6 +5025,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4827,6 +5038,7 @@ Module parser.
                                                           []
                                                           [ I ],
                                                         "peek",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -4862,7 +5074,9 @@ Module parser.
                                           []
                                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4873,6 +5087,7 @@ Module parser.
                                               []
                                               [ I ],
                                             "consume",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4912,6 +5127,7 @@ Module parser.
                                                           [ R; Ty.path "alloc::alloc::Global" ];
                                                         Ty.path "anyhow::Error"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -4922,6 +5138,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -4963,6 +5180,7 @@ Module parser.
                                                         []
                                                         [ Ty.path "move_core_types::parser::Token" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -4976,6 +5194,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4988,6 +5207,7 @@ Module parser.
                                                           []
                                                           [ I ],
                                                         "peek",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -5060,7 +5280,9 @@ Module parser.
                                 [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -5068,6 +5290,7 @@ Module parser.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -5099,6 +5322,7 @@ Module parser.
                                               Ty.path "alloc::string::String";
                                               Ty.path "anyhow::Error"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -5109,6 +5333,7 @@ Module parser.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -5154,6 +5379,7 @@ Module parser.
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -5178,6 +5404,7 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -5202,6 +5429,7 @@ Module parser.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_debug",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_core_types::parser::Token"
@@ -5311,7 +5539,9 @@ Module parser.
                                 [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -5319,6 +5549,7 @@ Module parser.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -5350,6 +5581,7 @@ Module parser.
                                               Ty.path "move_core_types::language_storage::TypeTag";
                                               Ty.path "anyhow::Error"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -5360,6 +5592,7 @@ Module parser.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -5496,7 +5729,9 @@ Module parser.
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5507,6 +5742,7 @@ Module parser.
                                             []
                                             [ I ],
                                           "consume",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5542,6 +5778,7 @@ Module parser.
                                                         "move_core_types::language_storage::TypeTag";
                                                       Ty.path "anyhow::Error"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -5552,6 +5789,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -5587,7 +5825,9 @@ Module parser.
                                             Ty.path "anyhow::Error"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5598,6 +5838,7 @@ Module parser.
                                               []
                                               [ I ],
                                             "parse_type_tag",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -5630,6 +5871,7 @@ Module parser.
                                                           "move_core_types::language_storage::TypeTag";
                                                         Ty.path "anyhow::Error"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5640,6 +5882,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -5672,7 +5915,9 @@ Module parser.
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5683,6 +5928,7 @@ Module parser.
                                             []
                                             [ I ],
                                           "consume",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5718,6 +5964,7 @@ Module parser.
                                                         "move_core_types::language_storage::TypeTag";
                                                       Ty.path "anyhow::Error"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -5728,6 +5975,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -5762,6 +6010,7 @@ Module parser.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ty |) ]
@@ -5788,7 +6037,9 @@ Module parser.
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5799,6 +6050,7 @@ Module parser.
                                             []
                                             [ I ],
                                           "consume",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5836,6 +6088,7 @@ Module parser.
                                                         "move_core_types::language_storage::TypeTag";
                                                       Ty.path "anyhow::Error"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -5846,6 +6099,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -5879,7 +6133,9 @@ Module parser.
                                           [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5893,6 +6149,7 @@ Module parser.
                                                 Ty.path "anyhow::Error"
                                               ],
                                             "and_then",
+                                            [],
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.function
@@ -5914,6 +6171,7 @@ Module parser.
                                                   []
                                                   [ I ],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -5953,6 +6211,7 @@ Module parser.
                                                           "move_core_types::language_storage::TypeTag";
                                                         Ty.path "anyhow::Error"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5963,6 +6222,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -5995,7 +6255,9 @@ Module parser.
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6006,6 +6268,7 @@ Module parser.
                                             []
                                             [ I ],
                                           "consume",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6043,6 +6306,7 @@ Module parser.
                                                         "move_core_types::language_storage::TypeTag";
                                                       Ty.path "anyhow::Error"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -6053,6 +6317,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -6086,7 +6351,9 @@ Module parser.
                                           [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6100,6 +6367,7 @@ Module parser.
                                                 Ty.path "anyhow::Error"
                                               ],
                                             "and_then",
+                                            [],
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.function
@@ -6121,6 +6389,7 @@ Module parser.
                                                   []
                                                   [ I ],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -6160,6 +6429,7 @@ Module parser.
                                                           "move_core_types::language_storage::TypeTag";
                                                         Ty.path "anyhow::Error"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -6170,6 +6440,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -6213,6 +6484,7 @@ Module parser.
                                                         []
                                                         [ Ty.path "move_core_types::parser::Token" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -6226,6 +6498,7 @@ Module parser.
                                                       ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6238,6 +6511,7 @@ Module parser.
                                                           []
                                                           [ I ],
                                                         "peek",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -6276,7 +6550,9 @@ Module parser.
                                                       Ty.path "anyhow::Error"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6287,6 +6563,7 @@ Module parser.
                                                         []
                                                         [ I ],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |) ]
@@ -6319,6 +6596,7 @@ Module parser.
                                                                     "move_core_types::language_storage::TypeTag";
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -6330,6 +6608,7 @@ Module parser.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6372,7 +6651,9 @@ Module parser.
                                                         Ty.path "anyhow::Error"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6384,6 +6665,7 @@ Module parser.
                                                           []
                                                           [ I ],
                                                         "parse_comma_list",
+                                                        [],
                                                         [
                                                           Ty.function
                                                             [
@@ -6436,6 +6718,7 @@ Module parser.
                                                                                 []
                                                                                 [ I ],
                                                                               "parse_type_tag",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| parser |) ]
@@ -6480,6 +6763,7 @@ Module parser.
                                                                       "move_core_types::language_storage::TypeTag";
                                                                     Ty.path "anyhow::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -6491,6 +6775,7 @@ Module parser.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -6523,7 +6808,9 @@ Module parser.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6534,6 +6821,7 @@ Module parser.
                                                         []
                                                         [ I ],
                                                       "consume",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6571,6 +6859,7 @@ Module parser.
                                                                     "move_core_types::language_storage::TypeTag";
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -6582,6 +6871,7 @@ Module parser.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6617,6 +6907,7 @@ Module parser.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "new",
+                                              [],
                                               []
                                             |),
                                             []
@@ -6639,6 +6930,7 @@ Module parser.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6662,7 +6954,9 @@ Module parser.
                                                             "move_core_types::account_address::AccountAddressParseError"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6671,6 +6965,7 @@ Module parser.
                                                           Ty.path
                                                             "move_core_types::account_address::AccountAddress",
                                                           "from_hex_literal",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6679,7 +6974,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ addr ]
@@ -6714,6 +7011,7 @@ Module parser.
                                                                         "move_core_types::language_storage::TypeTag";
                                                                       Ty.path "anyhow::Error"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -6727,6 +7025,7 @@ Module parser.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -6764,7 +7063,9 @@ Module parser.
                                                           Ty.path "anyhow::Error"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6773,6 +7074,7 @@ Module parser.
                                                           Ty.path
                                                             "move_core_types::identifier::Identifier",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ M.read (| module |) ]
@@ -6805,6 +7107,7 @@ Module parser.
                                                                         "move_core_types::language_storage::TypeTag";
                                                                       Ty.path "anyhow::Error"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -6817,6 +7120,7 @@ Module parser.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -6854,7 +7158,9 @@ Module parser.
                                                           Ty.path "anyhow::Error"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6863,6 +7169,7 @@ Module parser.
                                                           Ty.path
                                                             "move_core_types::identifier::Identifier",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [ M.read (| name |) ]
@@ -6895,6 +7202,7 @@ Module parser.
                                                                         "move_core_types::language_storage::TypeTag";
                                                                       Ty.path "anyhow::Error"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -6907,6 +7215,7 @@ Module parser.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -6948,6 +7257,7 @@ Module parser.
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -6972,6 +7282,7 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -6996,6 +7307,7 @@ Module parser.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_debug",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_core_types::parser::Token"
@@ -7081,7 +7393,9 @@ Module parser.
                                 [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -7089,6 +7403,7 @@ Module parser.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -7121,6 +7436,7 @@ Module parser.
                                                 "move_core_types::transaction_argument::TransactionArgument";
                                               Ty.path "anyhow::Error"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -7131,6 +7447,7 @@ Module parser.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -7179,7 +7496,9 @@ Module parser.
                                                 Ty.path "core::num::error::ParseIntError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7187,6 +7506,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -7195,7 +7515,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7204,6 +7526,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7212,7 +7535,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7254,6 +7579,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7265,6 +7591,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -7315,7 +7642,9 @@ Module parser.
                                                 Ty.path "core::num::error::ParseIntError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7323,6 +7652,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "u16" ]
                                               |),
                                               [
@@ -7331,7 +7661,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7340,6 +7672,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7348,7 +7681,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7390,6 +7725,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7401,6 +7737,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -7451,7 +7788,9 @@ Module parser.
                                                 Ty.path "core::num::error::ParseIntError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7459,6 +7798,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "u32" ]
                                               |),
                                               [
@@ -7467,7 +7807,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7476,6 +7818,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7484,7 +7827,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7526,6 +7871,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7537,6 +7883,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -7587,7 +7934,9 @@ Module parser.
                                                 Ty.path "core::num::error::ParseIntError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7595,6 +7944,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "u64" ]
                                               |),
                                               [
@@ -7603,7 +7953,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7612,6 +7964,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7620,7 +7973,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7662,6 +8017,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7673,6 +8029,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -7723,7 +8080,9 @@ Module parser.
                                                 Ty.path "core::num::error::ParseIntError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7731,6 +8090,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "u128" ]
                                               |),
                                               [
@@ -7739,7 +8099,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7748,6 +8110,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7756,7 +8119,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7798,6 +8163,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7809,6 +8175,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -7859,7 +8226,9 @@ Module parser.
                                                 Ty.path "move_core_types::u256::U256FromStrError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7867,6 +8236,7 @@ Module parser.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
+                                                [],
                                                 [ Ty.path "move_core_types::u256::U256" ]
                                               |),
                                               [
@@ -7875,7 +8245,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7884,6 +8256,7 @@ Module parser.
                                                         M.get_associated_function (|
                                                           Ty.path "str",
                                                           "replace",
+                                                          [],
                                                           [ Ty.path "char" ]
                                                         |),
                                                         [
@@ -7892,7 +8265,9 @@ Module parser.
                                                               "core::ops::deref::Deref",
                                                               Ty.path "alloc::string::String",
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s ]
@@ -7934,6 +8309,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -7945,6 +8321,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -8015,7 +8392,9 @@ Module parser.
                                                   "move_core_types::account_address::AccountAddressParseError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8024,6 +8403,7 @@ Module parser.
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress",
                                                 "from_hex_literal",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -8032,7 +8412,9 @@ Module parser.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "alloc::string::String",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [ addr ]
@@ -8067,6 +8449,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -8078,6 +8461,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -8131,7 +8515,9 @@ Module parser.
                                                 Ty.path "hex::error::FromHexError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8171,6 +8557,7 @@ Module parser.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -8181,6 +8568,7 @@ Module parser.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -8218,6 +8606,7 @@ Module parser.
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -8242,6 +8631,7 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -8266,6 +8656,7 @@ Module parser.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_debug",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_core_types::parser::Token"
@@ -8358,7 +8749,9 @@ Module parser.
                             (Ty.path "bool")
                         ],
                       [],
+                      [],
                       "collect",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -8379,7 +8772,9 @@ Module parser.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "filter",
+                          [],
                           [
                             Ty.function
                               [
@@ -8406,7 +8801,9 @@ Module parser.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -8430,7 +8827,9 @@ Module parser.
                                             Ty.path "anyhow::Error"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8466,6 +8865,7 @@ Module parser.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ T; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -8476,6 +8876,7 @@ Module parser.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -8516,6 +8917,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "move_core_types::parser::Token",
                                                   "is_whitespace",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| tok |) ]
@@ -8540,6 +8942,7 @@ Module parser.
                         [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global"
                         ],
                       "push",
+                      [],
                       []
                     |),
                     [ tokens; Value.StructTuple "move_core_types::parser::Token::EOF" [] ]
@@ -8562,6 +8965,7 @@ Module parser.
                             ]
                         ],
                       "new",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -8585,7 +8989,9 @@ Module parser.
                             []
                             [ T; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -8593,6 +8999,7 @@ Module parser.
                             M.get_trait_method (|
                               "core::ops::function::Fn",
                               F,
+                              [],
                               [
                                 Ty.tuple
                                   [
@@ -8616,6 +9023,7 @@ Module parser.
                                   ]
                               ],
                               "call",
+                              [],
                               []
                             |),
                             [ f; Value.Tuple [ parser ] ]
@@ -8644,6 +9052,7 @@ Module parser.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ T; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -8654,6 +9063,7 @@ Module parser.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -8686,7 +9096,9 @@ Module parser.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -8705,6 +9117,7 @@ Module parser.
                                   ]
                               ],
                             "consume",
+                            [],
                             []
                           |),
                           [ parser; Value.StructTuple "move_core_types::parser::Token::EOF" [] ]
@@ -8733,6 +9146,7 @@ Module parser.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ T; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -8743,6 +9157,7 @@ Module parser.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -8856,6 +9271,7 @@ Module parser.
                                         ]
                                     ],
                                   "parse_comma_list",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -8920,6 +9336,7 @@ Module parser.
                                                               ]
                                                           ],
                                                         "parse_string",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parser |) ]
@@ -9035,6 +9452,7 @@ Module parser.
                                         ]
                                     ],
                                   "parse_comma_list",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -9101,6 +9519,7 @@ Module parser.
                                                               ]
                                                           ],
                                                         "parse_type_tag",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parser |) ]
@@ -9200,6 +9619,7 @@ Module parser.
                                         ]
                                     ],
                                   "parse_type_tag",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| parser |) ]
@@ -9315,6 +9735,7 @@ Module parser.
                                         ]
                                     ],
                                   "parse_comma_list",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -9383,6 +9804,7 @@ Module parser.
                                                               ]
                                                           ],
                                                         "parse_transaction_argument",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parser |) ]
@@ -9484,6 +9906,7 @@ Module parser.
                                         ]
                                     ],
                                   "parse_transaction_argument",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| parser |) ]
@@ -9534,7 +9957,9 @@ Module parser.
                               Ty.path "anyhow::Error"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9548,6 +9973,7 @@ Module parser.
                                   Ty.path "anyhow::Error"
                                 ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "anyhow::Error";
                                 Ty.function
@@ -9626,6 +10052,7 @@ Module parser.
                                                               ]
                                                           ],
                                                         "parse_type_tag",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parser |) ]
@@ -9652,6 +10079,7 @@ Module parser.
                                                   M.get_associated_function (|
                                                     Ty.path "anyhow::Error",
                                                     "msg",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
@@ -9677,6 +10105,7 @@ Module parser.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9700,6 +10129,7 @@ Module parser.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path "&")
@@ -9715,6 +10145,7 @@ Module parser.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "anyhow::Error"
@@ -9768,6 +10199,7 @@ Module parser.
                                           Ty.path "move_core_types::language_storage::StructTag";
                                           Ty.path "anyhow::Error"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9778,6 +10210,7 @@ Module parser.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9830,6 +10263,7 @@ Module parser.
                                     M.get_associated_function (|
                                       Ty.path "anyhow::Error",
                                       "msg",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -9850,6 +10284,7 @@ Module parser.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9868,6 +10303,7 @@ Module parser.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&")

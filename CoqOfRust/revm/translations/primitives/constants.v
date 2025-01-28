@@ -16,6 +16,7 @@ Module constants.
             M.get_associated_function (|
               Ty.path "alloy_primitives::bits::address::Address",
               "new",
+              [],
               []
             |),
             [
@@ -34,6 +35,7 @@ Module constants.
             M.get_associated_function (|
               Ty.path "alloy_primitives::bits::address::Address",
               "new",
+              [],
               []
             |),
             [

@@ -145,7 +145,9 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -182,6 +184,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -230,6 +233,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "unicode",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -261,6 +265,7 @@ Module char.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
+              [],
               [ Ty.path "char"; Ty.function [ Ty.path "u8" ] (Ty.path "char") ]
             |),
             [
@@ -271,6 +276,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [
@@ -284,8 +290,10 @@ Module char.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "char",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |)
             ]
@@ -314,6 +322,7 @@ Module char.
                       [ Value.Integer IntegerKind.Usize 10 ]
                       [],
                     "len",
+                    [ Value.Integer IntegerKind.Usize 10 ],
                     []
                   |),
                   [
@@ -351,6 +360,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
@@ -372,6 +382,7 @@ Module char.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
+              [],
               [ Ty.path "char"; Ty.function [ Ty.path "u8" ] (Ty.path "char") ]
             |),
             [
@@ -382,6 +393,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next_back",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
@@ -389,8 +401,10 @@ Module char.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "char",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |)
             ]
@@ -416,6 +430,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "advance_by",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [
@@ -466,6 +481,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [
@@ -513,7 +529,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
@@ -523,6 +539,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "as_str",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [
@@ -580,7 +597,9 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -617,6 +636,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -665,6 +685,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "ascii",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [
@@ -672,6 +693,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::ascii::ascii_char::AsciiChar",
                       "to_u8",
+                      [],
                       []
                     |),
                     [ M.read (| c |) ]
@@ -704,6 +726,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "backslash",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -734,6 +757,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "unicode",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -765,6 +789,7 @@ Module char.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
+              [],
               [ Ty.path "char"; Ty.function [ Ty.path "u8" ] (Ty.path "char") ]
             |),
             [
@@ -775,6 +800,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [
@@ -788,8 +814,10 @@ Module char.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "char",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |)
             ]
@@ -818,6 +846,7 @@ Module char.
                       [ Value.Integer IntegerKind.Usize 10 ]
                       [],
                     "len",
+                    [ Value.Integer IntegerKind.Usize 10 ],
                     []
                   |),
                   [
@@ -855,6 +884,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
@@ -876,6 +906,7 @@ Module char.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
+              [],
               [ Ty.path "char"; Ty.function [ Ty.path "u8" ] (Ty.path "char") ]
             |),
             [
@@ -886,6 +917,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next_back",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
@@ -893,8 +925,10 @@ Module char.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "char",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |)
             ]
@@ -920,6 +954,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "advance_by",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [
@@ -970,6 +1005,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
+              [ Value.Integer IntegerKind.Usize 10 ],
               []
             |),
             [
@@ -1017,7 +1053,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
@@ -1027,6 +1063,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "as_str",
+                  [ Value.Integer IntegerKind.Usize 10 ],
                   []
                 |),
                 [
@@ -1075,7 +1112,9 @@ Module char.
                   "core::clone::Clone",
                   Ty.path "core::char::EscapeDebugInner",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -1112,6 +1151,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -1200,7 +1240,9 @@ Module char.
                                 [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1226,7 +1268,9 @@ Module char.
                               "core::clone::Clone",
                               Ty.path "char",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1276,6 +1320,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
@@ -1296,6 +1341,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Char" |); __self_0 ]
@@ -1359,6 +1405,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "backslash",
+                      [ Value.Integer IntegerKind.Usize 10 ],
                       []
                     |),
                     [ M.read (| c |) ]
@@ -1393,6 +1440,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "unicode",
+                      [ Value.Integer IntegerKind.Usize 10 ],
                       []
                     |),
                     [ M.read (| c |) ]
@@ -1432,6 +1480,7 @@ Module char.
                           [ Value.Integer IntegerKind.Usize 10 ]
                           [],
                         "empty",
+                        [ Value.Integer IntegerKind.Usize 10 ],
                         []
                       |),
                       []
@@ -1490,6 +1539,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                           "map",
+                          [],
                           [ Ty.path "char"; Ty.function [ Ty.path "u8" ] (Ty.path "char") ]
                         |),
                         [
@@ -1500,6 +1550,7 @@ Module char.
                                 [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               "next",
+                              [ Value.Integer IntegerKind.Usize 10 ],
                               []
                             |),
                             [ M.read (| bytes |) ]
@@ -1507,8 +1558,10 @@ Module char.
                           M.get_trait_method (|
                             "core::convert::From",
                             Ty.path "char",
+                            [],
                             [ Ty.path "u8" ],
                             "from",
+                            [],
                             []
                           |)
                         ]
@@ -1529,6 +1582,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "clear",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1562,7 +1616,9 @@ Module char.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.path "core::char::EscapeDebug",
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1592,7 +1648,9 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::EscapeDebug",
               [],
+              [],
               "len",
+              [],
               []
             |),
             [ self ]
@@ -1658,6 +1716,7 @@ Module char.
                             [ Value.Integer IntegerKind.Usize 10 ]
                             [],
                           "len",
+                          [ Value.Integer IntegerKind.Usize 10 ],
                           []
                         |),
                         [ M.read (| bytes |) ]
@@ -1740,6 +1799,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [
@@ -1751,6 +1811,7 @@ Module char.
                                 [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               "as_str",
+                              [ Value.Integer IntegerKind.Usize 10 ],
                               []
                             |),
                             [ M.read (| bytes |) ]
@@ -1774,7 +1835,9 @@ Module char.
                           "core::fmt::Write",
                           Ty.path "core::fmt::Formatter",
                           [],
+                          [],
                           "write_char",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| M.read (| chr |) |) ]
@@ -1816,6 +1879,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -1858,7 +1922,9 @@ Module char.
                   "core::clone::Clone",
                   Ty.path "core::char::CaseMappingIter",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -1902,7 +1968,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "next",
+              [],
               []
             |),
             [
@@ -1931,7 +1999,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [
@@ -1965,7 +2035,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "fold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -1994,7 +2066,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "count",
+              [],
               []
             |),
             [
@@ -2021,7 +2095,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "last",
+              [],
               []
             |),
             [
@@ -2049,7 +2125,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "advance_by",
+              [],
               []
             |),
             [
@@ -2081,7 +2159,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "__iterator_get_unchecked",
+              [],
               []
             |),
             [
@@ -2132,7 +2212,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "next_back",
+              [],
               []
             |),
             [
@@ -2166,7 +2248,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "rfold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -2196,7 +2280,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "advance_back_by",
+              [],
               []
             |),
             [
@@ -2253,7 +2339,9 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "len",
+              [],
               []
             |),
             [
@@ -2282,7 +2370,9 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "is_empty",
+              [],
               []
             |),
             [
@@ -2363,7 +2453,9 @@ Module char.
               "core::fmt::Display",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -2408,6 +2500,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -2450,7 +2543,9 @@ Module char.
                   "core::clone::Clone",
                   Ty.path "core::char::CaseMappingIter",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -2494,7 +2589,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "next",
+              [],
               []
             |),
             [
@@ -2523,7 +2620,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [
@@ -2557,7 +2656,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "fold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -2586,7 +2687,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "count",
+              [],
               []
             |),
             [
@@ -2613,7 +2716,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "last",
+              [],
               []
             |),
             [
@@ -2641,7 +2746,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "advance_by",
+              [],
               []
             |),
             [
@@ -2673,7 +2780,9 @@ Module char.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "__iterator_get_unchecked",
+              [],
               []
             |),
             [
@@ -2724,7 +2833,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "next_back",
+              [],
               []
             |),
             [
@@ -2758,7 +2869,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "rfold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -2788,7 +2901,9 @@ Module char.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "advance_back_by",
+              [],
               []
             |),
             [
@@ -2845,7 +2960,9 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "len",
+              [],
               []
             |),
             [
@@ -2874,7 +2991,9 @@ Module char.
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "is_empty",
+              [],
               []
             |),
             [
@@ -2955,7 +3074,9 @@ Module char.
               "core::fmt::Display",
               Ty.path "core::char::CaseMappingIter",
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -3006,6 +3127,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -3051,7 +3173,9 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 3 ]
                     [ Ty.path "char" ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -3108,7 +3232,9 @@ Module char.
                       [ Value.Integer IntegerKind.Usize 3 ]
                       [ Ty.path "char" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| chars |) ]
@@ -3144,7 +3270,9 @@ Module char.
                                 [ Value.Integer IntegerKind.Usize 3 ]
                                 [ Ty.path "char" ],
                               [],
+                              [],
                               "next_back",
+                              [],
                               []
                             |),
                             [ iter ]
@@ -3183,7 +3311,9 @@ Module char.
                                         [ Value.Integer IntegerKind.Usize 3 ]
                                         [ Ty.path "char" ],
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -3228,7 +3358,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "next",
+              [],
               []
             |),
             [
@@ -3260,7 +3392,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [
@@ -3297,7 +3431,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "fold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -3329,7 +3465,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "count",
+              [],
               []
             |),
             [
@@ -3359,7 +3497,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "last",
+              [],
               []
             |),
             [
@@ -3390,7 +3530,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "advance_by",
+              [],
               []
             |),
             [
@@ -3425,7 +3567,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "__iterator_get_unchecked",
+              [],
               []
             |),
             [
@@ -3479,7 +3623,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "next_back",
+              [],
               []
             |),
             [
@@ -3516,7 +3662,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "rfold",
+              [],
               [ Acc; Fold ]
             |),
             [
@@ -3549,7 +3697,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "advance_back_by",
+              [],
               []
             |),
             [
@@ -3598,7 +3748,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "len",
+              [],
               []
             |),
             [
@@ -3630,7 +3782,9 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 3 ]
                 [ Ty.path "char" ],
               [],
+              [],
               "is_empty",
+              [],
               []
             |),
             [
@@ -3735,7 +3889,9 @@ Module char.
                               [ Value.Integer IntegerKind.Usize 3 ]
                               [ Ty.path "char" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3747,7 +3903,9 @@ Module char.
                                   [ Value.Integer IntegerKind.Usize 3 ]
                                   [ Ty.path "char" ],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [
@@ -3778,7 +3936,9 @@ Module char.
                                             [ Value.Integer IntegerKind.Usize 3 ]
                                             [ Ty.path "char" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3815,7 +3975,9 @@ Module char.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3824,7 +3986,9 @@ Module char.
                                                         "core::fmt::Write",
                                                         Ty.path "core::fmt::Formatter",
                                                         [],
+                                                        [],
                                                         "write_char",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| f |); M.read (| c |) ]
@@ -3856,6 +4020,7 @@ Module char.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -3867,6 +4032,7 @@ Module char.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -3930,6 +4096,7 @@ Module char.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -4014,7 +4181,15 @@ Module char.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", Ty.tuple [], [ Ty.tuple [] ], "eq", [] |),
+            M.get_trait_method (|
+              "core::cmp::PartialEq",
+              Ty.tuple [],
+              [],
+              [ Ty.tuple [] ],
+              "eq",
+              [],
+              []
+            |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -4085,7 +4260,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [ M.read (| Value.String "unicode code point out of range" |); M.read (| fmt |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

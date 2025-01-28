@@ -40,6 +40,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [
@@ -47,12 +48,13 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
                       |);
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -61,6 +63,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "allocator",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -76,8 +79,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -93,7 +98,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ T ]
                         |),
                         [
@@ -104,6 +111,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "iter",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -143,6 +151,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "clear",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -154,8 +163,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -171,7 +182,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ T ]
                         |),
                         [
@@ -182,6 +195,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "iter",
+                              [],
                               []
                             |),
                             [ M.read (| source |) ]
@@ -249,6 +263,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_mut_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -318,6 +333,7 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -353,6 +369,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                 "ptr",
+                [],
                 []
               |),
               [
@@ -398,6 +415,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "buffer_write",
+                      [],
                       []
                     |),
                     [
@@ -406,6 +424,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "to_physical_idx",
+                          [],
                           []
                         |),
                         [
@@ -466,12 +485,18 @@ Module collections.
                 (* MutToConstPointer *)
                 M.pointer_coercion
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      "add",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "ptr",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -518,6 +543,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -528,6 +554,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "ptr",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -571,12 +598,13 @@ Module collections.
               M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -638,6 +666,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                   "capacity",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -667,13 +696,14 @@ Module collections.
               M.get_function (| "alloc::collections::vec_deque::wrap_index", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                   [ M.read (| idx |); M.read (| addend |) ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "capacity",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -708,6 +738,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "wrap_add",
+                [],
                 []
               |),
               [
@@ -746,16 +777,17 @@ Module collections.
               M.get_function (| "alloc::collections::vec_deque::wrap_index", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                      M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                       [ M.read (| idx |); M.read (| subtrahend |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "capacity",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -766,6 +798,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "capacity",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -841,6 +874,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -862,6 +896,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -881,6 +916,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ dst ]
@@ -889,6 +925,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ src ]
@@ -897,6 +934,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ len ]
@@ -905,6 +943,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -917,6 +956,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "capacity",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -968,6 +1008,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -989,6 +1030,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1008,6 +1050,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ dst ]
@@ -1016,6 +1059,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ src ]
@@ -1024,6 +1068,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ len ]
@@ -1032,6 +1077,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -1044,6 +1090,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "capacity",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -1077,6 +1124,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -1087,6 +1135,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1098,6 +1147,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1108,6 +1158,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "ptr",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1195,6 +1246,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -1216,6 +1268,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1235,6 +1288,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ dst ]
@@ -1243,6 +1297,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ src ]
@@ -1251,6 +1306,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ len ]
@@ -1259,6 +1315,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -1271,6 +1328,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "capacity",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -1322,6 +1380,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -1343,6 +1402,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1362,6 +1422,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ dst ]
@@ -1370,6 +1431,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ src ]
@@ -1378,6 +1440,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ len ]
@@ -1386,6 +1449,7 @@ Module collections.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -1398,6 +1462,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "capacity",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -1431,6 +1496,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -1441,6 +1507,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1452,6 +1519,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1462,6 +1530,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "ptr",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1658,6 +1727,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "usize",
                                                           "abs_diff",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| src |); M.read (| dst |) ]
@@ -1671,6 +1741,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "capacity",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
@@ -1679,6 +1750,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.path "usize",
                                                             "abs_diff",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| src |); M.read (| dst |) ]
@@ -1696,6 +1768,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "capacity",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |) ]
@@ -1721,6 +1794,7 @@ Module collections.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1740,6 +1814,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [ dst ]
@@ -1748,6 +1823,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [ src ]
@@ -1756,6 +1832,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [ len ]
@@ -1764,6 +1841,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [
@@ -1776,6 +1854,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "capacity",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -1842,6 +1921,7 @@ Module collections.
                               []
                               [ T; A ],
                             "wrap_sub",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| dst |); M.read (| src |) ]
@@ -1859,6 +1939,7 @@ Module collections.
                               []
                               [ T; A ],
                             "capacity",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1876,6 +1957,7 @@ Module collections.
                               []
                               [ T; A ],
                             "capacity",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1918,6 +2000,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1955,6 +2038,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1974,6 +2058,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2014,6 +2099,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2039,6 +2125,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2076,6 +2163,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2095,6 +2183,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2135,6 +2224,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2160,6 +2250,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2258,6 +2349,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2277,6 +2369,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2299,6 +2392,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2397,6 +2491,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2419,6 +2514,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2431,6 +2527,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "capacity",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -2451,6 +2548,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2528,6 +2626,7 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| src |) ]
@@ -2540,6 +2639,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -2579,6 +2679,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "capacity",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2599,6 +2700,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| src |) ]
@@ -2616,6 +2718,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| src |) ]
@@ -2624,6 +2727,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2634,6 +2738,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -2645,6 +2750,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| src |) ]
@@ -2661,6 +2767,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "split_at",
+                              [],
                               []
                             |),
                             [ M.read (| src |); M.read (| head_room |) ]
@@ -2686,6 +2793,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "as_ptr",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| left |) ]
@@ -2694,6 +2802,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2704,6 +2813,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "ptr",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -2715,6 +2825,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| left |) ]
@@ -2735,6 +2846,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "as_ptr",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| right |) ]
@@ -2746,6 +2858,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "ptr",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -2754,6 +2867,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| right |) ]
@@ -2812,7 +2926,9 @@ Module collections.
                         []
                         [ impl_Iterator_Item___T_ ],
                       [],
+                      [],
                       "for_each",
+                      [],
                       [ Ty.function [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; T ] ] ] (Ty.tuple []) ]
                     |),
                     [
@@ -2821,7 +2937,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           impl_Iterator_Item___T_,
                           [],
+                          [],
                           "enumerate",
+                          [],
                           []
                         |),
                         [ M.read (| iter |) ]
@@ -2852,6 +2970,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "buffer_write",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2951,6 +3070,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "capacity",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2986,6 +3106,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "write_iter",
+                                [],
                                 [ impl_Iterator_Item___T_ ]
                               |),
                               [
@@ -3019,6 +3140,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "write_iter",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::take::Take")
@@ -3048,7 +3170,9 @@ Module collections.
                                         []
                                         [ impl_Iterator_Item___T_ ],
                                       [],
+                                      [],
                                       "take",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3074,6 +3198,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "write_iter",
+                                [],
                                 [ impl_Iterator_Item___T_ ]
                               |),
                               [
@@ -3178,6 +3303,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -3327,6 +3453,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "copy_nonoverlapping",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3357,6 +3484,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "copy",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3424,6 +3552,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "capacity",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| self |) ]
@@ -3439,6 +3568,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "capacity",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |) ]
@@ -3502,6 +3632,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "new_in",
+                      [],
                       []
                     |),
                     [ M.read (| alloc |) ]
@@ -3541,6 +3672,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [ M.read (| capacity |); M.read (| alloc |) ]
@@ -3721,7 +3853,7 @@ Module collections.
                       |));
                     ("len",
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                        M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -3744,6 +3876,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "from_raw_parts_in",
+                          [],
                           []
                         |),
                         [ M.read (| ptr |); M.read (| capacity |); M.read (| alloc |) ]
@@ -3808,6 +3941,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "to_physical_idx",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| index |) ]
@@ -3821,6 +3955,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -3831,6 +3966,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -3900,6 +4036,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "to_physical_idx",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| index |) ]
@@ -3913,6 +4050,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -3923,6 +4061,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -3982,6 +4121,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4021,6 +4161,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4047,6 +4188,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "to_physical_idx",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| i |) ]
@@ -4058,6 +4200,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "to_physical_idx",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| j |) ]
@@ -4068,7 +4211,12 @@ Module collections.
                   M.get_function (| "core::ptr::swap", [], [ T ] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4077,6 +4225,7 @@ Module collections.
                               []
                               [ T; A ],
                             "ptr",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -4085,7 +4234,12 @@ Module collections.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4094,6 +4248,7 @@ Module collections.
                               []
                               [ T; A ],
                             "ptr",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -4140,6 +4295,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "capacity",
+                            [],
                             []
                           |),
                           [
@@ -4193,11 +4349,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "expect",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -4219,6 +4376,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4241,6 +4399,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "reserve_exact",
+                              [],
                               []
                             |),
                             [
@@ -4269,6 +4428,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "handle_capacity_increase",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| old_cap |) ]
@@ -4315,11 +4475,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "expect",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -4341,6 +4502,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4363,6 +4525,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "reserve",
+                              [],
                               []
                             |),
                             [
@@ -4391,6 +4554,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "handle_capacity_increase",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| old_cap |) ]
@@ -4451,7 +4615,9 @@ Module collections.
                                 [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -4459,6 +4625,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
+                                  [],
                                   [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                                 |),
                                 [
@@ -4466,6 +4633,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "checked_add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4511,6 +4679,7 @@ Module collections.
                                               Ty.tuple [];
                                               Ty.path "alloc::collections::TryReserveError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -4521,6 +4690,7 @@ Module collections.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -4548,6 +4718,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "capacity",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4578,7 +4749,9 @@ Module collections.
                                         [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
                                         ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4586,6 +4759,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                           "try_reserve_exact",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4631,6 +4805,7 @@ Module collections.
                                                       Ty.tuple [];
                                                       Ty.path "alloc::collections::TryReserveError"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -4642,6 +4817,7 @@ Module collections.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -4671,6 +4847,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "handle_capacity_increase",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| old_cap |) ]
@@ -4733,7 +4910,9 @@ Module collections.
                                 [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -4741,6 +4920,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "ok_or",
+                                  [],
                                   [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                                 |),
                                 [
@@ -4748,6 +4928,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "checked_add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4793,6 +4974,7 @@ Module collections.
                                               Ty.tuple [];
                                               Ty.path "alloc::collections::TryReserveError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -4803,6 +4985,7 @@ Module collections.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -4830,6 +5013,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "capacity",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4860,7 +5044,9 @@ Module collections.
                                         [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
                                         ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4868,6 +5054,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                           "try_reserve",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4913,6 +5100,7 @@ Module collections.
                                                       Ty.tuple [];
                                                       Ty.path "alloc::collections::TryReserveError"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -4924,6 +5112,7 @@ Module collections.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -4953,6 +5142,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "handle_capacity_increase",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| old_cap |) ]
@@ -4995,6 +5185,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "shrink_to",
+                      [],
                       []
                     |),
                     [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -5124,7 +5315,15 @@ Module collections.
                   let~ target_cap :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "max", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::Ord",
+                          Ty.path "usize",
+                          [],
+                          [],
+                          "max",
+                          [],
+                          []
+                        |),
                         [
                           M.read (| min_capacity |);
                           M.read (|
@@ -5159,6 +5358,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "capacity",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -5184,6 +5384,7 @@ Module collections.
                             []
                             [ Ty.path "usize" ],
                           "contains",
+                          [],
                           [ Ty.path "usize" ]
                         |),
                         [
@@ -5195,6 +5396,7 @@ Module collections.
                                   []
                                   [ Ty.path "usize" ],
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -5209,6 +5411,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "capacity",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -5316,6 +5519,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "copy_nonoverlapping",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5410,6 +5614,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "copy_nonoverlapping",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5440,6 +5645,7 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "is_contiguous",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
@@ -5462,6 +5668,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "capacity",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -5493,6 +5700,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "copy",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -5546,6 +5754,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "shrink_to_fit",
+                          [],
                           []
                         |),
                         [
@@ -5616,6 +5825,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "capacity",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |) ]
@@ -5631,6 +5841,7 @@ Module collections.
                                                           []
                                                           [ T; A ],
                                                         "capacity",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -5700,6 +5911,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "capacity",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |) ]
@@ -5877,6 +6089,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "capacity",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -5898,6 +6111,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy_nonoverlapping",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5920,6 +6134,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "copy",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6046,6 +6261,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_mut_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -6072,6 +6288,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ T ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| front |) ]
@@ -6091,6 +6308,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| front |) ]
@@ -6105,6 +6323,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ T ],
                                               "get_unchecked_mut",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeFrom")
@@ -6154,6 +6373,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ T ],
                                               "get_unchecked_mut",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeFrom")
@@ -6225,6 +6445,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                 "allocator",
+                [],
                 []
               |),
               [
@@ -6261,6 +6482,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -6278,6 +6500,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -6285,6 +6508,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [ M.read (| a |) ]
@@ -6293,6 +6517,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -6329,6 +6554,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_mut_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -6349,6 +6575,7 @@ Module collections.
                               []
                               [ T ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -6356,6 +6583,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| a |) ]
@@ -6364,6 +6592,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -6402,6 +6631,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "slice_ranges",
+                      [],
                       [ Ty.path "core::ops::range::RangeFull" ]
                     |),
                     [
@@ -6434,6 +6664,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| a_range |) ]
@@ -6445,6 +6676,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| b_range |) ]
@@ -6487,6 +6719,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "slice_ranges",
+                      [],
                       [ Ty.path "core::ops::range::RangeFull" ]
                     |),
                     [
@@ -6519,6 +6752,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| a_range |) ]
@@ -6530,6 +6764,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| b_range |) ]
@@ -6720,6 +6955,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "to_physical_idx",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| start |) ]
@@ -6735,6 +6971,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "capacity",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6803,6 +7040,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "capacity",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |) ]
@@ -6859,6 +7097,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "slice_ranges",
+                      [],
                       [ R ]
                     |),
                     [
@@ -6890,6 +7129,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_range",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| a_range |) ]
@@ -6904,6 +7144,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_range",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| b_range |) ]
@@ -6914,6 +7155,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -6921,6 +7163,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [ M.read (| a |) ]
@@ -6929,6 +7172,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -6975,6 +7219,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "slice_ranges",
+                      [],
                       [ R ]
                     |),
                     [
@@ -7006,6 +7251,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_range",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| a_range |) ]
@@ -7020,6 +7266,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_range",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| b_range |) ]
@@ -7033,6 +7280,7 @@ Module collections.
                               []
                               [ T ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -7040,6 +7288,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| a |) ]
@@ -7048,6 +7297,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -7163,6 +7413,7 @@ Module collections.
                               []
                               [ T; A ],
                             "new",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| drain_start |); M.read (| drain_len |) ]
@@ -7198,6 +7449,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "truncate",
+                      [],
                       []
                     |),
                     [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -7244,6 +7496,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -7262,6 +7515,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "contains",
+                              [],
                               []
                             |),
                             [ M.read (| a |); M.read (| x |) ]
@@ -7271,6 +7525,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "contains",
+                                [],
                                 []
                               |),
                               [ M.read (| b |); M.read (| x |) ]
@@ -7302,6 +7557,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "get",
+                [],
                 []
               |),
               [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -7328,6 +7584,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "get_mut",
+                [],
                 []
               |),
               [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -7354,12 +7611,13 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "get",
+                [],
                 []
               |),
               [
                 M.read (| self |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -7395,12 +7653,13 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "get_mut",
+                [],
                 []
               |),
               [
                 M.read (| self |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -7458,6 +7717,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -7489,6 +7749,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "to_physical_idx",
+                              [],
                               []
                             |),
                             [ M.read (| self |); Value.Integer IntegerKind.Usize 1 ]
@@ -7525,6 +7786,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "capacity",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -7544,6 +7806,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_read",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| old_head |) ]
@@ -7595,6 +7858,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -7635,6 +7899,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "capacity",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -7654,6 +7919,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "buffer_read",
+                                [],
                                 []
                               |),
                               [
@@ -7665,6 +7931,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "to_physical_idx",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7735,6 +8002,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "is_full",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -7751,6 +8019,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "grow",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -7771,6 +8040,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "wrap_sub",
+                      [],
                       []
                     |),
                     [
@@ -7803,6 +8073,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "buffer_write",
+                      [],
                       []
                     |),
                     [
@@ -7861,6 +8132,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "is_full",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -7877,6 +8149,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "grow",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -7892,6 +8165,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "buffer_write",
+                      [],
                       []
                     |),
                     [
@@ -7900,6 +8174,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "to_physical_idx",
+                          [],
                           []
                         |),
                         [
@@ -7967,6 +8242,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "capacity",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -8050,6 +8326,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "swap",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8096,6 +8373,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "pop_front",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -8179,6 +8457,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "swap",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8228,6 +8507,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "pop_back",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -8299,6 +8579,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -8317,6 +8598,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8349,6 +8631,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "is_full",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8365,6 +8648,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "grow",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -8404,6 +8688,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "wrap_copy",
+                              [],
                               []
                             |),
                             [
@@ -8415,6 +8700,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "to_physical_idx",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| index |) ]
@@ -8426,6 +8712,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "to_physical_idx",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8449,6 +8736,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_write",
+                              [],
                               []
                             |),
                             [
@@ -8460,6 +8748,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "to_physical_idx",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| index |) ]
@@ -8504,6 +8793,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "wrap_sub",
+                              [],
                               []
                             |),
                             [
@@ -8528,6 +8818,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "wrap_copy",
+                              [],
                               []
                             |),
                             [
@@ -8553,6 +8844,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_write",
+                              [],
                               []
                             |),
                             [
@@ -8564,6 +8856,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "to_physical_idx",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| index |) ]
@@ -8669,6 +8962,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "to_physical_idx",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| index |) ]
@@ -8686,6 +8980,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_read",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| wrapped_idx |) ]
@@ -8728,6 +9023,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "wrap_copy",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8739,6 +9035,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "wrap_add",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8791,6 +9088,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "to_physical_idx",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); Value.Integer IntegerKind.Usize 1 ]
@@ -8805,6 +9103,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "wrap_copy",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8934,6 +9233,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8957,12 +9257,13 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [
                       M.read (| other_len |);
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -8971,6 +9272,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "allocator",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -8987,6 +9289,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "as_slices",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9005,6 +9308,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| first_half |) ]
@@ -9016,6 +9320,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| second_half |) ]
@@ -9053,6 +9358,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*const") [] [ T ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9060,6 +9366,7 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "as_ptr",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| first_half |) ]
@@ -9074,6 +9381,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "ptr",
+                                            [],
                                             []
                                           |),
                                           [ other ]
@@ -9095,6 +9403,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "as_ptr",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| second_half |) ]
@@ -9103,6 +9412,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ T ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9114,6 +9424,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "ptr",
+                                                [],
                                                 []
                                               |),
                                               [ other ]
@@ -9152,6 +9463,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*const") [] [ T ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9159,6 +9471,7 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "as_ptr",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| second_half |) ]
@@ -9173,6 +9486,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "ptr",
+                                            [],
                                             []
                                           |),
                                           [ other ]
@@ -9275,6 +9589,7 @@ Module collections.
                                             []
                                             [ Ty.path "usize" ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9282,6 +9597,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "checked_add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -9336,6 +9652,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "reserve",
+                          [],
                           []
                         |),
                         [
@@ -9360,6 +9677,7 @@ Module collections.
                               []
                               [ T; A ],
                             "as_slices",
+                            [],
                             []
                           |),
                           [ M.read (| other |) ]
@@ -9381,6 +9699,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "copy_slice",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9392,6 +9711,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "to_physical_idx",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9418,6 +9738,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "copy_slice",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9429,6 +9750,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "to_physical_idx",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9445,6 +9767,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ T ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| left |) ]
@@ -9529,6 +9852,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "retain_mut",
+                      [],
                       [
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
@@ -9553,8 +9877,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
                                             F,
+                                            [],
                                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                             "call_mut",
+                                            [],
                                             []
                                           |),
                                           [ f; Value.Tuple [ M.read (| elem |) ] ]
@@ -9660,9 +9986,11 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                   ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9677,8 +10005,10 @@ Module collections.
                                                               "alloc::collections::vec_deque::VecDeque")
                                                             []
                                                             [ T; A ],
+                                                          [],
                                                           [ Ty.path "usize" ],
                                                           "index_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| self |); M.read (| cur |) ]
@@ -9772,9 +10102,11 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                   ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9789,8 +10121,10 @@ Module collections.
                                                               "alloc::collections::vec_deque::VecDeque")
                                                             []
                                                             [ T; A ],
+                                                          [],
                                                           [ Ty.path "usize" ],
                                                           "index_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| self |); M.read (| cur |) ]
@@ -9833,6 +10167,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "swap",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| idx |); M.read (| cur |) ]
@@ -9888,6 +10223,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "truncate",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| idx |) ]
@@ -9951,6 +10287,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "is_full",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -9987,6 +10324,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -9998,6 +10336,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "grow_one",
+                      [],
                       []
                     |),
                     [
@@ -10016,6 +10355,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "handle_capacity_increase",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| old_cap |) ]
@@ -10050,6 +10390,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "is_full",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -10140,8 +10481,10 @@ Module collections.
                               (Ty.path "alloc::collections::vec_deque::VecDeque")
                               []
                               [ T; A ],
+                            [],
                             [ T ],
                             "extend",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::iter::adapters::take::Take")
@@ -10164,7 +10507,9 @@ Module collections.
                                   []
                                   [ impl_FnMut___arrow_T ],
                                 [],
+                                [],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -10193,6 +10538,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "truncate",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| new_len |) ]
@@ -10390,6 +10736,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "is_contiguous",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10412,6 +10759,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ T ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -10423,6 +10771,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "ptr",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -10481,6 +10830,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -10495,6 +10845,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "capacity",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -10537,6 +10888,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "copy",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10556,6 +10908,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "copy_nonoverlapping",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10608,6 +10961,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "copy",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10628,6 +10982,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "copy_nonoverlapping",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10703,6 +11058,7 @@ Module collections.
                                                                         []
                                                                         [ T; A ],
                                                                       "copy",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10731,6 +11087,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "buffer_range",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10748,6 +11105,7 @@ Module collections.
                                                                         []
                                                                         [ T; A ],
                                                                       "capacity",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| self |) ]
@@ -10762,6 +11120,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
                                                             "rotate_left",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10813,6 +11172,7 @@ Module collections.
                                                                         []
                                                                         [ T; A ],
                                                                       "copy",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10845,6 +11205,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "buffer_range",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10874,6 +11235,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
                                                             "rotate_right",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10910,6 +11272,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ T ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -10987,6 +11350,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11036,6 +11400,7 @@ Module collections.
                               []
                               [ T; A ],
                             "rotate_left_inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| n |) ]
@@ -11051,6 +11416,7 @@ Module collections.
                               []
                               [ T; A ],
                             "rotate_right_inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| k |) ]
@@ -11109,6 +11475,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11158,6 +11525,7 @@ Module collections.
                               []
                               [ T; A ],
                             "rotate_right_inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| n |) ]
@@ -11173,6 +11541,7 @@ Module collections.
                               []
                               [ T; A ],
                             "rotate_left_inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| k |) ]
@@ -11242,6 +11611,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -11280,6 +11650,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "wrap_copy",
+                        [],
                         []
                       |),
                       [
@@ -11298,6 +11669,7 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
@@ -11327,6 +11699,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "to_physical_idx",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| mid |) ]
@@ -11395,6 +11768,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -11437,6 +11811,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "wrap_sub",
+                      [],
                       []
                     |),
                     [
@@ -11458,6 +11833,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "wrap_copy",
+                      [],
                       []
                     |),
                     [
@@ -11466,6 +11842,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "to_physical_idx",
+                          [],
                           []
                         |),
                         [
@@ -11523,6 +11900,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "binary_search_by",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
@@ -11544,7 +11922,15 @@ Module collections.
                                 ltac:(M.monadic
                                   (let e := M.copy (| γ |) in
                                   M.call_closure (|
-                                    M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                    M.get_trait_method (|
+                                      "core::cmp::Ord",
+                                      T,
+                                      [],
+                                      [],
+                                      "cmp",
+                                      [],
+                                      []
+                                    |),
                                     [ M.read (| e |); M.read (| x |) ]
                                   |)))
                             ]
@@ -11596,6 +11982,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -11617,6 +12004,7 @@ Module collections.
                                 []
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                               "map",
+                              [],
                               [
                                 Ty.path "core::cmp::Ordering";
                                 Ty.function
@@ -11629,6 +12017,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "first",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| back |) ]
@@ -11649,9 +12038,11 @@ Module collections.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                     ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [ f; Value.Tuple [ M.read (| elem |) ] ]
@@ -11684,6 +12075,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| front |) ]
@@ -11714,6 +12106,7 @@ Module collections.
                                               []
                                               [ Ty.path "usize"; Ty.path "usize" ],
                                             "map_err",
+                                            [],
                                             [
                                               Ty.path "usize";
                                               Ty.function
@@ -11729,6 +12122,7 @@ Module collections.
                                                   []
                                                   [ Ty.path "usize"; Ty.path "usize" ],
                                                 "map",
+                                                [],
                                                 [
                                                   Ty.path "usize";
                                                   Ty.function
@@ -11741,6 +12135,7 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ T ],
                                                     "binary_search_by",
+                                                    [],
                                                     [ F ]
                                                   |),
                                                   [ M.read (| back |); M.read (| f |) ]
@@ -11766,6 +12161,7 @@ Module collections.
                                                                           []
                                                                           [ T ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| front |) ]
@@ -11799,6 +12195,7 @@ Module collections.
                                                                       []
                                                                       [ T ],
                                                                     "len",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| front |) ]
@@ -11818,6 +12215,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "binary_search_by",
+                                            [],
                                             [ F ]
                                           |),
                                           [ M.read (| front |); M.read (| f |) ]
@@ -11863,6 +12261,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "binary_search_by",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
@@ -11884,15 +12283,25 @@ Module collections.
                                 ltac:(M.monadic
                                   (let k := M.copy (| γ |) in
                                   M.call_closure (|
-                                    M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                                    M.get_trait_method (|
+                                      "core::cmp::Ord",
+                                      B,
+                                      [],
+                                      [],
+                                      "cmp",
+                                      [],
+                                      []
+                                    |),
                                     [
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
                                             F,
+                                            [],
                                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                             "call_mut",
+                                            [],
                                             []
                                           |),
                                           [ f; Value.Tuple [ M.read (| k |) ] ]
@@ -11947,6 +12356,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "as_slices",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -11973,6 +12383,7 @@ Module collections.
                                         []
                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                       "map",
+                                      [],
                                       [
                                         Ty.path "bool";
                                         Ty.function
@@ -11985,6 +12396,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| back |) ]
@@ -12005,11 +12417,13 @@ Module collections.
                                                           M.get_trait_method (|
                                                             "core::ops::function::FnMut",
                                                             P,
+                                                            [],
                                                             [
                                                               Ty.tuple
                                                                 [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             ],
                                                             "call_mut",
+                                                            [],
                                                             []
                                                           |),
                                                           [ pred; Value.Tuple [ M.read (| v |) ] ]
@@ -12038,6 +12452,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "partition_point",
+                                      [],
                                       [ P ]
                                     |),
                                     [ M.read (| back |); M.read (| pred |) ]
@@ -12046,6 +12461,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| front |) ]
@@ -12059,6 +12475,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "partition_point",
+                                    [],
                                     [ P ]
                                   |),
                                   [ M.read (| front |); M.read (| pred |) ]
@@ -12111,6 +12528,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -12129,6 +12547,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -12143,8 +12562,10 @@ Module collections.
                               (Ty.path "alloc::collections::vec_deque::VecDeque")
                               []
                               [ T; A ],
+                            [],
                             [ T ],
                             "extend",
+                            [],
                             [ Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ] ]
                           |),
                           [
@@ -12171,6 +12592,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "truncate",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| new_len |) ]
@@ -12219,6 +12641,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -12254,6 +12677,7 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "with_capacity_in",
+                [],
                 []
               |),
               [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -12309,7 +12733,9 @@ Module collections.
                                         Ty.path "alloc::collections::TryReserveError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12320,6 +12746,7 @@ Module collections.
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         "try_with_capacity_in",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12358,6 +12785,7 @@ Module collections.
                                                       [ T; Ty.path "alloc::alloc::Global" ];
                                                     Ty.path "alloc::collections::TryReserveError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12368,6 +12796,7 @@ Module collections.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12591,6 +13020,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -12611,6 +13041,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -12632,6 +13063,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "as_slices",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| other |) ]
@@ -12657,6 +13089,7 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [] [ T ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| sa |) ]
@@ -12665,6 +13098,7 @@ Module collections.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [] [ T ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| oa |) ]
@@ -12685,6 +13119,7 @@ Module collections.
                                                     (Ty.path "&")
                                                     []
                                                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -12692,6 +13127,7 @@ Module collections.
                                                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [ sa; oa ]
@@ -12704,6 +13140,7 @@ Module collections.
                                                       (Ty.path "&")
                                                       []
                                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -12711,6 +13148,7 @@ Module collections.
                                                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                                     ],
                                                     "eq",
+                                                    [],
                                                     []
                                                   |),
                                                   [ sb; ob ]
@@ -12732,6 +13170,7 @@ Module collections.
                                                             M.get_associated_function (|
                                                               Ty.apply (Ty.path "slice") [] [ T ],
                                                               "len",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| sa |) ]
@@ -12740,6 +13179,7 @@ Module collections.
                                                             M.get_associated_function (|
                                                               Ty.apply (Ty.path "slice") [] [ T ],
                                                               "len",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| oa |) ]
@@ -12757,6 +13197,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| sa |) ]
@@ -12769,6 +13210,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| oa |) ]
@@ -12782,6 +13224,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "split_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| oa |); M.read (| front |) ]
@@ -12811,6 +13254,7 @@ Module collections.
                                                                     []
                                                                     [ T ],
                                                                   "split_at",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| sb |); M.read (| mid |)
@@ -12863,6 +13307,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -12881,6 +13326,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13042,6 +13488,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13060,6 +13507,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13221,6 +13669,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13239,6 +13688,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13385,6 +13835,7 @@ Module collections.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
@@ -13398,6 +13849,7 @@ Module collections.
                                                                                 ]
                                                                             ],
                                                                             "eq",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ sa; oa_front ]
@@ -13416,6 +13868,7 @@ Module collections.
                                                                                     []
                                                                                     [ T ]
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path "&")
@@ -13429,6 +13882,7 @@ Module collections.
                                                                                   ]
                                                                               ],
                                                                               "eq",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ sb_mid; oa_mid ]
@@ -13447,6 +13901,7 @@ Module collections.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
@@ -13460,6 +13915,7 @@ Module collections.
                                                                                 ]
                                                                             ],
                                                                             "eq",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ sb_back; ob ]
@@ -13478,6 +13934,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| oa |) ]
@@ -13490,6 +13947,7 @@ Module collections.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| sa |) ]
@@ -13503,6 +13961,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "split_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| sa |); M.read (| front |) ]
@@ -13532,6 +13991,7 @@ Module collections.
                                                                     []
                                                                     [ T ],
                                                                   "split_at",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| ob |); M.read (| mid |)
@@ -13584,6 +14044,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13602,6 +14063,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13763,6 +14225,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13781,6 +14244,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13942,6 +14406,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -13960,6 +14425,7 @@ Module collections.
                                                                                               []
                                                                                               [ T ],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -14106,6 +14572,7 @@ Module collections.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
@@ -14119,6 +14586,7 @@ Module collections.
                                                                                 ]
                                                                             ],
                                                                             "eq",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ sa_front; oa ]
@@ -14137,6 +14605,7 @@ Module collections.
                                                                                     []
                                                                                     [ T ]
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path "&")
@@ -14150,6 +14619,7 @@ Module collections.
                                                                                   ]
                                                                               ],
                                                                               "eq",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ sa_mid; ob_mid ]
@@ -14168,6 +14638,7 @@ Module collections.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
@@ -14181,6 +14652,7 @@ Module collections.
                                                                                 ]
                                                                             ],
                                                                             "eq",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ sb; ob_back ]
@@ -14252,7 +14724,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                 [],
+                [],
                 "partial_cmp",
+                [],
                 [ Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ] ]
               |),
               [
@@ -14260,6 +14734,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -14268,6 +14743,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -14307,7 +14783,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                 [],
+                [],
                 "cmp",
+                [],
                 [ Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ] ]
               |),
               [
@@ -14315,6 +14793,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -14323,6 +14802,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -14368,7 +14848,15 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
+                    M.get_trait_method (|
+                      "core::hash::Hasher",
+                      H,
+                      [],
+                      [],
+                      "write_length_prefix",
+                      [],
+                      []
+                    |),
                     [
                       M.read (| state |);
                       M.read (|
@@ -14388,7 +14876,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "for_each",
+                      [],
                       [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.tuple []) ]
                     |),
                     [
@@ -14396,6 +14886,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -14417,7 +14908,9 @@ Module collections.
                                             "core::hash::Hash",
                                             T,
                                             [],
+                                            [],
                                             "hash",
+                                            [],
                                             [ H ]
                                           |),
                                           [ M.read (| elem |); M.read (| state |) ]
@@ -14466,6 +14959,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "expect",
+                [],
                 []
               |),
               [
@@ -14473,6 +14967,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "get",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| index |) ]
@@ -14514,6 +15009,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 "expect",
+                [],
                 []
               |),
               [
@@ -14521,6 +15017,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                     "get_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| index |) ]
@@ -14565,8 +15062,10 @@ Module collections.
                   (Ty.path "alloc::collections::vec_deque::VecDeque")
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ T; Ty.associated ],
                 "spec_from_iter",
+                [],
                 []
               |),
               [
@@ -14575,7 +15074,9 @@ Module collections.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -14620,6 +15121,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::into_iter::IntoIter") [] [ T; A ],
                 "new",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -14670,6 +15172,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "iter",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -14720,6 +15223,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                 "iter_mut",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -14764,8 +15268,10 @@ Module collections.
                     M.get_trait_method (|
                       "alloc::collections::vec_deque::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      [],
                       [ T; Ty.associated ],
                       "spec_extend",
+                      [],
                       []
                     |),
                     [
@@ -14775,7 +15281,9 @@ Module collections.
                           "core::iter::traits::collect::IntoIterator",
                           I,
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| iter |) ]
@@ -14812,6 +15320,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "push_back",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| elem |) ]
@@ -14846,6 +15355,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "reserve",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| additional |) ]
@@ -14883,6 +15393,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "push_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| item |) ]
@@ -14931,8 +15442,10 @@ Module collections.
                     M.get_trait_method (|
                       "alloc::collections::vec_deque::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ T ]; Ty.associated ],
                       "spec_extend",
+                      [],
                       []
                     |),
                     [
@@ -14942,7 +15455,9 @@ Module collections.
                           "core::iter::traits::collect::IntoIterator",
                           I,
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| iter |) ]
@@ -14989,6 +15504,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "push_back",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| elem |) ]
@@ -15025,6 +15541,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "reserve",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| additional |) ]
@@ -15072,6 +15589,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "push_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| item |) ]
@@ -15119,6 +15637,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugList",
                 "finish",
+                [],
                 []
               |),
               [
@@ -15126,6 +15645,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugList",
                     "entries",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ]
@@ -15137,6 +15657,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_list",
+                          [],
                           []
                         |),
                         [ M.read (| f |) ]
@@ -15146,6 +15667,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "iter",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -15189,6 +15711,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "into_raw_parts_with_alloc",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -15216,6 +15739,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "from_raw_parts_in",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| cap |); M.read (| alloc |) ]
@@ -15271,6 +15795,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "make_contiguous",
+                      [],
                       []
                     |),
                     [ other ]
@@ -15286,6 +15811,7 @@ Module collections.
                         [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ]
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -15297,6 +15823,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "ptr",
+                      [],
                       []
                     |),
                     [
@@ -15314,7 +15841,9 @@ Module collections.
                                   [ T; A ]
                               ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [ other ]
@@ -15331,6 +15860,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -15347,7 +15877,9 @@ Module collections.
                                 [ T; A ]
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ other ]
@@ -15361,6 +15893,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [
@@ -15377,7 +15910,9 @@ Module collections.
                                 [ T; A ]
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ other ]
@@ -15394,6 +15929,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "allocator",
+                          [],
                           []
                         |),
                         [
@@ -15410,7 +15946,9 @@ Module collections.
                                     [ T; A ]
                                 ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ other ]
@@ -15445,7 +15983,9 @@ Module collections.
                                               [ T; A ]
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ other ]
@@ -15470,6 +16010,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15490,7 +16031,9 @@ Module collections.
                                                     [ T; A ]
                                                 ],
                                               [],
+                                              [],
                                               "deref",
+                                              [],
                                               []
                                             |),
                                             [ other ]
@@ -15515,6 +16058,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "from_raw_parts_in",
+                    [],
                     []
                   |),
                   [ M.read (| buf |); M.read (| len |); M.read (| cap |); M.read (| alloc |) ]
@@ -15578,6 +16122,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ M.read (| M.get_constant (| "alloc::collections::vec_deque::N" |) |) ]
@@ -15592,6 +16137,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| arr |) ]
@@ -15627,6 +16173,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15638,7 +16185,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ arr ]
@@ -15652,6 +16201,7 @@ Module collections.
                                       []
                                       [ T; Ty.path "alloc::alloc::Global" ],
                                     "ptr",
+                                    [],
                                     []
                                   |),
                                   [ deq ]

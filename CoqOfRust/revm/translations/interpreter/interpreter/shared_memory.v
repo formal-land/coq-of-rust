@@ -46,7 +46,9 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -66,7 +68,9 @@ Module interpreter.
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -79,7 +83,15 @@ Module interpreter.
                   |));
                 ("last_checkpoint",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -132,6 +144,7 @@ Module interpreter.
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -139,6 +152,7 @@ Module interpreter.
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -162,6 +176,7 @@ Module interpreter.
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -169,6 +184,7 @@ Module interpreter.
                           [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -282,7 +298,9 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -305,7 +323,9 @@ Module interpreter.
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -320,7 +340,15 @@ Module interpreter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -358,6 +386,7 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -370,6 +399,7 @@ Module interpreter.
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -400,6 +430,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
@@ -407,6 +438,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -414,6 +446,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -422,6 +455,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_struct",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "SharedMemory" |) ]
@@ -433,6 +467,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -458,6 +493,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "context_memory",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -497,6 +533,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "new",
+                [],
                 []
               |),
               []
@@ -588,6 +625,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set_data",
+                      [],
                       []
                     |),
                     [
@@ -596,7 +634,9 @@ Module interpreter.
                           "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                           T,
                           [],
+                          [],
                           "memory_mut",
+                          [],
                           []
                         |),
                         [
@@ -605,7 +645,9 @@ Module interpreter.
                               "core::ops::deref::DerefMut",
                               Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [
@@ -614,6 +656,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                     "borrow_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -628,7 +671,9 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -672,6 +717,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
+                      [],
                       []
                     |),
                     [
@@ -680,7 +726,9 @@ Module interpreter.
                           "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                           T,
                           [],
+                          [],
                           "memory_mut",
+                          [],
                           []
                         |),
                         [
@@ -689,7 +737,9 @@ Module interpreter.
                               "core::ops::deref::DerefMut",
                               Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [
@@ -698,6 +748,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                     "borrow_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -712,7 +763,9 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -749,6 +802,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "len",
+                [],
                 []
               |),
               [
@@ -757,7 +811,9 @@ Module interpreter.
                     "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                     T,
                     [],
+                    [],
                     "memory",
+                    [],
                     []
                   |),
                   [
@@ -766,7 +822,9 @@ Module interpreter.
                         "core::ops::deref::Deref",
                         Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -775,6 +833,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                               "borrow",
+                              [],
                               []
                             |),
                             [
@@ -789,7 +848,9 @@ Module interpreter.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -829,6 +890,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "copy",
+                      [],
                       []
                     |),
                     [
@@ -837,7 +899,9 @@ Module interpreter.
                           "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                           T,
                           [],
+                          [],
                           "memory_mut",
+                          [],
                           []
                         |),
                         [
@@ -846,7 +910,9 @@ Module interpreter.
                               "core::ops::deref::DerefMut",
                               Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [
@@ -855,6 +921,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                     "borrow_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -869,7 +936,9 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -908,6 +977,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                   Ty.function
@@ -920,6 +990,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                     "borrow",
+                    [],
                     []
                   |),
                   [
@@ -934,7 +1005,9 @@ Module interpreter.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -958,6 +1031,7 @@ Module interpreter.
                                       Ty.path
                                         "revm_interpreter::interpreter::shared_memory::SharedMemory",
                                       "slice_range",
+                                      [],
                                       []
                                     |),
                                     [
@@ -966,7 +1040,9 @@ Module interpreter.
                                           "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                                           T,
                                           [],
+                                          [],
                                           "memory",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| i |) ]
@@ -1003,6 +1079,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "resize",
+                      [],
                       []
                     |),
                     [
@@ -1011,7 +1088,9 @@ Module interpreter.
                           "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                           T,
                           [],
+                          [],
                           "memory_mut",
+                          [],
                           []
                         |),
                         [
@@ -1020,7 +1099,9 @@ Module interpreter.
                               "core::ops::deref::DerefMut",
                               Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [
@@ -1029,6 +1110,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                     "borrow_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1043,7 +1125,9 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -1098,6 +1182,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "with_capacity",
+                [],
                 []
               |),
               [
@@ -1139,6 +1224,7 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ M.read (| capacity |) ]
@@ -1151,6 +1237,7 @@ Module interpreter.
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.Usize 32 ]
@@ -1185,6 +1272,7 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -1205,6 +1293,7 @@ Module interpreter.
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "push",
+                      [],
                       []
                     |),
                     [
@@ -1262,6 +1351,7 @@ Module interpreter.
                                 []
                                 [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                               "pop",
+                              [],
                               []
                             |),
                             [
@@ -1291,6 +1381,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_default",
+                              [],
                               []
                             |),
                             [
@@ -1301,6 +1392,7 @@ Module interpreter.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                   "cloned",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1308,6 +1400,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                       "last",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1319,7 +1412,9 @@ Module interpreter.
                                             []
                                             [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1346,6 +1441,7 @@ Module interpreter.
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               "set_len",
+                              [],
                               []
                             |),
                             [
@@ -1387,6 +1483,7 @@ Module interpreter.
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -1425,6 +1522,7 @@ Module interpreter.
                 M.get_associated_function (|
                   Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                   "len",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1457,6 +1555,7 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "resize",
+                      [],
                       []
                     |),
                     [
@@ -1502,6 +1601,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "slice_range",
+                [],
                 []
               |),
               [
@@ -1560,6 +1660,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "get",
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ]
                             |),
@@ -1569,6 +1670,7 @@ Module interpreter.
                                   Ty.path
                                     "revm_interpreter::interpreter::shared_memory::SharedMemory",
                                   "context_memory",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -1615,6 +1717,7 @@ Module interpreter.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1639,6 +1742,7 @@ Module interpreter.
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter::shared_memory::SharedMemory",
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
@@ -1660,6 +1764,7 @@ Module interpreter.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "usize" ]
                                                                   |),
                                                                   [
@@ -1676,6 +1781,7 @@ Module interpreter.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "usize" ]
                                                                   |),
                                                                   [
@@ -1692,6 +1798,7 @@ Module interpreter.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "usize" ]
                                                                   |),
                                                                   [
@@ -1774,6 +1881,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get_mut",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -1781,6 +1889,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "context_memory_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1825,6 +1934,7 @@ Module interpreter.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1845,6 +1955,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ offset ]
@@ -1853,6 +1964,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ end_ ]
@@ -1916,6 +2028,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                     "slice_len",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 1 ]
@@ -1952,6 +2065,7 @@ Module interpreter.
                     Ty.path "core::array::TryFromSliceError"
                   ],
                 "unwrap",
+                [],
                 []
               |),
               [
@@ -1959,6 +2073,7 @@ Module interpreter.
                   M.get_trait_method (|
                     "core::convert::TryInto",
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1966,6 +2081,7 @@ Module interpreter.
                         []
                     ],
                     "try_into",
+                    [],
                     []
                   |),
                   [
@@ -1973,6 +2089,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                         "slice_len",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 32 ]
@@ -2004,6 +2121,7 @@ Module interpreter.
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [],
+                [],
                 [
                   Ty.apply
                     (Ty.path "ruint::Uint")
@@ -2011,6 +2129,7 @@ Module interpreter.
                     []
                 ],
                 "into",
+                [],
                 []
               |),
               [
@@ -2018,6 +2137,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                     "get_word",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| offset |) ]
@@ -2048,6 +2168,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
+                      [],
                       []
                     |),
                     [
@@ -2083,6 +2204,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
+                      [],
                       []
                     |),
                     [
@@ -2095,8 +2217,10 @@ Module interpreter.
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                             [ Value.Integer IntegerKind.Usize 32 ]
                             [],
+                          [],
                           [ Ty.path "core::ops::range::RangeFull" ],
                           "index",
+                          [],
                           []
                         |),
                         [ M.read (| value |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -2130,6 +2254,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
+                      [],
                       []
                     |),
                     [
@@ -2146,6 +2271,8 @@ Module interpreter.
                               ]
                               [],
                             "to_be_bytes",
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ],
                             []
                           |),
                           [ value ]
@@ -2189,6 +2316,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| value |) ]
@@ -2202,6 +2330,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "copy_from_slice",
+                              [],
                               []
                             |),
                             [
@@ -2210,6 +2339,7 @@ Module interpreter.
                                   Ty.path
                                     "revm_interpreter::interpreter::shared_memory::SharedMemory",
                                   "slice_mut",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2219,6 +2349,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| value |) ]
@@ -2286,6 +2417,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| data |) ]
@@ -2303,6 +2435,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "fill",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2311,6 +2444,7 @@ Module interpreter.
                                               Ty.path
                                                 "revm_interpreter::interpreter::shared_memory::SharedMemory",
                                               "slice_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2340,6 +2474,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| data |) ]
@@ -2380,6 +2515,7 @@ Module interpreter.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| data |) ]
@@ -2395,6 +2531,7 @@ Module interpreter.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| data |) ]
@@ -2434,6 +2571,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get_unchecked",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -2450,6 +2588,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -2457,6 +2596,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "slice_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| memory_offset |); M.read (| data_len |) ]
@@ -2471,6 +2611,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "fill",
+                          [],
                           []
                         |),
                         [
@@ -2478,6 +2619,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "slice_mut",
+                              [],
                               []
                             |),
                             [
@@ -2521,6 +2663,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "copy_within",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
@@ -2528,6 +2671,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                           "context_memory_mut",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2567,6 +2711,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "get_unchecked",
+                [],
                 [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
               |),
               [
@@ -2578,7 +2723,9 @@ Module interpreter.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -2608,6 +2755,7 @@ Module interpreter.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -2649,6 +2797,7 @@ Module interpreter.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -2665,6 +2814,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get_unchecked_mut",
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                   |),
                   [
@@ -2676,7 +2826,9 @@ Module interpreter.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [
@@ -2723,7 +2875,7 @@ Module interpreter.
           (let len := M.alloc (| len |) in
           BinOp.Wrap.div (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+              M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
               [ M.read (| len |); Value.Integer IntegerKind.Usize 31 ]
             |),
             Value.Integer IntegerKind.Usize 32

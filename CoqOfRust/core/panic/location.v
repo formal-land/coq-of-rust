@@ -74,6 +74,7 @@ Module panic.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field3_finish",
+                [],
                 []
               |),
               [
@@ -168,7 +169,9 @@ Module panic.
                       "core::hash::Hash",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -184,7 +187,15 @@ Module panic.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u32",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -197,7 +208,15 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -238,7 +257,9 @@ Module panic.
                       "core::cmp::Ord",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "cmp",
+                      [],
                       []
                     |),
                     [
@@ -262,7 +283,15 @@ Module panic.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::Ord",
+                              Ty.path "u32",
+                              [],
+                              [],
+                              "cmp",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -287,7 +316,9 @@ Module panic.
                                     "core::cmp::Ord",
                                     Ty.path "u32",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -355,8 +386,10 @@ Module panic.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -436,8 +469,10 @@ Module panic.
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "partial_cmp",
+                      [],
                       []
                     |),
                     [
@@ -470,8 +505,10 @@ Module panic.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "u32",
+                              [],
                               [ Ty.path "u32" ],
                               "partial_cmp",
+                              [],
                               []
                             |),
                             [
@@ -503,8 +540,10 @@ Module panic.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "u32",
+                                    [],
                                     [ Ty.path "u32" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -670,11 +709,11 @@ Module panic.
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| formatter |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array
@@ -691,6 +730,7 @@ Module panic.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [
@@ -705,6 +745,7 @@ Module panic.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [
@@ -719,6 +760,7 @@ Module panic.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [

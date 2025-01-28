@@ -29,7 +29,9 @@ Module interpreter.
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -67,6 +69,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -109,7 +112,9 @@ Module interpreter.
                     "core::default::Default",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -144,8 +149,10 @@ Module interpreter.
               M.get_trait_method (|
                 "core::convert::AsRef",
                 Ty.path "alloy_primitives::bytes_::Bytes",
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 "as_ref",
+                [],
                 []
               |),
               [

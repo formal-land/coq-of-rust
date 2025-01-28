@@ -106,6 +106,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -129,6 +130,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
+                          [],
                           []
                         |),
                         [
@@ -147,6 +149,7 @@ Module control_flow_graph.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
+                                    [],
                                     [ Ty.path "u16" ]
                                   |),
                                   [ entry ]
@@ -169,6 +172,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -192,6 +196,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
+                          [],
                           []
                         |),
                         [
@@ -210,6 +215,7 @@ Module control_flow_graph.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -243,6 +249,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -266,6 +273,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
+                          [],
                           []
                         |),
                         [
@@ -284,6 +292,7 @@ Module control_flow_graph.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
+                                    [],
                                     [ Ty.path "u16" ]
                                   |),
                                   [
@@ -312,6 +321,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -499,6 +509,7 @@ Module control_flow_graph.
                         []
                         [ Ty.path "move_binary_format::file_format::Bytecode" ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| code |) ]
@@ -513,6 +524,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -527,6 +539,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "insert",
+                    [],
                     []
                   |),
                   [
@@ -546,7 +559,9 @@ Module control_flow_graph.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -562,6 +577,7 @@ Module control_flow_graph.
                                     []
                                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| code |) ]
@@ -587,7 +603,9 @@ Module control_flow_graph.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -617,6 +635,7 @@ Module control_flow_graph.
                                               Ty.path
                                                 "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                               "record_block_ids",
+                                              [],
                                               []
                                             |),
                                             [
@@ -646,6 +665,7 @@ Module control_flow_graph.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -661,6 +681,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -675,7 +696,9 @@ Module control_flow_graph.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -691,6 +714,7 @@ Module control_flow_graph.
                                     []
                                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| code |) ]
@@ -716,7 +740,9 @@ Module control_flow_graph.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -753,6 +779,7 @@ Module control_flow_graph.
                                                         Ty.path
                                                           "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                                         "is_end_of_block",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -782,6 +809,7 @@ Module control_flow_graph.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "insert",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -798,6 +826,7 @@ Module control_flow_graph.
                                                       Ty.path
                                                         "move_binary_format::file_format::Bytecode",
                                                       "get_successors",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| co_pc |); M.read (| code |) ]
@@ -827,6 +856,7 @@ Module control_flow_graph.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "insert",
+                                                      [],
                                                       []
                                                     |),
                                                     [ blocks; M.read (| entry |); M.read (| bb |) ]
@@ -924,6 +954,7 @@ Module control_flow_graph.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -935,6 +966,7 @@ Module control_flow_graph.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                     "into_vec",
+                    [],
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
@@ -952,6 +984,7 @@ Module control_flow_graph.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -987,6 +1020,7 @@ Module control_flow_graph.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -1001,6 +1035,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "with_capacity",
+                    [],
                     []
                   |),
                   [
@@ -1015,6 +1050,7 @@ Module control_flow_graph.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ blocks ]
@@ -1039,6 +1075,7 @@ Module control_flow_graph.
                                     []
                                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                   "pop",
+                                  [],
                                   []
                                 |),
                                 [ stack ]
@@ -1065,6 +1102,7 @@ Module control_flow_graph.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "entry",
+                                  [],
                                   []
                                 |),
                                 [ exploration; M.read (| block |) ]
@@ -1095,6 +1133,7 @@ Module control_flow_graph.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "insert",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1114,6 +1153,7 @@ Module control_flow_graph.
                                             []
                                             [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                           "push",
+                                          [],
                                           []
                                         |),
                                         [ stack; M.read (| block |) ]
@@ -1135,7 +1175,9 @@ Module control_flow_graph.
                                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                                               ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1153,8 +1195,10 @@ Module control_flow_graph.
                                                         "move_binary_format::control_flow_graph::BasicBlock";
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                                   "index",
+                                                  [],
                                                   []
                                                 |),
                                                 [ blocks; block ]
@@ -1182,7 +1226,9 @@ Module control_flow_graph.
                                                             []
                                                             [ Ty.path "u16" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -1227,6 +1273,7 @@ Module control_flow_graph.
                                                                           "alloc::alloc::Global"
                                                                       ],
                                                                     "get",
+                                                                    [],
                                                                     [ Ty.path "u16" ]
                                                                   |),
                                                                   [ exploration; M.read (| succ |) ]
@@ -1253,6 +1300,7 @@ Module control_flow_graph.
                                                                                 "alloc::alloc::Global"
                                                                             ],
                                                                           "push",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1291,6 +1339,7 @@ Module control_flow_graph.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             "insert",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1316,6 +1365,7 @@ Module control_flow_graph.
                                                                                       "alloc::alloc::Global"
                                                                                   ],
                                                                                 "or_default",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1342,6 +1392,7 @@ Module control_flow_graph.
                                                                                           "alloc::alloc::Global"
                                                                                       ],
                                                                                     "entry",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -1408,6 +1459,7 @@ Module control_flow_graph.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ entry ]
@@ -1443,6 +1495,7 @@ Module control_flow_graph.
                                                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
                                                 [ post_order; M.read (| block |) ]
@@ -1463,6 +1516,7 @@ Module control_flow_graph.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "insert",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1500,6 +1554,7 @@ Module control_flow_graph.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "reverse",
+                        [],
                         []
                       |),
                       [
@@ -1511,7 +1566,9 @@ Module control_flow_graph.
                               []
                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "deref_mut",
+                            [],
                             []
                           |),
                           [ post_order ]
@@ -1544,7 +1601,9 @@ Module control_flow_graph.
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1558,7 +1617,9 @@ Module control_flow_graph.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
                           Ty.function
@@ -1579,6 +1640,7 @@ Module control_flow_graph.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                             "windows",
+                            [],
                             []
                           |),
                           [
@@ -1590,7 +1652,9 @@ Module control_flow_graph.
                                   []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ traversal_order ]
@@ -1642,6 +1706,7 @@ Module control_flow_graph.
                                                                                 []
                                                                                 [ Ty.path "u16" ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| window |) ]
@@ -1765,7 +1830,9 @@ Module control_flow_graph.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -1798,7 +1865,9 @@ Module control_flow_graph.
                                             "move_binary_format::control_flow_graph::BasicBlock"
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -1831,6 +1900,7 @@ Module control_flow_graph.
                                               Ty.path
                                                 "move_binary_format::control_flow_graph::BasicBlock",
                                               "display",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| block |); M.read (| M.read (| entry |) |) ]
@@ -1853,6 +1923,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1_formatted",
+                          [],
                           []
                         |),
                         [
@@ -1871,6 +1942,7 @@ Module control_flow_graph.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1899,6 +1971,7 @@ Module control_flow_graph.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Placeholder",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1916,6 +1989,7 @@ Module control_flow_graph.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::UnsafeArg",
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -1956,6 +2030,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "move_binary_format::file_format::Bytecode" ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| code |) ]
@@ -1969,6 +2044,7 @@ Module control_flow_graph.
                     []
                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   "contains",
+                  [],
                   [ Ty.path "u16" ]
                 |),
                 [
@@ -2025,6 +2101,7 @@ Module control_flow_graph.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::Bytecode",
                               "offset",
+                              [],
                               []
                             |),
                             [ M.read (| bytecode |) ]
@@ -2046,6 +2123,7 @@ Module control_flow_graph.
                                 []
                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                               "insert",
+                              [],
                               []
                             |),
                             [ M.read (| block_ids |); M.read (| M.read (| offset |) |) ]
@@ -2068,6 +2146,7 @@ Module control_flow_graph.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::Bytecode",
                                 "is_branch",
+                                [],
                                 []
                               |),
                               [ M.read (| bytecode |) ]
@@ -2086,6 +2165,7 @@ Module control_flow_graph.
                                         []
                                         [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| code |) ]
@@ -2103,6 +2183,7 @@ Module control_flow_graph.
                               []
                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             "insert",
+                            [],
                             []
                           |),
                           [
@@ -2164,6 +2245,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2180,6 +2262,7 @@ Module control_flow_graph.
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2194,6 +2277,7 @@ Module control_flow_graph.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "push",
+                    [],
                     []
                   |),
                   [ ret; M.read (| block_id |) ]
@@ -2209,6 +2293,7 @@ Module control_flow_graph.
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global"
                       ],
                     "insert",
+                    [],
                     []
                   |),
                   [ seen; block_id ]
@@ -2234,6 +2319,7 @@ Module control_flow_graph.
                                         []
                                         [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ ret ]
@@ -2251,8 +2337,10 @@ Module control_flow_graph.
                                     (Ty.path "alloc::vec::Vec")
                                     []
                                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                  [],
                                   [ Ty.path "usize" ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [ ret; M.read (| index |) ]
@@ -2272,7 +2360,9 @@ Module control_flow_graph.
                                   Ty.path
                                     "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                   [],
+                                  [],
                                   "successors",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| block_id |) ]
@@ -2289,7 +2379,9 @@ Module control_flow_graph.
                                       []
                                       [ Ty.path "u16" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2297,6 +2389,7 @@ Module control_flow_graph.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2308,7 +2401,9 @@ Module control_flow_graph.
                                               []
                                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| successors |) ]
@@ -2335,7 +2430,9 @@ Module control_flow_graph.
                                                     []
                                                     [ Ty.path "u16" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -2385,6 +2482,7 @@ Module control_flow_graph.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       "contains",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -2413,6 +2511,7 @@ Module control_flow_graph.
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
                                                                   "push",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2437,6 +2536,7 @@ Module control_flow_graph.
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
                                                                   "insert",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ seen; M.read (| block_id |) ]
@@ -2490,6 +2590,7 @@ Module control_flow_graph.
             M.get_associated_function (|
               Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
               "traverse_by",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| block_id |) ]
@@ -2543,8 +2644,10 @@ Module control_flow_graph.
                       Ty.path "move_binary_format::control_flow_graph::BasicBlock";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "index",
+                  [],
                   []
                 |),
                 [
@@ -2586,8 +2689,10 @@ Module control_flow_graph.
                     Ty.path "move_binary_format::control_flow_graph::BasicBlock";
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -2648,6 +2753,7 @@ Module control_flow_graph.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "contains_key",
+                                            [],
                                             [ Ty.path "u16" ]
                                           |),
                                           [
@@ -2694,6 +2800,7 @@ Module control_flow_graph.
                     []
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "copied",
+                  [],
                   []
                 |),
                 [
@@ -2704,6 +2811,7 @@ Module control_flow_graph.
                         []
                         [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                       "get",
+                      [],
                       [ Ty.path "u16" ]
                     |),
                     [
@@ -2743,6 +2851,7 @@ Module control_flow_graph.
                   Ty.path "alloc::alloc::Global"
                 ],
               "new",
+              [],
               []
             |),
             [
@@ -2750,6 +2859,7 @@ Module control_flow_graph.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -2758,7 +2868,9 @@ Module control_flow_graph.
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                       Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                       [],
+                      [],
                       "block_start",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| block_id |) ]
@@ -2768,7 +2880,9 @@ Module control_flow_graph.
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                       Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                       [],
+                      [],
                       "block_end",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| block_id |) ]
@@ -2803,7 +2917,9 @@ Module control_flow_graph.
                     [ Ty.path "u16"; Ty.path "move_binary_format::control_flow_graph::BasicBlock" ]
                 ],
               [],
+              [],
               "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -2820,7 +2936,9 @@ Module control_flow_graph.
                     []
                     [ Ty.path "u16"; Ty.path "move_binary_format::control_flow_graph::BasicBlock" ],
                   [],
+                  [],
                   "cloned",
+                  [],
                   [ Ty.path "u16" ]
                 |),
                 [
@@ -2835,6 +2953,7 @@ Module control_flow_graph.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "keys",
+                      [],
                       []
                     |),
                     [
@@ -2874,6 +2993,7 @@ Module control_flow_graph.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -2928,6 +3048,7 @@ Module control_flow_graph.
                   Ty.path "alloc::alloc::Global"
                 ],
               "contains_key",
+              [],
               [ Ty.path "u16" ]
             |),
             [
@@ -2973,6 +3094,7 @@ Module control_flow_graph.
                     ]
                 ],
               "map_or",
+              [],
               [
                 Ty.path "bool";
                 Ty.function
@@ -3008,6 +3130,7 @@ Module control_flow_graph.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "get",
+                  [],
                   [ Ty.path "u16" ]
                 |),
                 [
@@ -3039,6 +3162,7 @@ Module control_flow_graph.
                                       []
                                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                     "contains",
+                                    [],
                                     [ Ty.path "u16" ]
                                   |),
                                   [ M.read (| back_edges |); cur ]
@@ -3078,7 +3202,9 @@ Module control_flow_graph.
                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                 ],
               [],
+              [],
               "fold",
+              [],
               [
                 Ty.path "usize";
                 Ty.function
@@ -3119,6 +3245,7 @@ Module control_flow_graph.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "iter",
+                  [],
                   []
                 |),
                 [
@@ -3159,6 +3286,7 @@ Module control_flow_graph.
                                                 []
                                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edges |) ]

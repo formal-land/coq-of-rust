@@ -130,12 +130,13 @@ Module char.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "is_some",
+                [],
                 []
               |),
               [
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_digit", [] |),
+                    M.get_associated_function (| Ty.path "char", "to_digit", [], [] |),
                     [ M.read (| self |); M.read (| radix |) ]
                   |)
                 |)
@@ -174,7 +175,7 @@ Module char.
                   let~ digit :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (Value.UnicodeChar 48) ]
                       |)
                     |) in
@@ -228,6 +229,7 @@ Module char.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -289,6 +291,7 @@ Module char.
                                   M.get_associated_function (|
                                     Ty.path "u32",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -296,6 +299,7 @@ Module char.
                                       M.get_associated_function (|
                                         Ty.path "u32",
                                         "wrapping_sub",
+                                        [],
                                         []
                                       |),
                                       [
@@ -351,7 +355,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [] |),
+              M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -398,6 +402,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
@@ -412,6 +417,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
@@ -426,6 +432,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
@@ -440,6 +447,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
@@ -454,6 +462,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [
@@ -479,6 +488,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::QuotationMark" []
@@ -501,6 +511,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" [] ]
@@ -521,6 +532,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.path "char",
                               "is_grapheme_extended",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -532,6 +544,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -552,6 +565,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "printable",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -564,6 +578,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -589,7 +604,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "char", "escape_debug_ext", [] |),
+              M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
               [
                 M.read (| self |);
                 M.read (| M.get_constant (| "core::char::methods::ESCAPE_ALL" |) |)
@@ -632,6 +647,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
@@ -646,6 +662,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
@@ -660,6 +677,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
@@ -695,45 +713,47 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::char::EscapeDefault",
-                                        "backslash",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                            "unwrap",
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::char::EscapeDefault",
+                                      "backslash",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
                                             []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "char",
-                                                "as_ascii",
-                                                []
-                                              |),
-                                              [ self ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                          "unwrap",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "char",
+                                              "as_ascii",
+                                              [],
+                                              []
+                                            |),
+                                            [ self ]
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -742,6 +762,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "printable",
+                            [],
                             []
                           |),
                           [
@@ -752,11 +773,17 @@ Module char.
                                   []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "char", "as_ascii", [] |),
+                                  M.get_associated_function (|
+                                    Ty.path "char",
+                                    "as_ascii",
+                                    [],
+                                    []
+                                  |),
                                   [ self ]
                                 |)
                               ]
@@ -771,6 +798,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -895,13 +923,12 @@ Module char.
                           fun γ => ltac:(M.monadic (Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1049,13 +1076,12 @@ Module char.
                               Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1095,12 +1121,12 @@ Module char.
             (let self := M.alloc (| self |) in
             LogicalOp.or (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "is_alphabetic", [] |),
+                M.get_associated_function (| Ty.path "char", "is_alphabetic", [], [] |),
                 [ M.read (| self |) ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "is_numeric", [] |),
+                  M.get_associated_function (| Ty.path "char", "is_numeric", [], [] |),
                   [ M.read (| self |) ]
                 |)))
             |)))
@@ -1202,7 +1228,12 @@ Module char.
               "core::char::ToLowercase"
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::char::CaseMappingIter",
+                    "new",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_function (|
@@ -1235,7 +1266,12 @@ Module char.
               "core::char::ToUppercase"
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::char::CaseMappingIter",
+                    "new",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_function (|
@@ -1298,7 +1334,7 @@ Module char.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "is_ascii", [] |),
+                              M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
                               [ M.read (| self |) ]
                             |)
                           |)) in
@@ -1311,6 +1347,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "from_u8_unchecked",
+                                [],
                                 []
                               |),
                               [ M.rust_cast (M.read (| M.read (| self |) |)) ]
@@ -1355,6 +1392,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "char",
                                 "is_ascii_lowercase",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1367,6 +1405,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
+                              [],
                               []
                             |),
                             [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
@@ -1409,6 +1448,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "char",
                                 "is_ascii_uppercase",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1421,6 +1461,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
+                              [],
                               []
                             |),
                             [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
@@ -1449,11 +1490,11 @@ Module char.
             let other := M.alloc (| other |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
+                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
                 [ M.read (| self |) ]
               |),
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
+                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
                 [ M.read (| other |) ]
               |)
             |)))
@@ -1478,7 +1519,7 @@ Module char.
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_ascii_uppercase", [] |),
+                    M.get_associated_function (| Ty.path "char", "to_ascii_uppercase", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
@@ -1505,7 +1546,7 @@ Module char.
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
+                    M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
@@ -1539,13 +1580,12 @@ Module char.
                           fun γ => ltac:(M.monadic (Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1890,13 +1930,12 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1937,13 +1976,12 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -2323,6 +2361,7 @@ Module char.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| dst |) ]
@@ -2351,6 +2390,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| dst |) ]
@@ -2385,7 +2425,12 @@ Module char.
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -2429,6 +2474,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1_formatted",
+                      [],
                       []
                     |),
                     [
@@ -2447,6 +2493,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ len ]
@@ -2455,6 +2502,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_upper_hex",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [ code ]
@@ -2463,6 +2511,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ dst_len ]
@@ -2476,6 +2525,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2491,6 +2541,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2508,6 +2559,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2525,6 +2577,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -2673,6 +2726,7 @@ Module char.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| dst |) ]
@@ -2701,6 +2755,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| dst |) ]
@@ -2735,7 +2790,12 @@ Module char.
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -2779,6 +2839,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1_formatted",
+                      [],
                       []
                     |),
                     [
@@ -2797,6 +2858,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ len ]
@@ -2805,6 +2867,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_upper_hex",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [ code ]
@@ -2813,6 +2876,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ dst_len ]
@@ -2826,6 +2890,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2841,6 +2906,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2858,6 +2924,7 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Placeholder",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2875,6 +2942,7 @@ Module char.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
                           "new",
+                          [],
                           []
                         |),
                         []

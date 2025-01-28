@@ -40,7 +40,15 @@ Module binary_config.
             [
               ("module_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -51,7 +59,15 @@ Module binary_config.
                 |));
               ("struct_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -62,7 +78,15 @@ Module binary_config.
                 |));
               ("function_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -73,7 +97,15 @@ Module binary_config.
                 |));
               ("function_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -84,7 +116,15 @@ Module binary_config.
                 |));
               ("signatures",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -95,7 +135,15 @@ Module binary_config.
                 |));
               ("constant_pool",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -106,7 +154,15 @@ Module binary_config.
                 |));
               ("identifiers",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -117,7 +173,15 @@ Module binary_config.
                 |));
               ("address_identifiers",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -128,7 +192,15 @@ Module binary_config.
                 |));
               ("struct_defs",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -139,7 +211,15 @@ Module binary_config.
                 |));
               ("struct_def_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -150,7 +230,15 @@ Module binary_config.
                 |));
               ("function_defs",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -161,7 +249,15 @@ Module binary_config.
                 |));
               ("field_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -172,7 +268,15 @@ Module binary_config.
                 |));
               ("field_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -183,7 +287,15 @@ Module binary_config.
                 |));
               ("friend_decls",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -322,6 +434,7 @@ Module binary_config.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -422,7 +535,15 @@ Module binary_config.
             [
               ("max_binary_format_version",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -433,7 +554,15 @@ Module binary_config.
                 |));
               ("check_no_extraneous_bytes",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -448,7 +577,9 @@ Module binary_config.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -485,6 +616,7 @@ Module binary_config.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
@@ -583,6 +715,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []
@@ -624,6 +757,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []
@@ -661,6 +795,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []

@@ -235,6 +235,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "core::num::bignum::Big32x40",
                                           "mul_small",
+                                          [],
                                           []
                                         |),
                                         [
@@ -289,6 +290,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [
@@ -346,6 +348,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [
@@ -397,6 +400,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_digits",
+                                      [],
                                       []
                                     |),
                                     [
@@ -440,6 +444,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_digits",
+                                      [],
                                       []
                                     |),
                                     [
@@ -483,6 +488,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_digits",
+                                      [],
                                       []
                                     |),
                                     [
@@ -526,6 +532,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_digits",
+                                      [],
                                       []
                                     |),
                                     [
@@ -569,6 +576,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_digits",
+                                      [],
                                       []
                                     |),
                                     [
@@ -590,6 +598,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::bignum::Big32x40",
                           "mul_pow2",
+                          [],
                           []
                         |),
                         [ M.read (| x |); M.read (| n |) ]
@@ -628,6 +637,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -663,6 +673,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "div_rem_small",
+                                      [],
                                       []
                                     |),
                                     [
@@ -709,6 +720,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "div_rem_small",
+                        [],
                         []
                       |),
                       [
@@ -788,8 +800,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "core::num::bignum::Big32x40",
+                                    [],
                                     [ Ty.path "core::num::bignum::Big32x40" ],
                                     "ge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| x |); M.read (| scale8 |) ]
@@ -803,6 +817,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| x |); M.read (| scale8 |) ]
@@ -831,8 +846,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "core::num::bignum::Big32x40",
+                                    [],
                                     [ Ty.path "core::num::bignum::Big32x40" ],
                                     "ge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| x |); M.read (| scale4 |) ]
@@ -846,6 +863,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| x |); M.read (| scale4 |) ]
@@ -874,8 +892,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "core::num::bignum::Big32x40",
+                                    [],
                                     [ Ty.path "core::num::bignum::Big32x40" ],
                                     "ge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| x |); M.read (| scale2 |) ]
@@ -889,6 +909,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| x |); M.read (| scale2 |) ]
@@ -917,8 +938,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "core::num::bignum::Big32x40",
+                                    [],
                                     [ Ty.path "core::num::bignum::Big32x40" ],
                                     "ge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| x |); M.read (| scale |) ]
@@ -932,6 +955,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| x |); M.read (| scale |) ]
@@ -970,8 +994,10 @@ Module num.
                                               M.get_trait_method (|
                                                 "core::cmp::PartialOrd",
                                                 Ty.path "core::num::bignum::Big32x40",
+                                                [],
                                                 [ Ty.path "core::num::bignum::Big32x40" ],
                                                 "lt",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| x |); M.read (| scale |) ]
@@ -1299,6 +1325,7 @@ Module num.
                                         []
                                         [ Ty.path "u64" ],
                                       "is_some",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1307,6 +1334,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "checked_add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1366,6 +1394,7 @@ Module num.
                                         []
                                         [ Ty.path "u64" ],
                                       "is_some",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1374,6 +1403,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "checked_sub",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1439,6 +1469,7 @@ Module num.
                                               [ Ty.path "u8" ]
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| buf |) ]
@@ -1530,6 +1561,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "from_u64",
+                        [],
                         []
                       |),
                       [
@@ -1549,6 +1581,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "from_u64",
+                        [],
                         []
                       |),
                       [
@@ -1568,6 +1601,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "from_u64",
+                        [],
                         []
                       |),
                       [
@@ -1587,6 +1621,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "from_small",
+                        [],
                         []
                       |),
                       [ Value.Integer IntegerKind.U32 1 ]
@@ -1620,6 +1655,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_pow2",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1646,6 +1682,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_pow2",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1667,6 +1704,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_pow2",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1688,6 +1726,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_pow2",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1782,8 +1821,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "core::cmp::Ordering",
+                                    [],
                                     [ Ty.path "core::cmp::Ordering" ],
                                     "lt",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1793,7 +1834,9 @@ Module num.
                                           "core::cmp::Ord",
                                           Ty.path "core::num::bignum::Big32x40",
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1802,6 +1845,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::num::bignum::Big32x40",
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1811,7 +1855,9 @@ Module num.
                                                     "core::clone::Clone",
                                                     Ty.path "core::num::bignum::Big32x40",
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [ mant ]
@@ -1844,6 +1890,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_small",
+                                  [],
                                   []
                                 |),
                                 [ mant; Value.Integer IntegerKind.U32 10 ]
@@ -1855,6 +1902,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_small",
+                                  [],
                                   []
                                 |),
                                 [ minus; Value.Integer IntegerKind.U32 10 ]
@@ -1866,6 +1914,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::num::bignum::Big32x40",
                                   "mul_small",
+                                  [],
                                   []
                                 |),
                                 [ plus; Value.Integer IntegerKind.U32 10 ]
@@ -1881,7 +1930,9 @@ Module num.
                         "core::clone::Clone",
                         Ty.path "core::num::bignum::Big32x40",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [ scale ]
@@ -1893,6 +1944,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "mul_pow2",
+                        [],
                         []
                       |),
                       [ scale2; Value.Integer IntegerKind.Usize 1 ]
@@ -1905,7 +1957,9 @@ Module num.
                         "core::clone::Clone",
                         Ty.path "core::num::bignum::Big32x40",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [ scale ]
@@ -1917,6 +1971,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "mul_pow2",
+                        [],
                         []
                       |),
                       [ scale4; Value.Integer IntegerKind.Usize 2 ]
@@ -1929,7 +1984,9 @@ Module num.
                         "core::clone::Clone",
                         Ty.path "core::num::bignum::Big32x40",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [ scale ]
@@ -1941,6 +1998,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.path "core::num::bignum::Big32x40",
                         "mul_pow2",
+                        [],
                         []
                       |),
                       [ scale8; Value.Integer IntegerKind.Usize 3 ]
@@ -2036,6 +2094,7 @@ Module num.
                                         []
                                         [ Ty.path "u8" ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2062,8 +2121,10 @@ Module num.
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "core::cmp::Ordering",
+                                      [],
                                       [ Ty.path "core::cmp::Ordering" ],
                                       "lt",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2073,7 +2134,9 @@ Module num.
                                             "core::cmp::Ord",
                                             Ty.path "core::num::bignum::Big32x40",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [ mant; minus ]
@@ -2090,8 +2153,10 @@ Module num.
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "core::cmp::Ordering",
+                                      [],
                                       [ Ty.path "core::cmp::Ordering" ],
                                       "lt",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2101,7 +2166,9 @@ Module num.
                                             "core::cmp::Ord",
                                             Ty.path "core::num::bignum::Big32x40",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2110,6 +2177,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "core::num::bignum::Big32x40",
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2119,7 +2187,9 @@ Module num.
                                                       "core::clone::Clone",
                                                       Ty.path "core::num::bignum::Big32x40",
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ mant ]
@@ -2166,6 +2236,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [ mant; Value.Integer IntegerKind.U32 10 ]
@@ -2177,6 +2248,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [ minus; Value.Integer IntegerKind.U32 10 ]
@@ -2188,6 +2260,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [ plus; Value.Integer IntegerKind.U32 10 ]
@@ -2216,8 +2289,10 @@ Module num.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "core::num::bignum::Big32x40",
+                                            [],
                                             [ Ty.path "core::num::bignum::Big32x40" ],
                                             "ge",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2225,6 +2300,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "core::num::bignum::Big32x40",
                                                 "mul_pow2",
+                                                [],
                                                 []
                                               |),
                                               [ mant; Value.Integer IntegerKind.Usize 1 ]
@@ -2254,6 +2330,7 @@ Module num.
                                                 []
                                                 [ Ty.path "u8" ],
                                               "slice_assume_init_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2270,6 +2347,7 @@ Module num.
                                                         []
                                                         [ Ty.path "u8" ]
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::RangeTo")
@@ -2277,6 +2355,7 @@ Module num.
                                                       [ Ty.path "usize" ]
                                                   ],
                                                   "index_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2308,6 +2387,7 @@ Module num.
                                             []
                                             [ Ty.path "u8" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| c |) ]
@@ -2348,6 +2428,7 @@ Module num.
                             []
                             [ Ty.path "u8" ],
                           "slice_assume_init_ref",
+                          [],
                           []
                         |),
                         [
@@ -2363,6 +2444,7 @@ Module num.
                                     []
                                     [ Ty.path "u8" ]
                                 ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -2370,6 +2452,7 @@ Module num.
                                   [ Ty.path "usize" ]
                               ],
                               "index",
+                              [],
                               []
                             |),
                             [
@@ -2662,6 +2745,7 @@ Module num.
                                             []
                                             [ Ty.path "u64" ],
                                           "is_some",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2670,6 +2754,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "checked_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2732,6 +2817,7 @@ Module num.
                                             []
                                             [ Ty.path "u64" ],
                                           "is_some",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2740,6 +2826,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "checked_sub",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2817,6 +2904,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.path "core::num::bignum::Big32x40",
                             "from_u64",
+                            [],
                             []
                           |),
                           [
@@ -2836,6 +2924,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.path "core::num::bignum::Big32x40",
                             "from_small",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.U32 1 ]
@@ -2872,6 +2961,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_pow2",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2898,6 +2988,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_pow2",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2973,8 +3064,10 @@ Module num.
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
                                         Ty.path "core::num::bignum::Big32x40",
+                                        [],
                                         [ Ty.path "core::num::bignum::Big32x40" ],
                                         "ge",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2982,6 +3075,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::num::bignum::Big32x40",
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2998,7 +3092,9 @@ Module num.
                                                       "core::clone::Clone",
                                                       Ty.path "core::num::bignum::Big32x40",
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ scale ]
@@ -3017,6 +3113,7 @@ Module num.
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| buf |) ]
@@ -3053,6 +3150,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_small",
+                                      [],
                                       []
                                     |),
                                     [ mant; Value.Integer IntegerKind.U32 10 ]
@@ -3108,6 +3206,7 @@ Module num.
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| buf |) ]
@@ -3141,6 +3240,7 @@ Module num.
                                                     [ Ty.path "u8" ]
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -3177,7 +3277,9 @@ Module num.
                                       "core::clone::Clone",
                                       Ty.path "core::num::bignum::Big32x40",
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [ scale ]
@@ -3189,6 +3291,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_pow2",
+                                      [],
                                       []
                                     |),
                                     [ scale2; Value.Integer IntegerKind.Usize 1 ]
@@ -3201,7 +3304,9 @@ Module num.
                                       "core::clone::Clone",
                                       Ty.path "core::num::bignum::Big32x40",
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [ scale ]
@@ -3213,6 +3318,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_pow2",
+                                      [],
                                       []
                                     |),
                                     [ scale4; Value.Integer IntegerKind.Usize 2 ]
@@ -3225,7 +3331,9 @@ Module num.
                                       "core::clone::Clone",
                                       Ty.path "core::num::bignum::Big32x40",
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [ scale ]
@@ -3237,6 +3345,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::bignum::Big32x40",
                                       "mul_pow2",
+                                      [],
                                       []
                                     |),
                                     [ scale8; Value.Integer IntegerKind.Usize 3 ]
@@ -3253,7 +3362,9 @@ Module num.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3283,7 +3394,9 @@ Module num.
                                                         []
                                                         [ Ty.path "usize" ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ iter ]
@@ -3325,6 +3438,7 @@ Module num.
                                                                           Ty.path
                                                                             "core::num::bignum::Big32x40",
                                                                           "is_zero",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ mant ]
@@ -3365,7 +3479,9 @@ Module num.
                                                                                         ]
                                                                                     ],
                                                                                   [],
+                                                                                  [],
                                                                                   "into_iter",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3386,6 +3502,7 @@ Module num.
                                                                                                 "u8"
                                                                                             ]
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -3397,6 +3514,7 @@ Module num.
                                                                                           ]
                                                                                       ],
                                                                                       "index_mut",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -3450,7 +3568,9 @@ Module num.
                                                                                                       ]
                                                                                                   ],
                                                                                                 [],
+                                                                                                [],
                                                                                                 "next",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [ iter
@@ -3504,6 +3624,7 @@ Module num.
                                                                                                               "u8"
                                                                                                           ],
                                                                                                         "new",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -3537,6 +3658,7 @@ Module num.
                                                                                   []
                                                                                   [ Ty.path "u8" ],
                                                                                 "slice_assume_init_ref",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3557,6 +3679,7 @@ Module num.
                                                                                               "u8"
                                                                                           ]
                                                                                       ],
+                                                                                    [],
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -3568,6 +3691,7 @@ Module num.
                                                                                         ]
                                                                                     ],
                                                                                     "index",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -3615,11 +3739,13 @@ Module num.
                                                                           "core::cmp::PartialOrd",
                                                                           Ty.path
                                                                             "core::num::bignum::Big32x40",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "core::num::bignum::Big32x40"
                                                                           ],
                                                                           "ge",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ mant; scale8 ]
@@ -3637,6 +3763,7 @@ Module num.
                                                                         Ty.path
                                                                           "core::num::bignum::Big32x40",
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ mant; scale8 ]
@@ -3671,11 +3798,13 @@ Module num.
                                                                           "core::cmp::PartialOrd",
                                                                           Ty.path
                                                                             "core::num::bignum::Big32x40",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "core::num::bignum::Big32x40"
                                                                           ],
                                                                           "ge",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ mant; scale4 ]
@@ -3693,6 +3822,7 @@ Module num.
                                                                         Ty.path
                                                                           "core::num::bignum::Big32x40",
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ mant; scale4 ]
@@ -3727,11 +3857,13 @@ Module num.
                                                                           "core::cmp::PartialOrd",
                                                                           Ty.path
                                                                             "core::num::bignum::Big32x40",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "core::num::bignum::Big32x40"
                                                                           ],
                                                                           "ge",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ mant; scale2 ]
@@ -3749,6 +3881,7 @@ Module num.
                                                                         Ty.path
                                                                           "core::num::bignum::Big32x40",
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ mant; scale2 ]
@@ -3783,11 +3916,13 @@ Module num.
                                                                           "core::cmp::PartialOrd",
                                                                           Ty.path
                                                                             "core::num::bignum::Big32x40",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "core::num::bignum::Big32x40"
                                                                           ],
                                                                           "ge",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ mant; scale ]
@@ -3805,6 +3940,7 @@ Module num.
                                                                         Ty.path
                                                                           "core::num::bignum::Big32x40",
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ mant; scale ]
@@ -3856,11 +3992,13 @@ Module num.
                                                                                       "core::cmp::PartialOrd",
                                                                                       Ty.path
                                                                                         "core::num::bignum::Big32x40",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::num::bignum::Big32x40"
                                                                                       ],
                                                                                       "lt",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ mant; scale ]
@@ -3985,6 +4123,7 @@ Module num.
                                                                 []
                                                                 [ Ty.path "u8" ],
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4001,6 +4140,7 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::num::bignum::Big32x40",
                                                               "mul_small",
+                                                              [],
                                                               []
                                                             |),
                                                             [ mant; Value.Integer IntegerKind.U32 10
@@ -4024,7 +4164,9 @@ Module num.
                             "core::cmp::Ord",
                             Ty.path "core::num::bignum::Big32x40",
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
@@ -4033,6 +4175,7 @@ Module num.
                               M.get_associated_function (|
                                 Ty.path "core::num::bignum::Big32x40",
                                 "mul_small",
+                                [],
                                 []
                               |),
                               [ scale; Value.Integer IntegerKind.U32 5 ]
@@ -4054,8 +4197,10 @@ Module num.
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "core::cmp::Ordering",
+                                          [],
                                           [ Ty.path "core::cmp::Ordering" ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4072,8 +4217,10 @@ Module num.
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
                                                 Ty.path "core::cmp::Ordering",
+                                                [],
                                                 [ Ty.path "core::cmp::Ordering" ],
                                                 "eq",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4100,6 +4247,7 @@ Module num.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "assume_init",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4148,6 +4296,7 @@ Module num.
                                                     []
                                                     [ Ty.path "u8" ],
                                                   "slice_assume_init_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4164,6 +4313,7 @@ Module num.
                                                             []
                                                             [ Ty.path "u8" ]
                                                         ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::RangeTo")
@@ -4171,6 +4321,7 @@ Module num.
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "index_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -4230,6 +4381,7 @@ Module num.
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               "len",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| buf |) ]
@@ -4256,6 +4408,7 @@ Module num.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| c |) ]
@@ -4290,6 +4443,7 @@ Module num.
                                 []
                                 [ Ty.path "u8" ],
                               "slice_assume_init_ref",
+                              [],
                               []
                             |),
                             [
@@ -4305,6 +4459,7 @@ Module num.
                                         []
                                         [ Ty.path "u8" ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
@@ -4312,6 +4467,7 @@ Module num.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [

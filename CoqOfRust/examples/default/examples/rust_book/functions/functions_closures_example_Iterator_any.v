@@ -39,6 +39,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -56,6 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -79,6 +81,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -96,6 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -120,7 +124,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -134,6 +143,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -146,7 +156,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "i32" ],
                                       [],
+                                      [],
                                       "any",
+                                      [],
                                       [
                                         Ty.function
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
@@ -160,6 +172,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -171,7 +184,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ vec1 ]
@@ -220,7 +235,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -234,6 +254,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -246,7 +267,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                       [],
+                                      [],
                                       "any",
+                                      [],
                                       [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool")
                                       ]
                                     |),
@@ -260,7 +283,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               []
                                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| vec2 |) ]
@@ -306,7 +331,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -320,6 +350,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -331,6 +362,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ vec1 ]
@@ -353,7 +385,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -370,6 +407,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -380,8 +418,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       (Ty.path "alloc::vec::Vec")
                                       []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                    [],
                                     [ Ty.path "usize" ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [ vec1; Value.Integer IntegerKind.Usize 0 ]
@@ -421,7 +461,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -436,6 +481,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -448,7 +494,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "i32" ],
                                       [],
+                                      [],
                                       "any",
+                                      [],
                                       [
                                         Ty.function
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
@@ -462,6 +510,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [ array1 ]
@@ -508,7 +557,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -523,6 +577,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -535,7 +590,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "i32" ],
                                       [],
+                                      [],
                                       "any",
+                                      [],
                                       [
                                         Ty.function
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
@@ -558,7 +615,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [ Ty.path "i32" ]
                                               ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [ array2 ]

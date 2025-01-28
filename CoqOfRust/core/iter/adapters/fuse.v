@@ -32,7 +32,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ I ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -72,6 +74,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -203,8 +206,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "next",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -228,8 +233,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -274,7 +281,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "last",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -327,7 +336,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "count",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -380,7 +391,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "size_hint",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -426,8 +439,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "try_fold",
+                  [],
                   [ Acc; Fold; R ]
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| fold |) ]
@@ -482,7 +497,9 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "fold",
+                                  [],
                                   [ Acc; Fold ]
                                 |),
                                 [ M.read (| iter |); M.read (| acc |); M.read (| fold |) ]
@@ -516,8 +533,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "find",
+                  [],
                   [ P ]
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
@@ -635,8 +654,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "next_back",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -660,8 +681,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "nth_back",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -691,8 +714,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "try_rfold",
+                  [],
                   [ Acc; Fold; R ]
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| fold |) ]
@@ -747,7 +772,9 @@ Module iter.
                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                   I,
                                   [],
+                                  [],
                                   "rfold",
+                                  [],
                                   [ Acc; Fold ]
                                 |),
                                 [ M.read (| iter |); M.read (| acc |); M.read (| fold |) ]
@@ -781,8 +808,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::fuse::FuseImpl",
                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
+                  [],
                   [ I ],
                   "rfind",
+                  [],
                   [ P ]
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
@@ -847,7 +876,9 @@ Module iter.
                               "core::iter::traits::exact_size::ExactSizeIterator",
                               I,
                               [],
+                              [],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -900,7 +931,9 @@ Module iter.
                               "core::iter::traits::exact_size::ExactSizeIterator",
                               I,
                               [],
+                              [],
                               "is_empty",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -950,7 +983,9 @@ Module iter.
                         "core::default::Default",
                         Ty.apply (Ty.path "core::option::Option") [] [ I ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -1062,7 +1097,9 @@ Module iter.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |)
                 ]
@@ -1117,7 +1154,9 @@ Module iter.
                                         "core::iter::traits::iterator::Iterator",
                                         I,
                                         [],
+                                        [],
                                         "nth",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| iter |); M.read (| n |) ]
@@ -1186,7 +1225,9 @@ Module iter.
                                             "core::ops::try_trait::Try",
                                             R,
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1195,7 +1236,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "try_fold",
+                                                [],
                                                 [ Acc; Fold; R ]
                                               |),
                                               [
@@ -1225,8 +1268,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
+                                                        [],
                                                         [ Ty.associated ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -1268,7 +1313,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| acc |) ]
@@ -1329,7 +1376,9 @@ Module iter.
                                         "core::iter::traits::iterator::Iterator",
                                         I,
                                         [],
+                                        [],
                                         "find",
+                                        [],
                                         [ P ]
                                       |),
                                       [ M.read (| iter |); M.read (| predicate |) ]
@@ -1392,7 +1441,9 @@ Module iter.
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         I,
                                         [],
+                                        [],
                                         "next_back",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| iter |) ]
@@ -1456,7 +1507,9 @@ Module iter.
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         I,
                                         [],
+                                        [],
                                         "nth_back",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| iter |); M.read (| n |) ]
@@ -1526,7 +1579,9 @@ Module iter.
                                             "core::ops::try_trait::Try",
                                             R,
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1535,7 +1590,9 @@ Module iter.
                                                 "core::iter::traits::double_ended::DoubleEndedIterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "try_rfold",
+                                                [],
                                                 [ Acc; Fold; R ]
                                               |),
                                               [
@@ -1565,8 +1622,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
+                                                        [],
                                                         [ Ty.associated ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -1608,7 +1667,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| acc |) ]
@@ -1670,7 +1731,9 @@ Module iter.
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         I,
                                         [],
+                                        [],
                                         "rfind",
+                                        [],
                                         [ P ]
                                       |),
                                       [ M.read (| iter |); M.read (| predicate |) ]
@@ -1726,7 +1789,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -1741,7 +1806,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1749,6 +1816,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1783,6 +1851,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1790,6 +1859,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1836,7 +1906,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "nth",
+                      [],
                       []
                     |),
                     [
@@ -1851,7 +1923,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1859,6 +1933,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1893,6 +1968,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1900,6 +1976,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1982,7 +2059,9 @@ Module iter.
                                             "core::ops::try_trait::Try",
                                             R,
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1991,7 +2070,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "try_fold",
+                                                [],
                                                 [ Acc; Fold; R ]
                                               |),
                                               [
@@ -2021,8 +2102,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
+                                                        [],
                                                         [ Ty.associated ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2055,7 +2138,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| acc |) ]
@@ -2088,7 +2173,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "find",
+                      [],
                       [ P ]
                     |),
                     [
@@ -2103,7 +2190,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2111,6 +2200,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2145,6 +2235,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2152,6 +2243,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2201,7 +2293,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
@@ -2216,7 +2310,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2224,6 +2320,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2258,6 +2355,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2265,6 +2363,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2314,7 +2413,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "nth_back",
+                      [],
                       []
                     |),
                     [
@@ -2329,7 +2430,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2337,6 +2440,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2371,6 +2475,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2378,6 +2483,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2461,7 +2567,9 @@ Module iter.
                                             "core::ops::try_trait::Try",
                                             R,
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2470,7 +2578,9 @@ Module iter.
                                                 "core::iter::traits::double_ended::DoubleEndedIterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "try_rfold",
+                                                [],
                                                 [ Acc; Fold; R ]
                                               |),
                                               [
@@ -2500,8 +2610,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
+                                                        [],
                                                         [ Ty.associated ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2534,7 +2646,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| acc |) ]
@@ -2568,7 +2682,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "rfind",
+                      [],
                       [ P ]
                     |),
                     [
@@ -2583,7 +2699,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2591,6 +2709,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2625,6 +2744,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2632,6 +2752,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2701,7 +2822,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  I,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2710,6 +2839,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                       "unwrap_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -2717,6 +2847,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ I ],
                           "as_mut",
+                          [],
                           []
                         |),
                         [
@@ -2771,8 +2902,10 @@ Module iter.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           impl_FnOnce__mut_T__arrow_Option_U_,
+                          [],
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [
@@ -2790,7 +2923,9 @@ Module iter.
                                           []
                                           [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2798,6 +2933,7 @@ Module iter.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                             "as_mut",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| opt |) ]
@@ -2826,6 +2962,7 @@ Module iter.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ U ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -2833,6 +2970,7 @@ Module iter.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -2871,6 +3009,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::option::Option") [] [ U ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [ x ]

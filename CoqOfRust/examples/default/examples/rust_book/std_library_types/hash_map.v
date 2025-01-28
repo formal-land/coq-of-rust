@@ -108,6 +108,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "new",
+                [],
                 []
               |),
               []
@@ -126,6 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
               [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "798-1364" |) ]
@@ -144,6 +146,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
               [ contacts; M.read (| Value.String "Ashley" |); M.read (| Value.String "645-7689" |) ]
@@ -162,6 +165,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
               [ contacts; M.read (| Value.String "Katie" |); M.read (| Value.String "435-8291" |) ]
@@ -180,6 +184,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
               [ contacts; M.read (| Value.String "Robert" |); M.read (| Value.String "956-1745" |) ]
@@ -199,6 +204,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ contacts; Value.String "Daniel" ]
@@ -220,6 +226,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -238,6 +245,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [
@@ -268,6 +276,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
@@ -297,6 +306,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
               [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "164-6743" |) ]
@@ -316,6 +326,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ contacts; Value.String "Ashley" ]
@@ -337,6 +348,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -355,6 +367,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [
@@ -385,6 +398,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
@@ -414,6 +428,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "remove",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ contacts; Value.String "Ashley" ]
@@ -433,7 +448,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                     ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -448,6 +465,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "iter",
+                      [],
                       []
                     |),
                     [ contacts ]
@@ -475,7 +493,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                                   ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [ iter ]
@@ -509,6 +529,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -528,6 +549,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -546,6 +568,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")

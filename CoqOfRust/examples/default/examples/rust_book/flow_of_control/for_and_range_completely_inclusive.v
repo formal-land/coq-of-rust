@@ -30,7 +30,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "i32" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -38,6 +40,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "i32" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 100 ]
@@ -62,7 +65,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                   [ Ty.path "i32" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [ iter ]
@@ -117,6 +122,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -169,6 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -226,6 +233,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -262,6 +270,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -285,6 +294,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [ Ty.path "i32" ]
                                                                               |),
                                                                               [ n ]

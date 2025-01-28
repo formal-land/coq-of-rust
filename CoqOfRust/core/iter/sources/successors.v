@@ -58,7 +58,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -71,7 +73,7 @@ Module iter.
                     |));
                   ("succ",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -125,7 +127,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -133,6 +137,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                     "take",
+                                    [],
                                     []
                                   |),
                                   [
@@ -164,6 +169,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -171,6 +177,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -203,8 +210,10 @@ Module iter.
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
+                            [],
                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                             "call_mut",
+                            [],
                             []
                           |),
                           [
@@ -254,6 +263,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
@@ -338,6 +348,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -345,6 +356,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -353,6 +365,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Successors" |) ]

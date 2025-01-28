@@ -28,7 +28,7 @@ Module iter.
                 [
                   ("it",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -66,6 +66,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -151,8 +152,10 @@ Module iter.
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           impl_FnMut_Acc__T__arrow_R,
+                                          [],
                                           [ Ty.tuple [ Acc; T ] ],
                                           "call_mut",
+                                          [],
                                           []
                                         |),
                                         [
@@ -165,7 +168,9 @@ Module iter.
                                                   "core::clone::Clone",
                                                   T,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| elt |) ]
@@ -211,6 +216,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "cloned",
+                  [],
                   []
                 |),
                 [
@@ -219,7 +225,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -256,7 +264,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -298,7 +308,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ B; Ty.associated; R ]
                 |),
                 [
@@ -345,7 +357,9 @@ Module iter.
                     []
                     [ I; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ],
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [
@@ -354,7 +368,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "map",
+                      [],
                       [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
                     |),
                     [
@@ -365,7 +381,7 @@ Module iter.
                           "it"
                         |)
                       |);
-                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |)
+                      M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |)
                     ]
                   |);
                   M.read (| init |);
@@ -398,7 +414,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
                   M.call_closure (|
                     M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
@@ -457,6 +473,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "cloned",
+                  [],
                   []
                 |),
                 [
@@ -465,7 +482,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
@@ -509,7 +528,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; Ty.associated; R ]
                 |),
                 [
@@ -556,7 +577,9 @@ Module iter.
                     []
                     [ I; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ],
                   [],
+                  [],
                   "rfold",
+                  [],
                   [ Acc; F ]
                 |),
                 [
@@ -565,7 +588,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "map",
+                      [],
                       [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
                     |),
                     [
@@ -576,7 +601,7 @@ Module iter.
                           "it"
                         |)
                       |);
-                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |)
+                      M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |)
                     ]
                   |);
                   M.read (| init |);
@@ -620,7 +645,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -655,7 +682,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "is_empty",
+                  [],
                   []
                 |),
                 [
@@ -773,7 +802,9 @@ Module iter.
                         "core::iter::traits::unchecked_iterator::UncheckedIterator",
                         I,
                         [],
+                        [],
                         "next_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -787,7 +818,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                     [ M.read (| item |) ]
                   |)
                 |)
@@ -822,11 +853,12 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ],
                   "new",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", I, [], "default", [] |),
+                    M.get_trait_method (| "core::default::Default", I, [], [], "default", [], [] |),
                     []
                   |)
                 ]
@@ -863,7 +895,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  I,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),

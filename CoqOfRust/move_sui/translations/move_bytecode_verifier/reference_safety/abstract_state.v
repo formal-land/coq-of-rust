@@ -101,6 +101,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Reference" |); __self_0 ]
@@ -119,6 +120,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "NonReference" |) ]
@@ -258,6 +260,7 @@ Module reference_safety.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_borrow_graph::references::RefID" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -265,6 +268,7 @@ Module reference_safety.
                                         [ Ty.path "move_borrow_graph::references::RefID" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -352,6 +356,7 @@ Module reference_safety.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                   "is_reference",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -472,7 +477,9 @@ Module reference_safety.
                                 "core::clone::Clone",
                                 Ty.path "u8",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -498,7 +505,9 @@ Module reference_safety.
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::StructDefinitionIndex",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -524,7 +533,9 @@ Module reference_safety.
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::FieldHandleIndex",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -575,6 +586,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Local" |); __self_0 ]
@@ -595,6 +607,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Global" |); __self_0 ]
@@ -615,6 +628,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Field" |); __self_0 ]
@@ -717,7 +731,15 @@ Module reference_safety.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
                     [ __self_discr; __arg1_discr ]
                   |)
                 |),
@@ -754,7 +776,9 @@ Module reference_safety.
                                     "core::cmp::Ord",
                                     Ty.path "u8",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -787,7 +811,9 @@ Module reference_safety.
                                     Ty.path
                                       "move_binary_format::file_format::StructDefinitionIndex",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -819,7 +845,9 @@ Module reference_safety.
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::file_format::FieldHandleIndex",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -934,8 +962,10 @@ Module reference_safety.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -972,6 +1002,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_binary_format::file_format::StructDefinitionIndex"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -982,6 +1013,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -1016,6 +1048,7 @@ Module reference_safety.
                                       []
                                       [ Ty.path "move_binary_format::file_format::FieldHandleIndex"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -1026,6 +1059,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -1120,8 +1154,10 @@ Module reference_safety.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "u8",
+                            [],
                             [ Ty.path "u8" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1152,8 +1188,10 @@ Module reference_safety.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
+                            [],
                             [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1184,8 +1222,10 @@ Module reference_safety.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_binary_format::file_format::FieldHandleIndex",
+                            [],
                             [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1198,8 +1238,10 @@ Module reference_safety.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ __self_discr; __arg1_discr ]
@@ -1257,6 +1299,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -1265,6 +1308,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -1276,6 +1320,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                         |),
                                         [ i ]
@@ -1302,6 +1347,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -1310,6 +1356,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -1321,6 +1368,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1355,6 +1403,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -1363,6 +1412,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -1374,6 +1424,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1488,7 +1539,9 @@ Module reference_safety.
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1512,7 +1565,9 @@ Module reference_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1535,7 +1590,9 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1548,7 +1605,15 @@ Module reference_safety.
                   |));
                 ("next_id",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1584,6 +1649,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -1661,6 +1727,7 @@ Module reference_safety.
                         (Ty.path "core::option::Option")
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -1668,6 +1735,7 @@ Module reference_safety.
                           [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -1695,6 +1763,7 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
                             Ty.path "alloc::alloc::Global"
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -1706,6 +1775,7 @@ Module reference_safety.
                             ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -1733,6 +1803,7 @@ Module reference_safety.
                           Ty.tuple [];
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -1744,6 +1815,7 @@ Module reference_safety.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -1887,6 +1959,7 @@ Module reference_safety.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::Signature",
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1894,6 +1967,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "parameters",
+                            [],
                             []
                           |),
                           [ M.read (| function_context |) ]
@@ -1904,6 +1978,7 @@ Module reference_safety.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::Signature",
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1911,6 +1986,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "locals",
+                            [],
                             []
                           |),
                           [ M.read (| function_context |) ]
@@ -1933,6 +2009,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "index",
+                            [],
                             []
                           |),
                           [ M.read (| function_context |) ]
@@ -1966,6 +2043,7 @@ Module reference_safety.
                                   "move_bytecode_verifier::reference_safety::abstract_state::Label"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -1990,7 +2068,9 @@ Module reference_safety.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2002,7 +2082,9 @@ Module reference_safety.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -2013,6 +2095,7 @@ Module reference_safety.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2027,7 +2110,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2037,6 +2122,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::absint::FunctionContext",
                                             "parameters",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| function_context |) ]
@@ -2078,7 +2164,9 @@ Module reference_safety.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2117,6 +2205,7 @@ Module reference_safety.
                                                           Ty.path
                                                             "move_binary_format::file_format::SignatureToken",
                                                           "is_reference",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| param_ty |) ]
@@ -2134,6 +2223,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_borrow_graph::references::RefID",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| param_idx |) ]
@@ -2153,6 +2243,7 @@ Module reference_safety.
                                                               "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                                           ],
                                                         "new_ref",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2167,6 +2258,7 @@ Module reference_safety.
                                                             Ty.path
                                                               "move_binary_format::file_format::SignatureToken",
                                                             "is_mutable_reference",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| param_ty |) ]
@@ -2186,8 +2278,10 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
+                                                      [],
                                                       [ Ty.path "usize" ],
                                                       "index_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2224,6 +2318,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "new_ref",
+                      [],
                       []
                     |),
                     [
@@ -2237,6 +2332,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "frame_root",
+                          [],
                           []
                         |),
                         [ state ]
@@ -2260,6 +2356,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "is_canonical",
+                                    [],
                                     []
                                   |),
                                   [ state ]
@@ -2307,6 +2404,7 @@ Module reference_safety.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -2342,6 +2440,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "graph_size",
+                [],
                 []
               |),
               [
@@ -2371,6 +2470,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_borrow_graph::references::RefID",
                 "new",
+                [],
                 []
               |),
               [
@@ -2385,6 +2485,7 @@ Module reference_safety.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "len",
+                    [],
                     []
                   |),
                   [
@@ -2421,6 +2522,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
+                [],
                 []
               |),
               [
@@ -2428,6 +2530,7 @@ Module reference_safety.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| status |) ]
@@ -2439,6 +2542,7 @@ Module reference_safety.
                       []
                       [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                     "unwrap_or",
+                    [],
                     []
                   |),
                   [
@@ -2499,6 +2603,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "new_ref",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); Value.Bool false ]
@@ -2523,6 +2628,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "new_ref",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); Value.Bool true ]
@@ -2565,6 +2671,7 @@ Module reference_safety.
                     M.get_associated_function (|
                       Ty.path "move_borrow_graph::references::RefID",
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -2590,6 +2697,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "new_ref",
+                      [],
                       []
                     |),
                     [
@@ -2643,6 +2751,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "add_strong_borrow",
+                [],
                 []
               |),
               [
@@ -2683,6 +2792,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "add_weak_borrow",
+                [],
                 []
               |),
               [
@@ -2725,6 +2835,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "add_strong_field_borrow",
+                [],
                 []
               |),
               [
@@ -2770,6 +2881,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "add_strong_field_borrow",
+                [],
                 []
               |),
               [
@@ -2784,6 +2896,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2823,6 +2936,7 @@ Module reference_safety.
                     Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                   ],
                 "add_weak_field_borrow",
+                [],
                 []
               |),
               [
@@ -2837,6 +2951,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2877,6 +2992,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "release",
+                      [],
                       []
                     |),
                     [
@@ -2921,6 +3037,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "borrowed_by",
+                      [],
                       []
                     |),
                     [
@@ -2953,6 +3070,7 @@ Module reference_safety.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "is_empty",
+                              [],
                               []
                             |),
                             [ full_borrows ]
@@ -3002,6 +3120,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "borrowed_by",
+                      [],
                       []
                     |),
                     [
@@ -3035,6 +3154,7 @@ Module reference_safety.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [ full_borrows ]
@@ -3070,7 +3190,9 @@ Module reference_safety.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "any",
+                                            [],
                                             [
                                               Ty.function
                                                 [
@@ -3120,6 +3242,7 @@ Module reference_safety.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "values",
+                                                  [],
                                                   []
                                                 |),
                                                 [ field_borrows ]
@@ -3152,6 +3275,7 @@ Module reference_safety.
                                                                           "alloc::alloc::Global"
                                                                       ],
                                                                     "is_empty",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| borrows |) ]
@@ -3181,6 +3305,7 @@ Module reference_safety.
                                               []
                                               [ Ty.path "bool" ],
                                             "unwrap_or",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3207,6 +3332,7 @@ Module reference_safety.
                                                       ]
                                                   ],
                                                 "map",
+                                                [],
                                                 [
                                                   Ty.path "bool";
                                                   Ty.function
@@ -3256,6 +3382,7 @@ Module reference_safety.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::reference_safety::abstract_state::Label"
@@ -3290,6 +3417,7 @@ Module reference_safety.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "is_empty",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| borrows |) ]
@@ -3360,6 +3488,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "borrowed_by",
+                      [],
                       []
                     |),
                     [
@@ -3387,6 +3516,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "all_immutable",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); full_borrows ]
@@ -3422,7 +3552,9 @@ Module reference_safety.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "any",
+                                            [],
                                             [
                                               Ty.function
                                                 [
@@ -3472,6 +3604,7 @@ Module reference_safety.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "values",
+                                                  [],
                                                   []
                                                 |),
                                                 [ field_borrows ]
@@ -3495,6 +3628,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                     "all_immutable",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3527,6 +3661,7 @@ Module reference_safety.
                                               []
                                               [ Ty.path "bool" ],
                                             "unwrap_or",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3553,6 +3688,7 @@ Module reference_safety.
                                                       ]
                                                   ],
                                                 "map",
+                                                [],
                                                 [
                                                   Ty.path "bool";
                                                   Ty.function
@@ -3602,6 +3738,7 @@ Module reference_safety.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::reference_safety::abstract_state::Label"
@@ -3627,6 +3764,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                         "all_immutable",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3694,6 +3832,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                       ],
                                     "is_mutable",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3731,6 +3870,7 @@ Module reference_safety.
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                       "has_consistent_borrows",
+                      [],
                       []
                     |),
                     [
@@ -3782,6 +3922,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                       ],
                                     "is_mutable",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3819,6 +3960,7 @@ Module reference_safety.
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                       "has_consistent_mutable_borrows",
+                      [],
                       []
                     |),
                     [
@@ -3831,6 +3973,7 @@ Module reference_safety.
                             []
                             [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
                           "map",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::Label";
@@ -3883,6 +4026,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "is_mutable",
+                      [],
                       []
                     |),
                     [
@@ -3904,6 +4048,7 @@ Module reference_safety.
                         Ty.path
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                         "is_freezable",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| id |); M.read (| at_field_opt |) ]
@@ -3931,6 +4076,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_borrows",
+                [],
                 []
               |),
               [
@@ -3940,6 +4086,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3978,6 +4125,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_mutable_borrows",
+                [],
                 []
               |),
               [
@@ -3987,6 +4135,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4021,6 +4170,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_borrows",
+                [],
                 []
               |),
               [
@@ -4030,6 +4180,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4068,6 +4219,7 @@ Module reference_safety.
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_mutable_borrows",
+                [],
                 []
               |),
               [
@@ -4077,6 +4229,7 @@ Module reference_safety.
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                     "frame_root",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4115,6 +4268,7 @@ Module reference_safety.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                   "has_consistent_borrows",
+                  [],
                   []
                 |),
                 [
@@ -4124,6 +4278,7 @@ Module reference_safety.
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                       "frame_root",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4171,6 +4326,7 @@ Module reference_safety.
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                             "release",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| id |) ]
@@ -4236,6 +4392,7 @@ Module reference_safety.
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                               ],
                             "get",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -4251,7 +4408,9 @@ Module reference_safety.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -4286,6 +4445,7 @@ Module reference_safety.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "with_message",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4293,6 +4453,7 @@ Module reference_safety.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4318,6 +4479,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -4335,6 +4497,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "none",
+                                                            [],
                                                             []
                                                           |),
                                                           []
@@ -4372,6 +4535,7 @@ Module reference_safety.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4385,6 +4549,7 @@ Module reference_safety.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_debug",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
@@ -4436,6 +4601,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "new_ref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4451,6 +4617,7 @@ Module reference_safety.
                                             "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                         ],
                                       "is_mutable",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4472,6 +4639,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "add_copy",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| id |); M.read (| new_id |) ]
@@ -4501,6 +4669,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "is_local_mutably_borrowed",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| local |) ]
@@ -4517,6 +4686,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "error",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4609,6 +4779,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "get_mut",
+                                    [],
                                     [ Ty.path "usize" ]
                                   |),
                                   [
@@ -4624,7 +4795,9 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4660,6 +4833,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4668,6 +4842,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4697,6 +4872,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4715,6 +4891,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -4758,6 +4935,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4773,6 +4951,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
@@ -4849,6 +5028,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "is_local_borrowed",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| local |) ]
@@ -4865,6 +5045,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "error",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4959,6 +5140,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "get_mut",
+                                    [],
                                     [ Ty.path "usize" ]
                                   |),
                                   [
@@ -4974,7 +5156,9 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5010,6 +5194,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5018,6 +5203,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -5047,6 +5233,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -5065,6 +5252,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -5108,6 +5296,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5123,6 +5312,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
@@ -5181,6 +5371,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "release",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| id |) ]
@@ -5203,6 +5394,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "is_local_borrowed",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| local |) ]
@@ -5219,6 +5411,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "error",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5287,6 +5480,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_freezable",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5311,6 +5505,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5336,6 +5531,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "new_ref",
+                          [],
                           []
                         |),
                         [ M.read (| self |); Value.Bool false ]
@@ -5348,6 +5544,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "add_copy",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |); M.read (| frozen_id |) ]
@@ -5360,6 +5557,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |) ]
@@ -5449,6 +5647,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_readable",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5465,6 +5664,7 @@ Module reference_safety.
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                           "is_readable",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5490,6 +5690,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5530,6 +5731,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "release",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| id1 |) ]
@@ -5541,6 +5743,7 @@ Module reference_safety.
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                   "release",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| id2 |) ]
@@ -5567,6 +5770,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                   "is_value",
+                                                  [],
                                                   []
                                                 |),
                                                 [ v1 ]
@@ -5608,6 +5812,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                   "is_value",
+                                                  [],
                                                   []
                                                 |),
                                                 [ v2 ]
@@ -5688,6 +5893,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_readable",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5712,6 +5918,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5737,6 +5944,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |) ]
@@ -5793,6 +6001,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_writable",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |); M.read (| id |) ]
@@ -5813,6 +6022,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5838,6 +6048,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |) ]
@@ -5897,6 +6108,7 @@ Module reference_safety.
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                           "is_local_mutably_borrowed",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |); M.read (| local |) ]
@@ -5917,6 +6129,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5942,6 +6155,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "new_ref",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| mut_ |) ]
@@ -5954,6 +6168,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "add_local_borrow",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| local |); M.read (| new_id |) ]
@@ -6033,6 +6248,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                 "has_full_borrows",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |); M.read (| id |) ]
@@ -6065,6 +6281,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                   "is_readable",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6096,8 +6313,10 @@ Module reference_safety.
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
                                         Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                        [],
                                         [ Ty.tuple [] ],
                                         "call",
+                                        [],
                                         []
                                       |),
                                       [ is_mut_borrow_with_full_borrows; Value.Tuple [] ]
@@ -6107,8 +6326,10 @@ Module reference_safety.
                                         M.get_trait_method (|
                                           "core::ops::function::Fn",
                                           Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                          [],
                                           [ Ty.tuple [] ],
                                           "call",
+                                          [],
                                           []
                                         |),
                                         [ is_imm_borrow_with_mut_borrows; Value.Tuple [] ]
@@ -6129,6 +6350,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6154,6 +6376,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "new_ref",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| mut_ |) ]
@@ -6166,6 +6389,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "add_field_borrow",
+                          [],
                           []
                         |),
                         [
@@ -6183,6 +6407,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |) ]
@@ -6251,6 +6476,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "is_global_borrowed",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| resource |) ]
@@ -6262,6 +6488,7 @@ Module reference_safety.
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                           "is_global_mutably_borrowed",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |); M.read (| resource |) ]
@@ -6282,6 +6509,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6307,6 +6535,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "new_ref",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| mut_ |) ]
@@ -6319,6 +6548,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "add_resource_borrow",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| resource |); M.read (| new_id |) ]
@@ -6375,6 +6605,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "is_global_borrowed",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| resource |) ]
@@ -6390,6 +6621,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "error",
+                                [],
                                 []
                               |),
                               [
@@ -6456,6 +6688,7 @@ Module reference_safety.
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                               "ref_id",
+                              [],
                               []
                             |),
                             [ vector ]
@@ -6481,6 +6714,7 @@ Module reference_safety.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "with_message",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6488,6 +6722,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6513,6 +6748,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6530,6 +6766,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "none",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -6571,6 +6808,7 @@ Module reference_safety.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6584,6 +6822,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
@@ -6635,6 +6874,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "is_writable",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| id |) ]
@@ -6656,6 +6896,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6681,6 +6922,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| id |) ]
@@ -6736,6 +6978,7 @@ Module reference_safety.
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                               "ref_id",
+                              [],
                               []
                             |),
                             [ vector ]
@@ -6761,6 +7004,7 @@ Module reference_safety.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "with_message",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6768,6 +7012,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6793,6 +7038,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6810,6 +7056,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "none",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -6851,6 +7098,7 @@ Module reference_safety.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6864,6 +7112,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
@@ -6915,6 +7164,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "is_writable",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| vec_id |) ]
@@ -6936,6 +7186,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6961,6 +7212,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "new_ref",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| mut_ |) ]
@@ -6973,6 +7225,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "add_borrow",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| vec_id |); M.read (| elem_id |) ]
@@ -6985,6 +7238,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "release",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| vec_id |) ]
@@ -7112,7 +7366,9 @@ Module reference_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -7121,7 +7377,9 @@ Module reference_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add_items",
+                                [],
                                 []
                               |),
                               [
@@ -7145,6 +7403,7 @@ Module reference_safety.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| acquired_resources |) ]
@@ -7185,6 +7444,7 @@ Module reference_safety.
                                               ];
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -7195,6 +7455,7 @@ Module reference_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -7236,7 +7497,9 @@ Module reference_safety.
                                     ]
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| acquired_resources |) ]
@@ -7262,7 +7525,9 @@ Module reference_safety.
                                                   "move_binary_format::file_format::StructDefinitionIndex"
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -7301,6 +7566,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                               "is_global_borrowed",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7328,6 +7594,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                     "error",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7365,6 +7632,7 @@ Module reference_safety.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -7382,6 +7650,7 @@ Module reference_safety.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -7424,7 +7693,9 @@ Module reference_safety.
                                       [ Ty.path "move_borrow_graph::references::RefID" ])
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -7439,7 +7710,9 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ],
                                   [],
+                                  [],
                                   "filter_map",
+                                  [],
                                   [
                                     Ty.path "move_borrow_graph::references::RefID";
                                     Ty.function
@@ -7472,6 +7745,7 @@ Module reference_safety.
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7487,7 +7761,9 @@ Module reference_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ arguments ]
@@ -7511,6 +7787,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                         "ref_id",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| v |) ]
@@ -7568,7 +7845,9 @@ Module reference_safety.
                                                     ])
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -7615,6 +7894,7 @@ Module reference_safety.
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                                                   ],
                                                                 "is_mutable",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -7647,6 +7927,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                             "is_writable",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -7673,6 +7954,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                                 "error",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7707,6 +7989,7 @@ Module reference_safety.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "insert",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7734,6 +8017,7 @@ Module reference_safety.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "insert",
+                                                    [],
                                                     []
                                                   |),
                                                   [ all_references_to_borrow_from; M.read (| id |) ]
@@ -7775,7 +8059,9 @@ Module reference_safety.
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -7796,7 +8082,9 @@ Module reference_safety.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
@@ -7825,6 +8113,7 @@ Module reference_safety.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7839,7 +8128,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7884,6 +8175,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                   "new_ref",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |); Value.Bool true
@@ -7913,7 +8205,9 @@ Module reference_safety.
                                                                             ]
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "into_iter",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7942,7 +8236,9 @@ Module reference_safety.
                                                                                           "move_borrow_graph::references::RefID"
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "next",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ iter ]
@@ -7982,6 +8278,7 @@ Module reference_safety.
                                                                                             Ty.path
                                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                                             "add_borrow",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -8040,6 +8337,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                   "new_ref",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8071,7 +8369,9 @@ Module reference_safety.
                                                                             ]
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "into_iter",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ all_references_to_borrow_from
@@ -8099,7 +8399,9 @@ Module reference_safety.
                                                                                           "move_borrow_graph::references::RefID"
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "next",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ iter ]
@@ -8139,6 +8441,7 @@ Module reference_safety.
                                                                                             Ty.path
                                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                                             "add_borrow",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -8211,7 +8514,9 @@ Module reference_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -8220,7 +8525,9 @@ Module reference_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add_items_with_growth",
+                                [],
                                 []
                               |),
                               [
@@ -8237,6 +8544,7 @@ Module reference_safety.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_mul",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8250,6 +8558,7 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ all_references_to_borrow_from ]
@@ -8298,6 +8607,7 @@ Module reference_safety.
                                               ];
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -8308,6 +8618,7 @@ Module reference_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -8343,7 +8654,9 @@ Module reference_safety.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| all_references_to_borrow_from |) ]
@@ -8369,7 +8682,9 @@ Module reference_safety.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -8401,6 +8716,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                   "release",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| self |); M.read (| id |) ]
@@ -8472,6 +8788,7 @@ Module reference_safety.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -8492,7 +8809,9 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -8506,6 +8825,7 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8521,7 +8841,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8557,7 +8879,9 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -8611,6 +8935,7 @@ Module reference_safety.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "insert",
+                                                            [],
                                                             []
                                                           |),
                                                           [ released; M.read (| M.read (| id |) |) ]
@@ -8640,7 +8965,9 @@ Module reference_safety.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "for_each",
+                          [],
                           [
                             Ty.function
                               [ Ty.tuple [ Ty.path "move_borrow_graph::references::RefID" ] ]
@@ -8659,7 +8986,9 @@ Module reference_safety.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| released |) ]
@@ -8681,6 +9010,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                 "release",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |); M.read (| id |) ]
@@ -8707,6 +9037,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_frame_safe_to_destroy",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8727,6 +9058,7 @@ Module reference_safety.
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                             "error",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8778,7 +9110,9 @@ Module reference_safety.
                                       [ Ty.path "move_borrow_graph::references::RefID" ])
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -8794,7 +9128,9 @@ Module reference_safety.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "filter_map",
+                                  [],
                                   [
                                     Ty.path "move_borrow_graph::references::RefID";
                                     Ty.function
@@ -8824,7 +9160,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| values |) ]
@@ -8846,6 +9184,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                         "ref_id",
+                                                        [],
                                                         []
                                                       |),
                                                       [ v ]
@@ -8899,7 +9238,9 @@ Module reference_safety.
                                                     ])
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -8946,6 +9287,7 @@ Module reference_safety.
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                                                   ],
                                                                 "is_mutable",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -8964,6 +9306,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                     "is_writable",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -8991,6 +9334,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                                                     "error",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9077,6 +9421,7 @@ Module reference_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -9095,6 +9440,7 @@ Module reference_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -9104,6 +9450,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "frame_root",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -9113,6 +9460,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "frame_root",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -9162,7 +9510,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
                         ],
                       [],
+                      [],
                       "collect",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -9191,7 +9541,9 @@ Module reference_safety.
                                 ]
                             ],
                           [],
+                          [],
                           "map",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
@@ -9228,7 +9580,9 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                 ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -9242,6 +9596,7 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9257,7 +9612,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9308,6 +9665,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_borrow_graph::references::RefID",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| local |) ]
@@ -9329,6 +9687,7 @@ Module reference_safety.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "insert",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -9390,6 +9749,7 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9411,6 +9771,7 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ locals ]
@@ -9448,7 +9809,9 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -9472,6 +9835,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "remap_refs",
+                      [],
                       []
                     |),
                     [ borrow_graph; id_map ]
@@ -9505,6 +9869,7 @@ Module reference_safety.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [
@@ -9534,6 +9899,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "is_canonical",
+                                    [],
                                     []
                                   |),
                                   [ canonical_state ]
@@ -9585,7 +9951,9 @@ Module reference_safety.
                     []
                     [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
                   [],
+                  [],
                   "any",
+                  [],
                   [
                     Ty.function
                       [
@@ -9613,6 +9981,7 @@ Module reference_safety.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "keys",
+                        [],
                         []
                       |),
                       [ M.read (| borrows |) ]
@@ -9641,6 +10010,7 @@ Module reference_safety.
                                               "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                           ],
                                         "is_mutable",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9695,6 +10065,7 @@ Module reference_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -9732,7 +10103,9 @@ Module reference_safety.
                           ]
                       ],
                     [],
+                    [],
                     "all",
+                    [],
                     [
                       Ty.function
                         [
@@ -9767,7 +10140,9 @@ Module reference_safety.
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                             ],
                           [],
+                          [],
                           "enumerate",
+                          [],
                           []
                         |),
                         [
@@ -9781,6 +10156,7 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                 ],
                               "iter",
+                              [],
                               []
                             |),
                             [
@@ -9796,7 +10172,9 @@ Module reference_safety.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9834,6 +10212,7 @@ Module reference_safety.
                                             []
                                             [ Ty.path "bool" ],
                                           "unwrap_or",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9844,6 +10223,7 @@ Module reference_safety.
                                                 []
                                                 [ Ty.path "move_borrow_graph::references::RefID" ],
                                               "map",
+                                              [],
                                               [
                                                 Ty.path "bool";
                                                 Ty.function
@@ -9863,6 +10243,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                   "ref_id",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| value |) ]
@@ -9884,11 +10265,13 @@ Module reference_safety.
                                                                     "core::cmp::PartialEq",
                                                                     Ty.path
                                                                       "move_borrow_graph::references::RefID",
+                                                                    [],
                                                                     [
                                                                       Ty.path
                                                                         "move_borrow_graph::references::RefID"
                                                                     ],
                                                                     "eq",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9898,6 +10281,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "move_borrow_graph::references::RefID",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| local |) ]
@@ -9998,6 +10382,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_binary_format::file_format::FunctionDefinitionIndex"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -10008,6 +10393,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -10059,6 +10445,7 @@ Module reference_safety.
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                       "is_canonical",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10069,6 +10456,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_canonical",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -10161,6 +10549,7 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10182,6 +10571,7 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10226,7 +10616,9 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -10251,7 +10643,9 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -10318,7 +10712,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
                         ],
                       [],
+                      [],
                       "collect",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -10354,7 +10750,9 @@ Module reference_safety.
                                 ]
                             ],
                           [],
+                          [],
                           "map",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
@@ -10397,7 +10795,9 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                 ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&")
@@ -10425,6 +10825,7 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -10440,7 +10841,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10519,6 +10922,7 @@ Module reference_safety.
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                                                 ],
                                                               "release",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10566,6 +10970,7 @@ Module reference_safety.
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                                                 ],
                                                               "release",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10607,6 +11012,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
@@ -10617,6 +11023,7 @@ Module reference_safety.
                                                                                 ]
                                                                             ],
                                                                             "eq",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ v1; v2 ]
@@ -10675,6 +11082,7 @@ Module reference_safety.
                           Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
                         ],
                       "join",
+                      [],
                       []
                     |),
                     [ self_graph; other_graph ]
@@ -10765,6 +11173,7 @@ Module reference_safety.
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                           "join_",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| state |) ]
@@ -10785,6 +11194,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "is_canonical",
+                                        [],
                                         []
                                       |),
                                       [ joined ]
@@ -10830,6 +11240,7 @@ Module reference_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10851,6 +11262,7 @@ Module reference_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10893,7 +11305,9 @@ Module reference_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -10902,7 +11316,9 @@ Module reference_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -10944,6 +11360,7 @@ Module reference_safety.
                                             Ty.path "move_bytecode_verifier::absint::JoinResult";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -10954,6 +11371,7 @@ Module reference_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -10985,7 +11403,9 @@ Module reference_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -10994,7 +11414,9 @@ Module reference_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add_items",
+                                [],
                                 []
                               |),
                               [
@@ -11018,6 +11440,7 @@ Module reference_safety.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11057,6 +11480,7 @@ Module reference_safety.
                                             Ty.path "move_bytecode_verifier::absint::JoinResult";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -11067,6 +11491,7 @@ Module reference_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -11098,7 +11523,9 @@ Module reference_safety.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -11107,7 +11534,9 @@ Module reference_safety.
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
                                 [],
+                                [],
                                 "add_items",
+                                [],
                                 []
                               |),
                               [
@@ -11131,6 +11560,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                       ],
                                     "graph_size",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11170,6 +11600,7 @@ Module reference_safety.
                                             Ty.path "move_bytecode_verifier::absint::JoinResult";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -11180,6 +11611,7 @@ Module reference_safety.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -11225,7 +11657,9 @@ Module reference_safety.
                                 ]
                             ],
                           [],
+                          [],
                           "all",
+                          [],
                           [
                             Ty.function
                               [
@@ -11266,7 +11700,9 @@ Module reference_safety.
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                   ],
                                 [],
+                                [],
                                 "zip",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -11294,6 +11730,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11309,7 +11746,9 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11355,6 +11794,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -11365,6 +11805,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "eq",
+                                                [],
                                                 []
                                               |),
                                               [ self_value; joined_value ]
@@ -11398,6 +11839,7 @@ Module reference_safety.
                                               "move_bytecode_verifier::reference_safety::abstract_state::Label"
                                           ],
                                         "leq",
+                                        [],
                                         []
                                       |),
                                       [

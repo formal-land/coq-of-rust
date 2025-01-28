@@ -111,6 +111,7 @@ Module interpreter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -150,7 +151,15 @@ Module interpreter.
             [
               ("bytecode",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -161,7 +170,15 @@ Module interpreter.
                 |));
               ("stack",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -172,7 +189,15 @@ Module interpreter.
                 |));
               ("return_data",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -183,7 +208,15 @@ Module interpreter.
                 |));
               ("memory",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -194,7 +227,15 @@ Module interpreter.
                 |));
               ("input",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -205,7 +246,15 @@ Module interpreter.
                 |));
               ("sub_routine",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -216,7 +265,15 @@ Module interpreter.
                 |));
               ("control",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -227,7 +284,15 @@ Module interpreter.
                 |));
               ("runtime_flag",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -238,7 +303,15 @@ Module interpreter.
                 |));
               ("extend",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.associated,
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -321,6 +394,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.path "revm_bytecode::bytecode::Bytecode",
                           "is_eof",
+                          [],
                           []
                         |),
                         [ bytecode ]
@@ -337,6 +411,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| bytecode |) ]
@@ -346,6 +421,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -356,7 +432,9 @@ Module interpreter.
                         "core::default::Default",
                         Ty.path "revm_interpreter::interpreter::return_data::ReturnDataImpl",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -369,7 +447,9 @@ Module interpreter.
                         "core::default::Default",
                         Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -379,6 +459,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::loop_control::LoopControl",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| gas_limit |) ]
@@ -386,7 +467,15 @@ Module interpreter.
                   ("runtime_flag", M.read (| runtime_flag |));
                   ("extend",
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", EXT, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        EXT,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |))
                 ]
@@ -566,7 +655,9 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -645,6 +736,7 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -701,6 +793,7 @@ Module interpreter.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "array")
@@ -723,6 +816,7 @@ Module interpreter.
                   ]
               ],
               "as_ref",
+              [],
               []
             |),
             [
@@ -862,7 +956,9 @@ Module interpreter.
                     "revm_interpreter::interpreter_types::Jumps",
                     Ty.associated,
                     [],
+                    [],
                     "opcode",
+                    [],
                     []
                   |),
                   [
@@ -881,7 +977,9 @@ Module interpreter.
                     "revm_interpreter::interpreter_types::Jumps",
                     Ty.associated,
                     [],
+                    [],
                     "relative_jump",
+                    [],
                     []
                   |),
                   [
@@ -900,7 +998,9 @@ Module interpreter.
                   "revm_interpreter::table::CustomInstruction",
                   FN,
                   [],
+                  [],
                   "exec",
+                  [],
                   []
                 |),
                 [
@@ -972,7 +1072,9 @@ Module interpreter.
                         "revm_interpreter::interpreter_types::LoopControl",
                         Ty.associated,
                         [],
+                        [],
                         "set_next_action",
+                        [],
                         []
                       |),
                       [
@@ -1006,6 +1108,7 @@ Module interpreter.
                                         Ty.path
                                           "revm_interpreter::instruction_result::InstructionResult",
                                         "is_continue",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1014,7 +1117,9 @@ Module interpreter.
                                             "revm_interpreter::interpreter_types::LoopControl",
                                             Ty.associated,
                                             [],
+                                            [],
                                             "instruction_result",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1042,6 +1147,7 @@ Module interpreter.
                                         []
                                         [ IW ],
                                       "step",
+                                      [],
                                       [ FN; H ]
                                     |),
                                     [
@@ -1075,7 +1181,9 @@ Module interpreter.
                         "revm_interpreter::interpreter_types::LoopControl",
                         Ty.associated,
                         [],
+                        [],
                         "take_next_action",
+                        [],
                         []
                       |),
                       [
@@ -1101,6 +1209,7 @@ Module interpreter.
                                     Ty.path
                                       "revm_interpreter::interpreter_action::InterpreterAction",
                                     "is_some",
+                                    [],
                                     []
                                   |),
                                   [ action ]
@@ -1128,7 +1237,9 @@ Module interpreter.
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "instruction_result",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1144,6 +1255,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -1155,7 +1267,9 @@ Module interpreter.
                                     "revm_interpreter::interpreter_types::LoopControl",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "gas",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1211,7 +1325,9 @@ Module interpreter.
                     "core::clone::Clone",
                     Ty.path "revm_interpreter::instruction_result::InstructionResult",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1228,7 +1344,9 @@ Module interpreter.
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1245,7 +1363,9 @@ Module interpreter.
                     "core::clone::Clone",
                     Ty.path "revm_interpreter::gas::Gas",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1282,6 +1402,7 @@ Module interpreter.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
@@ -1347,8 +1468,10 @@ Module interpreter.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::instruction_result::InstructionResult",
+                  [],
                   [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -1369,8 +1492,10 @@ Module interpreter.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "alloy_primitives::bytes_::Bytes",
+                    [],
                     [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -1392,8 +1517,10 @@ Module interpreter.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::gas::Gas",
+                  [],
                   [ Ty.path "revm_interpreter::gas::Gas" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -1511,6 +1638,7 @@ Module interpreter.
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_ok",
+              [],
               []
             |),
             [
@@ -1542,6 +1670,7 @@ Module interpreter.
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_revert",
+              [],
               []
             |),
             [
@@ -1573,6 +1702,7 @@ Module interpreter.
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_error",
+              [],
               []
             |),
             [

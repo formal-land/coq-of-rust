@@ -267,12 +267,18 @@ Module Primitive.
   | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
   | GetFunction (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
-  | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
+  | GetAssociatedFunction
+    (ty : Ty.t)
+    (name : string)
+    (generic_consts : list Value.t)
+    (generic_tys : list Ty.t)
   | GetTraitMethod
     (trait : string)
     (self_ty : Ty.t)
+    (trait_consts : list Value.t)
     (trait_tys : list Ty.t)
     (method : string)
+    (generic_consts : list Value.t)
     (generic_tys : list Ty.t).
 End Primitive.
 
@@ -405,7 +411,7 @@ Module IsTraitMethod.
       (trait_tys : list Ty.t)
       (method_name : string) :
       (PolymorphicFunction.t) -> Prop :=
-  | Explicit (instance : Instance.t) (method : PolymorphicFunction.t) :
+  | Defined (instance : Instance.t) (method : PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -413,7 +419,7 @@ Module IsTraitMethod.
       instance ->
     List.assoc instance method_name = Some (InstanceField.Method method) ->
     t trait_name self_ty trait_tys method_name method
-  | Implicit (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
+  | Provided (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -611,19 +617,22 @@ Definition get_function (path : string) (generic_consts : list Value.t) (generic
 Definition get_associated_function
   (ty : Ty.t)
   (name : string)
+  (generic_consts : list Value.t)
   (generic_tys : list Ty.t) :
   M :=
-  call_primitive (Primitive.GetAssociatedFunction ty name generic_tys).
+  call_primitive (Primitive.GetAssociatedFunction ty name generic_consts generic_tys).
 
 Definition get_trait_method
     (trait : string)
     (self_ty : Ty.t)
+    (trait_consts : list Value.t)
     (trait_tys : list Ty.t)
     (method : string)
+    (generic_consts : list Value.t)
     (generic_tys : list Ty.t) :
     M :=
   call_primitive (Primitive.GetTraitMethod
-    trait self_ty trait_tys method generic_tys
+    trait self_ty trait_consts trait_tys method generic_consts generic_tys
   ).
 
 Definition catch (body : M) (handler : Exception.t -> M) : M :=
@@ -705,15 +714,14 @@ Fixpoint find_or_pattern_aux
       )
   end.
 
-(** The [body] must be a closure. *)
 Definition find_or_pattern
     (scrutinee : Value.t)
     (arms : list (Value.t -> M))
-    (body : Value.t) :
+    (body : list Value.t -> M) :
     M :=
   let* free_vars := find_or_pattern_aux scrutinee arms in
   match free_vars with
-  | Value.Tuple free_vars => call_closure body free_vars
+  | Value.Tuple free_vars => body free_vars
   | _ => impossible "expected a tuple of free variables"
   end.
 

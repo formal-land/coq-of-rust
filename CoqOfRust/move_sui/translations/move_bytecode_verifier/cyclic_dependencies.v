@@ -23,6 +23,7 @@ Module cyclic_dependencies.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -55,6 +56,7 @@ Module cyclic_dependencies.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -66,6 +68,7 @@ Module cyclic_dependencies.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -140,6 +143,7 @@ Module cyclic_dependencies.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_id",
+                      [],
                       []
                     |),
                     [ M.read (| module |) ]
@@ -157,6 +161,7 @@ Module cyclic_dependencies.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -177,7 +182,9 @@ Module cyclic_dependencies.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -185,6 +192,7 @@ Module cyclic_dependencies.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "immediate_dependencies",
+                              [],
                               []
                             |),
                             [ M.read (| module |) ]
@@ -212,7 +220,9 @@ Module cyclic_dependencies.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -256,7 +266,9 @@ Module cyclic_dependencies.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -297,6 +309,7 @@ Module cyclic_dependencies.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -310,6 +323,7 @@ Module cyclic_dependencies.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -347,6 +361,7 @@ Module cyclic_dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -433,6 +448,7 @@ Module cyclic_dependencies.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -440,6 +456,7 @@ Module cyclic_dependencies.
                                         [ Ty.path "move_core_types::language_storage::ModuleId" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ cursor; target ]
@@ -479,6 +496,7 @@ Module cyclic_dependencies.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "insert",
+                                      [],
                                       []
                                     |),
                                     [
@@ -488,7 +506,9 @@ Module cyclic_dependencies.
                                           "core::clone::Clone",
                                           Ty.path "move_core_types::language_storage::ModuleId",
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| cursor |) ]
@@ -513,7 +533,9 @@ Module cyclic_dependencies.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -539,7 +561,9 @@ Module cyclic_dependencies.
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -547,6 +571,7 @@ Module cyclic_dependencies.
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   D,
+                                                  [],
                                                   [
                                                     Ty.tuple
                                                       [
@@ -560,6 +585,7 @@ Module cyclic_dependencies.
                                                       ]
                                                   ],
                                                   "call",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -595,6 +621,7 @@ Module cyclic_dependencies.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
@@ -606,6 +633,7 @@ Module cyclic_dependencies.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -651,7 +679,9 @@ Module cyclic_dependencies.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -699,7 +729,9 @@ Module cyclic_dependencies.
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "branch",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -747,6 +779,7 @@ Module cyclic_dependencies.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -760,6 +793,7 @@ Module cyclic_dependencies.
                                                                                       ]
                                                                                   ],
                                                                                   "from_residual",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [

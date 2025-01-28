@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
           "constructors_return_value::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -141,7 +149,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -248,6 +256,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                           M.get_associated_function (|
                             Ty.path "constructors_return_value::ConstructorsReturnValue",
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Bool true ]
@@ -302,6 +311,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 M.get_associated_function (|
                   Ty.path "constructors_return_value::ReturnFlags",
                   "new_with_reverted",
+                  [],
                   []
                 |),
                 [ Value.Bool true ]
@@ -314,6 +324,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "constructors_return_value::AccountId",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "array")
@@ -321,6 +332,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                             [ Ty.path "u8" ]
                         ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -380,6 +392,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "constructors_return_value::AccountId",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "array")
@@ -387,6 +400,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                         [ Ty.path "u8" ]
                                     ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -440,6 +454,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                     M.get_associated_function (|
                       Ty.path "constructors_return_value::ReturnFlags",
                       "new_with_reverted",
+                      [],
                       []
                     |),
                     [ Value.Bool true ]

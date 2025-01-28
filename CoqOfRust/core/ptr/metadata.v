@@ -172,6 +172,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -205,6 +206,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -235,6 +237,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.path "core::alloc::layout::Layout",
                 "from_size_align_unchecked",
+                [],
                 []
               |),
               [
@@ -242,6 +245,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "size_of",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -250,6 +254,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "align_of",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -310,6 +315,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -317,6 +323,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -325,6 +332,7 @@ Module ptr.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "DynMetadata" |) ]
@@ -335,6 +343,7 @@ Module ptr.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                           "vtable_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| M.read (| self |) |) ]
@@ -446,6 +455,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |) ]
@@ -454,6 +464,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| other |) |) ]
@@ -493,7 +504,9 @@ Module ptr.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
@@ -502,6 +515,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| self |) |) ]
@@ -512,6 +526,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| other |) |) ]
@@ -560,7 +575,9 @@ Module ptr.
                     "core::cmp::Ord",
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -605,6 +622,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |) ]

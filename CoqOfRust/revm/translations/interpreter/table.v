@@ -173,7 +173,9 @@ Module table.
                           "revm_interpreter::table::CustomInstruction",
                           CI,
                           [],
+                          [],
                           "from_base",
+                          [],
                           []
                         |),
                         [ M.read (| instruction |) ]
@@ -209,6 +211,7 @@ Module table.
             M.get_associated_function (|
               Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ],
               "to_custom_with",
+              [],
               [
                 Ty.function
                   [
@@ -252,7 +255,9 @@ Module table.
                                     "revm_interpreter::table::CustomInstruction",
                                     CI,
                                     [],
+                                    [],
                                     "from_base",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| i |) ]
@@ -314,6 +319,7 @@ Module table.
                             []
                             [ WIRE; H; CI ],
                           "to_custom_with_slow",
+                          [],
                           [ F ]
                         |),
                         [ M.read (| self |); M.read (| f |) ]
@@ -400,6 +406,7 @@ Module table.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -463,6 +470,7 @@ Module table.
               M.get_associated_function (|
                 Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ],
                 "to_custom",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -504,6 +512,7 @@ Module table.
                       []
                       [ WIRE; H; CI ],
                     "get_custom",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| opcode |) ]
@@ -547,6 +556,7 @@ Module table.
                     []
                     [ WIRE; H; CI ],
                   "get_custom",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| opcode |) ]
@@ -635,6 +645,7 @@ Module table.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   FN,
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -656,6 +667,7 @@ Module table.
                                       ]
                                   ],
                                   "call_mut",
+                                  [],
                                   []
                                 |),
                                 [

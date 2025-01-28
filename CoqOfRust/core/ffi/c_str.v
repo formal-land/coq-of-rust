@@ -36,8 +36,10 @@ Module ffi.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -110,7 +112,9 @@ Module ffi.
                 "core::hash::Hash",
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                 [],
+                [],
                 "hash",
+                [],
                 [ __H ]
               |),
               [
@@ -159,7 +163,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -207,8 +213,10 @@ Module ffi.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind",
+                [],
                 [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -280,6 +288,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -359,7 +368,9 @@ Module ffi.
                                 "core::clone::Clone",
                                 Ty.path "usize",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -470,8 +481,10 @@ Module ffi.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -555,6 +568,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
@@ -573,6 +587,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "NotNulTerminated" |) ]
@@ -724,7 +739,15 @@ Module ffi.
               "core::ffi::c_str::FromBytesUntilNulError"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.tuple [], [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.tuple [],
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
@@ -770,8 +793,10 @@ Module ffi.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.tuple [],
+                [],
                 [ Ty.tuple [] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -843,6 +868,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -883,11 +909,16 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_const",
+                    [],
+                    []
+                  |),
                   [
                     M.alloc (|
                       Value.Array
@@ -923,11 +954,11 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
@@ -939,6 +970,7 @@ Module ffi.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "core::slice::ascii::EscapeAscii" ]
                             |),
                             [
@@ -947,6 +979,7 @@ Module ffi.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "escape_ascii",
+                                    [],
                                     []
                                   |),
                                   [
@@ -954,6 +987,7 @@ Module ffi.
                                       M.get_associated_function (|
                                         Ty.path "core::ffi::c_str::CStr",
                                         "to_bytes",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -995,12 +1029,13 @@ Module ffi.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "from_ptr", [] |),
+              M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "from_ptr", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| M.get_constant (| "core::ffi::c_str::default::SLICE" |) |) ]
@@ -1050,7 +1085,9 @@ Module ffi.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1058,6 +1095,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_str",
+                                [],
                                 []
                               |),
                               [
@@ -1067,7 +1105,9 @@ Module ffi.
                                     "core::error::Error",
                                     Ty.path "core::ffi::c_str::FromBytesWithNulError",
                                     [],
+                                    [],
                                     "description",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1098,6 +1138,7 @@ Module ffi.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1108,6 +1149,7 @@ Module ffi.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1158,7 +1200,9 @@ Module ffi.
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1166,6 +1210,7 @@ Module ffi.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "write_fmt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1174,6 +1219,7 @@ Module ffi.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1188,6 +1234,7 @@ Module ffi.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [ pos ]
@@ -1222,6 +1269,7 @@ Module ffi.
                                                     (Ty.path "core::result::Result")
                                                     []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -1232,6 +1280,7 @@ Module ffi.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -1306,6 +1355,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "core::ffi::c_str::CStr",
                     "from_bytes_with_nul_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -1316,6 +1366,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
                             "cast",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [ M.read (| ptr |) ]
@@ -1386,6 +1437,7 @@ Module ffi.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| bytes |) ]
@@ -1405,6 +1457,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::ffi::c_str::CStr",
                                 "from_bytes_with_nul_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| subslice |) ]
@@ -1482,6 +1535,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| bytes |) ]
@@ -1497,6 +1551,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::ffi::c_str::CStr",
                                 "from_bytes_with_nul_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| bytes |) ]
@@ -1520,6 +1575,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::ffi::c_str::FromBytesWithNulError",
                                 "interior_nul",
+                                [],
                                 []
                               |),
                               [ M.read (| nul_pos |) ]
@@ -1537,6 +1593,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::ffi::c_str::FromBytesWithNulError",
                                 "not_nul_terminated",
+                                [],
                                 []
                               |),
                               []
@@ -1618,9 +1675,15 @@ Module ffi.
                 M.get_associated_function (|
                   Self,
                   "const_impl.from_bytes_with_nul_unchecked",
+                  [],
                   []
                 |);
-                M.get_associated_function (| Self, "rt_impl.from_bytes_with_nul_unchecked", [] |)
+                M.get_associated_function (|
+                  Self,
+                  "rt_impl.from_bytes_with_nul_unchecked",
+                  [],
+                  []
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1643,6 +1706,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -1678,6 +1742,7 @@ Module ffi.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
                 "as_non_null_ptr",
+                [],
                 []
               |),
               [
@@ -1688,6 +1753,7 @@ Module ffi.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -1727,6 +1793,7 @@ Module ffi.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -1763,6 +1830,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -1801,6 +1869,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.path "core::ffi::c_str::CStr",
                       "to_bytes_with_nul",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1814,6 +1883,7 @@ Module ffi.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| bytes |) ]
@@ -1823,6 +1893,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| bytes |) ]
@@ -1873,7 +1944,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::ffi::c_str::Bytes", "new", [] |),
+              M.get_associated_function (| Ty.path "core::ffi::c_str::Bytes", "new", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1899,7 +1970,12 @@ Module ffi.
               M.get_function (| "core::str::converts::from_utf8", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |)
               ]
@@ -1928,17 +2004,29 @@ Module ffi.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 "partial_cmp",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| other |) ]
                 |)
               ]
@@ -1973,16 +2061,28 @@ Module ffi.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| other |) ]
                 |)
               ]
@@ -2035,6 +2135,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.path "core::ffi::c_str::CStr",
                       "to_bytes_with_nul",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2060,6 +2161,7 @@ Module ffi.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| bytes |) ]
@@ -2072,6 +2174,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::ffi::c_str::CStr",
                             "from_bytes_with_nul_unchecked",
+                            [],
                             []
                           |),
                           [
@@ -2079,6 +2182,7 @@ Module ffi.
                               M.get_trait_method (|
                                 "core::ops::index::Index",
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -2086,6 +2190,7 @@ Module ffi.
                                     [ Ty.path "usize" ]
                                 ],
                                 "index",
+                                [],
                                 []
                               |),
                               [
@@ -2118,6 +2223,7 @@ Module ffi.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2137,6 +2243,7 @@ Module ffi.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "usize" ]
                                           |),
                                           [
@@ -2145,6 +2252,7 @@ Module ffi.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| bytes |) ]
@@ -2156,6 +2264,7 @@ Module ffi.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "usize" ]
                                           |),
                                           [
@@ -2306,6 +2415,7 @@ Module ffi.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| s |); M.read (| len |) ]
@@ -2413,7 +2523,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -2438,7 +2550,9 @@ Module ffi.
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -2475,6 +2589,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -2550,6 +2665,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "i8" ],
                       "cast",
+                      [],
                       [ Ty.path "u8" ]
                     |),
                     [
@@ -2557,6 +2673,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "as_non_null_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -2588,6 +2705,7 @@ Module ffi.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                   "read",
+                  [],
                   []
                 |),
                 [
@@ -2645,6 +2763,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                       "read",
+                      [],
                       []
                     |),
                     [
@@ -2683,6 +2802,7 @@ Module ffi.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                               "add",
+                              [],
                               []
                             |),
                             [
@@ -2729,6 +2849,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::ffi::c_str::Bytes",
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -2779,6 +2900,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       "cast",
+                      [],
                       [ Ty.path "i8" ]
                     |),
                     [
@@ -2786,6 +2908,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [

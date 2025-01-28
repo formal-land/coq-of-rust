@@ -42,6 +42,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "uninit",
+                                [],
                                 []
                               |),
                               []
@@ -54,6 +55,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "new",
+                                [],
                                 []
                               |),
                               [ M.read (| element |) ]
@@ -143,6 +145,7 @@ Module iter.
                                     []
                                     [ A ],
                                   "assume_init_ref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -245,6 +248,7 @@ Module iter.
                                       []
                                       [ A ],
                                     "uninit",
+                                    [],
                                     []
                                   |),
                                   []
@@ -263,6 +267,7 @@ Module iter.
                                     []
                                     [ A ],
                                   "assume_init",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| element |) ]
@@ -317,6 +322,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                         "map_or_else",
+                        [],
                         [
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ];
                           Ty.function
@@ -335,6 +341,7 @@ Module iter.
                               []
                               [ Ty.apply (Ty.path "&") [] [ A ] ],
                             "cloned",
+                            [],
                             []
                           |),
                           [
@@ -345,6 +352,7 @@ Module iter.
                                   []
                                   [ A ],
                                 "element_ref",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -354,11 +362,13 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                           "uninit",
+                          [],
                           []
                         |);
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                           "new",
+                          [],
                           []
                         |)
                       ]
@@ -399,6 +409,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -406,6 +417,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -413,6 +425,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
@@ -421,6 +434,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_struct",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); M.read (| Value.String "RepeatN" |) ]
@@ -440,6 +454,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                             "element_ref",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -483,6 +498,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                         "take_element",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -559,7 +575,9 @@ Module iter.
                                     []
                                     [ A ],
                                   [],
+                                  [],
                                   "next_unchecked",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -595,7 +613,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -670,6 +690,7 @@ Module iter.
                                     []
                                     [ A ],
                                   "take_element",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -700,6 +721,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "new_unchecked",
+                                  [],
                                   []
                                 |),
                                 [ BinOp.Wrap.sub (| M.read (| skip |), M.read (| len |) |) ]
@@ -741,6 +763,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   "take_element",
+                  [],
                   []
                 |),
                 [ self ]
@@ -764,7 +787,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [ self ]
@@ -843,7 +868,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -873,7 +900,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -898,7 +927,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -986,7 +1017,7 @@ Module iter.
                       "count"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                      M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -1025,6 +1056,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                               "assume_init",
+                              [],
                               []
                             |),
                             [
@@ -1052,6 +1084,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "uninit",
+                                      [],
                                       []
                                     |),
                                     []
@@ -1069,6 +1102,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                                 "assume_init_ref",
+                                [],
                                 []
                               |),
                               [
@@ -1082,7 +1116,15 @@ Module iter.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [ M.read (| element |) ]
                           |)
                         |)))

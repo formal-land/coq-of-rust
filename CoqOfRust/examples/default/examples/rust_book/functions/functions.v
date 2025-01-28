@@ -95,6 +95,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "fizzbuzz
@@ -132,6 +133,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -176,6 +178,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -202,6 +205,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -220,6 +224,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
+                                                        [],
                                                         [ Ty.path "u32" ]
                                                       |),
                                                       [ n ]
@@ -266,7 +271,9 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -274,6 +281,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
@@ -298,7 +306,9 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                   []
                                   [ Ty.path "u32" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [ iter ]

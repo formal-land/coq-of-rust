@@ -167,8 +167,10 @@ Module time.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "u32",
+              [],
               [ Ty.path "u32" ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -206,7 +208,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -242,7 +244,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+            M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], [], "hash", [], [ __H ] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -395,8 +397,10 @@ Module time.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::time::Nanoseconds",
+                  [],
                   [ Ty.path "core::time::Nanoseconds" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -479,8 +483,10 @@ Module time.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "u64",
+                    [],
                     [ Ty.path "u64" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -512,8 +518,10 @@ Module time.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "core::time::Nanoseconds",
+                          [],
                           [ Ty.path "core::time::Nanoseconds" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -562,7 +570,7 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -587,7 +595,9 @@ Module time.
                           "core::cmp::Ord",
                           Ty.path "core::time::Nanoseconds",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -636,7 +646,15 @@ Module time.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -653,7 +671,9 @@ Module time.
                   "core::hash::Hash",
                   Ty.path "core::time::Nanoseconds",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -695,7 +715,9 @@ Module time.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -706,7 +728,9 @@ Module time.
                     "core::default::Default",
                     Ty.path "core::time::Nanoseconds",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -733,7 +757,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -747,7 +771,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -762,7 +786,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -777,7 +801,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -792,7 +816,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
               [ Value.Integer IntegerKind.U64 0 ]
             |)
           |))).
@@ -806,7 +830,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
               [
                 M.read (| M.get_constant (| "core::num::MAX" |) |);
                 BinOp.Wrap.sub (|
@@ -873,7 +897,7 @@ Module time.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                               [
                                 M.read (| secs |);
                                 M.rust_cast
@@ -907,6 +931,7 @@ Module time.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1180,6 +1205,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1199,7 +1225,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1271,6 +1297,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1290,7 +1317,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1356,6 +1383,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1375,7 +1403,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1435,6 +1463,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1454,7 +1483,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     M.read (| mins |),
@@ -1768,6 +1797,7 @@ Module time.
                           M.get_associated_function (|
                             Ty.path "core::time::Duration",
                             "checked_sub",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| other |) ]
@@ -1791,6 +1821,7 @@ Module time.
                             []
                             [ Ty.path "core::time::Duration" ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -1798,6 +1829,7 @@ Module time.
                             M.get_associated_function (|
                               Ty.path "core::time::Duration",
                               "checked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| other |); M.read (| self |) ]
@@ -1849,7 +1881,7 @@ Module time.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -1945,6 +1977,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| secs |); Value.Integer IntegerKind.U64 1
@@ -2045,6 +2078,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2081,7 +2115,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_add", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_add",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2144,7 +2183,7 @@ Module time.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_sub", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -2249,6 +2288,7 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_sub",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2383,6 +2423,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2419,7 +2460,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_sub", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_sub",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2514,7 +2560,12 @@ Module time.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "checked_mul",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2545,6 +2596,7 @@ Module time.
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| s |); M.read (| extra_secs |) ]
@@ -2632,6 +2684,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "core::time::Duration",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2673,7 +2726,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_mul", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_mul",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2902,6 +2960,7 @@ Module time.
                                             M.get_associated_function (|
                                               Ty.path "core::time::Duration",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| secs |); M.read (| nanos |) ]
@@ -3112,6 +3171,7 @@ Module time.
                   M.get_associated_function (|
                     Ty.path "core::time::Duration",
                     "try_from_secs_f64",
+                    [],
                     []
                   |),
                   [ M.read (| secs |) ]
@@ -3135,6 +3195,7 @@ Module time.
                           M.get_associated_function (|
                             Self,
                             "panic_cold_display.from_secs_f64",
+                            [],
                             []
                           |),
                           [
@@ -3143,6 +3204,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::TryFromFloatSecsError",
                                   "description",
+                                  [],
                                   []
                                 |),
                                 [ e ]
@@ -3181,6 +3243,7 @@ Module time.
                   M.get_associated_function (|
                     Ty.path "core::time::Duration",
                     "try_from_secs_f32",
+                    [],
                     []
                   |),
                   [ M.read (| secs |) ]
@@ -3204,6 +3267,7 @@ Module time.
                           M.get_associated_function (|
                             Self,
                             "panic_cold_display.from_secs_f32",
+                            [],
                             []
                           |),
                           [
@@ -3212,6 +3276,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::TryFromFloatSecsError",
                                   "description",
+                                  [],
                                   []
                                 |),
                                 [ e ]
@@ -3242,12 +3307,17 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [], [] |),
             [
               BinOp.Wrap.mul (|
                 M.read (| rhs |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f64",
+                    [],
+                    []
+                  |),
                   [ self ]
                 |)
               |)
@@ -3270,12 +3340,17 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [], [] |),
             [
               BinOp.Wrap.mul (|
                 M.read (| rhs |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f32",
+                    [],
+                    []
+                  |),
                   [ self ]
                 |)
               |)
@@ -3298,11 +3373,16 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [], [] |),
             [
               BinOp.Wrap.div (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f64",
+                    [],
+                    []
+                  |),
                   [ self ]
                 |),
                 M.read (| rhs |)
@@ -3326,11 +3406,16 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [], [] |),
             [
               BinOp.Wrap.div (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f32",
+                    [],
+                    []
+                  |),
                   [ self ]
                 |),
                 M.read (| rhs |)
@@ -3556,7 +3641,7 @@ Module time.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
@@ -3631,8 +3716,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u64",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| mant |) ]
@@ -3657,8 +3744,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3671,8 +3760,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u64" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| t |) ]
@@ -3824,8 +3915,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3845,8 +3938,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3872,8 +3967,10 @@ Module time.
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u64",
+                                                    [],
                                                     [ Ty.path "u32" ],
                                                     "from",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4040,8 +4137,10 @@ Module time.
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
+                                                            [],
                                                             [ Ty.path "u32" ],
                                                             "from",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
@@ -4104,6 +4203,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -4179,7 +4279,7 @@ Module time.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
@@ -4254,8 +4354,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u64" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| mant |) ]
@@ -4280,8 +4382,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4294,8 +4398,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u128" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| t |) ]
@@ -4447,8 +4553,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u64" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4468,8 +4576,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u128",
+                                                  [],
                                                   [ Ty.path "u64" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4495,8 +4605,10 @@ Module time.
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u128",
+                                                    [],
                                                     [ Ty.path "u32" ],
                                                     "from",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4663,8 +4775,10 @@ Module time.
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
+                                                            [],
                                                             [ Ty.path "u64" ],
                                                             "from",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
@@ -4727,6 +4841,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -4765,11 +4880,17 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_add", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_add",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               M.read (| Value.String "overflow when adding durations" |)
@@ -4808,8 +4929,10 @@ Module time.
                   M.get_trait_method (|
                     "core::ops::arith::Add",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "core::time::Duration" ],
                     "add",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -4849,11 +4972,17 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_sub", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_sub",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               M.read (| Value.String "overflow when subtracting durations" |)
@@ -4892,8 +5021,10 @@ Module time.
                   M.get_trait_method (|
                     "core::ops::arith::Sub",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "core::time::Duration" ],
                     "sub",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -4933,11 +5064,17 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_mul", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_mul",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               M.read (| Value.String "overflow when multiplying duration by scalar" |)
@@ -4975,8 +5112,10 @@ Module time.
             M.get_trait_method (|
               "core::ops::arith::Mul",
               Ty.path "core::time::Duration",
+              [],
               [ Ty.path "u32" ],
               "mul",
+              [],
               []
             |),
             [ M.read (| rhs |); M.read (| self |) ]
@@ -5014,8 +5153,10 @@ Module time.
                   M.get_trait_method (|
                     "core::ops::arith::Mul",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "u32" ],
                     "mul",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -5055,11 +5196,17 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_div", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_div",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
@@ -5098,8 +5245,10 @@ Module time.
                   M.get_trait_method (|
                     "core::ops::arith::Div",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "u32" ],
                     "div",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -5143,7 +5292,9 @@ Module time.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -5163,7 +5314,9 @@ Module time.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5196,6 +5349,7 @@ Module time.
                                                 []
                                                 [ Ty.path "u64" ],
                                               "expect",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5203,6 +5357,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5232,6 +5387,7 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_add",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5279,6 +5435,7 @@ Module time.
                                                               []
                                                               [ Ty.path "u64" ],
                                                             "expect",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5286,6 +5443,7 @@ Module time.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5351,11 +5509,12 @@ Module time.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                       [
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
@@ -5379,7 +5538,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
                 [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
               |)
             |)
@@ -5420,7 +5579,9 @@ Module time.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -5440,7 +5601,9 @@ Module time.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5473,6 +5636,7 @@ Module time.
                                                 []
                                                 [ Ty.path "u64" ],
                                               "expect",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5480,6 +5644,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5509,6 +5674,7 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_add",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5556,6 +5722,7 @@ Module time.
                                                               []
                                                               [ Ty.path "u64" ],
                                                             "expect",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5563,6 +5730,7 @@ Module time.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5628,11 +5796,12 @@ Module time.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                       [
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
@@ -5656,7 +5825,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
                 [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
               |)
             |)
@@ -5886,6 +6055,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "sign_plus",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |) ]
@@ -5920,7 +6090,7 @@ Module time.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                        M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                         [
                           M.read (| f |);
                           M.read (|
@@ -5979,7 +6149,7 @@ Module time.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                                 [
                                   M.read (| f |);
                                   M.rust_cast
@@ -6056,7 +6226,12 @@ Module time.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                        M.get_associated_function (|
+                                          Self,
+                                          "fmt_decimal.fmt",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.read (| f |);
                                           M.rust_cast
@@ -6107,7 +6282,12 @@ Module time.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                        M.get_associated_function (|
+                                          Self,
+                                          "fmt_decimal.fmt",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.read (| f |);
                                           M.rust_cast
@@ -6169,6 +6349,7 @@ Module time.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -6213,7 +6394,9 @@ Module time.
                     "core::clone::Clone",
                     Ty.path "core::time::TryFromFloatSecsErrorKind",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -6261,8 +6444,10 @@ Module time.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "core::time::TryFromFloatSecsErrorKind",
+              [],
               [ Ty.path "core::time::TryFromFloatSecsErrorKind" ],
               "eq",
+              [],
               []
             |),
             [
@@ -6389,12 +6574,13 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::time::TryFromFloatSecsError",
                   "description",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -6445,7 +6631,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|

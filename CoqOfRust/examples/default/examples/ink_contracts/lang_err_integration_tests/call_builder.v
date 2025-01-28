@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
           "call_builder::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -160,7 +168,9 @@ Module Impl_call_builder_CallBuilderTest.
             "core::default::Default",
             Ty.path "call_builder::CallBuilderTest",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -235,6 +245,7 @@ Module Impl_call_builder_CallBuilderTest.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -252,6 +263,7 @@ Module Impl_call_builder_CallBuilderTest.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "none",
+                                    [],
                                     []
                                   |),
                                   []

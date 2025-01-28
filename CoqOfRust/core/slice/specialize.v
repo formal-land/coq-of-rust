@@ -39,6 +39,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "split_last_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -66,7 +67,9 @@ Module slice.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| elems |) ]
@@ -89,7 +92,9 @@ Module slice.
                                                   []
                                                   [ T ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -122,7 +127,9 @@ Module slice.
                                                         "core::clone::Clone",
                                                         T,
                                                         [],
+                                                        [],
                                                         "clone_from",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| el |); value ]
@@ -178,7 +185,9 @@ Module slice.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -186,6 +195,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "iter_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -207,7 +217,9 @@ Module slice.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]

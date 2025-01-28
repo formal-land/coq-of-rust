@@ -48,7 +48,7 @@ Module str.
                             ltac:(M.monadic
                               (BinOp.lt (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                   [ M.read (| s |) ]
                                 |),
                                 BinOp.Wrap.mul (|
@@ -64,7 +64,7 @@ Module str.
                         M.get_function (| "core::str::count::char_count_general_case", [], [] |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                             [ M.read (| s |) ]
                           |)
                         ]
@@ -172,11 +172,12 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
+                        [],
                         [ Ty.path "usize" ]
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                           [ M.read (| s |) ]
                         |)
                       ]
@@ -212,6 +213,7 @@ Module str.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     "is_empty",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| body |) ]
@@ -225,6 +227,7 @@ Module str.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| head |) ]
@@ -245,6 +248,7 @@ Module str.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| tail |) ]
@@ -279,6 +283,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "as_bytes",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| s |) ]
@@ -325,7 +330,9 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -333,6 +340,7 @@ Module str.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                         "chunks",
+                                        [],
                                         []
                                       |),
                                       [
@@ -364,7 +372,9 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -403,6 +413,7 @@ Module str.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           "as_chunks",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| chunk |) ]
@@ -450,7 +461,9 @@ Module str.
                                                                             ]
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "into_iter",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| unrolled_chunks |) ]
@@ -487,7 +500,9 @@ Module str.
                                                                                           ]
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "next",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ iter ]
@@ -545,7 +560,9 @@ Module str.
                                                                                                     ]
                                                                                                 ],
                                                                                               [],
+                                                                                              [],
                                                                                               "into_iter",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -581,7 +598,9 @@ Module str.
                                                                                                                   "usize"
                                                                                                               ],
                                                                                                             [],
+                                                                                                            [],
                                                                                                             "next",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -704,6 +723,7 @@ Module str.
                                                                                 []
                                                                                 [ Ty.path "usize" ],
                                                                               "is_empty",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| remainder |)
@@ -746,7 +766,9 @@ Module str.
                                                                                           ]
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "into_iter",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -780,7 +802,9 @@ Module str.
                                                                                                         "usize"
                                                                                                     ],
                                                                                                   [],
+                                                                                                  [],
                                                                                                   "next",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -951,7 +975,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                 [ Value.Integer IntegerKind.U8 1 ]
               |)
             |))).
@@ -990,7 +1014,7 @@ Module str.
             M.alloc (|
               BinOp.Wrap.shr (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| pair_sum |);
                     M.read (|
@@ -1020,7 +1044,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 1 ]
               |)
             |))).
@@ -1030,7 +1054,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 255 ]
               |)
             |))).
@@ -1062,7 +1086,9 @@ Module str.
                     (Ty.path "bool")
                 ],
               [],
+              [],
               "count",
+              [],
               []
             |),
             [
@@ -1071,7 +1097,9 @@ Module str.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                   [],
+                  [],
                   "filter",
+                  [],
                   [
                     Ty.function
                       [
@@ -1087,6 +1115,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "iter",
+                      [],
                       []
                     |),
                     [ M.read (| s |) ]

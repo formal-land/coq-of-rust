@@ -26,6 +26,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -76,7 +77,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "usize",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -87,7 +90,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "usize",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -263,7 +268,9 @@ Module interpreter.
                       "core::hash::Hash",
                       Ty.path "usize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -278,7 +285,15 @@ Module interpreter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -370,7 +385,9 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -383,7 +400,15 @@ Module interpreter.
                   |));
                 ("current_code_idx",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -419,6 +444,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -476,7 +502,9 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -487,7 +515,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "usize",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -539,6 +569,7 @@ Module interpreter.
                         "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -550,6 +581,7 @@ Module interpreter.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -664,6 +696,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -696,6 +729,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -732,6 +766,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -768,6 +803,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -839,6 +875,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -916,6 +953,7 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
@@ -950,6 +988,7 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "push",
+                          [],
                           []
                         |),
                         [
@@ -1010,6 +1049,7 @@ Module interpreter.
                   [ Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
                   ],
                 "map",
+                [],
                 [
                   Ty.path "usize";
                   Ty.function
@@ -1035,6 +1075,7 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [

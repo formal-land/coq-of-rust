@@ -51,12 +51,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "std::process::Command",
                         "stdout",
+                        [],
                         [ Ty.path "std::process::Stdio" ]
                       |),
                       [
@@ -64,6 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::process::Command",
                             "stdin",
+                            [],
                             [ Ty.path "std::process::Stdio" ]
                           |),
                           [
@@ -72,6 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "std::process::Command",
                                   "new",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ M.read (| Value.String "wc" |) ]
@@ -81,6 +84,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "std::process::Stdio",
                                 "piped",
+                                [],
                                 []
                               |),
                               []
@@ -91,6 +95,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::process::Stdio",
                             "piped",
+                            [],
                             []
                           |),
                           []
@@ -115,6 +120,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -128,6 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "std::io::error::Error" ]
                                         |),
                                         [ why ]
@@ -157,7 +164,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "std::io::Write",
                   Ty.path "std::process::ChildStdin",
                   [],
+                  [],
                   "write_all",
+                  [],
                   []
                 |),
                 [
@@ -169,6 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "std::process::ChildStdin" ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -183,7 +193,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [
                       M.read (|
                         M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |) |)
@@ -208,6 +218,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -222,6 +233,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "std::io::error::Error" ]
                                       |),
                                       [ why ]
@@ -247,6 +259,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
@@ -265,7 +278,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ s :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
               []
             |)
           |) in
@@ -276,7 +289,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "std::io::Read",
                 Ty.path "std::process::ChildStdout",
                 [],
+                [],
                 "read_to_string",
+                [],
                 []
               |),
               [
@@ -288,6 +303,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [ Ty.path "std::process::ChildStdout" ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -320,6 +336,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -333,6 +350,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "std::io::error::Error" ]
                                     |),
                                     [ why ]
@@ -358,6 +376,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -372,6 +391,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [ s ]

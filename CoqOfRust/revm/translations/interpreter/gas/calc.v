@@ -72,6 +72,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -95,6 +96,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -152,6 +154,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_context_interface::host::SStoreResult",
                                       "is_new_eq_present",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| vals |) ]
@@ -176,6 +179,7 @@ Module gas.
                                                 Ty.path
                                                   "revm_context_interface::host::SStoreResult",
                                                 "is_original_eq_present",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| vals |) ]
@@ -186,6 +190,7 @@ Module gas.
                                                   Ty.path
                                                     "revm_context_interface::host::SStoreResult",
                                                   "is_new_zero",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| vals |) ]
@@ -216,6 +221,7 @@ Module gas.
                                                           Ty.path
                                                             "revm_context_interface::host::SStoreResult",
                                                           "is_original_zero",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| vals |) ]
@@ -240,6 +246,7 @@ Module gas.
                                                                 Ty.path
                                                                   "revm_context_interface::host::SStoreResult",
                                                                 "is_present_zero",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| vals |) ]
@@ -275,6 +282,7 @@ Module gas.
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
                                                                         "is_new_zero",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| vals |) ]
@@ -321,6 +329,7 @@ Module gas.
                                                         Ty.path
                                                           "revm_context_interface::host::SStoreResult",
                                                         "is_original_eq_new",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| vals |) ]
@@ -345,6 +354,7 @@ Module gas.
                                                                   Ty.path
                                                                     "revm_specification::hardfork::SpecId",
                                                                   "is_enabled_in",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -429,6 +439,7 @@ Module gas.
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
                                                                         "is_original_zero",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| vals |) ]
@@ -503,6 +514,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_present_zero",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| vals |) ]
@@ -513,6 +525,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_new_zero",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| vals |) ]
@@ -549,7 +562,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant (| "revm_interpreter::gas::constants::CREATE" |) |);
                   M.read (|
@@ -656,6 +669,10 @@ Module gas.
                                                   ]
                                                   [],
                                                 "as_limbs",
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ],
                                                 []
                                               |),
                                               [ value ]
@@ -694,6 +711,7 @@ Module gas.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "leading_zeros",
+                                            [],
                                             []
                                           |),
                                           [
@@ -709,6 +727,10 @@ Module gas.
                                                       ]
                                                       [],
                                                     "as_limbs",
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ],
                                                     []
                                                   |),
                                                   [ value ]
@@ -845,6 +867,10 @@ Module gas.
                                     ]
                                     [],
                                   "is_zero",
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ],
                                   []
                                 |),
                                 [ power ]
@@ -875,6 +901,10 @@ Module gas.
                                   ]
                                   [],
                                 "from",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -891,6 +921,7 @@ Module gas.
                                                   M.get_associated_function (|
                                                     Ty.path "revm_specification::hardfork::SpecId",
                                                     "is_enabled_in",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -936,7 +967,9 @@ Module gas.
                                           []
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -950,6 +983,10 @@ Module gas.
                                           ]
                                           [],
                                         "checked_add",
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ],
                                         []
                                       |),
                                       [
@@ -963,6 +1000,10 @@ Module gas.
                                               ]
                                               [],
                                             "from",
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ],
                                             [ Ty.path "u64" ]
                                           |),
                                           [
@@ -992,7 +1033,9 @@ Module gas.
                                                         []
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1006,6 +1049,10 @@ Module gas.
                                                         ]
                                                         [],
                                                       "checked_mul",
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ],
                                                       []
                                                     |),
                                                     [
@@ -1020,6 +1067,10 @@ Module gas.
                                                             ]
                                                             [],
                                                           "from",
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ],
                                                           [ Ty.path "u64" ]
                                                         |),
                                                         [
@@ -1065,6 +1116,7 @@ Module gas.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "u64" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -1075,6 +1127,7 @@ Module gas.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1122,6 +1175,7 @@ Module gas.
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -1129,6 +1183,7 @@ Module gas.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1164,6 +1219,7 @@ Module gas.
                                     [ Ty.path "u64" ]
                                 ],
                               "ok",
+                              [],
                               []
                             |),
                             [
@@ -1171,6 +1227,7 @@ Module gas.
                                 M.get_trait_method (|
                                   "core::convert::TryFrom",
                                   Ty.path "u64",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
@@ -1181,6 +1238,7 @@ Module gas.
                                       []
                                   ],
                                   "try_from",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| gas |) ]
@@ -1258,6 +1316,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1294,6 +1353,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1344,7 +1404,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| base_cost |);
                   M.read (|
@@ -1406,13 +1466,13 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [
                             M.read (|
                               M.get_constant (| "revm_interpreter::gas::constants::LOG" |)
@@ -1424,6 +1484,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "checked_mul",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1515,7 +1576,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant (| "revm_interpreter::gas::constants::KECCAK256" |) |);
                   M.read (|
@@ -1576,7 +1637,7 @@ Module gas.
           (let len := M.alloc (| len |) in
           let multiple := M.alloc (| multiple |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
+            M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
             [
               M.read (| multiple |);
               M.rust_cast
@@ -1680,6 +1741,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -1721,6 +1783,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1750,6 +1813,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_specification::hardfork::SpecId",
                                               "is_enabled_in",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1819,6 +1883,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -1884,6 +1949,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1965,6 +2031,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_context_interface::host::SStoreResult",
                               "is_new_eq_present",
+                              [],
                               []
                             |),
                             [ M.read (| vals |) ]
@@ -1989,6 +2056,7 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_context_interface::host::SStoreResult",
                                         "is_original_eq_present",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| vals |) ]
@@ -1998,6 +2066,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_original_zero",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| vals |) ]
@@ -2021,6 +2090,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_context_interface::host::SStoreResult",
                                               "is_original_eq_present",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| vals |) ]
@@ -2080,6 +2150,7 @@ Module gas.
                               M.get_associated_function (|
                                 Ty.path "revm_context_interface::host::SStoreResult",
                                 "is_present_zero",
+                                [],
                                 []
                               |),
                               [ M.read (| vals |) ]
@@ -2090,6 +2161,7 @@ Module gas.
                                   M.get_associated_function (|
                                     Ty.path "revm_context_interface::host::SStoreResult",
                                     "is_new_zero",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| vals |) ]
@@ -2163,6 +2235,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2239,6 +2312,7 @@ Module gas.
                                   M.get_associated_function (|
                                     Ty.path "revm_specification::hardfork::SpecId",
                                     "is_enabled_in",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2272,6 +2346,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2310,6 +2385,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2408,6 +2484,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2452,6 +2529,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2524,6 +2602,7 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         "is_enabled_in",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2738,10 +2817,10 @@ Module gas.
             let~ num_words := M.alloc (| M.rust_cast (M.read (| num_words |)) |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (| M.get_constant (| "revm_interpreter::gas::constants::MEMORY" |) |);
                       M.read (| num_words |)
@@ -2749,7 +2828,7 @@ Module gas.
                   |);
                   BinOp.Wrap.div (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                      M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                       [ M.read (| num_words |); M.read (| num_words |) ]
                     |),
                     Value.Integer IntegerKind.U64 512
@@ -2853,7 +2932,9 @@ Module gas.
                             (Ty.path "bool")
                         ],
                       [],
+                      [],
                       "count",
+                      [],
                       []
                     |),
                     [
@@ -2862,7 +2943,9 @@ Module gas.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           [],
+                          [],
                           "filter",
+                          [],
                           [
                             Ty.function
                               [
@@ -2882,6 +2965,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "iter",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]
@@ -2919,6 +3003,7 @@ Module gas.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| input |) ]
@@ -2961,6 +3046,7 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         "is_enabled_in",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3005,7 +3091,9 @@ Module gas.
                               "revm_context_interface::transaction::access_list::AccessListTrait",
                               AccessListT,
                               [],
+                              [],
                               "num_account_storages",
+                              [],
                               []
                             |),
                             [ M.read (| access_list |) ]
@@ -3083,6 +3171,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_specification::hardfork::SpecId",
                                               "is_enabled_in",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3125,6 +3214,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3154,6 +3244,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| input |) ]
@@ -3178,6 +3269,7 @@ Module gas.
                               M.get_associated_function (|
                                 Ty.path "revm_specification::hardfork::SpecId",
                                 "is_enabled_in",
+                                [],
                                 []
                               |),
                               [

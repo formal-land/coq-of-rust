@@ -17,7 +17,7 @@ Module ops.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::drop::Drop", T, [], "drop", [] |),
+            M.get_trait_method (| "core::ops::drop::Drop", T, [], [], "drop", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

@@ -62,7 +62,7 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| f |); M.read (| Value.String "N/A" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -179,6 +179,7 @@ Module asserting.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "N/A" |) ]
@@ -195,7 +196,7 @@ Module asserting.
                     let value := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::fmt::Debug", E, [], "fmt", [] |),
+                        M.get_trait_method (| "core::fmt::Debug", E, [], [], "fmt", [], [] |),
                         [ M.read (| value |); M.read (| f |) ]
                       |)
                     |)))

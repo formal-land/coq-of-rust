@@ -39,14 +39,24 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
                     []
                     [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
               |));
             ("len",
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u64", [], "default", [] |),
+                M.get_trait_method (|
+                  "core::default::Default",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "default",
+                  [],
+                  []
+                |),
                 []
               |))
           ]))
@@ -78,6 +88,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
@@ -139,6 +150,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     []
                     [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -196,6 +208,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [
@@ -275,6 +288,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [
@@ -301,6 +315,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                           [ Ty.tuple [ Ty.path "u64"; T ] ]
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -311,6 +326,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                           []
                                                           [ Ty.tuple [ Ty.path "u64"; T ] ],
                                                         "last",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -325,7 +341,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "deref",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -387,6 +405,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   []
                   [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -464,6 +483,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [
@@ -544,6 +564,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "is_empty",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -571,6 +592,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                               [ Ty.tuple [ Ty.path "u64"; T ] ]
                                                           ],
                                                         "unwrap",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -581,6 +603,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                               []
                                                               [ Ty.tuple [ Ty.path "u64"; T ] ],
                                                             "last",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -595,7 +618,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -678,6 +703,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
           M.get_associated_function (|
             Ty.apply (Ty.path "move_abstract_stack::AbstractStack") [] [ T ],
             "push_n",
+            [],
             []
           |),
           [ M.read (| self |); M.read (| item |); Value.Integer IntegerKind.U64 1 ]
@@ -748,7 +774,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                    M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -787,6 +813,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                                 "last_mut",
+                                [],
                                 []
                               |),
                               [
@@ -801,7 +828,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -835,8 +864,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply (Ty.path "&") [] [ T ],
+                                        [],
                                         [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ M.alloc (| item |); last_item ]
@@ -923,6 +954,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -966,6 +998,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
           M.get_associated_function (|
             Ty.apply (Ty.path "move_abstract_stack::AbstractStack") [] [ T ],
             "pop_eq_n",
+            [],
             []
           |),
           [
@@ -977,6 +1010,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "unwrap",
+                [],
                 []
               |),
               [
@@ -984,6 +1018,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.U64 1 ]
@@ -1036,6 +1071,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1058,6 +1094,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       []
                                       [ T ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1104,6 +1141,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                         []
                         [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ Ty.path "u64"; T ] ] ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -1111,6 +1149,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                           "last_mut",
+                          [],
                           []
                         |),
                         [
@@ -1122,7 +1161,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                 []
                                 [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [
@@ -1211,7 +1252,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   "core::cmp::Ord",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| count |); n ]
@@ -1250,6 +1293,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                             []
                                             [ Ty.tuple [ Ty.path "u64"; T ] ],
                                           "unwrap",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1263,6 +1307,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "pop",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1301,7 +1346,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         "core::clone::Clone",
                                         T,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| last |) ]
@@ -1373,6 +1420,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1395,6 +1443,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       []
                                       [ T ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1462,6 +1511,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           [ Ty.tuple [ Ty.path "u64"; T ] ]
                                       ],
                                     "unwrap",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1472,6 +1522,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           []
                                           [ Ty.tuple [ Ty.path "u64"; T ] ],
                                         "last_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1486,7 +1537,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "deref_mut",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1576,7 +1629,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                             "core::cmp::Ord",
                                             Ty.path "u64",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| count |); rem ]
@@ -1605,61 +1660,60 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                       |) in
                                                     Value.Tuple []))
                                               ],
-                                              M.closure
-                                                (fun γ =>
-                                                  ltac:(M.monadic
-                                                    match γ with
-                                                    | [] =>
-                                                      ltac:(M.monadic
-                                                        (let~ _ :=
-                                                          let β := rem in
-                                                          M.write (|
-                                                            β,
-                                                            BinOp.Wrap.sub (|
-                                                              M.read (| β |),
-                                                              M.read (| M.read (| count |) |)
-                                                            |)
-                                                          |) in
-                                                        let~ _ :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::option::Option")
-                                                                  []
-                                                                  [ Ty.tuple [ Ty.path "u64"; T ] ],
-                                                                "unwrap",
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  match γ with
+                                                  | [] =>
+                                                    ltac:(M.monadic
+                                                      (let~ _ :=
+                                                        let β := rem in
+                                                        M.write (|
+                                                          β,
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| β |),
+                                                            M.read (| M.read (| count |) |)
+                                                          |)
+                                                        |) in
+                                                      let~ _ :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
                                                                 []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::vec::Vec")
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [ Ty.path "u64"; T ];
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ],
-                                                                    "pop",
+                                                                [ Ty.tuple [ Ty.path "u64"; T ] ],
+                                                              "unwrap",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
                                                                     []
-                                                                  |),
-                                                                  [
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "move_abstract_stack::AbstractStack",
-                                                                      "values"
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        M.alloc (| Value.Tuple [] |)))
-                                                    | _ => M.impossible "wrong number of arguments"
-                                                    end))
+                                                                    [
+                                                                      Ty.tuple [ Ty.path "u64"; T ];
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  "pop",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "move_abstract_stack::AbstractStack",
+                                                                    "values"
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)))
+                                                  | _ => M.impossible "wrong number of arguments"
+                                                  end)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -1868,8 +1922,10 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
               [ __self_discr; __arg1_discr ]
@@ -1922,7 +1978,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [ __self_discr; __arg1_discr ]
             |)
           |)
@@ -1977,7 +2033,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -2065,6 +2121,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -2073,6 +2130,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
@@ -2099,6 +2157,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -2107,6 +2166,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
@@ -2133,6 +2193,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -2141,6 +2202,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [

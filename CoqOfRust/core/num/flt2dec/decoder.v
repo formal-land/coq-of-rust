@@ -84,6 +84,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field5_finish",
+                  [],
                   []
                 |),
                 [
@@ -398,6 +399,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Nan" |) ]
@@ -416,6 +418,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Infinite" |) ]
@@ -434,6 +437,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Zero" |) ]
@@ -454,6 +458,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Finite" |); __self_0 ]
@@ -553,6 +558,7 @@ Module num.
                                         (Ty.path "&")
                                         []
                                         [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -560,6 +566,7 @@ Module num.
                                           [ Ty.path "core::num::flt2dec::decoder::Decoded" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ __self_0; __arg1_0 ]
@@ -717,7 +724,9 @@ Module num.
                       "core::num::dec2flt::float::RawFloat",
                       T,
                       [],
+                      [],
                       "integer_decode",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -748,7 +757,9 @@ Module num.
                                   "core::num::dec2flt::float::RawFloat",
                                   T,
                                   [],
+                                  [],
                                   "classify",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| v |) ]
@@ -812,7 +823,9 @@ Module num.
                                           "core::num::dec2flt::float::RawFloat",
                                           T,
                                           [],
+                                          [],
                                           "integer_decode",
+                                          [],
                                           []
                                         |),
                                         [
@@ -821,7 +834,9 @@ Module num.
                                               "core::num::flt2dec::decoder::DecodableFloat",
                                               T,
                                               [],
+                                              [],
                                               "min_pos_norm_value",
+                                              [],
                                               []
                                             |),
                                             []

@@ -17,10 +17,7 @@ Module Clone.
     {clone @
       IsTraitMethod.t "core::clone::Clone" (Φ Self) [] "clone" clone *
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{
-          clone [] [] [ φ self ] ⇓
-          output_pure Self
-        }}
+        {{ clone [] [] [ φ self ] 🔽 Self }}
     }.
 
   Record Run (Self : Set) `{Link Self} : Set := {

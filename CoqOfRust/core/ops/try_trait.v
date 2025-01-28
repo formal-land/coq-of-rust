@@ -26,8 +26,10 @@ Module ops.
             M.get_trait_method (|
               "core::ops::try_trait::FromResidual",
               T,
+              [],
               [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ Y ] ],
               "from_residual",
+              [],
               []
             |),
             [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
@@ -86,8 +88,10 @@ Module ops.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       impl_FnMut_A__arrow_T,
+                                      [],
                                       [ Ty.tuple [ A ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
                                     [ f; Value.Tuple [ M.read (| a |) ] ]
@@ -140,8 +144,10 @@ Module ops.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut_A__B__arrow_T,
+                                              [],
                                               [ Ty.tuple [ A; B ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
@@ -309,6 +315,7 @@ Module ops.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [

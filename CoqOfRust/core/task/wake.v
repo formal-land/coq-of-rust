@@ -58,8 +58,10 @@ Module task.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ] ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -101,6 +103,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -176,7 +179,7 @@ Module task.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.call_closure (|
                     M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
@@ -385,6 +388,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -516,6 +520,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
@@ -536,6 +541,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "None" |); __self_0 ]
@@ -603,6 +609,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::task::wake::ContextBuilder",
                 "build",
+                [],
                 []
               |),
               [
@@ -610,6 +617,7 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::task::wake::ContextBuilder",
                     "from_waker",
+                    [],
                     []
                   |),
                   [ M.read (| waker |) ]
@@ -743,6 +751,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -750,6 +759,7 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -758,6 +768,7 @@ Module task.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Context" |) ]
@@ -825,6 +836,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
@@ -1229,6 +1241,7 @@ Module task.
                         []
                         [ Ty.path "core::task::wake::Waker" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1250,7 +1263,9 @@ Module task.
                                     []
                                     [ Ty.path "core::task::wake::Waker" ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ this ]
@@ -1278,7 +1293,9 @@ Module task.
                                   []
                                   [ Ty.path "core::task::wake::Waker" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ this ]
@@ -1630,6 +1647,7 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::Waker",
                                   "will_wake",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| source |) ]
@@ -1645,7 +1663,9 @@ Module task.
                               "core::clone::Clone",
                               Ty.path "core::task::wake::Waker",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| source |) ]
@@ -1769,6 +1789,7 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
@@ -1776,6 +1797,7 @@ Module task.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -1783,6 +1805,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -1791,6 +1814,7 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |); M.read (| Value.String "Waker" |) ]
@@ -1878,6 +1902,7 @@ Module task.
                         []
                         [ Ty.path "core::task::wake::LocalWaker" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1899,7 +1924,9 @@ Module task.
                                     []
                                     [ Ty.path "core::task::wake::LocalWaker" ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ this ]
@@ -1927,7 +1954,9 @@ Module task.
                                   []
                                   [ Ty.path "core::task::wake::LocalWaker" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ this ]
@@ -2279,6 +2308,7 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::LocalWaker",
                                   "will_wake",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| source |) ]
@@ -2294,7 +2324,9 @@ Module task.
                               "core::clone::Clone",
                               Ty.path "core::task::wake::LocalWaker",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| source |) ]
@@ -2454,6 +2486,7 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
@@ -2461,6 +2494,7 @@ Module task.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -2468,6 +2502,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -2476,6 +2511,7 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |); M.read (| Value.String "LocalWaker" |) ]

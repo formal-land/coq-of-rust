@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -74,6 +75,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
@@ -156,6 +158,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Num" |); __self_0 ]
@@ -176,6 +179,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Ref" |); __self_0 ]
@@ -239,7 +243,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -256,6 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ]
                               |),
                               [ single ]
@@ -275,7 +285,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -292,6 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ]
                               |),
                               [ double ]
@@ -311,7 +327,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -328,6 +349,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
                               |),
                               [ reference ]
@@ -347,7 +369,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -364,6 +391,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
                               |),
                               [ number ]

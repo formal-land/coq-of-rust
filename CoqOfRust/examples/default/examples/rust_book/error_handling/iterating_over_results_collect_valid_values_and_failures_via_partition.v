@@ -23,6 +23,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -40,6 +41,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -79,7 +81,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                   ],
                 [],
+                [],
                 "partition",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -116,7 +120,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "map",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -142,7 +148,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| strings |) ]
@@ -163,6 +171,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "parse",
+                                          [],
                                           [ Ty.path "i32" ]
                                         |),
                                         [ M.read (| s |) ]
@@ -179,6 +188,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     []
                     [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                   "is_ok",
+                  [],
                   []
                 |)
               ]
@@ -201,6 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -219,6 +230,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -255,6 +267,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -273,6 +286,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")

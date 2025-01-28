@@ -23,6 +23,7 @@ Module utilities.
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "unwrap_or_default",
+                [],
                 []
               |),
               [
@@ -30,6 +31,7 @@ Module utilities.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                   |),
                   [
@@ -71,6 +73,7 @@ Module utilities.
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "unwrap_or_default",
+                [],
                 []
               |),
               [
@@ -78,6 +81,7 @@ Module utilities.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
                   |),
                   [
@@ -126,6 +130,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -161,6 +166,7 @@ Module utilities.
                                 Ty.path "core::array::TryFromSliceError"
                               ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -171,6 +177,7 @@ Module utilities.
                                   (Ty.path "&")
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -178,6 +185,7 @@ Module utilities.
                                     [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                                 ],
                                 "try_into",
+                                [],
                                 []
                               |),
                               [ M.read (| data |) ]
@@ -195,6 +203,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -202,6 +211,7 @@ Module utilities.
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
                               Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -209,6 +219,7 @@ Module utilities.
                                   [ Ty.path "usize" ]
                               ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [
@@ -221,6 +232,7 @@ Module utilities.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| data |) ]
@@ -272,6 +284,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -303,6 +316,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -313,6 +327,7 @@ Module utilities.
                                 (Ty.path "alloc::vec::Vec")
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -320,6 +335,7 @@ Module utilities.
                                   [ Ty.path "usize" ]
                               ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [
@@ -332,6 +348,7 @@ Module utilities.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| data |) ]
@@ -383,6 +400,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -418,6 +436,7 @@ Module utilities.
                                 Ty.path "core::array::TryFromSliceError"
                               ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -428,6 +447,7 @@ Module utilities.
                                   (Ty.path "&")
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -435,6 +455,7 @@ Module utilities.
                                     [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                                 ],
                                 "try_into",
+                                [],
                                 []
                               |),
                               [ M.read (| data |) ]
@@ -452,6 +473,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -459,6 +481,7 @@ Module utilities.
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
                               Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeFrom")
@@ -466,6 +489,7 @@ Module utilities.
                                   [ Ty.path "usize" ]
                               ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [
@@ -484,6 +508,7 @@ Module utilities.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| data |) ]
@@ -536,6 +561,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -567,6 +593,7 @@ Module utilities.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -577,6 +604,7 @@ Module utilities.
                                 (Ty.path "alloc::vec::Vec")
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeFrom")
@@ -584,6 +612,7 @@ Module utilities.
                                   [ Ty.path "usize" ]
                               ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [
@@ -598,6 +627,7 @@ Module utilities.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| data |) ]
@@ -636,6 +666,7 @@ Module utilities.
           M.get_associated_function (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             "from_static",
+            [],
             []
           |),
           [
@@ -705,6 +736,7 @@ Module utilities.
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [],
                   "new",
+                  [ Value.Integer IntegerKind.Usize 32 ],
                   []
                 |),
                 [
@@ -728,6 +760,7 @@ Module utilities.
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [],
                   "new",
+                  [ Value.Integer IntegerKind.Usize 32 ],
                   []
                 |),
                 [

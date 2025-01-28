@@ -58,6 +58,7 @@ Module signature.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -70,6 +71,7 @@ Module signature.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| module |) ]
@@ -90,6 +92,7 @@ Module signature.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -102,6 +105,7 @@ Module signature.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -171,6 +175,7 @@ Module signature.
                                   Ty.path "std::hash::random::RandomState"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -188,7 +193,9 @@ Module signature.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -196,6 +203,7 @@ Module signature.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_signature_pool",
+                              [],
                               []
                             |),
                             [
@@ -204,6 +212,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "signatures",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -237,6 +246,7 @@ Module signature.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -247,6 +257,7 @@ Module signature.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -278,7 +289,9 @@ Module signature.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -286,6 +299,7 @@ Module signature.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_function_signatures",
+                              [],
                               []
                             |),
                             [
@@ -294,6 +308,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "function_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -327,6 +342,7 @@ Module signature.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -337,6 +353,7 @@ Module signature.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -368,7 +385,9 @@ Module signature.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -376,6 +395,7 @@ Module signature.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_fields",
+                              [],
                               []
                             |),
                             [
@@ -384,6 +404,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_defs",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -417,6 +438,7 @@ Module signature.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -427,6 +449,7 @@ Module signature.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -452,6 +475,7 @@ Module signature.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                       "verify_code_units",
+                      [],
                       []
                     |),
                     [
@@ -460,6 +484,7 @@ Module signature.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::CompiledModule",
                           "function_handles",
+                          [],
                           []
                         |),
                         [ M.read (| module |) ]
@@ -468,6 +493,7 @@ Module signature.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::CompiledModule",
                           "function_defs",
+                          [],
                           []
                         |),
                         [ M.read (| module |) ]
@@ -509,7 +535,9 @@ Module signature.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -525,6 +553,7 @@ Module signature.
                                         []
                                         [ Ty.path "move_binary_format::file_format::Signature" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| signatures |) ]
@@ -550,7 +579,9 @@ Module signature.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -590,7 +621,9 @@ Module signature.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -599,6 +632,7 @@ Module signature.
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                       "check_signature",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -608,6 +642,7 @@ Module signature.
                                                           Ty.path
                                                             "move_binary_format::file_format::SignatureIndex",
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.rust_cast (M.read (| i |)) ]
@@ -642,6 +677,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -654,6 +690,7 @@ Module signature.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -747,6 +784,7 @@ Module signature.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "at_index",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -755,6 +793,7 @@ Module signature.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "at_index",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -795,7 +834,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -807,7 +848,9 @@ Module signature.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -818,6 +861,7 @@ Module signature.
                                       []
                                       [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| function_handles |) ]
@@ -852,7 +896,9 @@ Module signature.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -896,7 +942,9 @@ Module signature.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -911,6 +959,7 @@ Module signature.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         "map_err",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError";
@@ -932,6 +981,7 @@ Module signature.
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
                                                             "check_instantiation",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -955,7 +1005,9 @@ Module signature.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -996,6 +1048,7 @@ Module signature.
                                                                                 ]
                                                                                 (Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"),
+                                                                              [],
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -1005,6 +1058,7 @@ Module signature.
                                                                                   ]
                                                                               ],
                                                                               "call",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1052,6 +1106,7 @@ Module signature.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -1064,6 +1119,7 @@ Module signature.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -1099,7 +1155,9 @@ Module signature.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1114,6 +1172,7 @@ Module signature.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         "map_err",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError";
@@ -1135,6 +1194,7 @@ Module signature.
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
                                                             "check_instantiation",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1158,7 +1218,9 @@ Module signature.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1199,6 +1261,7 @@ Module signature.
                                                                                 ]
                                                                                 (Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"),
+                                                                              [],
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
@@ -1208,6 +1271,7 @@ Module signature.
                                                                                   ]
                                                                               ],
                                                                               "call",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1255,6 +1319,7 @@ Module signature.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -1267,6 +1332,7 @@ Module signature.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -1307,6 +1373,7 @@ Module signature.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "is_empty",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1401,7 +1468,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1413,7 +1482,9 @@ Module signature.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -1425,6 +1496,7 @@ Module signature.
                                       [ Ty.path "move_binary_format::file_format::StructDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| struct_defs |) ]
@@ -1459,7 +1531,9 @@ Module signature.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1533,6 +1607,7 @@ Module signature.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "struct_handle_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1579,6 +1654,7 @@ Module signature.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1587,6 +1663,7 @@ Module signature.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "at_index",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1634,7 +1711,9 @@ Module signature.
                                                           ]
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1649,7 +1728,9 @@ Module signature.
                                                               "move_binary_format::file_format::FieldDefinition"
                                                           ],
                                                         [],
+                                                        [],
                                                         "enumerate",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1663,6 +1744,7 @@ Module signature.
                                                                   "move_binary_format::file_format::FieldDefinition"
                                                               ],
                                                             "iter",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1678,7 +1760,9 @@ Module signature.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| fields |) ]
@@ -1717,7 +1801,9 @@ Module signature.
                                                                         ]
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ iter ]
@@ -1774,7 +1860,9 @@ Module signature.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1790,6 +1878,7 @@ Module signature.
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
                                                                                 "map_err",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError";
@@ -1811,6 +1900,7 @@ Module signature.
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
                                                                                     "check_signature_token",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -1864,6 +1954,7 @@ Module signature.
                                                                                                         ]
                                                                                                         (Ty.path
                                                                                                           "move_binary_format::errors::PartialVMError"),
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.tuple
                                                                                                           [
@@ -1874,6 +1965,7 @@ Module signature.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "call",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -1928,6 +2020,7 @@ Module signature.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -1941,6 +2034,7 @@ Module signature.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -1973,7 +2067,9 @@ Module signature.
                                                                           "core::iter::traits::iterator::Iterator",
                                                                           Ty.associated,
                                                                           [],
+                                                                          [],
                                                                           "collect",
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1993,6 +2089,7 @@ Module signature.
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::StructHandle",
                                                                               "type_param_constraints",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -2020,7 +2117,9 @@ Module signature.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2036,6 +2135,7 @@ Module signature.
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
                                                                                 "map_err",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError";
@@ -2057,6 +2157,7 @@ Module signature.
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
                                                                                     "check_type_instantiation",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -2088,7 +2189,9 @@ Module signature.
                                                                                               "alloc::alloc::Global"
                                                                                           ],
                                                                                         [],
+                                                                                        [],
                                                                                         "deref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2131,6 +2234,7 @@ Module signature.
                                                                                                         ]
                                                                                                         (Ty.path
                                                                                                           "move_binary_format::errors::PartialVMError"),
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.tuple
                                                                                                           [
@@ -2141,6 +2245,7 @@ Module signature.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "call",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -2195,6 +2300,7 @@ Module signature.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -2208,6 +2314,7 @@ Module signature.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2249,7 +2356,9 @@ Module signature.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2265,6 +2374,7 @@ Module signature.
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
                                                                                 "map_err",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError";
@@ -2286,6 +2396,7 @@ Module signature.
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
                                                                                     "check_phantom_params",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -2319,7 +2430,9 @@ Module signature.
                                                                                               "alloc::alloc::Global"
                                                                                           ],
                                                                                         [],
+                                                                                        [],
                                                                                         "deref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2368,6 +2481,7 @@ Module signature.
                                                                                                         ]
                                                                                                         (Ty.path
                                                                                                           "move_binary_format::errors::PartialVMError"),
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.tuple
                                                                                                           [
@@ -2378,6 +2492,7 @@ Module signature.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "call",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -2432,6 +2547,7 @@ Module signature.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -2445,6 +2561,7 @@ Module signature.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2541,7 +2658,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2553,7 +2672,9 @@ Module signature.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -2567,6 +2688,7 @@ Module signature.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| function_defs |) ]
@@ -2601,7 +2723,9 @@ Module signature.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2702,7 +2826,9 @@ Module signature.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2717,6 +2843,7 @@ Module signature.
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
                                                       "map_err",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError";
@@ -2738,6 +2865,7 @@ Module signature.
                                                           Ty.path
                                                             "move_bytecode_verifier::signature::SignatureChecker",
                                                           "verify_code",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2755,7 +2883,9 @@ Module signature.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -2786,6 +2916,7 @@ Module signature.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2794,6 +2925,7 @@ Module signature.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "at_index",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2861,6 +2993,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -2873,6 +3006,7 @@ Module signature.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -3073,7 +3207,9 @@ Module signature.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -3081,6 +3217,7 @@ Module signature.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "check_instantiation",
+                              [],
                               []
                             |),
                             [
@@ -3122,6 +3259,7 @@ Module signature.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -3132,6 +3270,7 @@ Module signature.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -3169,7 +3308,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3181,7 +3322,9 @@ Module signature.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -3192,6 +3335,7 @@ Module signature.
                                       []
                                       [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3206,7 +3350,9 @@ Module signature.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3249,7 +3395,9 @@ Module signature.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3300,6 +3448,7 @@ Module signature.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "function_instantiation_at",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3321,6 +3470,7 @@ Module signature.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "function_handle_at",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3349,6 +3499,7 @@ Module signature.
                                                                 Ty.path
                                                                   "move_binary_format::file_format::CompiledModule",
                                                                 "signature_at",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3387,7 +3538,9 @@ Module signature.
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3396,6 +3549,7 @@ Module signature.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::signature::SignatureChecker",
                                                                     "check_signature_tokens",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3414,7 +3568,9 @@ Module signature.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "deref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| type_arguments |)
@@ -3451,6 +3607,7 @@ Module signature.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3464,6 +3621,7 @@ Module signature.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -3490,6 +3648,7 @@ Module signature.
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
                                                             "check_generic_instance",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
@@ -3521,7 +3680,9 @@ Module signature.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| type_arguments |) ]
@@ -3538,7 +3699,9 @@ Module signature.
                                                                       "move_binary_format::file_format::AbilitySet"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "copied",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::file_format::AbilitySet"
@@ -3555,6 +3718,7 @@ Module signature.
                                                                           "move_binary_format::file_format::AbilitySet"
                                                                       ],
                                                                     "iter",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3572,7 +3736,9 @@ Module signature.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "deref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3674,42 +3840,102 @@ Module signature.
                                                               let idx := M.alloc (| γ1_0 |) in
                                                               Value.Tuple [ idx ]))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ idx ] =>
-                                                                ltac:(M.monadic
-                                                                  (let~ struct_inst :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "struct_instantiation_at",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
-                                                                              "move_bytecode_verifier::signature::SignatureChecker",
-                                                                              "module"
-                                                                            |)
-                                                                          |);
-                                                                          M.read (|
-                                                                            M.read (| idx |)
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ idx ] =>
+                                                              ltac:(M.monadic
+                                                                (let~ struct_inst :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_instantiation_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ struct_def :=
-                                                                    M.alloc (|
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.read (| idx |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ struct_def :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_def_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (|
+                                                                              struct_inst
+                                                                            |),
+                                                                            "move_binary_format::file_format::StructDefInstantiation",
+                                                                            "def"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ struct_handle :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_handle_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| struct_def |),
+                                                                            "move_binary_format::file_format::StructDefinition",
+                                                                            "struct_handle"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ type_arguments :=
+                                                                  M.alloc (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::CompiledModule",
-                                                                          "struct_def_at",
+                                                                          "signature_at",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3726,251 +3952,200 @@ Module signature.
                                                                                 struct_inst
                                                                               |),
                                                                               "move_binary_format::file_format::StructDefInstantiation",
-                                                                              "def"
+                                                                              "type_parameters"
                                                                             |)
                                                                           |)
                                                                         ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ struct_handle :=
+                                                                      |),
+                                                                      "move_binary_format::file_format::Signature",
+                                                                      0
+                                                                    |)
+                                                                  |) in
+                                                                let~ _ :=
+                                                                  M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "struct_handle_at",
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::Try",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
-                                                                              "move_bytecode_verifier::signature::SignatureChecker",
-                                                                              "module"
-                                                                            |)
-                                                                          |);
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                struct_def
-                                                                              |),
-                                                                              "move_binary_format::file_format::StructDefinition",
-                                                                              "struct_handle"
-                                                                            |)
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_bytecode_verifier::signature::SignatureChecker",
+                                                                              "check_signature_tokens",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (| self |);
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::SignatureToken";
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    type_arguments
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)
-                                                                    |) in
-                                                                  let~ type_arguments :=
-                                                                    M.alloc (|
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::CompiledModule",
-                                                                            "signature_at",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "move_bytecode_verifier::signature::SignatureChecker",
-                                                                                "module"
-                                                                              |)
-                                                                            |);
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (|
-                                                                                  struct_inst
-                                                                                |),
-                                                                                "move_binary_format::file_format::StructDefInstantiation",
-                                                                                "type_parameters"
-                                                                              |)
-                                                                            |)
-                                                                          ]
-                                                                        |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
-                                                                      |)
-                                                                    |) in
-                                                                  let~ _ :=
-                                                                    M.match_operator (|
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::try_trait::Try",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.tuple [];
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError"
-                                                                              ],
-                                                                            [],
-                                                                            "branch",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "move_bytecode_verifier::signature::SignatureChecker",
-                                                                                "check_signature_tokens",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (| self |);
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                                              0
+                                                                            |) in
+                                                                          let residual :=
+                                                                            M.copy (| γ0_0 |) in
+                                                                          M.alloc (|
+                                                                            M.never_to_any (|
+                                                                              M.read (|
+                                                                                M.return_ (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::try_trait::FromResidual",
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
+                                                                                      [],
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::file_format::SignatureToken";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      type_arguments
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                                0
-                                                                              |) in
-                                                                            let residual :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            M.alloc (|
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.return_ (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_trait_method (|
-                                                                                        "core::ops::try_trait::FromResidual",
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::result::Result")
                                                                                           []
                                                                                           [
-                                                                                            Ty.tuple
-                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
-                                                                                          ],
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "core::result::Result")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "core::convert::Infallible";
-                                                                                              Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError"
-                                                                                            ]
-                                                                                        ],
-                                                                                        "from_residual",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          residual
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
+                                                                                          ]
+                                                                                      ],
+                                                                                      "from_residual",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        residual
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 |)
                                                                               |)
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                                0
-                                                                              |) in
-                                                                            let val :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            val))
-                                                                      ]
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_bytecode_verifier::signature::SignatureChecker",
-                                                                        "check_generic_instance",
-                                                                        [ Ty.associated ]
-                                                                      |),
-                                                                      [
-                                                                        M.read (| self |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::file_format::SignatureToken";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            "deref",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              type_arguments
                                                                             |)
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::StructHandle",
-                                                                            "type_param_constraints",
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                                              0
+                                                                            |) in
+                                                                          let val :=
+                                                                            M.copy (| γ0_0 |) in
+                                                                          val))
+                                                                    ]
+                                                                  |) in
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::signature::SignatureChecker",
+                                                                      "check_generic_instance",
+                                                                      [],
+                                                                      [ Ty.associated ]
+                                                                    |),
+                                                                    [
+                                                                      M.read (| self |);
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
                                                                             []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              struct_handle
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.read (| type_parameters |)
-                                                                      ]
-                                                                    |)
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            type_arguments
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle",
+                                                                          "type_param_constraints",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| struct_handle |)
+                                                                        ]
+                                                                      |);
+                                                                      M.read (| type_parameters |)
+                                                                    ]
+                                                                  |)
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -4000,42 +4175,130 @@ Module signature.
                                                               let idx := M.alloc (| γ1_0 |) in
                                                               Value.Tuple [ idx ]))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ idx ] =>
-                                                                ltac:(M.monadic
-                                                                  (let~ field_inst :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "field_instantiation_at",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
-                                                                              "move_bytecode_verifier::signature::SignatureChecker",
-                                                                              "module"
-                                                                            |)
-                                                                          |);
-                                                                          M.read (|
-                                                                            M.read (| idx |)
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ idx ] =>
+                                                              ltac:(M.monadic
+                                                                (let~ field_inst :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "field_instantiation_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ field_handle :=
-                                                                    M.alloc (|
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.read (| idx |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ field_handle :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "field_handle_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| field_inst |),
+                                                                            "move_binary_format::file_format::FieldInstantiation",
+                                                                            "handle"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ struct_def :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_def_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (|
+                                                                              field_handle
+                                                                            |),
+                                                                            "move_binary_format::file_format::FieldHandle",
+                                                                            "owner"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ struct_handle :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_handle_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "move_bytecode_verifier::signature::SignatureChecker",
+                                                                            "module"
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| struct_def |),
+                                                                            "move_binary_format::file_format::StructDefinition",
+                                                                            "struct_handle"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                let~ type_arguments :=
+                                                                  M.alloc (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::CompiledModule",
-                                                                          "field_handle_at",
+                                                                          "signature_at",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4052,280 +4315,200 @@ Module signature.
                                                                                 field_inst
                                                                               |),
                                                                               "move_binary_format::file_format::FieldInstantiation",
-                                                                              "handle"
+                                                                              "type_parameters"
                                                                             |)
                                                                           |)
                                                                         ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ struct_def :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "struct_def_at",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
-                                                                              "move_bytecode_verifier::signature::SignatureChecker",
-                                                                              "module"
-                                                                            |)
-                                                                          |);
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                field_handle
-                                                                              |),
-                                                                              "move_binary_format::file_format::FieldHandle",
-                                                                              "owner"
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ struct_handle :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "struct_handle_at",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| self |),
-                                                                              "move_bytecode_verifier::signature::SignatureChecker",
-                                                                              "module"
-                                                                            |)
-                                                                          |);
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (|
-                                                                                struct_def
-                                                                              |),
-                                                                              "move_binary_format::file_format::StructDefinition",
-                                                                              "struct_handle"
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  let~ type_arguments :=
-                                                                    M.alloc (|
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::CompiledModule",
-                                                                            "signature_at",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "move_bytecode_verifier::signature::SignatureChecker",
-                                                                                "module"
-                                                                              |)
-                                                                            |);
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (|
-                                                                                  field_inst
-                                                                                |),
-                                                                                "move_binary_format::file_format::FieldInstantiation",
-                                                                                "type_parameters"
-                                                                              |)
-                                                                            |)
-                                                                          ]
-                                                                        |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
-                                                                      |)
-                                                                    |) in
-                                                                  let~ _ :=
-                                                                    M.match_operator (|
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::try_trait::Try",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.tuple [];
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError"
-                                                                              ],
-                                                                            [],
-                                                                            "branch",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "move_bytecode_verifier::signature::SignatureChecker",
-                                                                                "check_signature_tokens",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (| self |);
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::file_format::SignatureToken";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      type_arguments
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
                                                                       |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                                0
-                                                                              |) in
-                                                                            let residual :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            M.alloc (|
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.return_ (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_trait_method (|
-                                                                                        "core::ops::try_trait::FromResidual",
+                                                                      "move_binary_format::file_format::Signature",
+                                                                      0
+                                                                    |)
+                                                                  |) in
+                                                                let~ _ :=
+                                                                  M.match_operator (|
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::Try",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "branch",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_bytecode_verifier::signature::SignatureChecker",
+                                                                              "check_signature_tokens",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (| self |);
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::SignatureToken";
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    type_arguments
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                                              0
+                                                                            |) in
+                                                                          let residual :=
+                                                                            M.copy (| γ0_0 |) in
+                                                                          M.alloc (|
+                                                                            M.never_to_any (|
+                                                                              M.read (|
+                                                                                M.return_ (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::try_trait::FromResidual",
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
+                                                                                      [],
+                                                                                      [
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::result::Result")
                                                                                           []
                                                                                           [
-                                                                                            Ty.tuple
-                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
-                                                                                          ],
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "core::result::Result")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "core::convert::Infallible";
-                                                                                              Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError"
-                                                                                            ]
-                                                                                        ],
-                                                                                        "from_residual",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          residual
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
+                                                                                          ]
+                                                                                      ],
+                                                                                      "from_residual",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        residual
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 |)
                                                                               |)
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                                0
-                                                                              |) in
-                                                                            let val :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            val))
-                                                                      ]
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_bytecode_verifier::signature::SignatureChecker",
-                                                                        "check_generic_instance",
-                                                                        [ Ty.associated ]
-                                                                      |),
-                                                                      [
-                                                                        M.read (| self |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::file_format::SignatureToken";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            "deref",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              type_arguments
                                                                             |)
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::StructHandle",
-                                                                            "type_param_constraints",
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ0_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                                              0
+                                                                            |) in
+                                                                          let val :=
+                                                                            M.copy (| γ0_0 |) in
+                                                                          val))
+                                                                    ]
+                                                                  |) in
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::signature::SignatureChecker",
+                                                                      "check_generic_instance",
+                                                                      [],
+                                                                      [ Ty.associated ]
+                                                                    |),
+                                                                    [
+                                                                      M.read (| self |);
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
                                                                             []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              struct_handle
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.read (| type_parameters |)
-                                                                      ]
-                                                                    |)
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            type_arguments
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle",
+                                                                          "type_param_constraints",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| struct_handle |)
+                                                                        ]
+                                                                      |);
+                                                                      M.read (| type_parameters |)
+                                                                    ]
+                                                                  |)
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -4433,250 +4616,259 @@ Module signature.
                                                               let idx := M.alloc (| γ1_0 |) in
                                                               Value.Tuple [ idx ]))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ idx ] =>
-                                                                ltac:(M.monadic
-                                                                  (let~ type_arguments :=
-                                                                    M.alloc (|
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::CompiledModule",
-                                                                            "signature_at",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "move_bytecode_verifier::signature::SignatureChecker",
-                                                                                "module"
-                                                                              |)
-                                                                            |);
-                                                                            M.read (|
-                                                                              M.read (| idx |)
-                                                                            |)
-                                                                          ]
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ idx ] =>
+                                                              ltac:(M.monadic
+                                                                (let~ type_arguments :=
+                                                                  M.alloc (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::CompiledModule",
+                                                                          "signature_at",
+                                                                          [],
+                                                                          []
                                                                         |),
-                                                                        "move_binary_format::file_format::Signature",
-                                                                        0
-                                                                      |)
-                                                                    |) in
-                                                                  let~ _ :=
-                                                                    M.match_operator (|
-                                                                      M.alloc (| Value.Tuple [] |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.use
-                                                                                (M.alloc (|
-                                                                                  BinOp.ne (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::vec::Vec")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "move_binary_format::file_format::SignatureToken";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ],
-                                                                                        "len",
+                                                                        [
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "move_bytecode_verifier::signature::SignatureChecker",
+                                                                              "module"
+                                                                            |)
+                                                                          |);
+                                                                          M.read (|
+                                                                            M.read (| idx |)
+                                                                          |)
+                                                                        ]
+                                                                      |),
+                                                                      "move_binary_format::file_format::Signature",
+                                                                      0
+                                                                    |)
+                                                                  |) in
+                                                                let~ _ :=
+                                                                  M.match_operator (|
+                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ :=
+                                                                            M.use
+                                                                              (M.alloc (|
+                                                                                BinOp.ne (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::vec::Vec")
                                                                                         []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          type_arguments
-                                                                                        |)
-                                                                                      ]
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::SignatureToken";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ],
+                                                                                      "len",
+                                                                                      [],
+                                                                                      []
                                                                                     |),
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      1
-                                                                                  |)
-                                                                                |)) in
-                                                                            let _ :=
-                                                                              M.is_constant_or_break_match (|
-                                                                                M.read (| γ |),
-                                                                                Value.Bool true
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.return_ (|
-                                                                                    Value.StructTuple
-                                                                                      "core::result::Result::Err"
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "move_binary_format::errors::PartialVMError",
-                                                                                            "with_message",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::errors::PartialVMError",
-                                                                                                "new",
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        type_arguments
+                                                                                      |)
+                                                                                    ]
+                                                                                  |),
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                |)
+                                                                              |)) in
+                                                                          let _ :=
+                                                                            M.is_constant_or_break_match (|
+                                                                              M.read (| γ |),
+                                                                              Value.Bool true
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            M.never_to_any (|
+                                                                              M.read (|
+                                                                                M.return_ (|
+                                                                                  Value.StructTuple
+                                                                                    "core::result::Result::Err"
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError",
+                                                                                          "with_message",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "move_binary_format::errors::PartialVMError",
+                                                                                              "new",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              Value.StructTuple
+                                                                                                "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
                                                                                                 []
-                                                                                              |),
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_function (|
+                                                                                              "core::hint::must_use",
+                                                                                              [],
                                                                                               [
-                                                                                                Value.StructTuple
-                                                                                                  "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
-                                                                                                  []
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
                                                                                               ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              M.get_function (|
-                                                                                                "core::hint::must_use",
-                                                                                                [],
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "alloc::string::String"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  let~
-                                                                                                        res :=
-                                                                                                    M.alloc (|
-                                                                                                      M.call_closure (|
-                                                                                                        M.get_function (|
-                                                                                                          "alloc::fmt::format",
-                                                                                                          [],
-                                                                                                          []
-                                                                                                        |),
-                                                                                                        [
-                                                                                                          M.call_closure (|
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::Arguments",
-                                                                                                              "new_v1",
-                                                                                                              []
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.alloc (|
-                                                                                                                Value.Array
-                                                                                                                  [
-                                                                                                                    M.read (|
-                                                                                                                      Value.String
-                                                                                                                        "expected 1 type token for vector operations, got "
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                              |);
-                                                                                                              M.alloc (|
-                                                                                                                Value.Array
-                                                                                                                  [
-                                                                                                                    M.call_closure (|
-                                                                                                                      M.get_associated_function (|
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::rt::Argument",
-                                                                                                                        "new_display",
-                                                                                                                        [
-                                                                                                                          Ty.path
-                                                                                                                            "usize"
-                                                                                                                        ]
-                                                                                                                      |),
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                let~
+                                                                                                      res :=
+                                                                                                  M.alloc (|
+                                                                                                    M.call_closure (|
+                                                                                                      M.get_function (|
+                                                                                                        "alloc::fmt::format",
+                                                                                                        [],
+                                                                                                        []
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments",
+                                                                                                            "new_v1",
+                                                                                                            [],
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.read (|
+                                                                                                                    Value.String
+                                                                                                                      "expected 1 type token for vector operations, got "
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |);
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    M.get_associated_function (|
+                                                                                                                      Ty.path
+                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                      "new_display",
+                                                                                                                      [],
                                                                                                                       [
-                                                                                                                        M.alloc (|
-                                                                                                                          M.call_closure (|
-                                                                                                                            M.get_associated_function (|
-                                                                                                                              Ty.apply
-                                                                                                                                (Ty.path
-                                                                                                                                  "alloc::vec::Vec")
-                                                                                                                                []
-                                                                                                                                [
-                                                                                                                                  Ty.path
-                                                                                                                                    "move_binary_format::file_format::SignatureToken";
-                                                                                                                                  Ty.path
-                                                                                                                                    "alloc::alloc::Global"
-                                                                                                                                ],
-                                                                                                                              "len",
-                                                                                                                              []
-                                                                                                                            |),
-                                                                                                                            [
-                                                                                                                              M.read (|
-                                                                                                                                type_arguments
-                                                                                                                              |)
-                                                                                                                            ]
-                                                                                                                          |)
-                                                                                                                        |)
+                                                                                                                        Ty.path
+                                                                                                                          "usize"
                                                                                                                       ]
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                      |)
-                                                                                                    |) in
-                                                                                                  res
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                  |)
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      M.alloc (|
+                                                                                                                        M.call_closure (|
+                                                                                                                          M.get_associated_function (|
+                                                                                                                            Ty.apply
+                                                                                                                              (Ty.path
+                                                                                                                                "alloc::vec::Vec")
+                                                                                                                              []
+                                                                                                                              [
+                                                                                                                                Ty.path
+                                                                                                                                  "move_binary_format::file_format::SignatureToken";
+                                                                                                                                Ty.path
+                                                                                                                                  "alloc::alloc::Global"
+                                                                                                                              ],
+                                                                                                                            "len",
+                                                                                                                            [],
+                                                                                                                            []
+                                                                                                                          |),
+                                                                                                                          [
+                                                                                                                            M.read (|
+                                                                                                                              type_arguments
+                                                                                                                            |)
+                                                                                                                          ]
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
+                                                                                                  |) in
+                                                                                                res
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
                                                                                 |)
                                                                               |)
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (M.alloc (|
-                                                                              Value.Tuple []
-                                                                            |)))
-                                                                      ]
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_bytecode_verifier::signature::SignatureChecker",
-                                                                        "check_signature_tokens",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (| self |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::file_format::SignatureToken";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            "deref",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              type_arguments
                                                                             |)
-                                                                          ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.alloc (|
+                                                                            Value.Tuple []
+                                                                          |)))
+                                                                    ]
+                                                                  |) in
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::signature::SignatureChecker",
+                                                                      "check_signature_tokens",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (| self |);
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            type_arguments
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -5240,21 +5432,20 @@ Module signature.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "core::result::Result::Ok"
-                                                                      [ Value.Tuple [] ]
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "core::result::Result::Ok"
+                                                                    [ Value.Tuple [] ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)))
                                                 ]
                                               |)
@@ -5273,7 +5464,9 @@ Module signature.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5288,6 +5481,7 @@ Module signature.
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
                                                       "map_err",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError";
@@ -5323,6 +5517,7 @@ Module signature.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "append_message_with_separator",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -5353,6 +5548,7 @@ Module signature.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_v1",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -5377,6 +5573,7 @@ Module signature.
                                                                                                         Ty.path
                                                                                                           "core::fmt::rt::Argument",
                                                                                                         "new_display",
+                                                                                                        [],
                                                                                                         [
                                                                                                           Ty.path
                                                                                                             "usize"
@@ -5435,6 +5632,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -5447,6 +5645,7 @@ Module signature.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -5566,7 +5765,9 @@ Module signature.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5574,6 +5775,7 @@ Module signature.
                                     M.get_associated_function (|
                                       Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                       "check_phantom_params",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5611,6 +5813,7 @@ Module signature.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -5622,6 +5825,7 @@ Module signature.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -5668,6 +5872,7 @@ Module signature.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "struct_handle_at",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5701,7 +5906,9 @@ Module signature.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5716,7 +5923,9 @@ Module signature.
                                                       "move_binary_format::file_format::SignatureToken"
                                                   ],
                                                 [],
+                                                [],
                                                 "enumerate",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -5730,6 +5939,7 @@ Module signature.
                                                           "move_binary_format::file_format::SignatureToken"
                                                       ],
                                                     "iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5745,7 +5955,9 @@ Module signature.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| type_arguments |) ]
@@ -5783,7 +5995,9 @@ Module signature.
                                                                 ]
                                                             ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -5838,7 +6052,9 @@ Module signature.
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -5847,6 +6063,7 @@ Module signature.
                                                                         Ty.path
                                                                           "move_bytecode_verifier::signature::SignatureChecker",
                                                                         "check_phantom_params",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -5867,8 +6084,10 @@ Module signature.
                                                                                     Ty.path
                                                                                       "alloc::alloc::Global"
                                                                                   ],
+                                                                                [],
                                                                                 [ Ty.path "usize" ],
                                                                                 "index",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -5917,6 +6136,7 @@ Module signature.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -5930,6 +6150,7 @@ Module signature.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -6015,6 +6236,7 @@ Module signature.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "with_message",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6023,6 +6245,7 @@ Module signature.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6036,7 +6259,9 @@ Module signature.
                                                       "alloc::string::ToString",
                                                       Ty.path "str",
                                                       [],
+                                                      [],
                                                       "to_string",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6173,13 +6398,12 @@ Module signature.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)))
                     ]
                   |) in
@@ -6234,7 +6458,9 @@ Module signature.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -6243,6 +6469,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "signature_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6282,7 +6509,9 @@ Module signature.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -6339,116 +6568,119 @@ Module signature.
                                                           let inner := M.alloc (| γ1_0 |) in
                                                           Value.Tuple [ inner ]))
                                                     ],
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [ inner ] =>
-                                                            ltac:(M.monadic
-                                                              (M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::Try",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ],
-                                                                      [],
-                                                                      "branch",
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        match γ with
+                                                        | [ inner ] =>
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
                                                                       []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_bytecode_verifier::signature::SignatureChecker",
-                                                                          "check_signature_token",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| self |);
-                                                                          M.read (|
-                                                                            M.read (| inner |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                          0
-                                                                        |) in
-                                                                      let residual :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            M.return_ (|
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::try_trait::FromResidual",
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
+                                                                    [],
+                                                                    [],
+                                                                    "branch",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::signature::SignatureChecker",
+                                                                        "check_signature_token",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| self |);
+                                                                        M.read (|
+                                                                          M.read (| inner |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
+                                                                                [],
+                                                                                [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
                                                                                     []
                                                                                     [
-                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::convert::Infallible";
-                                                                                        Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                      ]
-                                                                                  ],
-                                                                                  "from_residual",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    residual
-                                                                                  |)
-                                                                                ]
-                                                                              |)
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           |)
                                                                         |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                          0
-                                                                        |) in
-                                                                      let val :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      val))
-                                                                ]
-                                                              |)))
-                                                          | _ =>
-                                                            M.impossible "wrong number of arguments"
-                                                          end))
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
+                                                        end)
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -6466,7 +6698,9 @@ Module signature.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6475,6 +6709,7 @@ Module signature.
                                                               Ty.path
                                                                 "move_bytecode_verifier::signature::SignatureChecker",
                                                               "check_signature_token",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |); M.read (| token |)
@@ -6509,6 +6744,7 @@ Module signature.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -6522,6 +6758,7 @@ Module signature.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -6593,7 +6830,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| tys |) ]
@@ -6619,7 +6858,9 @@ Module signature.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -6659,7 +6900,9 @@ Module signature.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6668,6 +6911,7 @@ Module signature.
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                       "check_signature_token",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |); M.read (| ty |) ]
@@ -6700,6 +6944,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -6712,6 +6957,7 @@ Module signature.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6884,17 +7130,16 @@ Module signature.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6922,51 +7167,54 @@ Module signature.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::errors::PartialVMError",
-                                          "with_message",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "move_binary_format::errors::PartialVMError",
-                                              "new",
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
+                                        "with_message",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
+                                            "new",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            Value.StructTuple
+                                              "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN"
                                               []
-                                            |),
-                                            [
-                                              Value.StructTuple
-                                                "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN"
-                                                []
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "alloc::string::ToString",
-                                              Ty.path "str",
-                                              [],
-                                              "to_string",
-                                              []
-                                            |),
-                                            [ M.read (| Value.String "reference not allowed" |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "alloc::string::ToString",
+                                            Ty.path "str",
+                                            [],
+                                            [],
+                                            "to_string",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| Value.String "reference not allowed" |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6983,6 +7231,7 @@ Module signature.
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                           "check_signature_token",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| M.read (| ty |) |) ]
@@ -7012,6 +7261,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_signature_tokens",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7027,7 +7277,9 @@ Module signature.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| type_arguments |) ]
@@ -7106,6 +7358,7 @@ Module signature.
                                       Ty.path "std::hash::random::RandomState"
                                     ],
                                   "get",
+                                  [],
                                   [ Ty.path "move_binary_format::file_format::SignatureIndex" ]
                                 |),
                                 [
@@ -7150,6 +7403,7 @@ Module signature.
                                                 Ty.path "std::hash::random::RandomState"
                                               ],
                                             "contains",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -7208,7 +7462,9 @@ Module signature.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -7217,6 +7473,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "signature_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7256,7 +7513,9 @@ Module signature.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -7296,7 +7555,9 @@ Module signature.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7305,6 +7566,7 @@ Module signature.
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                       "check_type_instantiation",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7341,6 +7603,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -7353,6 +7616,7 @@ Module signature.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -7403,6 +7667,7 @@ Module signature.
                               ]
                           ],
                         "or_default",
+                        [],
                         []
                       |),
                       [
@@ -7429,6 +7694,7 @@ Module signature.
                                 Ty.path "std::hash::random::RandomState"
                               ],
                             "entry",
+                            [],
                             []
                           |),
                           [
@@ -7461,6 +7727,7 @@ Module signature.
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "insert",
+                        [],
                         []
                       |),
                       [
@@ -7472,6 +7739,7 @@ Module signature.
                               []
                               [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                             "to_vec",
+                            [],
                             []
                           |),
                           [ M.read (| type_parameters |) ]
@@ -7528,6 +7796,7 @@ Module signature.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "version",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7559,7 +7828,9 @@ Module signature.
                                     Ty.path
                                       "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7567,6 +7838,7 @@ Module signature.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::SignatureToken",
                                         "preorder_traversal",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -7589,7 +7861,9 @@ Module signature.
                                                   Ty.path
                                                     "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -7629,7 +7903,9 @@ Module signature.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7638,6 +7914,7 @@ Module signature.
                                                               Ty.path
                                                                 "move_bytecode_verifier::signature::SignatureChecker",
                                                               "check_type_instantiation_",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7675,6 +7952,7 @@ Module signature.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -7688,6 +7966,7 @@ Module signature.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -7724,6 +8003,7 @@ Module signature.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "check_type_instantiation_",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| s |); M.read (| type_parameters |) ]
@@ -7817,6 +8097,7 @@ Module signature.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_handle_at",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7836,6 +8117,7 @@ Module signature.
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_generic_instance",
+                                  [],
                                   [ Ty.associated ]
                                 |),
                                 [
@@ -7851,7 +8133,9 @@ Module signature.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| type_arguments |) ]
@@ -7860,6 +8144,7 @@ Module signature.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::StructHandle",
                                       "type_param_constraints",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sh |) ]
@@ -8007,17 +8292,16 @@ Module signature.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)))
               ]
             |)
@@ -8092,6 +8376,7 @@ Module signature.
                                         [ Ty.path "move_binary_format::file_format::SignatureToken"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| type_arguments |) ]
@@ -8101,7 +8386,9 @@ Module signature.
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       impl_ExactSizeIterator_Item___AbilitySet_,
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ constraints ]
@@ -8121,6 +8408,7 @@ Module signature.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -8128,6 +8416,7 @@ Module signature.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8157,6 +8446,7 @@ Module signature.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -8180,6 +8470,7 @@ Module signature.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -8189,7 +8480,9 @@ Module signature.
                                                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                                                             impl_ExactSizeIterator_Item___AbilitySet_,
                                                                             [],
+                                                                            [],
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ constraints ]
@@ -8202,6 +8495,7 @@ Module signature.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -8216,6 +8510,7 @@ Module signature.
                                                                                   "move_binary_format::file_format::SignatureToken"
                                                                               ],
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -8266,7 +8561,9 @@ Module signature.
                                   [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -8275,7 +8572,9 @@ Module signature.
                                 "core::iter::traits::iterator::Iterator",
                                 impl_ExactSizeIterator_Item___AbilitySet_,
                                 [],
+                                [],
                                 "zip",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -8295,7 +8594,9 @@ Module signature.
                                     "core::iter::traits::collect::IntoIterator",
                                     impl_ExactSizeIterator_Item___AbilitySet_,
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| constraints |) ]
@@ -8332,7 +8633,9 @@ Module signature.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -8378,7 +8681,9 @@ Module signature.
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -8387,6 +8692,7 @@ Module signature.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "abilities",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8429,6 +8735,7 @@ Module signature.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -8442,6 +8749,7 @@ Module signature.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -8477,6 +8785,7 @@ Module signature.
                                                               Ty.path
                                                                 "move_binary_format::file_format::AbilitySet",
                                                               "is_subset",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -8503,6 +8812,7 @@ Module signature.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "with_message",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8511,6 +8821,7 @@ Module signature.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -8544,6 +8855,7 @@ Module signature.
                                                                                     Ty.path
                                                                                       "core::fmt::Arguments",
                                                                                     "new_v1",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -8572,6 +8884,7 @@ Module signature.
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
                                                                                               "new_debug",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "move_binary_format::file_format::AbilitySet"
@@ -8586,6 +8899,7 @@ Module signature.
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
                                                                                               "new_debug",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -8604,6 +8918,7 @@ Module signature.
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
                                                                                               "new_debug",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "move_binary_format::file_format::AbilitySet"

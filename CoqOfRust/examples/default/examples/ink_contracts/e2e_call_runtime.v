@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
           "e2e_call_runtime::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -141,7 +149,7 @@ Module Impl_e2e_call_runtime_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [] |),
+          M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -173,11 +181,11 @@ Module Impl_e2e_call_runtime_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [] |),
+          M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [], [] |),
           [
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "env", [] |),
+                M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "env", [], [] |),
                 [ M.read (| self |) ]
               |)
             |)

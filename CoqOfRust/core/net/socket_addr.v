@@ -148,6 +148,7 @@ Module net.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -155,6 +156,7 @@ Module net.
                                         [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -188,6 +190,7 @@ Module net.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -195,6 +198,7 @@ Module net.
                                         [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -294,7 +298,9 @@ Module net.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -319,7 +325,9 @@ Module net.
                             "core::hash::Hash",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -341,7 +349,9 @@ Module net.
                             "core::hash::Hash",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -422,8 +432,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
+                            [],
                             [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -454,8 +466,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
+                            [],
                             [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -468,8 +482,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ __self_discr; __arg1_discr ]
@@ -525,7 +541,15 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
                     [ __self_discr; __arg1_discr ]
                   |)
                 |),
@@ -562,7 +586,9 @@ Module net.
                                     "core::cmp::Ord",
                                     Ty.path "core::net::socket_addr::SocketAddrV4",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -594,7 +620,9 @@ Module net.
                                     "core::cmp::Ord",
                                     Ty.path "core::net::socket_addr::SocketAddrV6",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -746,8 +774,10 @@ Module net.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::net::ip_addr::Ipv4Addr",
+                  [],
                   [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -810,7 +840,9 @@ Module net.
                       "core::cmp::Ord",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       [],
+                      [],
                       "cmp",
+                      [],
                       []
                     |),
                     [
@@ -833,7 +865,15 @@ Module net.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::Ord",
+                            Ty.path "u16",
+                            [],
+                            [],
+                            "cmp",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -883,8 +923,10 @@ Module net.
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                       "partial_cmp",
+                      [],
                       []
                     |),
                     [
@@ -916,8 +958,10 @@ Module net.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "u16",
+                            [],
                             [ Ty.path "u16" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -970,7 +1014,9 @@ Module net.
                       "core::hash::Hash",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -985,7 +1031,15 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1146,8 +1200,10 @@ Module net.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -1246,7 +1302,9 @@ Module net.
                       "core::cmp::Ord",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       [],
+                      [],
                       "cmp",
+                      [],
                       []
                     |),
                     [
@@ -1270,7 +1328,15 @@ Module net.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::Ord",
+                              Ty.path "u16",
+                              [],
+                              [],
+                              "cmp",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -1296,7 +1362,9 @@ Module net.
                                       "core::cmp::Ord",
                                       Ty.path "u32",
                                       [],
+                                      [],
                                       "cmp",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1324,7 +1392,9 @@ Module net.
                                             "core::cmp::Ord",
                                             Ty.path "u32",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1388,8 +1458,10 @@ Module net.
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                       "partial_cmp",
+                      [],
                       []
                     |),
                     [
@@ -1422,8 +1494,10 @@ Module net.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "u16",
+                              [],
                               [ Ty.path "u16" ],
                               "partial_cmp",
+                              [],
                               []
                             |),
                             [
@@ -1456,8 +1530,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "partial_cmp",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1493,8 +1569,10 @@ Module net.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "u32",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1559,7 +1637,9 @@ Module net.
                       "core::hash::Hash",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -1575,7 +1655,15 @@ Module net.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u16",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1589,7 +1677,15 @@ Module net.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u32",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1602,7 +1698,15 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1663,6 +1767,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::socket_addr::SocketAddrV4",
                                 "new",
+                                [],
                                 []
                               |),
                               [ M.read (| a |); M.read (| port |) ]
@@ -1686,6 +1791,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::socket_addr::SocketAddrV6",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -1740,6 +1846,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.path "core::net::socket_addr::SocketAddrV4",
                                   "ip",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| a |) ]
@@ -1765,6 +1872,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.path "core::net::socket_addr::SocketAddrV6",
                                   "ip",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| a |) ]
@@ -1824,6 +1932,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "set_ip",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| new_ip |) ]
@@ -1853,6 +1962,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "set_ip",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| new_ip |) ]
@@ -1870,6 +1980,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddr",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -1878,6 +1989,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::net::socket_addr::SocketAddr",
                                 "port",
+                                [],
                                 []
                               |),
                               [ M.read (| self_ |) ]
@@ -1924,6 +2036,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "port",
+                            [],
                             []
                           |),
                           [ M.read (| a |) ]
@@ -1943,6 +2056,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "port",
+                            [],
                             []
                           |),
                           [ M.read (| a |) ]
@@ -1988,6 +2102,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "set_port",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| new_port |) ]
@@ -2007,6 +2122,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "set_port",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| new_port |) ]
@@ -2504,6 +2620,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::socket_addr::SocketAddr",
                 "new",
+                [],
                 []
               |),
               [
@@ -2511,8 +2628,10 @@ Module net.
                   M.get_trait_method (|
                     "core::convert::Into",
                     I,
+                    [],
                     [ Ty.path "core::net::ip_addr::IpAddr" ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| M.SubPointer.get_tuple_field (| pieces, 0 |) |) ]
@@ -2568,7 +2687,9 @@ Module net.
                             "core::fmt::Display",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| f |) ]
@@ -2589,7 +2710,9 @@ Module net.
                             "core::fmt::Display",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| a |); M.read (| f |) ]
@@ -2628,7 +2751,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddr",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]
@@ -2684,6 +2809,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2692,6 +2818,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "precision",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -2707,6 +2834,7 @@ Module net.
                                       []
                                       [ Ty.path "usize" ],
                                     "is_none",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2715,6 +2843,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "width",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |) ]
@@ -2730,6 +2859,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -2738,6 +2868,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -2752,6 +2883,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -2765,6 +2897,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::net::socket_addr::SocketAddrV4",
                                                 "ip",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -2776,6 +2909,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u16" ]
                                         |),
                                         [
@@ -2784,6 +2918,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::net::socket_addr::SocketAddrV4",
                                                 "port",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -2809,6 +2944,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 21 ]
                                 [],
                               "new",
+                              [ Value.Integer IntegerKind.Usize 21 ],
                               []
                             |),
                             []
@@ -2823,6 +2959,7 @@ Module net.
                                 []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -2834,7 +2971,9 @@ Module net.
                                     [ Value.Integer IntegerKind.Usize 21 ]
                                     [],
                                   [],
+                                  [],
                                   "write_fmt",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2843,6 +2982,7 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2860,6 +3000,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -2874,6 +3015,7 @@ Module net.
                                                       Ty.path
                                                         "core::net::socket_addr::SocketAddrV4",
                                                       "ip",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |) ]
@@ -2885,6 +3027,7 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u16" ]
                                               |),
                                               [
@@ -2894,6 +3037,7 @@ Module net.
                                                       Ty.path
                                                         "core::net::socket_addr::SocketAddrV4",
                                                       "port",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self |) ]
@@ -2912,7 +3056,12 @@ Module net.
                         |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "pad",
+                            [],
+                            []
+                          |),
                           [
                             M.read (| f |);
                             M.call_closure (|
@@ -2922,6 +3071,7 @@ Module net.
                                   [ Value.Integer IntegerKind.Usize 21 ]
                                   [],
                                 "as_str",
+                                [ Value.Integer IntegerKind.Usize 21 ],
                                 []
                               |),
                               [ buf ]
@@ -2962,7 +3112,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddrV4",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]
@@ -3026,6 +3178,7 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3034,6 +3187,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "precision",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -3049,6 +3203,7 @@ Module net.
                                       []
                                       [ Ty.path "usize" ],
                                     "is_none",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3057,6 +3212,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "width",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |) ]
@@ -3073,6 +3229,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.path "core::net::socket_addr::SocketAddrV6",
                               "scope_id",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -3091,6 +3248,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3099,6 +3257,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3116,6 +3275,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -3130,6 +3290,7 @@ Module net.
                                                         Ty.path
                                                           "core::net::socket_addr::SocketAddrV6",
                                                         "ip",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -3141,6 +3302,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [ Ty.path "u16" ]
                                                 |),
                                                 [
@@ -3150,6 +3312,7 @@ Module net.
                                                         Ty.path
                                                           "core::net::socket_addr::SocketAddrV6",
                                                         "port",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -3172,6 +3335,7 @@ Module net.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3180,6 +3344,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3198,6 +3363,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -3212,6 +3378,7 @@ Module net.
                                                         Ty.path
                                                           "core::net::socket_addr::SocketAddrV6",
                                                         "ip",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -3223,6 +3390,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [ Ty.path "u32" ]
                                                 |),
                                                 [ scope_id ]
@@ -3231,6 +3399,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
+                                                  [],
                                                   [ Ty.path "u16" ]
                                                 |),
                                                 [
@@ -3240,6 +3409,7 @@ Module net.
                                                         Ty.path
                                                           "core::net::socket_addr::SocketAddrV6",
                                                         "port",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -3267,6 +3437,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 58 ]
                                 [],
                               "new",
+                              [ Value.Integer IntegerKind.Usize 58 ],
                               []
                             |),
                             []
@@ -3281,6 +3452,7 @@ Module net.
                                 []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -3291,6 +3463,7 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::net::socket_addr::SocketAddrV6",
                                         "scope_id",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -3313,7 +3486,9 @@ Module net.
                                                 [ Value.Integer IntegerKind.Usize 58 ]
                                                 [],
                                               [],
+                                              [],
                                               "write_fmt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3322,6 +3497,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3339,6 +3515,7 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -3356,6 +3533,7 @@ Module net.
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV6",
                                                                   "ip",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -3367,6 +3545,7 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "u16" ]
                                                           |),
                                                           [
@@ -3376,6 +3555,7 @@ Module net.
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV6",
                                                                   "port",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -3402,7 +3582,9 @@ Module net.
                                                 [ Value.Integer IntegerKind.Usize 58 ]
                                                 [],
                                               [],
+                                              [],
                                               "write_fmt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3411,6 +3593,7 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3429,6 +3612,7 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -3446,6 +3630,7 @@ Module net.
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV6",
                                                                   "ip",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -3457,6 +3642,7 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "u32" ]
                                                           |),
                                                           [ scope_id ]
@@ -3465,6 +3651,7 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
+                                                            [],
                                                             [ Ty.path "u16" ]
                                                           |),
                                                           [
@@ -3474,6 +3661,7 @@ Module net.
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV6",
                                                                   "port",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -3496,7 +3684,12 @@ Module net.
                         |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "pad",
+                            [],
+                            []
+                          |),
                           [
                             M.read (| f |);
                             M.call_closure (|
@@ -3506,6 +3699,7 @@ Module net.
                                   [ Value.Integer IntegerKind.Usize 58 ]
                                   [],
                                 "as_str",
+                                [ Value.Integer IntegerKind.Usize 58 ],
                                 []
                               |),
                               [ buf ]
@@ -3546,7 +3740,9 @@ Module net.
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddrV6",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| fmt |) ]

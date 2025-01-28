@@ -216,6 +216,7 @@ Module annotated_visitor.
                                           []
                                           [ Ty.tuple [] ],
                                         "is_some",
+                                        [],
                                         []
                                       |),
                                       [
@@ -235,7 +236,9 @@ Module annotated_visitor.
                                                     Ty.associated
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -244,6 +247,7 @@ Module annotated_visitor.
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::VecDriver",
                                                     "next_element",
+                                                    [],
                                                     [ Self ]
                                                   |),
                                                   [ M.read (| driver |); M.read (| self |) ]
@@ -272,6 +276,7 @@ Module annotated_visitor.
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [ Ty.tuple []; Ty.associated ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -283,6 +288,7 @@ Module annotated_visitor.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -383,6 +389,7 @@ Module annotated_visitor.
                                               ]
                                           ],
                                         "is_some",
+                                        [],
                                         []
                                       |),
                                       [
@@ -414,7 +421,9 @@ Module annotated_visitor.
                                                     Ty.associated
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -423,6 +432,7 @@ Module annotated_visitor.
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::StructDriver",
                                                     "next_field",
+                                                    [],
                                                     [ Self ]
                                                   |),
                                                   [ M.read (| driver |); M.read (| self |) ]
@@ -451,6 +461,7 @@ Module annotated_visitor.
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [ Ty.tuple []; Ty.associated ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -462,6 +473,7 @@ Module annotated_visitor.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -546,7 +558,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u8",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -571,7 +585,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u16",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -596,7 +612,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u32",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -621,7 +639,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u64",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -646,7 +666,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u128",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -671,7 +693,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_u256",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -696,7 +720,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_bool",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -721,7 +747,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_address",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -746,7 +774,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_signer",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -774,7 +804,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_vector",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| driver |) ]
@@ -802,7 +834,9 @@ Module annotated_visitor.
               "move_core_types::annotated_visitor::Traversal",
               T,
               [],
+              [],
               "traverse_struct",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| driver |) ]
@@ -941,6 +975,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -949,6 +984,7 @@ Module annotated_visitor.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
@@ -975,6 +1011,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -983,6 +1020,7 @@ Module annotated_visitor.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -996,6 +1034,7 @@ Module annotated_visitor.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                       |),
                                       [
@@ -1005,7 +1044,9 @@ Module annotated_visitor.
                                               "thiserror::display::DisplayAsDisplay",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "as_display",
+                                              [],
                                               []
                                             |),
                                             [ _0 ]
@@ -1035,6 +1076,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1043,6 +1085,7 @@ Module annotated_visitor.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1060,6 +1103,7 @@ Module annotated_visitor.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                       |),
                                       [
@@ -1069,7 +1113,9 @@ Module annotated_visitor.
                                               "thiserror::display::DisplayAsDisplay",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                                               [],
+                                              [],
                                               "as_display",
+                                              [],
                                               []
                                             |),
                                             [ _0 ]
@@ -1125,6 +1171,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "UnexpectedEof" |) ]
@@ -1145,6 +1192,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "UnexpectedByte" |); __self_0 ]
@@ -1165,6 +1213,7 @@ Module annotated_visitor.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "TrailingBytes" |); __self_0 ]
@@ -1383,7 +1432,9 @@ Module annotated_visitor.
                                           []
                                           [ Ty.associated; Ty.associated ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1441,6 +1492,7 @@ Module annotated_visitor.
                                                           [ Ty.associated ];
                                                         Ty.associated
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -1451,6 +1503,7 @@ Module annotated_visitor.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -1516,6 +1569,7 @@ Module annotated_visitor.
                   Ty.path "move_core_types::annotated_visitor::Error"
                 ],
               "map",
+              [],
               [
                 Ty.path "bool";
                 Ty.function
@@ -1528,6 +1582,7 @@ Module annotated_visitor.
                 M.get_associated_function (|
                   Ty.path "move_core_types::annotated_visitor::VecDriver",
                   "next_element",
+                  [],
                   [ Ty.path "move_core_types::annotated_visitor::NullTraversal" ]
                 |),
                 [
@@ -1553,6 +1608,7 @@ Module annotated_visitor.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                                     "is_some",
+                                    [],
                                     []
                                   |),
                                   [ v ]
@@ -1639,6 +1695,7 @@ Module annotated_visitor.
                 []
                 [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ],
               "get",
+              [],
               [ Ty.path "usize" ]
             |),
             [
@@ -1653,7 +1710,9 @@ Module annotated_visitor.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [
@@ -1713,6 +1772,7 @@ Module annotated_visitor.
                       M.get_associated_function (|
                         Ty.path "move_core_types::annotated_visitor::StructDriver",
                         "peek_field",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1740,7 +1800,9 @@ Module annotated_visitor.
                                       []
                                       [ Ty.associated; Ty.associated ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1808,6 +1870,7 @@ Module annotated_visitor.
                                                       ];
                                                     Ty.associated
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1818,6 +1881,7 @@ Module annotated_visitor.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1901,6 +1965,7 @@ Module annotated_visitor.
                   Ty.path "move_core_types::annotated_visitor::Error"
                 ],
               "map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -1946,6 +2011,7 @@ Module annotated_visitor.
                 M.get_associated_function (|
                   Ty.path "move_core_types::annotated_visitor::StructDriver",
                   "next_field",
+                  [],
                   [ Ty.path "move_core_types::annotated_visitor::NullTraversal" ]
                 |),
                 [
@@ -1986,6 +2052,7 @@ Module annotated_visitor.
                                           ]
                                       ],
                                     "map",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -2131,7 +2198,9 @@ Module annotated_visitor.
                                     Ty.path "move_core_types::annotated_visitor::Error"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2167,6 +2236,7 @@ Module annotated_visitor.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.associated; Ty.associated ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -2178,6 +2248,7 @@ Module annotated_visitor.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2213,7 +2284,9 @@ Module annotated_visitor.
                                     "move_core_types::annotated_visitor::Visitor",
                                     V,
                                     [],
+                                    [],
                                     "visit_bool",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| visitor |); Value.Bool false ]
@@ -2233,7 +2306,9 @@ Module annotated_visitor.
                                     "move_core_types::annotated_visitor::Visitor",
                                     V,
                                     [],
+                                    [],
                                     "visit_bool",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| visitor |); Value.Bool true ]
@@ -2251,8 +2326,10 @@ Module annotated_visitor.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "move_core_types::annotated_visitor::Error",
+                                        [],
                                         [ Ty.associated ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2279,13 +2356,15 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u8",
+                            [],
                             []
                           |),
                           [
                             M.read (| visitor |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u8", "from_le_bytes", [] |),
+                              M.get_associated_function (| Ty.path "u8", "from_le_bytes", [], [] |),
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2304,7 +2383,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2340,6 +2421,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2351,6 +2433,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2391,13 +2474,20 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u16",
+                            [],
                             []
                           |),
                           [
                             M.read (| visitor |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_le_bytes", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u16",
+                                "from_le_bytes",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2416,7 +2506,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2452,6 +2544,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2463,6 +2556,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2503,13 +2597,20 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u32",
+                            [],
                             []
                           |),
                           [
                             M.read (| visitor |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u32", "from_le_bytes", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u32",
+                                "from_le_bytes",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2528,7 +2629,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2564,6 +2667,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2575,6 +2679,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2615,13 +2720,20 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u64",
+                            [],
                             []
                           |),
                           [
                             M.read (| visitor |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u64",
+                                "from_le_bytes",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2640,7 +2752,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2676,6 +2790,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2687,6 +2802,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2727,13 +2843,20 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u128",
+                            [],
                             []
                           |),
                           [
                             M.read (| visitor |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "from_le_bytes", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "from_le_bytes",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (|
                                   M.match_operator (|
@@ -2752,7 +2875,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2788,6 +2913,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2799,6 +2925,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2839,7 +2966,9 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_u256",
+                            [],
                             []
                           |),
                           [
@@ -2848,6 +2977,7 @@ Module annotated_visitor.
                               M.get_associated_function (|
                                 Ty.path "move_core_types::u256::U256",
                                 "from_le_bytes",
+                                [],
                                 []
                               |),
                               [
@@ -2867,7 +2997,9 @@ Module annotated_visitor.
                                             Ty.path "move_core_types::annotated_visitor::Error"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2903,6 +3035,7 @@ Module annotated_visitor.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.associated; Ty.associated ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -2914,6 +3047,7 @@ Module annotated_visitor.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -2953,7 +3087,9 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_address",
+                            [],
                             []
                           |),
                           [
@@ -2962,6 +3098,7 @@ Module annotated_visitor.
                               M.get_associated_function (|
                                 Ty.path "move_core_types::account_address::AccountAddress",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -2982,7 +3119,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3018,6 +3157,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -3029,6 +3169,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -3069,7 +3210,9 @@ Module annotated_visitor.
                             "move_core_types::annotated_visitor::Visitor",
                             V,
                             [],
+                            [],
                             "visit_signer",
+                            [],
                             []
                           |),
                           [
@@ -3078,6 +3221,7 @@ Module annotated_visitor.
                               M.get_associated_function (|
                                 Ty.path "move_core_types::account_address::AccountAddress",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -3098,7 +3242,9 @@ Module annotated_visitor.
                                               Ty.path "move_core_types::annotated_visitor::Error"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3134,6 +3280,7 @@ Module annotated_visitor.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.associated; Ty.associated ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -3145,6 +3292,7 @@ Module annotated_visitor.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -3196,7 +3344,9 @@ Module annotated_visitor.
                                       Ty.path "move_core_types::annotated_visitor::Error"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3207,6 +3357,7 @@ Module annotated_visitor.
                                         []
                                         [ Ty.path "u64"; Ty.path "leb128::read::Error" ],
                                       "map_err",
+                                      [],
                                       [
                                         Ty.path "move_core_types::annotated_visitor::Error";
                                         Ty.function
@@ -3272,6 +3423,7 @@ Module annotated_visitor.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.associated; Ty.associated ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -3283,6 +3435,7 @@ Module annotated_visitor.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -3310,6 +3463,7 @@ Module annotated_visitor.
                             M.get_associated_function (|
                               Ty.path "move_core_types::annotated_visitor::VecDriver",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -3324,8 +3478,10 @@ Module annotated_visitor.
                                       Ty.path "move_core_types::annotated_value::MoveTypeLayout";
                                       Ty.path "alloc::alloc::Global"
                                     ],
+                                  [],
                                   [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ],
                                   "as_ref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| l |) ]
@@ -3346,7 +3502,9 @@ Module annotated_visitor.
                                     []
                                     [ Ty.associated; Ty.associated ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3355,7 +3513,9 @@ Module annotated_visitor.
                                       "move_core_types::annotated_visitor::Visitor",
                                       V,
                                       [],
+                                      [],
                                       "visit_vector",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| visitor |); driver ]
@@ -3384,6 +3544,7 @@ Module annotated_visitor.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.associated; Ty.associated ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -3394,6 +3555,7 @@ Module annotated_visitor.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -3439,7 +3601,9 @@ Module annotated_visitor.
                                                       "move_core_types::annotated_visitor::Error"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3448,6 +3612,7 @@ Module annotated_visitor.
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::VecDriver",
                                                     "skip_element",
+                                                    [],
                                                     []
                                                   |),
                                                   [ driver ]
@@ -3476,6 +3641,7 @@ Module annotated_visitor.
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [ Ty.associated; Ty.associated ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -3488,6 +3654,7 @@ Module annotated_visitor.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3591,6 +3758,7 @@ Module annotated_visitor.
                     M.get_associated_function (|
                       Ty.path "move_core_types::annotated_visitor::StructDriver",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| bytes |); M.read (| layout |) ]
@@ -3608,7 +3776,9 @@ Module annotated_visitor.
                             []
                             [ Ty.associated; Ty.associated ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -3617,7 +3787,9 @@ Module annotated_visitor.
                               "move_core_types::annotated_visitor::Visitor",
                               V,
                               [],
+                              [],
                               "visit_struct",
+                              [],
                               []
                             |),
                             [ M.read (| visitor |); driver ]
@@ -3646,6 +3818,7 @@ Module annotated_visitor.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; Ty.associated ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -3653,6 +3826,7 @@ Module annotated_visitor.
                                           [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -3700,6 +3874,7 @@ Module annotated_visitor.
                                             ]
                                         ],
                                       "is_some",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3728,7 +3903,9 @@ Module annotated_visitor.
                                                     "move_core_types::annotated_visitor::Error"
                                                 ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3737,6 +3914,7 @@ Module annotated_visitor.
                                                   Ty.path
                                                     "move_core_types::annotated_visitor::StructDriver",
                                                   "skip_field",
+                                                  [],
                                                   []
                                                 |),
                                                 [ driver ]
@@ -3765,6 +3943,7 @@ Module annotated_visitor.
                                                             (Ty.path "core::result::Result")
                                                             []
                                                             [ Ty.associated; Ty.associated ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
@@ -3776,6 +3955,7 @@ Module annotated_visitor.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -3854,7 +4034,9 @@ Module annotated_visitor.
                           []
                           [ Ty.tuple []; Ty.path "move_core_types::annotated_visitor::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3865,6 +4047,7 @@ Module annotated_visitor.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_core_types::annotated_visitor::Error";
                               Ty.function
@@ -3881,7 +4064,9 @@ Module annotated_visitor.
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| bytes |); buf ]
@@ -3933,6 +4118,7 @@ Module annotated_visitor.
                                         Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
                                         Ty.path "move_core_types::annotated_visitor::Error"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3943,6 +4129,7 @@ Module annotated_visitor.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]

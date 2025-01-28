@@ -19,7 +19,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Self,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -68,6 +70,7 @@ Module iter.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "usize" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -75,6 +78,7 @@ Module iter.
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "eq",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| left_val |); M.read (| right_val |)
@@ -155,7 +159,9 @@ Module iter.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Self,
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -191,7 +197,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
@@ -215,7 +223,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "is_empty",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]

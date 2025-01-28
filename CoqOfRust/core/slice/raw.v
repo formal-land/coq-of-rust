@@ -220,7 +220,12 @@ Module slice.
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "sub_ptr", [] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  "sub_ptr",
+                  [],
+                  []
+                |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -263,7 +268,12 @@ Module slice.
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  "sub_ptr",
+                  [],
+                  []
+                |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|

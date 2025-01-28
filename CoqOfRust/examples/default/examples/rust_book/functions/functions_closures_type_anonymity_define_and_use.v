@@ -18,7 +18,15 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::ops::function::Fn", F, [ Ty.tuple [] ], "call", [] |),
+              M.get_trait_method (|
+                "core::ops::function::Fn",
+                F,
+                [],
+                [ Ty.tuple [] ],
+                "call",
+                [],
+                []
+              |),
               [ f; Value.Tuple [] ]
             |)
           |) in
@@ -69,6 +77,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -87,6 +96,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "i32" ]
                                                     |),
                                                     [ x ]

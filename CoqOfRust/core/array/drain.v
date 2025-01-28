@@ -30,6 +30,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| array |) ]
@@ -44,6 +45,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "iter_mut",
+                        [],
                         []
                       |),
                       [
@@ -55,7 +57,9 @@ Module array.
                               []
                               [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                             [],
+                            [],
                             "deref_mut",
+                            [],
                             []
                           |),
                           [ array ]
@@ -69,8 +73,10 @@ Module array.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   impl_for_'a__FnOnce_Drain_'a__T___arrow_R,
+                  [],
                   [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| func |); Value.Tuple [ M.read (| drain |) ] ]
@@ -117,6 +123,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     "as_mut_slice",
+                    [],
                     []
                   |),
                   [
@@ -175,7 +182,9 @@ Module array.
                                 []
                                 [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -184,7 +193,9 @@ Module array.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [
@@ -216,6 +227,7 @@ Module array.
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -223,6 +235,7 @@ Module array.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -252,6 +265,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ T ],
                             "read",
+                            [],
                             []
                           |),
                           [ M.read (| p |) ]
@@ -283,7 +297,9 @@ Module array.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -333,7 +349,9 @@ Module array.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
               [
@@ -399,7 +417,9 @@ Module array.
                       "core::iter::traits::unchecked_iterator::UncheckedIterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
+                      [],
                       "next_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -413,7 +433,12 @@ Module array.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    "read",
+                    [],
+                    []
+                  |),
                   [ M.read (| p |) ]
                 |)
               |)

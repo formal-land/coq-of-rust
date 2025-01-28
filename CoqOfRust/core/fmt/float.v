@@ -28,7 +28,7 @@ Module fmt.
               let~ abs :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
+                    M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
@@ -81,7 +81,7 @@ Module fmt.
               let~ abs :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f64", "abs_private", [] |),
+                    M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
@@ -156,6 +156,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -173,6 +174,7 @@ Module fmt.
                         []
                         [ Ty.path "core::num::fmt::Part" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -239,6 +241,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
+                  [],
                   []
                 |),
                 [ M.read (| fmt |); formatted ]
@@ -297,6 +300,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -314,6 +318,7 @@ Module fmt.
                         []
                         [ Ty.path "core::num::fmt::Part" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -379,6 +384,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
+                  [],
                   []
                 |),
                 [ M.read (| fmt |); formatted ]
@@ -422,7 +428,12 @@ Module fmt.
             let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "sign_plus",
+                    [],
+                    []
+                  |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
@@ -551,6 +562,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -568,6 +580,7 @@ Module fmt.
                         []
                         [ Ty.path "core::num::fmt::Part" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -635,6 +648,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
+                  [],
                   []
                 |),
                 [ M.read (| fmt |); formatted ]
@@ -696,6 +710,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -713,6 +728,7 @@ Module fmt.
                         []
                         [ Ty.path "core::num::fmt::Part" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -780,6 +796,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
+                  [],
                   []
                 |),
                 [ M.read (| fmt |); formatted ]
@@ -828,7 +845,12 @@ Module fmt.
             let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "sign_plus",
+                    [],
+                    []
+                  |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
@@ -945,7 +967,12 @@ Module fmt.
             let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "sign_plus",
+                    [],
+                    []
+                  |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
@@ -1015,7 +1042,9 @@ Module fmt.
                                       "core::fmt::float::GeneralFormat",
                                       T,
                                       [],
+                                      [],
                                       "already_rounded_value_should_use_exponential",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| num |) ]
@@ -1348,13 +1377,14 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_v1_formatted",
+                    [],
                     []
                   |),
                   [
@@ -1366,12 +1396,13 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_lower_hex",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
+                                  M.get_associated_function (| Ty.path "f16", "to_bits", [], [] |),
                                   [ M.read (| M.read (| self |) |) ]
                                 |)
                               |)
@@ -1386,6 +1417,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Placeholder",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1402,7 +1434,12 @@ Module fmt.
                         ]
                     |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::rt::UnsafeArg",
+                        "new",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   ]
@@ -1435,13 +1472,14 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_v1_formatted",
+                    [],
                     []
                   |),
                   [
@@ -1453,12 +1491,13 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_lower_hex",
+                              [],
                               [ Ty.path "u128" ]
                             |),
                             [
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                                  M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                                   [ M.read (| M.read (| self |) |) ]
                                 |)
                               |)
@@ -1473,6 +1512,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Placeholder",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1489,7 +1529,12 @@ Module fmt.
                         ]
                     |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::rt::UnsafeArg",
+                        "new",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   ]

@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -185,8 +186,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_trait_method (|
                         "core::convert::TryFrom",
                         Ty.path "try_from_and_try_into::EvenNumber",
+                        [],
                         [ Ty.path "i32" ],
                         "try_from",
+                        [],
                         []
                       |),
                       [ Value.Integer IntegerKind.I32 8 ]
@@ -227,6 +230,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -235,6 +239,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
@@ -294,8 +299,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_trait_method (|
                         "core::convert::TryFrom",
                         Ty.path "try_from_and_try_into::EvenNumber",
+                        [],
                         [ Ty.path "i32" ],
                         "try_from",
+                        [],
                         []
                       |),
                       [ Value.Integer IntegerKind.I32 5 ]
@@ -328,6 +335,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -336,6 +344,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
@@ -391,8 +400,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "i32",
+                [],
                 [ Ty.path "try_from_and_try_into::EvenNumber" ],
                 "try_into",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 8 ]
@@ -439,6 +450,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -447,6 +459,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
@@ -502,8 +515,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "i32",
+                [],
                 [ Ty.path "try_from_and_try_into::EvenNumber" ],
                 "try_into",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 5 ]
@@ -542,6 +557,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -550,6 +566,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]

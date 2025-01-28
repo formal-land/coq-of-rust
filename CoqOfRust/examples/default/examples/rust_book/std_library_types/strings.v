@@ -56,7 +56,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -70,6 +75,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               |),
                               [ pangram ]
@@ -89,7 +95,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "Words in reverse
 " |) ] |) ]
                   |)
@@ -109,7 +120,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "core::str::iter::SplitWhitespace" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -118,12 +131,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::SplitWhitespace",
                         [],
+                        [],
                         "rev",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
+                          M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
                           [ M.read (| pangram |) ]
                         |)
                       ]
@@ -148,7 +163,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "core::str::iter::SplitWhitespace" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -179,6 +196,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -197,6 +215,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -228,7 +247,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "collect",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -238,7 +259,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                   [ M.read (| pangram |) ]
                 |)
               ]
@@ -250,6 +271,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
                 "sort",
+                [],
                 []
               |),
               [
@@ -261,7 +283,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "deref_mut",
+                    [],
                     []
                   |),
                   [ chars ]
@@ -278,6 +302,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                 "dedup",
+                [],
                 []
               |),
               [ chars ]
@@ -286,7 +311,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ string :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
               []
             |)
           |) in
@@ -302,7 +327,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| chars |) ]
@@ -325,7 +352,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -352,6 +381,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push",
+                                          [],
                                           []
                                         |),
                                         [ string; M.read (| c |) ]
@@ -363,6 +393,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
                                         [ string; M.read (| Value.String ", " |) ]
@@ -383,6 +414,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "str",
                 "trim_matches",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
               |),
               [
@@ -391,7 +423,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::ops::deref::Deref",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ string ]
@@ -407,7 +441,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -424,6 +463,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               |),
                               [ trimmed_str ]
@@ -442,8 +482,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
+                [],
                 []
               |),
               [ M.read (| Value.String "I like dogs" |) ]
@@ -455,6 +497,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "str",
                 "replace",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [
@@ -463,7 +506,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::ops::deref::Deref",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ alice ]
@@ -480,7 +525,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -495,6 +545,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "alloc::string::String" ]
                               |),
                               [ alice ]
@@ -514,7 +565,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -528,6 +584,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "alloc::string::String" ]
                               |),
                               [ bob ]

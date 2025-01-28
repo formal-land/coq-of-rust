@@ -40,7 +40,7 @@ Module mem.
               [
                 ("value",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -78,6 +78,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -120,7 +121,7 @@ Module mem.
               [
                 ("value",
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                    M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                     []
                   |))
               ]))
@@ -162,7 +163,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -236,7 +237,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -275,7 +276,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -314,7 +315,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+              M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),

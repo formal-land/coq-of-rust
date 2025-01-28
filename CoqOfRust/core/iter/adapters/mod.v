@@ -55,11 +55,13 @@ Module iter.
                   M.get_trait_method (|
                     "core::ops::function::FnMut",
                     F,
+                    [],
                     [
                       Ty.tuple
                         [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] ]
                     ],
                     "call_mut",
+                    [],
                     []
                   |),
                   [ f; Value.Tuple [ M.read (| shunt |) ] ]
@@ -82,8 +84,10 @@ Module iter.
                         M.get_trait_method (|
                           "core::ops::try_trait::FromResidual",
                           Ty.associated,
+                          [],
                           [ R ],
                           "from_residual",
+                          [],
                           []
                         |),
                         [ M.read (| r |) ]
@@ -98,7 +102,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           Ty.associated,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| value |) ]
@@ -137,6 +143,7 @@ Module iter.
                   []
                   [ Ty.associated; Ty.tuple [] ],
                 "break_value",
+                [],
                 []
               |),
               [
@@ -145,7 +152,9 @@ Module iter.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ],
                     [],
+                    [],
                     "try_for_each",
+                    [],
                     [
                       Ty.function
                         [ Ty.associated ]
@@ -198,6 +207,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ R ],
                                 "is_some",
+                                [],
                                 []
                               |),
                               [
@@ -230,7 +240,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "size_hint",
+                              [],
                               []
                             |),
                             [
@@ -289,6 +301,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; Ty.associated ],
                 "into_try",
+                [],
                 []
               |),
               [
@@ -297,7 +310,9 @@ Module iter.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "try_fold",
+                    [],
                     [
                       B;
                       Ty.function
@@ -339,7 +354,9 @@ Module iter.
                                                         "core::ops::try_trait::Try",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| x |) ]
@@ -364,6 +381,7 @@ Module iter.
                                                                 []
                                                                 [ T; Ty.associated ],
                                                               "from_try",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -371,8 +389,10 @@ Module iter.
                                                                 M.get_trait_method (|
                                                                   "core::ops::function::FnMut",
                                                                   F,
+                                                                  [],
                                                                   [ Ty.tuple [ B; Ty.associated ] ],
                                                                   "call_mut",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -418,7 +438,9 @@ Module iter.
                                                                   "core::ops::try_trait::Try",
                                                                   T,
                                                                   [],
+                                                                  [],
                                                                   "from_output",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| acc |) ]
@@ -467,7 +489,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ],
                       [],
+                      [],
                       "try_fold",
+                      [],
                       [
                         AAA;
                         Ty.associated;
@@ -481,6 +505,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
+                          [],
                           [ AAA; Ty.associated; FFF ]
                         |),
                         [ M.read (| fold |) ]
@@ -531,7 +556,15 @@ Module iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+              M.get_trait_method (|
+                "core::iter::adapters::SourceIter",
+                I,
+                [],
+                [],
+                "as_inner",
+                [],
+                []
+              |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),

@@ -32,7 +32,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -43,7 +45,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -163,7 +167,15 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
           "mapping_integration_tests::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -282,7 +294,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
                     []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -341,7 +355,9 @@ Module Impl_mapping_integration_tests_Mappings.
                     []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -376,6 +392,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -384,6 +401,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -400,6 +418,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -437,6 +456,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -445,6 +465,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -461,6 +482,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "insert",
+                [],
                 []
               |),
               [
@@ -499,6 +521,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -507,6 +530,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -523,6 +547,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "size",
+                [],
                 []
               |),
               [
@@ -559,6 +584,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -567,6 +593,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -583,6 +610,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "contains",
+                [],
                 []
               |),
               [
@@ -620,6 +648,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -628,6 +657,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -645,6 +675,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   "remove",
+                  [],
                   []
                 |),
                 [
@@ -683,6 +714,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -691,6 +723,7 @@ Module Impl_mapping_integration_tests_Mappings.
                       M.get_associated_function (|
                         Ty.path "mapping_integration_tests::Mappings",
                         "env",
+                        [],
                         []
                       |),
                       []
@@ -707,6 +740,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "take",
+                [],
                 []
               |),
               [

@@ -46,7 +46,7 @@ Module iter.
                 "core::iter::sources::from_coroutine::FromCoroutine"
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", G, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_tuple_field (|
                         M.read (| self |),
@@ -96,8 +96,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::ops::coroutine::Coroutine",
                         G,
+                        [],
                         [ Ty.tuple [] ],
                         "resume",
+                        [],
                         []
                       |),
                       [
@@ -108,6 +110,7 @@ Module iter.
                               []
                               [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -180,6 +183,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -188,6 +192,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "FromCoroutine" |) ]

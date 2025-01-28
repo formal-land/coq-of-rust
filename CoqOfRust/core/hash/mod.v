@@ -19,7 +19,9 @@ Module hash.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| data |) ]
@@ -39,7 +41,9 @@ Module hash.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -66,7 +70,9 @@ Module hash.
                                           "core::hash::Hash",
                                           Self,
                                           [],
+                                          [],
                                           "hash",
+                                          [],
                                           [ H ]
                                         |),
                                         [ M.read (| piece |); M.read (| state |) ]
@@ -94,7 +100,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [ M.read (| self |); M.alloc (| Value.Array [ M.read (| i |) ] |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -108,12 +114,12 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.read (| self |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |)
@@ -130,12 +136,12 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.read (| self |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |)
@@ -152,12 +158,12 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.read (| self |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |)
@@ -174,12 +180,12 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.read (| self |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |)
@@ -202,12 +208,12 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.read (| self |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |)
@@ -225,7 +231,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -239,7 +245,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u16", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u16", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -253,7 +259,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u32", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u32", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -267,7 +273,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u64", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u64", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -281,7 +287,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u128", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u128", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -301,7 +307,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_usize", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -324,7 +330,15 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
+                  M.get_trait_method (|
+                    "core::hash::Hasher",
+                    Self,
+                    [],
+                    [],
+                    "write_usize",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| len |) ]
                 |)
               |) in
@@ -345,11 +359,11 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
                   [
                     M.read (| self |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| s |) ]
                     |)
                   ]
@@ -358,7 +372,7 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
                   [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
                 |)
               |) in
@@ -385,7 +399,7 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "finish", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "finish", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -404,7 +418,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -423,7 +437,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -442,7 +456,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -461,7 +475,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -480,7 +494,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -499,7 +513,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -518,7 +532,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -537,7 +551,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -556,7 +570,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -575,7 +589,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -594,7 +608,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -613,7 +627,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -632,7 +646,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -656,7 +670,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_length_prefix", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -675,7 +689,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -720,20 +734,44 @@ Module hash.
             let~ hasher :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::BuildHasher", Self, [], "build_hasher", [] |),
+                  M.get_trait_method (|
+                    "core::hash::BuildHasher",
+                    Self,
+                    [],
+                    [],
+                    "build_hasher",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ Ty.associated ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    T,
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ Ty.associated ]
+                  |),
                   [ x; hasher ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hasher", Ty.associated, [], "finish", [] |),
+                M.get_trait_method (|
+                  "core::hash::Hasher",
+                  Ty.associated,
+                  [],
+                  [],
+                  "finish",
+                  [],
+                  []
+                |),
                 [ hasher ]
               |)
             |)
@@ -796,6 +834,7 @@ Module hash.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish",
+              [],
               []
             |),
             [
@@ -804,6 +843,7 @@ Module hash.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "BuildHasherDefault" |) ]
@@ -842,7 +882,7 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::default::Default", H, [], "default", [] |),
+            M.get_trait_method (| "core::default::Default", H, [], [], "default", [], [] |),
             []
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -909,6 +949,7 @@ Module hash.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ],
               "new",
+              [],
               []
             |),
             []
@@ -979,7 +1020,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1021,6 +1062,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1028,7 +1070,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1066,7 +1108,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1108,6 +1150,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1115,7 +1158,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1153,7 +1196,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1195,6 +1238,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1202,7 +1246,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1240,7 +1284,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1282,6 +1326,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1289,7 +1334,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1327,7 +1372,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1369,6 +1414,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1376,7 +1422,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1414,7 +1460,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1456,6 +1502,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1463,7 +1510,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1501,7 +1548,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1543,6 +1590,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1550,7 +1598,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1588,7 +1636,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1630,6 +1678,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1637,7 +1686,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1675,7 +1724,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1717,6 +1766,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1724,7 +1774,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1762,7 +1812,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1804,6 +1854,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1811,7 +1862,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1849,7 +1900,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1891,6 +1942,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1898,7 +1950,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -1936,7 +1988,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1978,6 +2030,7 @@ Module hash.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1985,7 +2038,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.read (| state |);
                     M.call_closure (|
@@ -2023,7 +2076,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2052,7 +2105,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2084,7 +2137,7 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
+                    M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
                     [ M.read (| state |); M.read (| self |) ]
                   |)
                 |) in
@@ -2179,7 +2232,15 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
@@ -2228,14 +2289,30 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
@@ -2286,21 +2363,45 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
@@ -2353,28 +2454,60 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
@@ -2434,35 +2567,75 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
@@ -2524,42 +2697,90 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
@@ -2623,49 +2844,105 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
@@ -2731,56 +3008,120 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
@@ -2848,63 +3189,135 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_I |); M.read (| state |) ]
                           |)
                         |) in
@@ -2975,70 +3388,150 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_I |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_J |); M.read (| state |) ]
                           |)
                         |) in
@@ -3111,77 +3604,165 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_I |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_J |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", K, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              K,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_K |); M.read (| state |) ]
                           |)
                         |) in
@@ -3256,84 +3837,180 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_T |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_B |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_C |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_D |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_E |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_F |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_G |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_H |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_I |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_J |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", K, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              K,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_K |); M.read (| state |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", L, [], "hash", [ S ] |),
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              L,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
                             [ M.read (| value_L |); M.read (| state |) ]
                           |)
                         |) in
@@ -3373,13 +4050,22 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
+                    M.get_trait_method (|
+                      "core::hash::Hasher",
+                      H,
+                      [],
+                      [],
+                      "write_length_prefix",
+                      [],
+                      []
+                    |),
                     [
                       M.read (| state |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3389,7 +4075,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", T, [], "hash_slice", [ H ] |),
+                  M.get_trait_method (| "core::hash::Hash", T, [], [], "hash_slice", [], [ H ] |),
                   [ M.read (| self |); M.read (| state |) ]
                 |)
               |)
@@ -3425,7 +4111,7 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
+                    M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                     [ M.read (| M.read (| self |) |); M.read (| state |) ]
                   |)
                 |) in
@@ -3462,7 +4148,7 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
+                    M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                     [ M.read (| M.read (| self |) |); M.read (| state |) ]
                   |)
                 |) in
@@ -3504,6 +4190,7 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "to_raw_parts",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| self |) |) ]
@@ -3519,13 +4206,22 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+                            M.get_trait_method (|
+                              "core::hash::Hasher",
+                              H,
+                              [],
+                              [],
+                              "write_usize",
+                              [],
+                              []
+                            |),
                             [
                               M.read (| state |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                                   "addr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| address |) ]
@@ -3540,7 +4236,9 @@ Module hash.
                               "core::hash::Hash",
                               Ty.associated,
                               [],
+                              [],
                               "hash",
+                              [],
                               [ H ]
                             |),
                             [ metadata; M.read (| state |) ]
@@ -3586,6 +4284,7 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "to_raw_parts",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| self |) |) ]
@@ -3601,13 +4300,22 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+                            M.get_trait_method (|
+                              "core::hash::Hasher",
+                              H,
+                              [],
+                              [],
+                              "write_usize",
+                              [],
+                              []
+                            |),
                             [
                               M.read (| state |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                                   "addr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| address |) ]
@@ -3622,7 +4330,9 @@ Module hash.
                               "core::hash::Hash",
                               Ty.associated,
                               [],
+                              [],
                               "hash",
+                              [],
                               [ H ]
                             |),
                             [ metadata; M.read (| state |) ]

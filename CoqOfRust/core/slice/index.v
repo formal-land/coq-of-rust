@@ -25,8 +25,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [ M.read (| index |); M.read (| self |) ]
@@ -64,8 +66,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [ M.read (| index |); M.read (| self |) ]
@@ -141,7 +145,7 @@ Module slice.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -157,6 +161,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ index ]
@@ -165,6 +170,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ len ]
@@ -215,6 +221,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -297,7 +304,7 @@ Module slice.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -313,6 +320,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ index ]
@@ -321,6 +329,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ len ]
@@ -369,6 +378,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -449,7 +459,7 @@ Module slice.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -465,6 +475,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ index ]
@@ -473,6 +484,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ end_ ]
@@ -521,6 +533,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -563,7 +576,7 @@ Module slice.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -602,7 +615,7 @@ Module slice.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -967,6 +980,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1025,6 +1039,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1109,6 +1124,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -1120,6 +1136,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1142,6 +1159,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -1206,6 +1224,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [
@@ -1217,6 +1236,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1327,6 +1347,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1335,6 +1356,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1358,6 +1380,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "start",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1366,6 +1389,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1414,6 +1438,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1422,6 +1447,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1445,6 +1471,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "start",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1453,6 +1480,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1519,6 +1547,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -1526,6 +1555,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1537,6 +1567,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1557,6 +1588,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "start",
+                        [],
                         []
                       |),
                       [ self ]
@@ -1565,6 +1597,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -1623,6 +1656,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [
@@ -1630,6 +1664,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::ops::index_range::IndexRange",
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -1641,6 +1676,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1665,6 +1701,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "start",
+                        [],
                         []
                       |),
                       [ self ]
@@ -1673,6 +1710,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -1715,6 +1753,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1723,6 +1762,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1743,6 +1783,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "start",
+                                [],
                                 []
                               |),
                               [ self ]
@@ -1751,6 +1792,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "len",
+                                [],
                                 []
                               |),
                               [ self ]
@@ -1773,6 +1815,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1781,6 +1824,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1826,6 +1870,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1834,6 +1879,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1854,6 +1900,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "start",
+                                [],
                                 []
                               |),
                               [ self ]
@@ -1862,6 +1909,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "len",
+                                [],
                                 []
                               |),
                               [ self ]
@@ -1884,6 +1932,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
+                                  [],
                                   []
                                 |),
                                 [ self ]
@@ -1892,6 +1941,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -1960,7 +2010,7 @@ Module slice.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -2001,6 +2051,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -2069,7 +2120,7 @@ Module slice.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -2110,6 +2161,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| slice |) ]
@@ -2209,6 +2261,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -2233,6 +2286,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -2339,6 +2393,7 @@ Module slice.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [
@@ -2363,6 +2418,7 @@ Module slice.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -2444,7 +2500,7 @@ Module slice.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                    M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2494,6 +2550,7 @@ Module slice.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| slice |) ]
@@ -2525,6 +2582,7 @@ Module slice.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| slice |) ]
@@ -2585,7 +2643,7 @@ Module slice.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                    M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2635,6 +2693,7 @@ Module slice.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| slice |) ]
@@ -2666,6 +2725,7 @@ Module slice.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| slice |) ]
@@ -2744,8 +2804,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -2753,8 +2815,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2781,8 +2845,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -2790,8 +2856,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2824,8 +2892,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -2833,8 +2903,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2867,8 +2939,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -2876,8 +2950,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2904,8 +2980,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -2913,8 +2991,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2941,8 +3021,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -2950,8 +3032,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3003,8 +3087,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -3043,8 +3129,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -3089,8 +3177,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -3135,8 +3225,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -3175,8 +3267,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -3215,8 +3309,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -3280,8 +3376,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -3301,6 +3399,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -3328,8 +3427,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -3349,6 +3450,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -3382,8 +3484,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -3403,6 +3507,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -3436,8 +3541,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -3457,6 +3564,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -3506,6 +3614,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -3534,6 +3643,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -3550,8 +3660,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| slice |) ]
@@ -3599,6 +3711,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -3627,6 +3740,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -3643,8 +3757,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| slice |) ]
@@ -3695,8 +3811,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -3704,8 +3822,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3732,8 +3852,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -3741,8 +3863,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3775,8 +3899,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -3784,8 +3910,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3818,8 +3946,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -3827,8 +3957,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3855,8 +3987,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -3864,8 +3998,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3892,8 +4028,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -3901,8 +4039,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4098,6 +4238,7 @@ Module slice.
                                       []
                                       [ Ty.path "usize" ],
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -4115,8 +4256,10 @@ Module slice.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             "get",
+                            [],
                             []
                           |),
                           [
@@ -4127,6 +4270,7 @@ Module slice.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4171,6 +4315,7 @@ Module slice.
                                       []
                                       [ Ty.path "usize" ],
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -4188,8 +4333,10 @@ Module slice.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             "get_mut",
+                            [],
                             []
                           |),
                           [
@@ -4200,6 +4347,7 @@ Module slice.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4236,8 +4384,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -4245,6 +4395,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4277,8 +4428,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -4286,6 +4439,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4330,6 +4484,7 @@ Module slice.
                                         []
                                         [ Ty.path "usize" ],
                                       "end",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -4360,8 +4515,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -4372,6 +4529,7 @@ Module slice.
                           []
                           [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4418,6 +4576,7 @@ Module slice.
                                         []
                                         [ Ty.path "usize" ],
                                       "end",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -4448,8 +4607,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -4460,6 +4621,7 @@ Module slice.
                           []
                           [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4513,8 +4675,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -4522,8 +4686,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4550,8 +4716,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -4559,8 +4727,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4593,8 +4763,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -4602,8 +4774,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4636,8 +4810,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -4645,8 +4821,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4673,8 +4851,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -4682,8 +4862,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4710,8 +4892,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -4719,8 +4903,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4772,8 +4958,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -4781,6 +4969,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4816,8 +5005,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -4825,6 +5016,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4866,8 +5058,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -4875,6 +5069,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4916,8 +5111,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -4925,6 +5122,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4960,8 +5158,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -4969,6 +5169,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -5004,8 +5205,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -5013,6 +5216,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -5106,8 +5310,10 @@ Module slice.
                       M.get_trait_method (|
                         "core::ops::range::RangeBounds",
                         R,
+                        [],
                         [ Ty.path "usize" ],
                         "start_bound",
+                        [],
                         []
                       |),
                       [ range ]
@@ -5139,11 +5345,17 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
+                              [],
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_add",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| M.read (| start |) |); Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
@@ -5190,8 +5402,10 @@ Module slice.
                       M.get_trait_method (|
                         "core::ops::range::RangeBounds",
                         R,
+                        [],
                         [ Ty.path "usize" ],
                         "end_bound",
+                        [],
                         []
                       |),
                       [ range ]
@@ -5212,11 +5426,17 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
+                              [],
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_add",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| M.read (| end_ |) |); Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
@@ -5373,8 +5593,10 @@ Module slice.
                           M.get_trait_method (|
                             "core::ops::range::RangeBounds",
                             R,
+                            [],
                             [ Ty.path "usize" ],
                             "start_bound",
+                            [],
                             []
                           |),
                           [ range ]
@@ -5411,7 +5633,9 @@ Module slice.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5419,6 +5643,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "checked_add",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5455,6 +5680,7 @@ Module slice.
                                                       []
                                                       [ Ty.path "usize" ]
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -5462,6 +5688,7 @@ Module slice.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -5498,8 +5725,10 @@ Module slice.
                           M.get_trait_method (|
                             "core::ops::range::RangeBounds",
                             R,
+                            [],
                             [ Ty.path "usize" ],
                             "end_bound",
+                            [],
                             []
                           |),
                           [ range ]
@@ -5525,7 +5754,9 @@ Module slice.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5533,6 +5764,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "checked_add",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5569,6 +5801,7 @@ Module slice.
                                                       []
                                                       [ Ty.path "usize" ]
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -5576,6 +5809,7 @@ Module slice.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -5853,7 +6087,9 @@ Module slice.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5861,6 +6097,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.path "usize",
                                                 "checked_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -5897,6 +6134,7 @@ Module slice.
                                                               []
                                                               [ Ty.path "usize" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -5904,6 +6142,7 @@ Module slice.
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -5959,7 +6198,9 @@ Module slice.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5967,6 +6208,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.path "usize",
                                                 "checked_add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1
@@ -6001,6 +6243,7 @@ Module slice.
                                                               []
                                                               [ Ty.path "usize" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -6008,6 +6251,7 @@ Module slice.
                                                             [ Ty.path "core::convert::Infallible" ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -6143,6 +6387,7 @@ Module slice.
                                         []
                                         [ Ty.path "usize" ],
                                       "unwrap_or_else",
+                                      [],
                                       [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                                     |),
                                     [
@@ -6150,6 +6395,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
@@ -6212,6 +6458,7 @@ Module slice.
                                         []
                                         [ Ty.path "usize" ],
                                       "unwrap_or_else",
+                                      [],
                                       [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                                     |),
                                     [
@@ -6219,6 +6466,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1 ]
@@ -6312,8 +6560,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6333,7 +6583,9 @@ Module slice.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -6344,6 +6596,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| slice |) ]
@@ -6380,6 +6633,7 @@ Module slice.
                                                 []
                                                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6387,6 +6641,7 @@ Module slice.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -6433,8 +6688,10 @@ Module slice.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_mut",
+                    [],
                     []
                   |),
                   [
@@ -6454,7 +6711,9 @@ Module slice.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -6465,6 +6724,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| slice |) ]
@@ -6501,6 +6761,7 @@ Module slice.
                                                 []
                                                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6508,6 +6769,7 @@ Module slice.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -6558,8 +6820,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -6570,6 +6834,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| slice |) ]
@@ -6605,8 +6870,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -6617,6 +6884,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| slice |) ]
@@ -6646,8 +6914,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index",
+                [],
                 []
               |),
               [
@@ -6658,6 +6928,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| slice |) ]
@@ -6687,8 +6958,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -6699,6 +6972,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| slice |) ]

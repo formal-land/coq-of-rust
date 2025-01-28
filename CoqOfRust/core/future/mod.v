@@ -30,6 +30,7 @@ Module future.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -130,6 +131,7 @@ Module future.
           M.get_associated_function (|
             Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
             "cast",
+            [],
             [ Ty.path "core::task::wake::Context" ]
           |),
           [
@@ -140,6 +142,7 @@ Module future.
                   []
                   [ Ty.path "core::task::wake::Context" ],
                 "as_ptr",
+                [],
                 []
               |),
               [

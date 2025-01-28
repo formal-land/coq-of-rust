@@ -28,7 +28,7 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -43,7 +43,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -83,6 +85,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
@@ -205,7 +208,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
@@ -289,7 +294,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "nth",
+                              [],
                               []
                             |),
                             [
@@ -336,7 +343,9 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           I,
                                           [],
+                                          [],
                                           "nth",
+                                          [],
                                           []
                                         |),
                                         [
@@ -455,7 +464,9 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             I,
                             [],
+                            [],
                             "size_hint",
+                            [],
                             []
                           |),
                           [
@@ -614,7 +625,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               R,
                               [],
+                              [],
                               "from_output",
+                              [],
                               []
                             |),
                             [ M.read (| init |) ]
@@ -638,6 +651,7 @@ Module iter.
                                 []
                                 [ R; Ty.associated ],
                               "into_try",
+                              [],
                               []
                             |),
                             [
@@ -646,7 +660,9 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "try_fold",
+                                  [],
                                   [
                                     Acc;
                                     Ty.associated;
@@ -664,7 +680,7 @@ Module iter.
                                   |);
                                   M.read (| init |);
                                   M.call_closure (|
-                                    M.get_associated_function (| Self, "check.try_fold", [] |),
+                                    M.get_associated_function (| Self, "check.try_fold", [], [] |),
                                     [ M.read (| n |); M.read (| fold |) ]
                                   |)
                                 ]
@@ -700,7 +716,9 @@ Module iter.
                   "core::iter::adapters::take::SpecTake",
                   Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                   [],
+                  [],
                   "spec_fold",
+                  [],
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -725,7 +743,9 @@ Module iter.
                   "core::iter::adapters::take::SpecTake",
                   Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                   [],
+                  [],
                   "spec_for_each",
+                  [],
                   [ F ]
                 |),
                 [ M.read (| self |); M.read (| f |) ]
@@ -761,7 +781,15 @@ Module iter.
                 let~ min :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -783,7 +811,9 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             I,
                             [],
+                            [],
                             "advance_by",
+                            [],
                             []
                           |),
                           [
@@ -823,6 +853,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| rem |) ]
@@ -849,6 +880,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -877,6 +909,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
+                          [],
                           []
                         |),
                         [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced |) |) ]
@@ -929,7 +962,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  I,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1064,7 +1105,9 @@ Module iter.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               I,
                               [],
+                              [],
                               "nth_back",
+                              [],
                               []
                             |),
                             [
@@ -1077,6 +1120,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1085,7 +1129,9 @@ Module iter.
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       I,
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1138,7 +1184,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         I,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1178,6 +1226,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1214,7 +1263,9 @@ Module iter.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               I,
                               [],
+                              [],
                               "nth_back",
+                              [],
                               []
                             |),
                             [
@@ -1255,7 +1306,9 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           I,
                                           [],
+                                          [],
                                           "nth_back",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1337,7 +1390,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               R,
                               [],
+                              [],
                               "from_output",
+                              [],
                               []
                             |),
                             [ M.read (| init |) ]
@@ -1352,7 +1407,9 @@ Module iter.
                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                 I,
                                 [],
+                                [],
                                 "len",
+                                [],
                                 []
                               |),
                               [
@@ -1391,6 +1448,7 @@ Module iter.
                                                 []
                                                 [ Ty.associated ],
                                               "is_none",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1400,7 +1458,9 @@ Module iter.
                                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                                     I,
                                                     [],
+                                                    [],
                                                     "nth_back",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1440,7 +1500,9 @@ Module iter.
                                       "core::ops::try_trait::Try",
                                       R,
                                       [],
+                                      [],
                                       "from_output",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| init |) ]
@@ -1454,7 +1516,9 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "try_rfold",
+                                      [],
                                       [ Acc; Fold; R ]
                                     |),
                                     [
@@ -1534,7 +1598,9 @@ Module iter.
                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                 I,
                                 [],
+                                [],
                                 "len",
+                                [],
                                 []
                               |),
                               [
@@ -1573,6 +1639,7 @@ Module iter.
                                                 []
                                                 [ Ty.associated ],
                                               "is_none",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1582,7 +1649,9 @@ Module iter.
                                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                                     I,
                                                     [],
+                                                    [],
                                                     "nth_back",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1625,7 +1694,9 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "rfold",
+                                      [],
                                       [ Acc; Fold ]
                                     |),
                                     [
@@ -1685,14 +1756,16 @@ Module iter.
                 let~ trim_inner :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                      M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::exact_size::ExactSizeIterator",
                             I,
                             [],
+                            [],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -1716,7 +1789,7 @@ Module iter.
                 let~ advance_by :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+                      M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
                       [ M.read (| trim_inner |); M.read (| n |) ]
                     |)
                   |) in
@@ -1729,7 +1802,9 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             I,
                             [],
+                            [],
                             "advance_back_by",
+                            [],
                             []
                           |),
                           [
@@ -1769,6 +1844,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| rem |) ]
@@ -1801,6 +1877,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1829,6 +1906,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
+                          [],
                           []
                         |),
                         [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced_by |) |) ]
@@ -1943,7 +2021,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                         [],
+                        [],
                         "try_fold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -1957,6 +2037,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -2034,7 +2115,9 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "try_fold",
+                                [],
                                 [
                                   Ty.path "usize";
                                   Ty.associated;
@@ -2052,7 +2135,12 @@ Module iter.
                                   Value.Integer IntegerKind.Usize 1
                                 |);
                                 M.call_closure (|
-                                  M.get_associated_function (| Self, "check.spec_for_each", [] |),
+                                  M.get_associated_function (|
+                                    Self,
+                                    "check.spec_for_each",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| f |) ]
                                 |)
                               ]
@@ -2112,7 +2200,15 @@ Module iter.
                 let~ end_ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2126,7 +2222,9 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             I,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
@@ -2149,7 +2247,9 @@ Module iter.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2179,7 +2279,9 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2212,7 +2314,9 @@ Module iter.
                                                   "core::iter::traits::iterator::Iterator",
                                                   I,
                                                   [],
+                                                  [],
                                                   "__iterator_get_unchecked",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2232,8 +2336,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; Ty.associated ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2280,7 +2386,15 @@ Module iter.
                 let~ end_ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2294,7 +2408,9 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             I,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
@@ -2316,7 +2432,9 @@ Module iter.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2346,7 +2464,9 @@ Module iter.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2376,7 +2496,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "__iterator_get_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2395,8 +2517,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.associated ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| val |) ] ]
@@ -2452,7 +2576,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -2480,7 +2606,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -2514,7 +2642,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ Acc; Fold; R ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
@@ -2547,7 +2677,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; Fold ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
@@ -2580,7 +2712,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]

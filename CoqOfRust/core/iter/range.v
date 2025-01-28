@@ -191,6 +191,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Self ],
                 "expect",
+                [],
                 []
               |),
               [
@@ -199,7 +200,9 @@ Module iter.
                     "core::iter::range::Step",
                     Self,
                     [],
+                    [],
                     "forward_checked",
+                    [],
                     []
                   |),
                   [ M.read (| start |); M.read (| count |) ]
@@ -223,7 +226,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::range::Step", Self, [], "forward", [] |),
+              M.get_trait_method (| "core::iter::range::Step", Self, [], [], "forward", [], [] |),
               [ M.read (| start |); M.read (| count |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -241,6 +244,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Self ],
                 "expect",
+                [],
                 []
               |),
               [
@@ -249,7 +253,9 @@ Module iter.
                     "core::iter::range::Step",
                     Self,
                     [],
+                    [],
                     "backward_checked",
+                    [],
                     []
                   |),
                   [ M.read (| start |); M.read (| count |) ]
@@ -274,7 +280,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::range::Step", Self, [], "backward", [] |),
+              M.get_trait_method (| "core::iter::range::Step", Self, [], [], "backward", [], [] |),
               [ M.read (| start |); M.read (| count |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -318,6 +324,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -327,7 +334,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u8",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -352,7 +361,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -391,6 +400,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -400,7 +410,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u8",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -425,7 +437,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -446,7 +458,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -465,7 +477,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -543,8 +555,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u8",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -562,7 +576,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u8", "checked_add", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -602,8 +616,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u8",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -621,7 +637,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "u8", "checked_sub", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -691,6 +707,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -700,7 +717,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i8",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -725,7 +744,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -764,6 +783,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -773,7 +793,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i8",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -798,7 +820,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -822,11 +844,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -850,11 +873,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -903,7 +927,12 @@ Module iter.
                           [
                             M.rust_cast
                               (M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.rust_cast (M.read (| M.read (| end_ |) |));
                                   M.rust_cast (M.read (| M.read (| start |) |))
@@ -954,8 +983,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u8",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -974,7 +1005,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
+                            M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -1052,8 +1083,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u8",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1072,7 +1105,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
+                            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -1167,6 +1200,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1176,7 +1210,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u16",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -1201,7 +1237,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -1240,6 +1276,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1249,7 +1286,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u16",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -1274,7 +1313,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -1295,7 +1334,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "u16", "unchecked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1314,7 +1353,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1392,8 +1431,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u16",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1411,7 +1452,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u16", "checked_add", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -1451,8 +1492,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u16",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1470,7 +1513,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "u16", "checked_sub", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -1540,6 +1583,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1549,7 +1593,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i16",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -1574,7 +1620,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -1613,6 +1659,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1622,7 +1669,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i16",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -1647,7 +1696,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -1671,11 +1720,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -1699,11 +1749,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -1752,7 +1803,12 @@ Module iter.
                           [
                             M.rust_cast
                               (M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.rust_cast (M.read (| M.read (| end_ |) |));
                                   M.rust_cast (M.read (| M.read (| start |) |))
@@ -1803,8 +1859,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u16",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1823,7 +1881,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
+                            M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -1901,8 +1959,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u16",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -1921,7 +1981,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
+                            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -2016,6 +2076,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2025,7 +2086,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u32",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2050,7 +2113,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2089,6 +2152,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2098,7 +2162,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u32",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2123,7 +2189,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2144,7 +2210,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "u32", "unchecked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2163,7 +2229,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2241,8 +2307,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u32",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -2260,7 +2328,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -2300,8 +2368,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u32",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -2319,7 +2389,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "u32", "checked_sub", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -2389,6 +2459,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2398,7 +2469,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i32",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2423,7 +2496,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2462,6 +2535,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2471,7 +2545,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i32",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2496,7 +2572,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2520,11 +2596,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -2548,11 +2625,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -2601,7 +2679,12 @@ Module iter.
                           [
                             M.rust_cast
                               (M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.rust_cast (M.read (| M.read (| end_ |) |));
                                   M.rust_cast (M.read (| M.read (| start |) |))
@@ -2652,8 +2735,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u32",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -2672,7 +2757,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
+                            M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -2750,8 +2835,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u32",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -2770,7 +2857,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -2865,6 +2952,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2874,7 +2962,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u64",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2899,7 +2989,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2938,6 +3028,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2947,7 +3038,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u64",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -2972,7 +3065,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -2993,7 +3086,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "u64", "unchecked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3012,7 +3105,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3090,8 +3183,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u64",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -3109,7 +3204,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -3149,8 +3244,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u64",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -3168,7 +3265,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -3238,6 +3335,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3247,7 +3345,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i64",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -3272,7 +3372,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -3311,6 +3411,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3320,7 +3421,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i64",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -3345,7 +3448,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -3369,11 +3472,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -3397,11 +3501,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -3450,7 +3555,12 @@ Module iter.
                           [
                             M.rust_cast
                               (M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.rust_cast (M.read (| M.read (| end_ |) |));
                                   M.rust_cast (M.read (| M.read (| start |) |))
@@ -3501,8 +3611,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u64",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -3521,7 +3633,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
+                            M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -3599,8 +3711,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "u64",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -3619,7 +3733,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
+                            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -3714,6 +3828,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3723,7 +3838,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "usize",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -3748,7 +3865,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.read (| M.use n |) ]
                 |)
               |)
@@ -3787,6 +3904,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3796,7 +3914,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "usize",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -3821,7 +3941,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.read (| M.use n |) ]
                 |)
               |)
@@ -3842,7 +3962,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
               [ M.read (| start |); M.read (| M.use n |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3861,7 +3981,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.read (| M.use n |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3943,8 +4063,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -3962,7 +4084,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -4002,8 +4124,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -4021,7 +4145,7 @@ Module iter.
                       let n := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                           [ M.read (| start |); M.read (| n |) ]
                         |)
                       |)));
@@ -4091,6 +4215,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4100,7 +4225,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "isize",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4125,7 +4252,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -4164,6 +4291,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4173,7 +4301,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "isize",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4198,7 +4328,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -4222,11 +4352,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.read (| M.use n |) ]
                 |)
               ]
@@ -4250,11 +4381,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.read (| M.use n |) ]
                 |)
               ]
@@ -4303,7 +4435,12 @@ Module iter.
                           [
                             M.rust_cast
                               (M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (| M.use (M.read (| end_ |)) |);
                                   M.read (| M.use (M.read (| start |)) |)
@@ -4354,8 +4491,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -4374,7 +4513,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
+                            M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -4452,8 +4591,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
+                      [],
                       [ Ty.path "usize" ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| n |) ]
@@ -4472,7 +4613,7 @@ Module iter.
                       let~ wrapped :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+                            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
                             [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                           |)
                         |) in
@@ -4567,6 +4708,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4576,7 +4718,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u128",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4601,7 +4745,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -4640,6 +4784,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4649,7 +4794,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "u128",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4674,7 +4821,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -4695,7 +4842,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
+              M.get_associated_function (| Ty.path "u128", "unchecked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4714,7 +4861,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [] |),
+              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4758,6 +4905,7 @@ Module iter.
                               []
                               [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                             "ok",
+                            [],
                             []
                           |),
                           [
@@ -4765,8 +4913,10 @@ Module iter.
                               M.get_trait_method (|
                                 "core::convert::TryFrom",
                                 Ty.path "usize",
+                                [],
                                 [ Ty.path "u128" ],
                                 "try_from",
+                                [],
                                 []
                               |),
                               [
@@ -4800,7 +4950,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "checked_add", [] |),
+              M.get_associated_function (| Ty.path "u128", "checked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4818,7 +4968,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "checked_sub", [] |),
+              M.get_associated_function (| Ty.path "u128", "checked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4875,6 +5025,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4884,7 +5035,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i128",
                                         [],
+                                        [],
                                         "forward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4909,7 +5062,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "i128", "wrapping_add", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -4948,6 +5101,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4957,7 +5111,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         Ty.path "i128",
                                         [],
+                                        [],
                                         "backward_checked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| start |); M.read (| n |) ]
@@ -4982,7 +5138,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "i128", "wrapping_sub", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               |)
@@ -5006,11 +5162,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -5034,11 +5191,12 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [], [] |),
                   [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
                 |)
               ]
@@ -5084,7 +5242,7 @@ Module iter.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "checked_sub", [] |),
+                            M.get_associated_function (| Ty.path "i128", "checked_sub", [], [] |),
                             [ M.read (| M.read (| end_ |) |); M.read (| M.read (| start |) |) ]
                           |)
                         |),
@@ -5107,6 +5265,7 @@ Module iter.
                                       [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                       ],
                                     "ok",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5114,8 +5273,10 @@ Module iter.
                                       M.get_trait_method (|
                                         "core::convert::TryFrom",
                                         Ty.path "usize",
+                                        [],
                                         [ Ty.path "i128" ],
                                         "try_from",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| result |) ]
@@ -5150,7 +5311,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "checked_add", [] |),
+              M.get_associated_function (| Ty.path "i128", "checked_add", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5168,7 +5329,7 @@ Module iter.
             (let start := M.alloc (| start |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "checked_sub", [] |),
+              M.get_associated_function (| Ty.path "i128", "checked_sub", [], [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5288,6 +5449,7 @@ Module iter.
                                                         Ty.path "core::num::error::TryFromIntError"
                                                       ],
                                                     "ok",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5295,8 +5457,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::convert::TryFrom",
                                                         Ty.path "usize",
+                                                        [],
                                                         [ Ty.path "u32" ],
                                                         "try_from",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -5322,6 +5486,7 @@ Module iter.
                                                         Ty.path "core::num::error::TryFromIntError"
                                                       ],
                                                     "ok",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5329,8 +5494,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::convert::TryFrom",
                                                         Ty.path "usize",
+                                                        [],
                                                         [ Ty.path "u32" ],
                                                         "try_from",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| count |) ]
@@ -5390,7 +5557,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -5399,7 +5568,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "forward_checked",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| start |); M.read (| count |) ]
@@ -5428,6 +5599,7 @@ Module iter.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "char" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5435,6 +5607,7 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -5493,7 +5666,9 @@ Module iter.
                                             []
                                             [ Ty.path "u32" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5502,7 +5677,9 @@ Module iter.
                                               "core::iter::range::Step",
                                               Ty.path "u32",
                                               [],
+                                              [],
                                               "forward_checked",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| res |); Value.Integer IntegerKind.Usize 2048
@@ -5532,6 +5709,7 @@ Module iter.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "char" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -5539,6 +5717,7 @@ Module iter.
                                                           [ Ty.path "core::convert::Infallible" ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -5589,6 +5768,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "from_u32_unchecked",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| res |) ]
@@ -5636,7 +5816,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -5645,7 +5827,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "backward_checked",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| start |); M.read (| count |) ]
@@ -5674,6 +5858,7 @@ Module iter.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "char" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5681,6 +5866,7 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -5739,7 +5925,9 @@ Module iter.
                                             []
                                             [ Ty.path "u32" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5748,7 +5936,9 @@ Module iter.
                                               "core::iter::range::Step",
                                               Ty.path "u32",
                                               [],
+                                              [],
                                               "backward_checked",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| res |); Value.Integer IntegerKind.Usize 2048
@@ -5778,6 +5968,7 @@ Module iter.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "char" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -5785,6 +5976,7 @@ Module iter.
                                                           [ Ty.path "core::convert::Infallible" ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -5816,7 +6008,12 @@ Module iter.
                       "core::option::Option::Some"
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "char", "from_u32_unchecked", [] |),
+                          M.get_associated_function (|
+                            Ty.path "char",
+                            "from_u32_unchecked",
+                            [],
+                            []
+                          |),
                           [ M.read (| res |) ]
                         |)
                       ]
@@ -5857,7 +6054,9 @@ Module iter.
                       "core::iter::range::Step",
                       Ty.path "u32",
                       [],
+                      [],
                       "forward_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| start |); M.read (| count |) ]
@@ -5894,7 +6093,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 Ty.path "u32",
                                 [],
+                                [],
                                 "forward_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| res |); Value.Integer IntegerKind.Usize 2048 ]
@@ -5906,7 +6107,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "from_u32_unchecked", [] |),
+                  M.get_associated_function (| Ty.path "char", "from_u32_unchecked", [], [] |),
                   [ M.read (| res |) ]
                 |)
               |)
@@ -5945,7 +6146,9 @@ Module iter.
                       "core::iter::range::Step",
                       Ty.path "u32",
                       [],
+                      [],
                       "backward_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| start |); M.read (| count |) ]
@@ -5982,7 +6185,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 Ty.path "u32",
                                 [],
+                                [],
                                 "backward_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| res |); Value.Integer IntegerKind.Usize 2048 ]
@@ -5994,7 +6199,7 @@ Module iter.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "from_u32_unchecked", [] |),
+                  M.get_associated_function (| Ty.path "char", "from_u32_unchecked", [], [] |),
                   [ M.read (| res |) ]
                 |)
               |)
@@ -6050,7 +6255,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 Ty.path "u8",
                                 [],
+                                [],
                                 "steps_between",
+                                [],
                                 []
                               |),
                               [
@@ -6059,6 +6266,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::ascii_char::AsciiChar",
                                       "to_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| start |) ]
@@ -6069,6 +6277,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::ascii_char::AsciiChar",
                                       "to_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| end_ |) ]
@@ -6107,7 +6316,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -6116,7 +6327,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "forward_checked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6124,6 +6337,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::ascii_char::AsciiChar",
                                       "to_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| start |) ]
@@ -6155,6 +6369,7 @@ Module iter.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6162,6 +6377,7 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -6188,6 +6404,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::ascii::ascii_char::AsciiChar",
                         "from_u8",
+                        [],
                         []
                       |),
                       [ M.read (| end_ |) ]
@@ -6224,7 +6441,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -6233,7 +6452,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "backward_checked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6241,6 +6462,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::ascii_char::AsciiChar",
                                       "to_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| start |) ]
@@ -6272,6 +6494,7 @@ Module iter.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6279,6 +6502,7 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -6308,6 +6532,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.path "core::ascii::ascii_char::AsciiChar",
                             "from_u8_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| end_ |) ]
@@ -6343,7 +6568,9 @@ Module iter.
                       "core::iter::range::Step",
                       Ty.path "u8",
                       [],
+                      [],
                       "forward_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -6351,6 +6578,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.path "core::ascii::ascii_char::AsciiChar",
                           "to_u8",
+                          [],
                           []
                         |),
                         [ M.read (| start |) ]
@@ -6364,6 +6592,7 @@ Module iter.
                   M.get_associated_function (|
                     Ty.path "core::ascii::ascii_char::AsciiChar",
                     "from_u8_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| end_ |) ]
@@ -6397,7 +6626,9 @@ Module iter.
                       "core::iter::range::Step",
                       Ty.path "u8",
                       [],
+                      [],
                       "backward_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -6405,6 +6636,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.path "core::ascii::ascii_char::AsciiChar",
                           "to_u8",
+                          [],
                           []
                         |),
                         [ M.read (| start |) ]
@@ -6418,6 +6650,7 @@ Module iter.
                   M.get_associated_function (|
                     Ty.path "core::ascii::ascii_char::AsciiChar",
                     "from_u8_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| end_ |) ]
@@ -6475,7 +6708,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 Ty.path "u32",
                                 [],
+                                [],
                                 "steps_between",
+                                [],
                                 []
                               |),
                               [
@@ -6484,6 +6719,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv4Addr",
                                       "to_bits",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| start |) ]
@@ -6494,6 +6730,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv4Addr",
                                       "to_bits",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| end_ |) ]
@@ -6523,6 +6760,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv4Addr";
                   Ty.function [ Ty.path "u32" ] (Ty.path "core::net::ip_addr::Ipv4Addr")
@@ -6534,7 +6772,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u32",
                     [],
+                    [],
                     "forward_checked",
+                    [],
                     []
                   |),
                   [
@@ -6542,6 +6782,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6552,6 +6793,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv4Addr",
                   "from_bits",
+                  [],
                   []
                 |)
               ]
@@ -6574,6 +6816,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv4Addr";
                   Ty.function [ Ty.path "u32" ] (Ty.path "core::net::ip_addr::Ipv4Addr")
@@ -6585,7 +6828,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u32",
                     [],
+                    [],
                     "backward_checked",
+                    [],
                     []
                   |),
                   [
@@ -6593,6 +6838,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6603,6 +6849,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv4Addr",
                   "from_bits",
+                  [],
                   []
                 |)
               ]
@@ -6627,6 +6874,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 "from_bits",
+                [],
                 []
               |),
               [
@@ -6635,7 +6883,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u32",
                     [],
+                    [],
                     "forward_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -6643,6 +6893,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6672,6 +6923,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 "from_bits",
+                [],
                 []
               |),
               [
@@ -6680,7 +6932,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u32",
                     [],
+                    [],
                     "backward_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -6688,6 +6942,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv4Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6748,7 +7003,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 Ty.path "u128",
                                 [],
+                                [],
                                 "steps_between",
+                                [],
                                 []
                               |),
                               [
@@ -6757,6 +7014,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "to_bits",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| start |) ]
@@ -6767,6 +7025,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::net::ip_addr::Ipv6Addr",
                                       "to_bits",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| end_ |) ]
@@ -6796,6 +7055,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                 "map",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function [ Ty.path "u128" ] (Ty.path "core::net::ip_addr::Ipv6Addr")
@@ -6807,7 +7067,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u128",
                     [],
+                    [],
                     "forward_checked",
+                    [],
                     []
                   |),
                   [
@@ -6815,6 +7077,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6825,6 +7088,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",
                   "from_bits",
+                  [],
                   []
                 |)
               ]
@@ -6847,6 +7111,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                 "map",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function [ Ty.path "u128" ] (Ty.path "core::net::ip_addr::Ipv6Addr")
@@ -6858,7 +7123,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u128",
                     [],
+                    [],
                     "backward_checked",
+                    [],
                     []
                   |),
                   [
@@ -6866,6 +7133,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6876,6 +7144,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",
                   "from_bits",
+                  [],
                   []
                 |)
               ]
@@ -6900,6 +7169,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 "from_bits",
+                [],
                 []
               |),
               [
@@ -6908,7 +7178,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u128",
                     [],
+                    [],
                     "forward_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -6916,6 +7188,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -6945,6 +7218,7 @@ Module iter.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 "from_bits",
+                [],
                 []
               |),
               [
@@ -6953,7 +7227,9 @@ Module iter.
                     "core::iter::range::Step",
                     Ty.path "u128",
                     [],
+                    [],
                     "backward_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -6961,6 +7237,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "to_bits",
+                        [],
                         []
                       |),
                       [ M.read (| start |) ]
@@ -7024,7 +7301,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                A,
+                                [],
+                                [ A ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -7046,6 +7331,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ A ],
                               "expect",
+                              [],
                               []
                             |),
                             [
@@ -7054,7 +7340,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   A,
                                   [],
+                                  [],
                                   "forward_checked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7063,7 +7351,9 @@ Module iter.
                                       "core::clone::Clone",
                                       A,
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7144,7 +7434,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "forward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7153,7 +7445,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7187,8 +7481,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
                                               A,
+                                              [],
                                               [ A ],
                                               "lt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7223,6 +7519,7 @@ Module iter.
                                                     []
                                                     [ A ],
                                                   "expect",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7231,7 +7528,9 @@ Module iter.
                                                       "core::iter::range::Step",
                                                       A,
                                                       [],
+                                                      [],
                                                       "forward_checked",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7240,7 +7539,9 @@ Module iter.
                                                           "core::clone::Clone",
                                                           A,
                                                           [],
+                                                          [],
                                                           "clone",
+                                                          [],
                                                           []
                                                         |),
                                                         [ plus_n ]
@@ -7276,7 +7577,7 @@ Module iter.
                         "start"
                       |),
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -7335,8 +7636,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "le",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7360,6 +7663,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -7368,7 +7672,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "steps_between",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7395,7 +7701,15 @@ Module iter.
               let~ taken :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "min",
+                      [],
+                      []
+                    |),
                     [ M.read (| available |); M.read (| n |) ]
                   |)
                 |) in
@@ -7410,6 +7724,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ A ],
                       "expect",
+                      [],
                       []
                     |),
                     [
@@ -7418,12 +7733,22 @@ Module iter.
                           "core::iter::range::Step",
                           A,
                           [],
+                          [],
                           "forward_checked",
+                          [],
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -7447,6 +7772,7 @@ Module iter.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -7471,6 +7797,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
@@ -7516,7 +7843,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                A,
+                                [],
+                                [ A ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -7543,6 +7878,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ A ],
                               "expect",
+                              [],
                               []
                             |),
                             [
@@ -7551,7 +7887,9 @@ Module iter.
                                   "core::iter::range::Step",
                                   A,
                                   [],
+                                  [],
                                   "backward_checked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7560,7 +7898,9 @@ Module iter.
                                       "core::clone::Clone",
                                       A,
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7583,7 +7923,15 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                A,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -7645,7 +7993,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "backward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7654,7 +8004,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7688,8 +8040,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
                                               A,
+                                              [],
                                               [ A ],
                                               "gt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7724,6 +8078,7 @@ Module iter.
                                                     []
                                                     [ A ],
                                                   "expect",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7732,7 +8087,9 @@ Module iter.
                                                       "core::iter::range::Step",
                                                       A,
                                                       [],
+                                                      [],
                                                       "backward_checked",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7755,7 +8112,9 @@ Module iter.
                                                     "core::clone::Clone",
                                                     A,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7785,7 +8144,7 @@ Module iter.
                         "end"
                       |),
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -7844,8 +8203,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "le",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7869,6 +8230,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -7877,7 +8239,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "steps_between",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7904,7 +8268,15 @@ Module iter.
               let~ taken :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "min",
+                      [],
+                      []
+                    |),
                     [ M.read (| available |); M.read (| n |) ]
                   |)
                 |) in
@@ -7919,6 +8291,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ A ],
                       "expect",
+                      [],
                       []
                     |),
                     [
@@ -7927,12 +8300,22 @@ Module iter.
                           "core::iter::range::Step",
                           A,
                           [],
+                          [],
                           "backward_checked",
+                          [],
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -7956,6 +8339,7 @@ Module iter.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -7980,6 +8364,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
@@ -8042,7 +8427,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                T,
+                                [],
+                                [ T ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -8078,7 +8471,9 @@ Module iter.
                               "core::iter::range::Step",
                               T,
                               [],
+                              [],
                               "forward_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| old |); Value.Integer IntegerKind.Usize 1 ]
@@ -8133,7 +8528,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     T,
                                     [],
+                                    [],
                                     "forward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8167,8 +8564,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
                                               T,
+                                              [],
                                               [ T ],
                                               "lt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8201,7 +8600,9 @@ Module iter.
                                                   "core::iter::range::Step",
                                                   T,
                                                   [],
+                                                  [],
                                                   "forward_unchecked",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8291,8 +8692,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     T,
+                                    [],
                                     [ T ],
                                     "le",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8316,6 +8719,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -8324,7 +8728,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     T,
                                     [],
+                                    [],
                                     "steps_between",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8351,7 +8757,15 @@ Module iter.
               let~ taken :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "min",
+                      [],
+                      []
+                    |),
                     [ M.read (| available |); M.read (| n |) ]
                   |)
                 |) in
@@ -8367,7 +8781,9 @@ Module iter.
                       "core::iter::range::Step",
                       T,
                       [],
+                      [],
                       "forward_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -8390,6 +8806,7 @@ Module iter.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -8414,6 +8831,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
@@ -8459,7 +8877,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                T,
+                                [],
+                                [ T ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -8487,7 +8913,9 @@ Module iter.
                               "core::iter::range::Step",
                               T,
                               [],
+                              [],
                               "backward_unchecked",
+                              [],
                               []
                             |),
                             [
@@ -8566,7 +8994,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     T,
                                     [],
+                                    [],
                                     "backward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8600,8 +9030,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
                                               T,
+                                              [],
                                               [ T ],
                                               "gt",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8634,7 +9066,9 @@ Module iter.
                                                   "core::iter::range::Step",
                                                   T,
                                                   [],
+                                                  [],
                                                   "backward_unchecked",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8729,8 +9163,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     T,
+                                    [],
                                     [ T ],
                                     "le",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8754,6 +9190,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -8762,7 +9199,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     T,
                                     [],
+                                    [],
                                     "steps_between",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8789,7 +9228,15 @@ Module iter.
               let~ taken :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "min",
+                      [],
+                      []
+                    |),
                     [ M.read (| available |); M.read (| n |) ]
                   |)
                 |) in
@@ -8805,7 +9252,9 @@ Module iter.
                       "core::iter::range::Step",
                       T,
                       [],
+                      [],
                       "backward_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -8828,6 +9277,7 @@ Module iter.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -8852,6 +9302,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
@@ -8904,7 +9355,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_next",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -8938,7 +9391,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                A,
+                                [],
+                                [ A ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -8961,7 +9422,9 @@ Module iter.
                               "core::iter::range::Step",
                               A,
                               [],
+                              [],
                               "steps_between",
+                              [],
                               []
                             |),
                             [
@@ -8985,6 +9448,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -9037,7 +9501,15 @@ Module iter.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                A,
+                                [],
+                                [ A ],
+                                "lt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -9058,6 +9530,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             "expect",
+                            [],
                             []
                           |),
                           [
@@ -9066,7 +9539,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 A,
                                 [],
+                                [],
                                 "steps_between",
+                                [],
                                 []
                               |),
                               [
@@ -9110,7 +9585,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_nth",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |) ]
@@ -9134,7 +9611,9 @@ Module iter.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -9161,7 +9640,9 @@ Module iter.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [ self ]
@@ -9188,7 +9669,9 @@ Module iter.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -9228,7 +9711,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_advance_by",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |) ]
@@ -9261,10 +9746,18 @@ Module iter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::range::Step", A, [], "forward_unchecked", [] |),
+              M.get_trait_method (|
+                "core::iter::range::Step",
+                A,
+                [],
+                [],
+                "forward_unchecked",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -9736,7 +10229,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_next_back",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -9761,7 +10256,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_nth_back",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |) ]
@@ -9791,7 +10288,9 @@ Module iter.
                 "core::iter::range::RangeIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "spec_advance_back_by",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |) ]
@@ -9860,10 +10359,18 @@ Module iter.
               let~ n :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::iter::range::Step", A, [], "forward", [] |),
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      A,
+                      [],
+                      [],
+                      "forward",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -9934,10 +10441,18 @@ Module iter.
               let~ plus_n :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::iter::range::Step", A, [], "forward", [] |),
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      A,
+                      [],
+                      [],
+                      "forward",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -9958,10 +10473,18 @@ Module iter.
                     "start"
                   |),
                   M.call_closure (|
-                    M.get_trait_method (| "core::iter::range::Step", A, [], "forward", [] |),
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      A,
+                      [],
+                      [],
+                      "forward",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [ plus_n ]
                       |);
                       Value.Integer IntegerKind.Usize 1
@@ -10065,6 +10588,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10085,7 +10609,15 @@ Module iter.
                   let~ is_iterating :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          A,
+                          [],
+                          [ A ],
+                          "lt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -10122,6 +10654,7 @@ Module iter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10130,7 +10663,9 @@ Module iter.
                                               "core::iter::range::Step",
                                               A,
                                               [],
+                                              [],
                                               "forward_checked",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10139,7 +10674,9 @@ Module iter.
                                                   "core::clone::Clone",
                                                   A,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10187,7 +10724,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10270,6 +10809,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10286,7 +10826,9 @@ Module iter.
                                         "core::ops::try_trait::Try",
                                         R,
                                         [],
+                                        [],
                                         "from_output",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| init |) ]
@@ -10314,8 +10856,10 @@ Module iter.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           A,
+                                          [],
                                           [ A ],
                                           "lt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10343,6 +10887,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                         "expect",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10351,7 +10896,9 @@ Module iter.
                                             "core::iter::range::Step",
                                             A,
                                             [],
+                                            [],
                                             "forward_checked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -10360,7 +10907,9 @@ Module iter.
                                                 "core::clone::Clone",
                                                 A,
                                                 [],
+                                                [],
                                                 "clone",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -10403,7 +10952,9 @@ Module iter.
                                               "core::ops::try_trait::Try",
                                               R,
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10411,8 +10962,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; A ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10441,8 +10994,10 @@ Module iter.
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
+                                                          [],
                                                           [ Ty.associated ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -10504,8 +11059,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       A,
+                                      [],
                                       [ A ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10535,7 +11092,9 @@ Module iter.
                                           "core::ops::try_trait::Try",
                                           R,
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10543,8 +11102,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
+                                              [],
                                               [ Ty.tuple [ B; A ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10557,7 +11118,9 @@ Module iter.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10592,8 +11155,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       R,
+                                                      [],
                                                       [ Ty.associated ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -10626,7 +11191,9 @@ Module iter.
                         "core::ops::try_trait::Try",
                         R,
                         [],
+                        [],
                         "from_output",
+                        [],
                         []
                       |),
                       [ M.read (| accum |) ]
@@ -10683,6 +11250,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10703,7 +11271,15 @@ Module iter.
                   let~ is_iterating :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "lt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          A,
+                          [],
+                          [ A ],
+                          "lt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -10740,6 +11316,7 @@ Module iter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10748,7 +11325,9 @@ Module iter.
                                               "core::iter::range::Step",
                                               A,
                                               [],
+                                              [],
                                               "backward_checked",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10757,7 +11336,9 @@ Module iter.
                                                   "core::clone::Clone",
                                                   A,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10805,7 +11386,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10888,6 +11471,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10904,7 +11488,9 @@ Module iter.
                                         "core::ops::try_trait::Try",
                                         R,
                                         [],
+                                        [],
                                         "from_output",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| init |) ]
@@ -10932,8 +11518,10 @@ Module iter.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           A,
+                                          [],
                                           [ A ],
                                           "lt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10961,6 +11549,7 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                         "expect",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10969,7 +11558,9 @@ Module iter.
                                             "core::iter::range::Step",
                                             A,
                                             [],
+                                            [],
                                             "backward_checked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -10978,7 +11569,9 @@ Module iter.
                                                 "core::clone::Clone",
                                                 A,
                                                 [],
+                                                [],
                                                 "clone",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -11021,7 +11614,9 @@ Module iter.
                                               "core::ops::try_trait::Try",
                                               R,
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11029,8 +11624,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; A ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11059,8 +11656,10 @@ Module iter.
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
+                                                          [],
                                                           [ Ty.associated ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -11122,8 +11721,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       A,
+                                      [],
                                       [ A ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11153,7 +11754,9 @@ Module iter.
                                           "core::ops::try_trait::Try",
                                           R,
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11161,8 +11764,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
+                                              [],
                                               [ Ty.tuple [ B; A ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11175,7 +11780,9 @@ Module iter.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11210,8 +11817,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       R,
+                                                      [],
                                                       [ Ty.associated ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -11244,7 +11853,9 @@ Module iter.
                         "core::ops::try_trait::Try",
                         R,
                         [],
+                        [],
                         "from_output",
+                        [],
                         []
                       |),
                       [ M.read (| accum |) ]
@@ -11316,6 +11927,7 @@ Module iter.
                                         []
                                         [ T ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11336,7 +11948,15 @@ Module iter.
                   let~ is_iterating :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "lt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -11374,7 +11994,9 @@ Module iter.
                                           "core::iter::range::Step",
                                           T,
                                           [],
+                                          [],
                                           "forward_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11489,6 +12111,7 @@ Module iter.
                                         []
                                         [ T ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11505,7 +12128,9 @@ Module iter.
                                         "core::ops::try_trait::Try",
                                         R,
                                         [],
+                                        [],
                                         "from_output",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| init |) ]
@@ -11533,8 +12158,10 @@ Module iter.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "lt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11563,7 +12190,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         T,
                                         [],
+                                        [],
                                         "forward_unchecked",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11603,7 +12232,9 @@ Module iter.
                                               "core::ops::try_trait::Try",
                                               R,
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11611,8 +12242,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11641,8 +12274,10 @@ Module iter.
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
+                                                          [],
                                                           [ Ty.associated ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -11704,8 +12339,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       T,
+                                      [],
                                       [ T ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11735,7 +12372,9 @@ Module iter.
                                           "core::ops::try_trait::Try",
                                           R,
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11743,8 +12382,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
+                                              [],
                                               [ Ty.tuple [ B; T ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11783,8 +12424,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       R,
+                                                      [],
                                                       [ Ty.associated ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -11817,7 +12460,9 @@ Module iter.
                         "core::ops::try_trait::Try",
                         R,
                         [],
+                        [],
                         "from_output",
+                        [],
                         []
                       |),
                       [ M.read (| accum |) ]
@@ -11874,6 +12519,7 @@ Module iter.
                                         []
                                         [ T ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11894,7 +12540,15 @@ Module iter.
                   let~ is_iterating :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "lt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -11932,7 +12586,9 @@ Module iter.
                                           "core::iter::range::Step",
                                           T,
                                           [],
+                                          [],
                                           "backward_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12047,6 +12703,7 @@ Module iter.
                                         []
                                         [ T ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -12063,7 +12720,9 @@ Module iter.
                                         "core::ops::try_trait::Try",
                                         R,
                                         [],
+                                        [],
                                         "from_output",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| init |) ]
@@ -12091,8 +12750,10 @@ Module iter.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "lt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12121,7 +12782,9 @@ Module iter.
                                         "core::iter::range::Step",
                                         T,
                                         [],
+                                        [],
                                         "backward_unchecked",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12161,7 +12824,9 @@ Module iter.
                                               "core::ops::try_trait::Try",
                                               R,
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12169,8 +12834,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -12199,8 +12866,10 @@ Module iter.
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
+                                                          [],
                                                           [ Ty.associated ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -12262,8 +12931,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       T,
+                                      [],
                                       [ T ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12293,7 +12964,9 @@ Module iter.
                                           "core::ops::try_trait::Try",
                                           R,
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12301,8 +12974,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
+                                              [],
                                               [ Ty.tuple [ B; T ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12341,8 +13016,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       R,
+                                                      [],
                                                       [ Ty.associated ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -12375,7 +13052,9 @@ Module iter.
                         "core::ops::try_trait::Try",
                         R,
                         [],
+                        [],
                         "from_output",
+                        [],
                         []
                       |),
                       [ M.read (| accum |) ]
@@ -12424,7 +13103,9 @@ Module iter.
                 "core::iter::range::RangeInclusiveIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "spec_next",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -12469,6 +13150,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -12501,7 +13183,9 @@ Module iter.
                           "core::iter::range::Step",
                           A,
                           [],
+                          [],
                           "steps_between",
+                          [],
                           []
                         |),
                         [
@@ -12535,6 +13219,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
@@ -12543,6 +13228,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "checked_add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
@@ -12602,6 +13288,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -12622,6 +13309,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "expect",
+                        [],
                         []
                       |),
                       [
@@ -12629,6 +13317,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             "and_then",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.function
@@ -12642,7 +13331,9 @@ Module iter.
                                 "core::iter::range::Step",
                                 A,
                                 [],
+                                [],
                                 "steps_between",
+                                [],
                                 []
                               |),
                               [
@@ -12674,6 +13365,7 @@ Module iter.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -12750,6 +13442,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -12780,7 +13473,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "forward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12789,7 +13484,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12817,8 +13514,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12857,7 +13556,9 @@ Module iter.
                                                   "core::iter::range::Step",
                                                   A,
                                                   [],
+                                                  [],
                                                   "forward",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -12866,7 +13567,9 @@ Module iter.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ plus_n ]
@@ -12908,7 +13611,9 @@ Module iter.
                                                   "core::clone::Clone",
                                                   A,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [ plus_n ]
@@ -12945,7 +13650,7 @@ Module iter.
                         "start"
                       |),
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -12993,7 +13698,9 @@ Module iter.
                 "core::iter::range::RangeInclusiveIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "spec_try_fold",
+                [],
                 [ B; F; R ]
               |),
               [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -13027,7 +13734,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                       [],
+                      [],
                       "try_fold",
+                      [],
                       [
                         AAA;
                         Ty.associated;
@@ -13041,6 +13750,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
+                          [],
                           [ AAA; A; FFF ]
                         |),
                         [ M.read (| fold |) ]
@@ -13071,7 +13781,9 @@ Module iter.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -13098,7 +13810,9 @@ Module iter.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [ self ]
@@ -13125,7 +13839,9 @@ Module iter.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -13190,7 +13906,9 @@ Module iter.
                 "core::iter::range::RangeInclusiveIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "spec_next_back",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -13252,6 +13970,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -13282,7 +14001,9 @@ Module iter.
                                     "core::iter::range::Step",
                                     A,
                                     [],
+                                    [],
                                     "backward_checked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13291,7 +14012,9 @@ Module iter.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13319,8 +14042,10 @@ Module iter.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13362,7 +14087,9 @@ Module iter.
                                                   "core::iter::range::Step",
                                                   A,
                                                   [],
+                                                  [],
                                                   "backward",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -13371,7 +14098,9 @@ Module iter.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ minus_n ]
@@ -13413,7 +14142,9 @@ Module iter.
                                                   "core::clone::Clone",
                                                   A,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [ minus_n ]
@@ -13450,7 +14181,7 @@ Module iter.
                         "end"
                       |),
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -13498,7 +14229,9 @@ Module iter.
                 "core::iter::range::RangeInclusiveIteratorImpl",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "spec_try_rfold",
+                [],
                 [ B; F; R ]
               |),
               [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -13532,7 +14265,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                       [],
+                      [],
                       "try_rfold",
+                      [],
                       [
                         AAA;
                         Ty.associated;
@@ -13546,6 +14281,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
+                          [],
                           [ AAA; A; FFF ]
                         |),
                         [ M.read (| fold |) ]

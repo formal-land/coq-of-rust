@@ -18,7 +18,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -40,7 +40,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -118,7 +118,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -140,7 +140,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -162,7 +162,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -184,7 +184,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -206,7 +206,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -247,7 +247,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -284,7 +284,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -400,7 +408,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
               [
                 M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                 M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -408,7 +416,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -432,7 +440,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           LogicalOp.or (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
               [
                 M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                 M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -440,7 +448,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -527,7 +535,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    U,
+                    [],
+                    [ U ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -549,8 +565,10 @@ Module tuple.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -585,7 +603,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    U,
+                    [],
+                    [ U ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -607,6 +633,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -614,6 +641,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -635,6 +663,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -642,6 +671,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -658,7 +688,15 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "lt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -687,7 +725,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    U,
+                    [],
+                    [ U ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -709,6 +755,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -716,6 +763,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -737,6 +785,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -744,6 +793,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -760,7 +810,15 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "le",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -789,7 +847,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    U,
+                    [],
+                    [ U ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -811,6 +877,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -818,6 +885,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -839,6 +907,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -846,6 +915,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -862,7 +932,15 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "ge",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -891,7 +969,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    U,
+                    [],
+                    [ U ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -913,6 +999,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -920,6 +1007,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -941,6 +1029,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -948,6 +1037,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -964,7 +1054,15 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [],
+                          [ T ],
+                          "gt",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -1012,7 +1110,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", U, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1025,7 +1123,7 @@ Module tuple.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                        M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -1070,7 +1168,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -1080,7 +1186,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -1201,7 +1315,7 @@ Module tuple.
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1209,7 +1323,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -1218,7 +1332,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -1243,7 +1357,7 @@ Module tuple.
           LogicalOp.or (|
             LogicalOp.or (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1251,7 +1365,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -1260,7 +1374,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -1352,7 +1466,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    V,
+                    [],
+                    [ V ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1375,8 +1497,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
+                            [],
                             [ U ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -1400,8 +1524,10 @@ Module tuple.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
+                                  [],
                                   [ T ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1442,7 +1568,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    V,
+                    [],
+                    [ V ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1464,6 +1598,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -1471,6 +1606,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -1492,6 +1628,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1499,6 +1636,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -1519,8 +1657,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
+                            [],
                             [ U ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -1544,6 +1684,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1551,6 +1692,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1573,6 +1715,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1580,6 +1723,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1599,8 +1743,10 @@ Module tuple.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
+                                  [],
                                   [ T ],
                                   "lt",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1633,7 +1779,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    V,
+                    [],
+                    [ V ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1655,6 +1809,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -1662,6 +1817,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -1683,6 +1839,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1690,6 +1847,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -1710,8 +1868,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
+                            [],
                             [ U ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -1735,6 +1895,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1742,6 +1903,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1764,6 +1926,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1771,6 +1934,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1790,8 +1954,10 @@ Module tuple.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
+                                  [],
                                   [ T ],
                                   "le",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1824,7 +1990,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    V,
+                    [],
+                    [ V ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -1846,6 +2020,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -1853,6 +2028,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -1874,6 +2050,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1881,6 +2058,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -1901,8 +2079,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
+                            [],
                             [ U ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -1926,6 +2106,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1933,6 +2114,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1955,6 +2137,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1962,6 +2145,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1981,8 +2165,10 @@ Module tuple.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
+                                  [],
                                   [ T ],
                                   "ge",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2015,7 +2201,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    V,
+                    [],
+                    [ V ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2037,6 +2231,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -2044,6 +2239,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -2065,6 +2261,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -2072,6 +2269,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -2092,8 +2290,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
+                            [],
                             [ U ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -2117,6 +2317,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -2124,6 +2325,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2146,6 +2348,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -2153,6 +2356,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2172,8 +2376,10 @@ Module tuple.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
+                                  [],
                                   [ T ],
                                   "gt",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2225,7 +2431,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", V, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2239,7 +2445,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", U, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -2252,7 +2458,7 @@ Module tuple.
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -2303,7 +2509,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -2313,7 +2527,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -2323,7 +2545,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -2455,7 +2685,7 @@ Module tuple.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2463,7 +2693,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -2472,7 +2702,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -2481,7 +2711,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -2507,7 +2737,7 @@ Module tuple.
             LogicalOp.or (|
               LogicalOp.or (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2515,7 +2745,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -2524,7 +2754,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -2533,7 +2763,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -2625,7 +2855,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    W,
+                    [],
+                    [ W ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2648,8 +2886,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
+                            [],
                             [ V ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -2674,8 +2914,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
+                                    [],
                                     [ U ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2700,8 +2942,10 @@ Module tuple.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2748,7 +2992,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    W,
+                    [],
+                    [ W ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -2770,6 +3022,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -2777,6 +3030,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -2798,6 +3052,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -2805,6 +3060,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -2825,8 +3081,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
+                            [],
                             [ V ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -2850,6 +3108,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -2857,6 +3116,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2879,6 +3139,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -2886,6 +3147,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2906,8 +3168,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
+                                    [],
                                     [ U ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2931,6 +3195,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -2938,6 +3203,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2967,6 +3233,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -2974,6 +3241,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2993,8 +3261,10 @@ Module tuple.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "lt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3029,7 +3299,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    W,
+                    [],
+                    [ W ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -3051,6 +3329,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -3058,6 +3337,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -3079,6 +3359,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -3086,6 +3367,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -3106,8 +3388,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
+                            [],
                             [ V ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -3131,6 +3415,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3138,6 +3423,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3160,6 +3446,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3167,6 +3454,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3187,8 +3475,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
+                                    [],
                                     [ U ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3212,6 +3502,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3219,6 +3510,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3248,6 +3540,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3255,6 +3548,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3274,8 +3568,10 @@ Module tuple.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "le",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3310,7 +3606,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    W,
+                    [],
+                    [ W ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -3332,6 +3636,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -3339,6 +3644,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -3360,6 +3666,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -3367,6 +3674,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -3387,8 +3695,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
+                            [],
                             [ V ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -3412,6 +3722,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3419,6 +3730,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3441,6 +3753,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3448,6 +3761,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3468,8 +3782,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
+                                    [],
                                     [ U ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3493,6 +3809,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3500,6 +3817,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3529,6 +3847,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3536,6 +3855,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3556,8 +3876,10 @@ Module tuple.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "ge",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3592,7 +3914,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    W,
+                    [],
+                    [ W ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -3614,6 +3944,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -3621,6 +3952,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -3642,6 +3974,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -3649,6 +3982,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -3669,8 +4003,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
+                            [],
                             [ V ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -3694,6 +4030,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3701,6 +4038,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3723,6 +4061,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3730,6 +4069,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3750,8 +4090,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
+                                    [],
                                     [ U ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3775,6 +4117,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3782,6 +4125,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3811,6 +4155,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3818,6 +4163,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3838,8 +4184,10 @@ Module tuple.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
+                                          [],
                                           [ T ],
                                           "gt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3893,7 +4241,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", W, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -3907,7 +4255,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", V, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -3921,7 +4269,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", U, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    U,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -3935,7 +4291,15 @@ Module tuple.
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                        M.get_trait_method (|
+                                          "core::cmp::Ord",
+                                          T,
+                                          [],
+                                          [],
+                                          "cmp",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                                           M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -3992,7 +4356,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -4002,7 +4374,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -4012,7 +4392,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -4022,7 +4410,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -4169,7 +4565,7 @@ Module tuple.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -4177,7 +4573,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -4186,7 +4582,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -4195,7 +4591,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -4204,7 +4600,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -4231,7 +4627,7 @@ Module tuple.
               LogicalOp.or (|
                 LogicalOp.or (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -4239,7 +4635,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -4248,7 +4644,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -4257,7 +4653,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -4266,7 +4662,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -4359,7 +4755,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    X,
+                    [],
+                    [ X ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -4382,8 +4786,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
+                            [],
                             [ W ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -4408,8 +4814,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
+                                    [],
                                     [ V ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4435,8 +4843,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
+                                            [],
                                             [ U ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4464,8 +4874,10 @@ Module tuple.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
+                                                  [],
                                                   [ T ],
                                                   "partial_cmp",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4524,7 +4936,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    X,
+                    [],
+                    [ X ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -4546,6 +4966,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -4553,6 +4974,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -4574,6 +4996,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -4581,6 +5004,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -4601,8 +5025,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
+                            [],
                             [ W ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -4626,6 +5052,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -4633,6 +5060,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4655,6 +5083,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -4662,6 +5091,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4682,8 +5112,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
+                                    [],
                                     [ V ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4707,6 +5139,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -4714,6 +5147,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4743,6 +5177,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -4750,6 +5185,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4770,8 +5206,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
+                                            [],
                                             [ U ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4795,6 +5233,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -4802,6 +5241,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -4831,6 +5271,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -4838,6 +5279,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4861,8 +5303,10 @@ Module tuple.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
+                                                  [],
                                                   [ T ],
                                                   "lt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4905,7 +5349,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    X,
+                    [],
+                    [ X ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -4927,6 +5379,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -4934,6 +5387,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -4955,6 +5409,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -4962,6 +5417,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -4982,8 +5438,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
+                            [],
                             [ W ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -5007,6 +5465,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -5014,6 +5473,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5036,6 +5496,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -5043,6 +5504,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5063,8 +5525,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
+                                    [],
                                     [ V ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5088,6 +5552,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -5095,6 +5560,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5124,6 +5590,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5131,6 +5598,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5151,8 +5619,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
+                                            [],
                                             [ U ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5176,6 +5646,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -5183,6 +5654,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5212,6 +5684,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -5219,6 +5692,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5242,8 +5716,10 @@ Module tuple.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
+                                                  [],
                                                   [ T ],
                                                   "le",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5286,7 +5762,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    X,
+                    [],
+                    [ X ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -5308,6 +5792,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -5315,6 +5800,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -5336,6 +5822,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -5343,6 +5830,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -5363,8 +5851,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
+                            [],
                             [ W ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -5388,6 +5878,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -5395,6 +5886,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5417,6 +5909,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -5424,6 +5917,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5444,8 +5938,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
+                                    [],
                                     [ V ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5469,6 +5965,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -5476,6 +5973,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5505,6 +6003,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5512,6 +6011,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5533,8 +6033,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
+                                            [],
                                             [ U ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5558,6 +6060,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -5565,6 +6068,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5594,6 +6098,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -5601,6 +6106,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5624,8 +6130,10 @@ Module tuple.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
+                                                  [],
                                                   [ T ],
                                                   "ge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5668,7 +6176,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    X,
+                    [],
+                    [ X ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -5690,6 +6206,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -5697,6 +6214,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -5718,6 +6236,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -5725,6 +6244,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -5745,8 +6265,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
+                            [],
                             [ W ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -5770,6 +6292,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -5777,6 +6300,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5799,6 +6323,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -5806,6 +6331,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5826,8 +6352,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
+                                    [],
                                     [ V ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5851,6 +6379,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -5858,6 +6387,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5887,6 +6417,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5894,6 +6425,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5915,8 +6447,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
+                                            [],
                                             [ U ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5940,6 +6474,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -5947,6 +6482,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5976,6 +6512,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -5983,6 +6520,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6006,8 +6544,10 @@ Module tuple.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
+                                                  [],
                                                   [ T ],
                                                   "gt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6069,7 +6609,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", X, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -6083,7 +6623,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", W, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -6097,7 +6637,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", V, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    V,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -6116,7 +6664,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             U,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6139,7 +6689,9 @@ Module tuple.
                                                   "core::cmp::Ord",
                                                   T,
                                                   [],
+                                                  [],
                                                   "cmp",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6215,7 +6767,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -6225,7 +6785,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -6235,7 +6803,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -6245,7 +6821,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -6255,7 +6839,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -6409,7 +7001,7 @@ Module tuple.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", Y, [], [ Y ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -6417,7 +7009,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -6426,7 +7018,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -6435,7 +7027,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -6444,7 +7036,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -6453,7 +7045,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -6481,7 +7073,7 @@ Module tuple.
                 LogicalOp.or (|
                   LogicalOp.or (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", Y, [], [ Y ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -6489,7 +7081,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -6498,7 +7090,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -6507,7 +7099,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -6516,7 +7108,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -6525,7 +7117,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -6620,7 +7212,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Y,
+                    [],
+                    [ Y ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -6643,8 +7243,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
+                            [],
                             [ X ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -6669,8 +7271,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
+                                    [],
                                     [ W ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6696,8 +7300,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
+                                            [],
                                             [ V ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6726,8 +7332,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
+                                                    [],
                                                     [ U ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6761,8 +7369,10 @@ Module tuple.
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
+                                                          [],
                                                           [ T ],
                                                           "partial_cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6827,7 +7437,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Y,
+                    [],
+                    [ Y ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -6849,6 +7467,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -6856,6 +7475,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -6877,6 +7497,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -6884,6 +7505,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -6904,8 +7526,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
+                            [],
                             [ X ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -6929,6 +7553,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -6936,6 +7561,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6958,6 +7584,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -6965,6 +7592,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6985,8 +7613,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
+                                    [],
                                     [ W ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7010,6 +7640,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -7017,6 +7648,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7046,6 +7678,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -7053,6 +7686,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7073,8 +7707,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
+                                            [],
                                             [ V ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7098,6 +7734,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -7105,6 +7742,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7134,6 +7772,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -7141,6 +7780,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7165,8 +7805,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
+                                                    [],
                                                     [ U ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7196,6 +7838,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -7203,6 +7846,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7232,6 +7876,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -7239,6 +7884,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7262,8 +7908,10 @@ Module tuple.
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
+                                                          [],
                                                           [ T ],
                                                           "lt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7308,7 +7956,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Y,
+                    [],
+                    [ Y ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -7330,6 +7986,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -7337,6 +7994,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -7358,6 +8016,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -7365,6 +8024,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -7385,8 +8045,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
+                            [],
                             [ X ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -7410,6 +8072,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -7417,6 +8080,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7439,6 +8103,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -7446,6 +8111,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7466,8 +8132,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
+                                    [],
                                     [ W ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7491,6 +8159,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -7498,6 +8167,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7527,6 +8197,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -7534,6 +8205,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7554,8 +8226,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
+                                            [],
                                             [ V ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7579,6 +8253,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -7586,6 +8261,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7615,6 +8291,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -7622,6 +8299,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7646,8 +8324,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
+                                                    [],
                                                     [ U ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7677,6 +8357,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -7684,6 +8365,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7713,6 +8395,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -7720,6 +8403,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7743,8 +8427,10 @@ Module tuple.
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
+                                                          [],
                                                           [ T ],
                                                           "le",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7789,7 +8475,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Y,
+                    [],
+                    [ Y ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -7811,6 +8505,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -7818,6 +8513,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -7839,6 +8535,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -7846,6 +8543,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -7866,8 +8564,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
+                            [],
                             [ X ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -7891,6 +8591,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -7898,6 +8599,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7920,6 +8622,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -7927,6 +8630,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7947,8 +8651,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
+                                    [],
                                     [ W ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7972,6 +8678,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -7979,6 +8686,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8008,6 +8716,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -8015,6 +8724,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -8036,8 +8746,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
+                                            [],
                                             [ V ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8061,6 +8773,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -8068,6 +8781,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -8097,6 +8811,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -8104,6 +8819,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8128,8 +8844,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
+                                                    [],
                                                     [ U ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8159,6 +8877,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -8166,6 +8885,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -8195,6 +8915,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -8202,6 +8923,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8225,8 +8947,10 @@ Module tuple.
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
+                                                          [],
                                                           [ T ],
                                                           "ge",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8271,7 +8995,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Y,
+                    [],
+                    [ Y ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -8293,6 +9025,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -8300,6 +9033,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -8321,6 +9055,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -8328,6 +9063,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -8348,8 +9084,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
+                            [],
                             [ X ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -8373,6 +9111,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -8380,6 +9119,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8402,6 +9142,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -8409,6 +9150,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8429,8 +9171,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
+                                    [],
                                     [ W ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8454,6 +9198,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -8461,6 +9206,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8490,6 +9236,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -8497,6 +9244,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -8518,8 +9266,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
+                                            [],
                                             [ V ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8543,6 +9293,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -8550,6 +9301,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -8579,6 +9331,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -8586,6 +9339,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8610,8 +9364,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
+                                                    [],
                                                     [ U ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8641,6 +9397,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -8648,6 +9405,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -8677,6 +9435,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -8684,6 +9443,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8707,8 +9467,10 @@ Module tuple.
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
+                                                          [],
                                                           [ T ],
                                                           "gt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8772,7 +9534,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Y, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -8786,7 +9548,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", X, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -8800,7 +9562,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", W, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    W,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -8819,7 +9589,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             V,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8843,7 +9615,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     U,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8872,7 +9646,9 @@ Module tuple.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8954,7 +9730,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -8964,7 +9748,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -8974,7 +9766,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -8984,7 +9784,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -8994,7 +9802,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -9004,7 +9820,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -9170,7 +9994,7 @@ Module tuple.
                   LogicalOp.and (|
                     LogicalOp.and (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", Z, [], [ Z ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -9178,7 +10002,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -9187,7 +10019,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -9196,7 +10028,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -9205,7 +10037,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -9214,7 +10046,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -9223,7 +10055,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -9257,7 +10089,7 @@ Module tuple.
                   LogicalOp.or (|
                     LogicalOp.or (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", Z, [], [ Z ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -9265,7 +10097,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -9274,7 +10114,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -9283,7 +10123,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -9292,7 +10132,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -9301,7 +10141,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -9310,7 +10150,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -9405,7 +10245,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Z,
+                    [],
+                    [ Z ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -9428,8 +10276,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -9454,8 +10304,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
+                                    [],
                                     [ X ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9481,8 +10333,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
+                                            [],
                                             [ W ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9511,8 +10365,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
+                                                    [],
                                                     [ V ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9547,8 +10403,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
+                                                            [],
                                                             [ U ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -9582,8 +10440,10 @@ Module tuple.
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
+                                                                  [],
                                                                   [ T ],
                                                                   "partial_cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9659,7 +10519,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Z,
+                    [],
+                    [ Z ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -9681,6 +10549,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -9688,6 +10557,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -9709,6 +10579,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -9716,6 +10587,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -9736,8 +10608,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -9761,6 +10635,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -9768,6 +10643,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9790,6 +10666,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -9797,6 +10674,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9817,8 +10695,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
+                                    [],
                                     [ X ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9842,6 +10722,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -9849,6 +10730,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -9878,6 +10760,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -9885,6 +10768,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9905,8 +10789,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
+                                            [],
                                             [ W ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9930,6 +10816,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -9937,6 +10824,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9966,6 +10854,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -9973,6 +10862,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9997,8 +10887,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
+                                                    [],
                                                     [ V ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -10028,6 +10920,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -10035,6 +10928,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10064,6 +10958,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -10071,6 +10966,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -10095,8 +10991,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
+                                                            [],
                                                             [ U ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10130,6 +11028,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -10141,6 +11040,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10171,6 +11071,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -10182,6 +11083,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10205,8 +11107,10 @@ Module tuple.
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
+                                                                  [],
                                                                   [ T ],
                                                                   "lt",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10258,7 +11162,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Z,
+                    [],
+                    [ Z ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -10280,6 +11192,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -10287,6 +11200,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -10308,6 +11222,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -10315,6 +11230,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -10335,8 +11251,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -10360,6 +11278,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -10367,6 +11286,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10389,6 +11309,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -10396,6 +11317,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -10416,8 +11338,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
+                                    [],
                                     [ X ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -10441,6 +11365,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -10448,6 +11373,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10477,6 +11403,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -10484,6 +11411,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10504,8 +11432,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
+                                            [],
                                             [ W ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -10529,6 +11459,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -10536,6 +11467,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10565,6 +11497,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -10572,6 +11505,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10596,8 +11530,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
+                                                    [],
                                                     [ V ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -10627,6 +11563,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -10634,6 +11571,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10663,6 +11601,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -10670,6 +11609,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -10694,8 +11634,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
+                                                            [],
                                                             [ U ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10729,6 +11671,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -10740,6 +11683,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10770,6 +11714,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -10781,6 +11726,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10804,8 +11750,10 @@ Module tuple.
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
+                                                                  [],
                                                                   [ T ],
                                                                   "le",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10857,7 +11805,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Z,
+                    [],
+                    [ Z ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -10879,6 +11835,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -10886,6 +11843,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -10907,6 +11865,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -10914,6 +11873,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -10934,8 +11894,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -10959,6 +11921,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -10966,6 +11929,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10988,6 +11952,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -10995,6 +11960,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11015,8 +11981,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
+                                    [],
                                     [ X ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11040,6 +12008,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -11047,6 +12016,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11076,6 +12046,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -11083,6 +12054,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11104,8 +12076,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
+                                            [],
                                             [ W ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -11129,6 +12103,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -11136,6 +12111,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11165,6 +12141,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -11172,6 +12149,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11196,8 +12174,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
+                                                    [],
                                                     [ V ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -11227,6 +12207,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -11234,6 +12215,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -11263,6 +12245,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -11270,6 +12253,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -11294,8 +12278,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
+                                                            [],
                                                             [ U ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -11329,6 +12315,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -11340,6 +12327,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -11370,6 +12358,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -11381,6 +12370,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -11404,8 +12394,10 @@ Module tuple.
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
+                                                                  [],
                                                                   [ T ],
                                                                   "ge",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -11457,7 +12449,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Z,
+                    [],
+                    [ Z ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -11479,6 +12479,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -11486,6 +12487,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -11507,6 +12509,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -11514,6 +12517,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -11534,8 +12538,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -11559,6 +12565,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -11566,6 +12573,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11588,6 +12596,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -11595,6 +12604,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11615,8 +12625,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
+                                    [],
                                     [ X ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11640,6 +12652,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -11647,6 +12660,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11676,6 +12690,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -11683,6 +12698,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11704,8 +12720,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
+                                            [],
                                             [ W ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -11729,6 +12747,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -11736,6 +12755,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11765,6 +12785,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -11772,6 +12793,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11796,8 +12818,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
+                                                    [],
                                                     [ V ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -11827,6 +12851,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -11834,6 +12859,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -11863,6 +12889,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -11870,6 +12897,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -11894,8 +12922,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
+                                                            [],
                                                             [ U ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -11929,6 +12959,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -11940,6 +12971,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -11970,6 +13002,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -11981,6 +13014,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -12004,8 +13038,10 @@ Module tuple.
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
+                                                                  [],
                                                                   [ T ],
                                                                   "gt",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -12076,7 +13112,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Z, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -12090,7 +13126,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", Y, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -12104,7 +13140,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", X, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    X,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -12123,7 +13167,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             W,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -12147,7 +13193,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     V,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -12177,7 +13225,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             U,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -12206,7 +13256,9 @@ Module tuple.
                                                                   "core::cmp::Ord",
                                                                   T,
                                                                   [],
+                                                                  [],
                                                                   "cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -12294,7 +13346,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12304,7 +13364,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12314,7 +13382,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12324,7 +13400,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12334,7 +13418,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12344,7 +13436,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12354,7 +13454,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -12527,7 +13635,15 @@ Module tuple.
                     LogicalOp.and (|
                       LogicalOp.and (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            A,
+                            [],
+                            [ A ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -12535,7 +13651,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -12544,7 +13668,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -12553,7 +13685,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -12562,7 +13694,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -12571,7 +13703,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -12580,7 +13712,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -12589,7 +13721,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -12624,7 +13756,15 @@ Module tuple.
                     LogicalOp.or (|
                       LogicalOp.or (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            A,
+                            [],
+                            [ A ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -12632,7 +13772,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -12641,7 +13789,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -12650,7 +13806,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -12659,7 +13815,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -12668,7 +13824,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -12677,7 +13833,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -12686,7 +13842,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -12781,7 +13937,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    A,
+                    [],
+                    [ A ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -12804,8 +13968,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
+                            [],
                             [ Z ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -12830,8 +13996,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
+                                    [],
                                     [ Y ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12857,8 +14025,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
+                                            [],
                                             [ X ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -12887,8 +14057,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
+                                                    [],
                                                     [ W ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -12923,8 +14095,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
+                                                            [],
                                                             [ V ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -12959,8 +14133,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
+                                                                    [],
                                                                     [ U ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -12994,8 +14170,10 @@ Module tuple.
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
+                                                                          [],
                                                                           [ T ],
                                                                           "partial_cmp",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13078,7 +14256,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    A,
+                    [],
+                    [ A ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -13100,6 +14286,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -13107,6 +14294,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -13128,6 +14316,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -13135,6 +14324,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -13155,8 +14345,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
+                            [],
                             [ Z ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -13180,6 +14372,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -13187,6 +14380,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13209,6 +14403,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -13216,6 +14411,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13236,8 +14432,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
+                                    [],
                                     [ Y ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13261,6 +14459,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -13268,6 +14467,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -13297,6 +14497,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -13304,6 +14505,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -13324,8 +14526,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
+                                            [],
                                             [ X ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -13349,6 +14553,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -13356,6 +14561,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -13385,6 +14591,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -13392,6 +14599,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -13416,8 +14624,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
+                                                    [],
                                                     [ W ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -13447,6 +14657,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -13454,6 +14665,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -13483,6 +14695,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -13490,6 +14703,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -13514,8 +14728,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
+                                                            [],
                                                             [ V ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -13549,6 +14765,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -13560,6 +14777,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -13590,6 +14808,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -13601,6 +14820,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -13625,8 +14845,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
+                                                                    [],
                                                                     [ U ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -13660,6 +14882,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -13671,6 +14894,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -13704,6 +14928,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -13715,6 +14940,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13738,8 +14964,10 @@ Module tuple.
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
+                                                                          [],
                                                                           [ T ],
                                                                           "lt",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13793,7 +15021,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    A,
+                    [],
+                    [ A ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -13815,6 +15051,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -13822,6 +15059,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -13843,6 +15081,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -13850,6 +15089,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -13870,8 +15110,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
+                            [],
                             [ Z ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -13895,6 +15137,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -13902,6 +15145,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13924,6 +15168,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -13931,6 +15176,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13951,8 +15197,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
+                                    [],
                                     [ Y ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13976,6 +15224,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -13983,6 +15232,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -14012,6 +15262,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -14019,6 +15270,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -14039,8 +15291,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
+                                            [],
                                             [ X ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -14064,6 +15318,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -14071,6 +15326,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -14100,6 +15356,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -14107,6 +15364,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -14131,8 +15389,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
+                                                    [],
                                                     [ W ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -14162,6 +15422,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -14169,6 +15430,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -14198,6 +15460,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -14205,6 +15468,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -14229,8 +15493,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
+                                                            [],
                                                             [ V ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -14264,6 +15530,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -14275,6 +15542,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -14305,6 +15573,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -14316,6 +15585,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -14340,8 +15610,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
+                                                                    [],
                                                                     [ U ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -14375,6 +15647,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -14386,6 +15659,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -14419,6 +15693,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -14430,6 +15705,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -14453,8 +15729,10 @@ Module tuple.
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
+                                                                          [],
                                                                           [ T ],
                                                                           "le",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -14508,7 +15786,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    A,
+                    [],
+                    [ A ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -14530,6 +15816,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -14537,6 +15824,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -14558,6 +15846,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -14565,6 +15854,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -14585,8 +15875,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
+                            [],
                             [ Z ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -14610,6 +15902,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -14617,6 +15910,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14639,6 +15933,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -14646,6 +15941,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14666,8 +15962,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
+                                    [],
                                     [ Y ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14691,6 +15989,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -14698,6 +15997,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -14727,6 +16027,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -14734,6 +16035,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -14755,8 +16057,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
+                                            [],
                                             [ X ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -14780,6 +16084,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -14787,6 +16092,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -14816,6 +16122,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -14823,6 +16130,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -14847,8 +16155,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
+                                                    [],
                                                     [ W ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -14878,6 +16188,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -14885,6 +16196,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -14914,6 +16226,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -14921,6 +16234,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -14945,8 +16259,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
+                                                            [],
                                                             [ V ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -14980,6 +16296,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -14991,6 +16308,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -15021,6 +16339,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -15032,6 +16351,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -15056,8 +16376,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
+                                                                    [],
                                                                     [ U ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -15091,6 +16413,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -15102,6 +16425,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -15135,6 +16459,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -15146,6 +16471,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -15169,8 +16495,10 @@ Module tuple.
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
+                                                                          [],
                                                                           [ T ],
                                                                           "ge",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -15224,7 +16552,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    A,
+                    [],
+                    [ A ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -15246,6 +16582,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -15253,6 +16590,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -15274,6 +16612,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -15281,6 +16620,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -15301,8 +16641,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
+                            [],
                             [ Z ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -15326,6 +16668,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -15333,6 +16676,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15355,6 +16699,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -15362,6 +16707,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15382,8 +16728,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
+                                    [],
                                     [ Y ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15407,6 +16755,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -15414,6 +16763,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -15443,6 +16793,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -15450,6 +16801,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -15471,8 +16823,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
+                                            [],
                                             [ X ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -15496,6 +16850,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -15503,6 +16858,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -15532,6 +16888,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -15539,6 +16896,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -15563,8 +16921,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
+                                                    [],
                                                     [ W ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -15594,6 +16954,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -15601,6 +16962,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -15630,6 +16992,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -15637,6 +17000,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -15661,8 +17025,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
+                                                            [],
                                                             [ V ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -15696,6 +17062,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -15707,6 +17074,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -15737,6 +17105,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -15748,6 +17117,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -15772,8 +17142,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
+                                                                    [],
                                                                     [ U ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -15807,6 +17179,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -15818,6 +17191,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -15851,6 +17225,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -15862,6 +17237,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -15885,8 +17261,10 @@ Module tuple.
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
+                                                                          [],
                                                                           [ T ],
                                                                           "gt",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -15959,7 +17337,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -15973,7 +17351,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", Z, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -15987,7 +17365,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    Y,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -16006,7 +17392,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             X,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -16030,7 +17418,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     W,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -16060,7 +17450,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             V,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -16090,7 +17482,9 @@ Module tuple.
                                                                     "core::cmp::Ord",
                                                                     U,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -16119,7 +17513,9 @@ Module tuple.
                                                                           "core::cmp::Ord",
                                                                           T,
                                                                           [],
+                                                                          [],
                                                                           "cmp",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -16214,7 +17610,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        A,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16224,7 +17628,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16234,7 +17646,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16244,7 +17664,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16254,7 +17682,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16264,7 +17700,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16274,7 +17718,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16284,7 +17736,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -16464,7 +17924,15 @@ Module tuple.
                       LogicalOp.and (|
                         LogicalOp.and (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              B,
+                              [],
+                              [ B ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -16472,7 +17940,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "eq",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -16481,7 +17957,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -16490,7 +17974,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -16499,7 +17991,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -16508,7 +18000,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -16517,7 +18009,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -16526,7 +18018,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -16535,7 +18027,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -16571,7 +18063,15 @@ Module tuple.
                       LogicalOp.or (|
                         LogicalOp.or (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              B,
+                              [],
+                              [ B ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -16579,7 +18079,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "ne",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -16588,7 +18096,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -16597,7 +18113,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -16606,7 +18130,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -16615,7 +18139,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -16624,7 +18148,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -16633,7 +18157,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -16642,7 +18166,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -16737,7 +18261,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    B,
+                    [],
+                    [ B ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -16760,8 +18292,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
+                            [],
                             [ A ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -16786,8 +18320,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
+                                    [],
                                     [ Z ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16813,8 +18349,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
+                                            [],
                                             [ Y ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -16843,8 +18381,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
+                                                    [],
                                                     [ X ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -16879,8 +18419,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
+                                                            [],
                                                             [ W ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -16915,8 +18457,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
+                                                                    [],
                                                                     [ V ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -16951,8 +18495,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
+                                                                            [],
                                                                             [ U ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -16986,8 +18532,10 @@ Module tuple.
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
+                                                                                  [],
                                                                                   [ T ],
                                                                                   "partial_cmp",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -17081,7 +18629,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    B,
+                    [],
+                    [ B ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -17103,6 +18659,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -17110,6 +18667,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -17131,6 +18689,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -17138,6 +18697,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -17158,8 +18718,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
+                            [],
                             [ A ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -17183,6 +18745,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -17190,6 +18753,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17212,6 +18776,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -17219,6 +18784,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17239,8 +18805,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
+                                    [],
                                     [ Z ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -17264,6 +18832,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -17271,6 +18840,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -17300,6 +18870,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -17307,6 +18878,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -17327,8 +18899,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
+                                            [],
                                             [ Y ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -17352,6 +18926,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -17359,6 +18934,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -17388,6 +18964,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -17395,6 +18972,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -17419,8 +18997,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
+                                                    [],
                                                     [ X ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -17450,6 +19030,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -17457,6 +19038,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -17486,6 +19068,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -17493,6 +19076,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -17517,8 +19101,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
+                                                            [],
                                                             [ W ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -17552,6 +19138,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -17563,6 +19150,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -17593,6 +19181,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -17604,6 +19193,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -17628,8 +19218,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
+                                                                    [],
                                                                     [ V ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -17663,6 +19255,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -17674,6 +19267,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -17707,6 +19301,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -17718,6 +19313,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -17742,8 +19338,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
+                                                                            [],
                                                                             [ U ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -17777,6 +19375,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -17788,6 +19387,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -17821,6 +19421,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -17832,6 +19433,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -17855,8 +19457,10 @@ Module tuple.
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
+                                                                                  [],
                                                                                   [ T ],
                                                                                   "lt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -17916,7 +19520,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    B,
+                    [],
+                    [ B ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -17938,6 +19550,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -17945,6 +19558,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -17966,6 +19580,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -17973,6 +19588,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -17993,8 +19609,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
+                            [],
                             [ A ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -18018,6 +19636,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -18025,6 +19644,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18047,6 +19667,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -18054,6 +19675,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18074,8 +19696,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
+                                    [],
                                     [ Z ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -18099,6 +19723,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -18106,6 +19731,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -18135,6 +19761,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -18142,6 +19769,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -18162,8 +19790,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
+                                            [],
                                             [ Y ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -18187,6 +19817,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -18194,6 +19825,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -18223,6 +19855,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -18230,6 +19863,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -18254,8 +19888,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
+                                                    [],
                                                     [ X ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -18285,6 +19921,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -18292,6 +19929,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -18321,6 +19959,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -18328,6 +19967,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -18352,8 +19992,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
+                                                            [],
                                                             [ W ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -18387,6 +20029,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -18398,6 +20041,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -18428,6 +20072,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -18439,6 +20084,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -18463,8 +20109,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
+                                                                    [],
                                                                     [ V ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -18498,6 +20146,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -18509,6 +20158,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -18542,6 +20192,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -18553,6 +20204,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -18577,8 +20229,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
+                                                                            [],
                                                                             [ U ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -18612,6 +20266,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -18623,6 +20278,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -18656,6 +20312,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -18667,6 +20324,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -18690,8 +20348,10 @@ Module tuple.
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
+                                                                                  [],
                                                                                   [ T ],
                                                                                   "le",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -18751,7 +20411,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    B,
+                    [],
+                    [ B ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -18773,6 +20441,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -18780,6 +20449,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -18801,6 +20471,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -18808,6 +20479,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -18828,8 +20500,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
+                            [],
                             [ A ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -18853,6 +20527,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -18860,6 +20535,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18882,6 +20558,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -18889,6 +20566,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18909,8 +20587,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
+                                    [],
                                     [ Z ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -18934,6 +20614,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -18941,6 +20622,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -18970,6 +20652,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -18977,6 +20660,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -18998,8 +20682,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
+                                            [],
                                             [ Y ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19023,6 +20709,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -19030,6 +20717,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -19059,6 +20747,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -19066,6 +20755,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -19090,8 +20780,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
+                                                    [],
                                                     [ X ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -19121,6 +20813,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -19128,6 +20821,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -19157,6 +20851,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -19164,6 +20859,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -19188,8 +20884,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
+                                                            [],
                                                             [ W ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -19223,6 +20921,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -19234,6 +20933,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -19264,6 +20964,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -19275,6 +20976,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -19299,8 +21001,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
+                                                                    [],
                                                                     [ V ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -19334,6 +21038,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -19345,6 +21050,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -19378,6 +21084,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -19389,6 +21096,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -19413,8 +21121,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
+                                                                            [],
                                                                             [ U ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -19448,6 +21158,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -19459,6 +21170,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -19492,6 +21204,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -19503,6 +21216,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -19526,8 +21240,10 @@ Module tuple.
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
+                                                                                  [],
                                                                                   [ T ],
                                                                                   "ge",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -19587,7 +21303,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    B,
+                    [],
+                    [ B ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -19609,6 +21333,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -19616,6 +21341,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -19637,6 +21363,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -19644,6 +21371,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -19664,8 +21392,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
+                            [],
                             [ A ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -19689,6 +21419,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -19696,6 +21427,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19718,6 +21450,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -19725,6 +21458,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19745,8 +21479,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
+                                    [],
                                     [ Z ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19770,6 +21506,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -19777,6 +21514,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -19806,6 +21544,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -19813,6 +21552,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -19834,8 +21574,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
+                                            [],
                                             [ Y ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19859,6 +21601,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -19866,6 +21609,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -19895,6 +21639,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -19902,6 +21647,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -19926,8 +21672,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
+                                                    [],
                                                     [ X ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -19957,6 +21705,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -19964,6 +21713,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -19993,6 +21743,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -20000,6 +21751,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -20024,8 +21776,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
+                                                            [],
                                                             [ W ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20059,6 +21813,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -20070,6 +21825,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -20100,6 +21856,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -20111,6 +21868,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -20135,8 +21893,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
+                                                                    [],
                                                                     [ V ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -20170,6 +21930,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -20181,6 +21942,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -20214,6 +21976,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -20225,6 +21988,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -20249,8 +22013,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
+                                                                            [],
                                                                             [ U ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -20284,6 +22050,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -20295,6 +22062,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -20328,6 +22096,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -20339,6 +22108,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -20362,8 +22132,10 @@ Module tuple.
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
+                                                                                  [],
                                                                                   [ T ],
                                                                                   "gt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -20442,7 +22214,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -20456,7 +22228,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -20470,7 +22242,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", Z, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    Z,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -20489,7 +22269,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             Y,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20513,7 +22295,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     X,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -20543,7 +22327,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             W,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20573,7 +22359,9 @@ Module tuple.
                                                                     "core::cmp::Ord",
                                                                     V,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -20603,7 +22391,9 @@ Module tuple.
                                                                             "core::cmp::Ord",
                                                                             U,
                                                                             [],
+                                                                            [],
                                                                             "cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -20632,7 +22422,9 @@ Module tuple.
                                                                                   "core::cmp::Ord",
                                                                                   T,
                                                                                   [],
+                                                                                  [],
                                                                                   "cmp",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -20738,7 +22530,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        B,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20748,7 +22548,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        A,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20758,7 +22566,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20768,7 +22584,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20778,7 +22602,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20788,7 +22620,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20798,7 +22638,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20808,7 +22656,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -20818,7 +22674,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -21006,7 +22870,15 @@ Module tuple.
                         LogicalOp.and (|
                           LogicalOp.and (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", C, [ C ], "eq", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                C,
+                                [],
+                                [ C ],
+                                "eq",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -21014,7 +22886,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -21023,7 +22903,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "eq",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -21032,7 +22920,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -21041,7 +22937,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -21050,7 +22954,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -21059,7 +22963,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -21068,7 +22972,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -21077,7 +22981,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -21086,7 +22990,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -21123,7 +23027,15 @@ Module tuple.
                         LogicalOp.or (|
                           LogicalOp.or (|
                             M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", C, [ C ], "ne", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                C,
+                                [],
+                                [ C ],
+                                "ne",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -21131,7 +23043,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "ne",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -21140,7 +23060,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "ne",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -21149,7 +23077,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -21158,7 +23094,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -21167,7 +23111,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -21176,7 +23120,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -21185,7 +23129,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -21194,7 +23138,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -21203,7 +23147,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -21303,7 +23247,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    C,
+                    [],
+                    [ C ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -21326,8 +23278,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
+                            [],
                             [ B ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -21352,8 +23306,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21379,8 +23335,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
+                                            [],
                                             [ Z ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21409,8 +23367,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
+                                                    [],
                                                     [ Y ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -21445,8 +23405,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
+                                                            [],
                                                             [ X ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -21481,8 +23443,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
+                                                                    [],
                                                                     [ W ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -21517,8 +23481,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
+                                                                            [],
                                                                             [ V ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -21553,8 +23519,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
+                                                                                    [],
                                                                                     [ U ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -21592,8 +23560,10 @@ Module tuple.
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
+                                                                                          [],
                                                                                           [ T ],
                                                                                           "partial_cmp",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -21696,7 +23666,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    C,
+                    [],
+                    [ C ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -21718,6 +23696,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -21725,6 +23704,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -21746,6 +23726,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -21753,6 +23734,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -21773,8 +23755,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
+                            [],
                             [ B ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -21798,6 +23782,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -21805,6 +23790,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21827,6 +23813,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -21834,6 +23821,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21854,8 +23842,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21879,6 +23869,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -21886,6 +23877,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -21915,6 +23907,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -21922,6 +23915,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21942,8 +23936,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
+                                            [],
                                             [ Z ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21967,6 +23963,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -21974,6 +23971,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -22003,6 +24001,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -22010,6 +24009,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -22034,8 +24034,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
+                                                    [],
                                                     [ Y ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -22065,6 +24067,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -22072,6 +24075,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22101,6 +24105,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -22108,6 +24113,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -22132,8 +24138,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
+                                                            [],
                                                             [ X ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -22167,6 +24175,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -22178,6 +24187,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -22208,6 +24218,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -22219,6 +24230,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -22243,8 +24255,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
+                                                                    [],
                                                                     [ W ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -22278,6 +24292,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -22289,6 +24304,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -22322,6 +24338,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -22333,6 +24350,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -22357,8 +24375,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
+                                                                            [],
                                                                             [ V ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -22392,6 +24412,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -22403,6 +24424,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -22436,6 +24458,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -22447,6 +24470,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -22471,8 +24495,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
+                                                                                    [],
                                                                                     [ U ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -22512,6 +24538,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -22523,6 +24550,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -22559,6 +24587,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -22570,6 +24599,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -22593,8 +24623,10 @@ Module tuple.
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
+                                                                                          [],
                                                                                           [ T ],
                                                                                           "lt",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -22656,7 +24688,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    C,
+                    [],
+                    [ C ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -22678,6 +24718,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -22685,6 +24726,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -22706,6 +24748,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -22713,6 +24756,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -22733,8 +24777,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
+                            [],
                             [ B ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -22758,6 +24804,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -22765,6 +24812,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22787,6 +24835,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -22794,6 +24843,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22814,8 +24864,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -22839,6 +24891,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -22846,6 +24899,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22875,6 +24929,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -22882,6 +24937,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -22902,8 +24958,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
+                                            [],
                                             [ Z ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22927,6 +24985,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -22934,6 +24993,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -22963,6 +25023,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -22970,6 +25031,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -22994,8 +25056,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
+                                                    [],
                                                     [ Y ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -23025,6 +25089,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -23032,6 +25097,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -23061,6 +25127,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -23068,6 +25135,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -23092,8 +25160,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
+                                                            [],
                                                             [ X ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -23127,6 +25197,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -23138,6 +25209,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -23168,6 +25240,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -23179,6 +25252,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -23203,8 +25277,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
+                                                                    [],
                                                                     [ W ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -23238,6 +25314,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -23249,6 +25326,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -23282,6 +25360,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -23293,6 +25372,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23317,8 +25397,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
+                                                                            [],
                                                                             [ V ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -23352,6 +25434,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -23363,6 +25446,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -23396,6 +25480,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -23407,6 +25492,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -23431,8 +25517,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
+                                                                                    [],
                                                                                     [ U ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -23472,6 +25560,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -23483,6 +25572,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -23519,6 +25609,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -23530,6 +25621,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -23553,8 +25645,10 @@ Module tuple.
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
+                                                                                          [],
                                                                                           [ T ],
                                                                                           "le",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -23616,7 +25710,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    C,
+                    [],
+                    [ C ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -23638,6 +25740,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -23645,6 +25748,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -23666,6 +25770,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -23673,6 +25778,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -23693,8 +25799,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
+                            [],
                             [ B ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -23718,6 +25826,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -23725,6 +25834,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23747,6 +25857,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -23754,6 +25865,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23774,8 +25886,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -23799,6 +25913,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -23806,6 +25921,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -23835,6 +25951,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -23842,6 +25959,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -23863,8 +25981,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
+                                            [],
                                             [ Z ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -23888,6 +26008,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -23895,6 +26016,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -23924,6 +26046,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -23931,6 +26054,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -23955,8 +26079,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
+                                                    [],
                                                     [ Y ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -23986,6 +26112,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -23993,6 +26120,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -24022,6 +26150,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -24029,6 +26158,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24053,8 +26183,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
+                                                            [],
                                                             [ X ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -24088,6 +26220,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -24099,6 +26232,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -24129,6 +26263,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -24140,6 +26275,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -24164,8 +26300,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
+                                                                    [],
                                                                     [ W ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -24199,6 +26337,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -24210,6 +26349,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -24243,6 +26383,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -24254,6 +26395,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -24278,8 +26420,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
+                                                                            [],
                                                                             [ V ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -24313,6 +26457,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -24324,6 +26469,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -24357,6 +26503,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -24368,6 +26515,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -24392,8 +26540,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
+                                                                                    [],
                                                                                     [ U ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -24433,6 +26583,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -24444,6 +26595,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -24480,6 +26632,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -24491,6 +26644,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -24514,8 +26668,10 @@ Module tuple.
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
+                                                                                          [],
                                                                                           [ T ],
                                                                                           "ge",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -24577,7 +26733,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    C,
+                    [],
+                    [ C ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -24599,6 +26763,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -24606,6 +26771,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -24627,6 +26793,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -24634,6 +26801,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -24654,8 +26822,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
+                            [],
                             [ B ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -24679,6 +26849,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -24686,6 +26857,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24708,6 +26880,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -24715,6 +26888,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24735,8 +26909,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
+                                    [],
                                     [ A ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -24760,6 +26936,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -24767,6 +26944,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -24796,6 +26974,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -24803,6 +26982,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -24824,8 +27004,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
+                                            [],
                                             [ Z ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24849,6 +27031,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -24856,6 +27039,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -24885,6 +27069,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -24892,6 +27077,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -24916,8 +27102,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
+                                                    [],
                                                     [ Y ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -24947,6 +27135,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -24954,6 +27143,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -24983,6 +27173,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -24990,6 +27181,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -25014,8 +27206,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
+                                                            [],
                                                             [ X ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -25049,6 +27243,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -25060,6 +27255,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -25090,6 +27286,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -25101,6 +27298,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -25125,8 +27323,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
+                                                                    [],
                                                                     [ W ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -25160,6 +27360,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -25171,6 +27372,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -25204,6 +27406,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -25215,6 +27418,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -25239,8 +27443,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
+                                                                            [],
                                                                             [ V ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -25274,6 +27480,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -25285,6 +27492,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -25318,6 +27526,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -25329,6 +27538,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -25353,8 +27563,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
+                                                                                    [],
                                                                                     [ U ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -25394,6 +27606,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -25405,6 +27618,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -25441,6 +27655,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -25452,6 +27667,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -25475,8 +27691,10 @@ Module tuple.
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
+                                                                                          [],
                                                                                           [ T ],
                                                                                           "gt",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -25558,7 +27776,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", C, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -25572,7 +27790,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -25586,7 +27804,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    A,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -25605,7 +27831,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             Z,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -25629,7 +27857,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     Y,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -25659,7 +27889,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             X,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -25689,7 +27921,9 @@ Module tuple.
                                                                     "core::cmp::Ord",
                                                                     W,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -25719,7 +27953,9 @@ Module tuple.
                                                                             "core::cmp::Ord",
                                                                             V,
                                                                             [],
+                                                                            [],
                                                                             "cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -25749,7 +27985,9 @@ Module tuple.
                                                                                     "core::cmp::Ord",
                                                                                     U,
                                                                                     [],
+                                                                                    [],
                                                                                     "cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -25782,7 +28020,9 @@ Module tuple.
                                                                                           "core::cmp::Ord",
                                                                                           T,
                                                                                           [],
+                                                                                          [],
                                                                                           "cmp",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -25898,7 +28138,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        C,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25908,7 +28156,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        B,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25918,7 +28174,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        A,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25928,7 +28192,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25938,7 +28210,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25948,7 +28228,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25958,7 +28246,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25968,7 +28264,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25978,7 +28282,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -25988,7 +28300,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -26183,7 +28503,15 @@ Module tuple.
                           LogicalOp.and (|
                             LogicalOp.and (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", D, [ D ], "eq", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  D,
+                                  [],
+                                  [ D ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -26194,8 +28522,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
+                                    [],
                                     [ C ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -26206,7 +28536,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -26215,7 +28553,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "eq",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -26224,7 +28570,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -26233,7 +28587,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -26242,7 +28604,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -26251,7 +28613,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -26260,7 +28622,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -26269,7 +28631,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -26278,7 +28640,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
@@ -26316,7 +28678,15 @@ Module tuple.
                           LogicalOp.or (|
                             LogicalOp.or (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", D, [ D ], "ne", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  D,
+                                  [],
+                                  [ D ],
+                                  "ne",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -26327,8 +28697,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
+                                    [],
                                     [ C ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -26339,7 +28711,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "ne",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -26348,7 +28728,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "ne",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -26357,7 +28745,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -26366,7 +28762,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -26375,7 +28779,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -26384,7 +28788,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -26393,7 +28797,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -26402,7 +28806,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -26411,7 +28815,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
@@ -26511,7 +28915,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    D,
+                    [],
+                    [ D ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -26534,8 +28946,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
+                            [],
                             [ C ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -26560,8 +28974,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
+                                    [],
                                     [ B ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -26587,8 +29003,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
+                                            [],
                                             [ A ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -26617,8 +29035,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
+                                                    [],
                                                     [ Z ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26653,8 +29073,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
+                                                            [],
                                                             [ Y ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -26689,8 +29111,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
+                                                                    [],
                                                                     [ X ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -26725,8 +29149,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
+                                                                            [],
                                                                             [ W ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -26761,8 +29187,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
+                                                                                    [],
                                                                                     [ V ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -26801,8 +29229,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
+                                                                                            [],
                                                                                             [ U ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -26841,10 +29271,12 @@ Module tuple.
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
+                                                                                                  [],
                                                                                                   [
                                                                                                     T
                                                                                                   ],
                                                                                                   "partial_cmp",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -26957,7 +29389,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    D,
+                    [],
+                    [ D ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -26979,6 +29419,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -26986,6 +29427,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -27007,6 +29449,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -27014,6 +29457,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -27034,8 +29478,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
+                            [],
                             [ C ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -27059,6 +29505,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -27066,6 +29513,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -27088,6 +29536,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -27095,6 +29544,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -27115,8 +29565,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
+                                    [],
                                     [ B ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -27140,6 +29592,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -27147,6 +29600,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -27176,6 +29630,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -27183,6 +29638,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -27203,8 +29659,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
+                                            [],
                                             [ A ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27228,6 +29686,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -27235,6 +29694,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -27264,6 +29724,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -27271,6 +29732,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -27295,8 +29757,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
+                                                    [],
                                                     [ Z ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -27326,6 +29790,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -27333,6 +29798,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -27362,6 +29828,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -27369,6 +29836,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -27393,8 +29861,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
+                                                            [],
                                                             [ Y ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -27428,6 +29898,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -27439,6 +29910,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -27469,6 +29941,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -27480,6 +29953,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -27504,8 +29978,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
+                                                                    [],
                                                                     [ X ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -27539,6 +30015,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -27550,6 +30027,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -27583,6 +30061,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -27594,6 +30073,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -27618,8 +30098,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
+                                                                            [],
                                                                             [ W ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -27653,6 +30135,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -27664,6 +30147,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -27697,6 +30181,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -27708,6 +30193,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -27732,8 +30218,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
+                                                                                    [],
                                                                                     [ V ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -27773,6 +30261,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -27784,6 +30273,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -27820,6 +30310,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -27831,6 +30322,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -27855,8 +30347,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
+                                                                                            [],
                                                                                             [ U ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -27898,6 +30392,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -27909,6 +30404,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -27945,6 +30441,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -27956,6 +30453,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -27979,10 +30477,12 @@ Module tuple.
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
+                                                                                                  [],
                                                                                                   [
                                                                                                     T
                                                                                                   ],
                                                                                                   "lt",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -28046,7 +30546,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    D,
+                    [],
+                    [ D ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -28068,6 +30576,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -28075,6 +30584,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -28096,6 +30606,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -28103,6 +30614,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -28123,8 +30635,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
+                            [],
                             [ C ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -28148,6 +30662,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -28155,6 +30670,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -28177,6 +30693,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -28184,6 +30701,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28204,8 +30722,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
+                                    [],
                                     [ B ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -28229,6 +30749,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -28236,6 +30757,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -28265,6 +30787,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -28272,6 +30795,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -28292,8 +30816,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
+                                            [],
                                             [ A ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -28317,6 +30843,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -28324,6 +30851,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -28353,6 +30881,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -28360,6 +30889,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -28384,8 +30914,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
+                                                    [],
                                                     [ Z ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -28415,6 +30947,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -28422,6 +30955,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -28451,6 +30985,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -28458,6 +30993,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -28482,8 +31018,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
+                                                            [],
                                                             [ Y ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -28517,6 +31055,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -28528,6 +31067,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -28558,6 +31098,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -28569,6 +31110,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -28593,8 +31135,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
+                                                                    [],
                                                                     [ X ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -28628,6 +31172,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -28639,6 +31184,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -28672,6 +31218,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -28683,6 +31230,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -28707,8 +31255,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
+                                                                            [],
                                                                             [ W ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -28742,6 +31292,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -28753,6 +31304,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -28786,6 +31338,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -28797,6 +31350,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -28821,8 +31375,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
+                                                                                    [],
                                                                                     [ V ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -28862,6 +31418,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -28873,6 +31430,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -28909,6 +31467,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -28920,6 +31479,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -28944,8 +31504,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
+                                                                                            [],
                                                                                             [ U ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -28987,6 +31549,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -28998,6 +31561,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -29034,6 +31598,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -29045,6 +31610,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -29068,10 +31634,12 @@ Module tuple.
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
+                                                                                                  [],
                                                                                                   [
                                                                                                     T
                                                                                                   ],
                                                                                                   "le",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -29135,7 +31703,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    D,
+                    [],
+                    [ D ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -29157,6 +31733,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -29164,6 +31741,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -29185,6 +31763,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -29192,6 +31771,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -29212,8 +31792,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
+                            [],
                             [ C ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -29237,6 +31819,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -29244,6 +31827,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -29266,6 +31850,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -29273,6 +31858,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -29293,8 +31879,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
+                                    [],
                                     [ B ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -29318,6 +31906,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -29325,6 +31914,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -29354,6 +31944,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -29361,6 +31952,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -29382,8 +31974,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
+                                            [],
                                             [ A ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -29407,6 +32001,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -29414,6 +32009,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -29443,6 +32039,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -29450,6 +32047,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -29474,8 +32072,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
+                                                    [],
                                                     [ Z ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -29505,6 +32105,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -29512,6 +32113,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -29541,6 +32143,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -29548,6 +32151,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -29572,8 +32176,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
+                                                            [],
                                                             [ Y ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -29607,6 +32213,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -29618,6 +32225,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -29648,6 +32256,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -29659,6 +32268,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -29683,8 +32293,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
+                                                                    [],
                                                                     [ X ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -29718,6 +32330,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -29729,6 +32342,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -29762,6 +32376,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -29773,6 +32388,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -29797,8 +32413,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
+                                                                            [],
                                                                             [ W ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -29832,6 +32450,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -29843,6 +32462,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -29876,6 +32496,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -29887,6 +32508,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -29911,8 +32533,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
+                                                                                    [],
                                                                                     [ V ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -29952,6 +32576,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -29963,6 +32588,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -29999,6 +32625,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -30010,6 +32637,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -30034,8 +32662,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
+                                                                                            [],
                                                                                             [ U ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -30077,6 +32707,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -30088,6 +32719,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -30124,6 +32756,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -30135,6 +32768,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -30158,10 +32792,12 @@ Module tuple.
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
+                                                                                                  [],
                                                                                                   [
                                                                                                     T
                                                                                                   ],
                                                                                                   "ge",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -30225,7 +32861,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    D,
+                    [],
+                    [ D ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -30247,6 +32891,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -30254,6 +32899,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -30275,6 +32921,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -30282,6 +32929,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -30302,8 +32950,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
+                            [],
                             [ C ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -30327,6 +32977,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -30334,6 +32985,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -30356,6 +33008,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -30363,6 +33016,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -30383,8 +33037,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
+                                    [],
                                     [ B ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -30408,6 +33064,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -30415,6 +33072,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -30444,6 +33102,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -30451,6 +33110,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -30472,8 +33132,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
+                                            [],
                                             [ A ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -30497,6 +33159,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -30504,6 +33167,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -30533,6 +33197,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -30540,6 +33205,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -30564,8 +33230,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
+                                                    [],
                                                     [ Z ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -30595,6 +33263,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -30602,6 +33271,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -30631,6 +33301,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -30638,6 +33309,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -30662,8 +33334,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
+                                                            [],
                                                             [ Y ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -30697,6 +33371,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -30708,6 +33383,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -30738,6 +33414,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -30749,6 +33426,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -30773,8 +33451,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
+                                                                    [],
                                                                     [ X ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -30808,6 +33488,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -30819,6 +33500,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -30852,6 +33534,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -30863,6 +33546,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -30887,8 +33571,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
+                                                                            [],
                                                                             [ W ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -30922,6 +33608,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -30933,6 +33620,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -30966,6 +33654,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -30977,6 +33666,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -31001,8 +33691,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
+                                                                                    [],
                                                                                     [ V ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -31042,6 +33734,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -31053,6 +33746,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -31089,6 +33783,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -31100,6 +33795,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -31124,8 +33820,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
+                                                                                            [],
                                                                                             [ U ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -31167,6 +33865,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -31178,6 +33877,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -31214,6 +33914,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -31225,6 +33926,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -31248,10 +33950,12 @@ Module tuple.
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
+                                                                                                  [],
                                                                                                   [
                                                                                                     T
                                                                                                   ],
                                                                                                   "gt",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -31335,7 +34039,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", D, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", D, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -31349,7 +34053,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", C, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -31363,7 +34067,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    B,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -31382,7 +34094,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             A,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -31406,7 +34120,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     Z,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -31436,7 +34152,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             Y,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -31466,7 +34184,9 @@ Module tuple.
                                                                     "core::cmp::Ord",
                                                                     X,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -31496,7 +34216,9 @@ Module tuple.
                                                                             "core::cmp::Ord",
                                                                             W,
                                                                             [],
+                                                                            [],
                                                                             "cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -31526,7 +34248,9 @@ Module tuple.
                                                                                     "core::cmp::Ord",
                                                                                     V,
                                                                                     [],
+                                                                                    [],
                                                                                     "cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -31560,7 +34284,9 @@ Module tuple.
                                                                                             "core::cmp::Ord",
                                                                                             U,
                                                                                             [],
+                                                                                            [],
                                                                                             "cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -31594,7 +34320,9 @@ Module tuple.
                                                                                                   "core::cmp::Ord",
                                                                                                   T,
                                                                                                   [],
+                                                                                                  [],
                                                                                                   "cmp",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -31720,7 +34448,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", D, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        D,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31730,7 +34466,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        C,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31740,7 +34484,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        B,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31750,7 +34502,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        A,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31760,7 +34520,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31770,7 +34538,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31780,7 +34556,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31790,7 +34574,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31800,7 +34592,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31810,7 +34610,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -31820,7 +34628,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -32025,8 +34841,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     E,
+                                    [],
                                     [ E ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -32039,8 +34857,10 @@ Module tuple.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       D,
+                                      [],
                                       [ D ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -32054,8 +34874,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
+                                    [],
                                     [ C ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -32066,7 +34888,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "eq", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -32075,7 +34905,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "eq",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -32084,7 +34922,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "eq", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "eq",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -32093,7 +34939,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "eq", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "eq",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -32102,7 +34956,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "eq", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -32111,7 +34965,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "eq", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -32120,7 +34974,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -32129,7 +34983,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
@@ -32138,7 +34992,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 11 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 11 |)
@@ -32180,8 +35034,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     E,
+                                    [],
                                     [ E ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -32194,8 +35050,10 @@ Module tuple.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       D,
+                                      [],
                                       [ D ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -32209,8 +35067,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
+                                    [],
                                     [ C ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -32221,7 +35081,15 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", B, [ B ], "ne", [] |),
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  B,
+                                  [],
+                                  [ B ],
+                                  "ne",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_tuple_field (| M.read (| self |), 3 |);
                                   M.SubPointer.get_tuple_field (| M.read (| other |), 3 |)
@@ -32230,7 +35098,15 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "ne", [] |),
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                A,
+                                [],
+                                [ A ],
+                                "ne",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_tuple_field (| M.read (| self |), 4 |);
                                 M.SubPointer.get_tuple_field (| M.read (| other |), 4 |)
@@ -32239,7 +35115,15 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_trait_method (| "core::cmp::PartialEq", Z, [ Z ], "ne", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Z,
+                              [],
+                              [ Z ],
+                              "ne",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_tuple_field (| M.read (| self |), 5 |);
                               M.SubPointer.get_tuple_field (| M.read (| other |), 5 |)
@@ -32248,7 +35132,15 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialEq", Y, [ Y ], "ne", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Y,
+                            [],
+                            [ Y ],
+                            "ne",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 6 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 6 |)
@@ -32257,7 +35149,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
-                        M.get_trait_method (| "core::cmp::PartialEq", X, [ X ], "ne", [] |),
+                        M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.SubPointer.get_tuple_field (| M.read (| self |), 7 |);
                           M.SubPointer.get_tuple_field (| M.read (| other |), 7 |)
@@ -32266,7 +35158,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
-                      M.get_trait_method (| "core::cmp::PartialEq", W, [ W ], "ne", [] |),
+                      M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.SubPointer.get_tuple_field (| M.read (| self |), 8 |);
                         M.SubPointer.get_tuple_field (| M.read (| other |), 8 |)
@@ -32275,7 +35167,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", V, [ V ], "ne", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.SubPointer.get_tuple_field (| M.read (| self |), 9 |);
                       M.SubPointer.get_tuple_field (| M.read (| other |), 9 |)
@@ -32284,7 +35176,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", U, [ U ], "ne", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 10 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 10 |)
@@ -32293,7 +35185,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.SubPointer.get_tuple_field (| M.read (| self |), 11 |);
                   M.SubPointer.get_tuple_field (| M.read (| other |), 11 |)
@@ -32393,7 +35285,15 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    E,
+                    [],
+                    [ E ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -32416,8 +35316,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
+                            [],
                             [ D ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -32442,8 +35344,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
+                                    [],
                                     [ C ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -32469,8 +35373,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
+                                            [],
                                             [ B ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -32499,8 +35405,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -32535,8 +35443,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
+                                                            [],
                                                             [ Z ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -32571,8 +35481,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
+                                                                    [],
                                                                     [ Y ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -32607,8 +35519,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
+                                                                            [],
                                                                             [ X ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -32643,8 +35557,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
+                                                                                    [],
                                                                                     [ W ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -32683,8 +35599,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
+                                                                                            [],
                                                                                             [ V ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -32724,10 +35642,12 @@ Module tuple.
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
+                                                                                                    [],
                                                                                                     [
                                                                                                       U
                                                                                                     ],
                                                                                                     "partial_cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -32768,10 +35688,12 @@ Module tuple.
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
+                                                                                                          [],
                                                                                                           [
                                                                                                             T
                                                                                                           ],
                                                                                                           "partial_cmp",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -32895,7 +35817,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    E,
+                    [],
+                    [ E ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -32917,6 +35847,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -32924,6 +35855,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -32945,6 +35877,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -32952,6 +35885,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -32972,8 +35906,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
+                            [],
                             [ D ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -32997,6 +35933,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -33004,6 +35941,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -33026,6 +35964,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -33033,6 +35972,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -33053,8 +35993,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
+                                    [],
                                     [ C ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -33078,6 +36020,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -33085,6 +36028,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -33114,6 +36058,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -33121,6 +36066,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -33141,8 +36087,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
+                                            [],
                                             [ B ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -33166,6 +36114,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -33173,6 +36122,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -33202,6 +36152,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -33209,6 +36160,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -33233,8 +36185,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -33264,6 +36218,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -33271,6 +36226,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -33300,6 +36256,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -33307,6 +36264,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -33331,8 +36289,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
+                                                            [],
                                                             [ Z ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -33366,6 +36326,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -33377,6 +36338,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -33407,6 +36369,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -33418,6 +36381,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -33442,8 +36406,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
+                                                                    [],
                                                                     [ Y ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -33477,6 +36443,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -33488,6 +36455,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -33521,6 +36489,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -33532,6 +36501,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -33556,8 +36526,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
+                                                                            [],
                                                                             [ X ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -33591,6 +36563,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -33602,6 +36575,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -33635,6 +36609,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -33646,6 +36621,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -33670,8 +36646,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
+                                                                                    [],
                                                                                     [ W ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -33711,6 +36689,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -33722,6 +36701,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -33758,6 +36738,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -33769,6 +36750,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -33793,8 +36775,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
+                                                                                            [],
                                                                                             [ V ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -33836,6 +36820,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -33847,6 +36832,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -33883,6 +36869,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -33894,6 +36881,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -33919,10 +36907,12 @@ Module tuple.
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
+                                                                                                    [],
                                                                                                     [
                                                                                                       U
                                                                                                     ],
                                                                                                     "partial_cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -33965,6 +36955,7 @@ Module tuple.
                                                                                                                   Ty.path
                                                                                                                     "core::cmp::Ordering"
                                                                                                                 ],
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -33976,6 +36967,7 @@ Module tuple.
                                                                                                                   ]
                                                                                                               ],
                                                                                                               "ne",
+                                                                                                              [],
                                                                                                               []
                                                                                                             |),
                                                                                                             [
@@ -34013,6 +37005,7 @@ Module tuple.
                                                                                                               Ty.path
                                                                                                                 "core::cmp::Ordering"
                                                                                                             ],
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -34024,6 +37017,7 @@ Module tuple.
                                                                                                               ]
                                                                                                           ],
                                                                                                           "eq",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -34048,10 +37042,12 @@ Module tuple.
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
+                                                                                                          [],
                                                                                                           [
                                                                                                             T
                                                                                                           ],
                                                                                                           "lt",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -34117,7 +37113,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    E,
+                    [],
+                    [ E ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -34139,6 +37143,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -34146,6 +37151,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -34167,6 +37173,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -34174,6 +37181,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -34194,8 +37202,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
+                            [],
                             [ D ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -34219,6 +37229,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -34226,6 +37237,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -34248,6 +37260,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -34255,6 +37268,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -34275,8 +37289,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
+                                    [],
                                     [ C ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -34300,6 +37316,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -34307,6 +37324,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -34336,6 +37354,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -34343,6 +37362,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -34363,8 +37383,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
+                                            [],
                                             [ B ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -34388,6 +37410,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -34395,6 +37418,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -34424,6 +37448,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -34431,6 +37456,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -34455,8 +37481,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -34486,6 +37514,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -34493,6 +37522,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -34522,6 +37552,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -34529,6 +37560,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -34553,8 +37585,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
+                                                            [],
                                                             [ Z ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -34588,6 +37622,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -34599,6 +37634,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -34629,6 +37665,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -34640,6 +37677,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -34664,8 +37702,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
+                                                                    [],
                                                                     [ Y ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -34699,6 +37739,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -34710,6 +37751,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -34743,6 +37785,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -34754,6 +37797,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -34778,8 +37822,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
+                                                                            [],
                                                                             [ X ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -34813,6 +37859,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -34824,6 +37871,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -34857,6 +37905,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -34868,6 +37917,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -34892,8 +37942,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
+                                                                                    [],
                                                                                     [ W ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -34933,6 +37985,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -34944,6 +37997,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -34980,6 +38034,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -34991,6 +38046,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -35015,8 +38071,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
+                                                                                            [],
                                                                                             [ V ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -35058,6 +38116,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -35069,6 +38128,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -35105,6 +38165,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -35116,6 +38177,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -35141,10 +38203,12 @@ Module tuple.
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
+                                                                                                    [],
                                                                                                     [
                                                                                                       U
                                                                                                     ],
                                                                                                     "partial_cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -35187,6 +38251,7 @@ Module tuple.
                                                                                                                   Ty.path
                                                                                                                     "core::cmp::Ordering"
                                                                                                                 ],
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -35198,6 +38263,7 @@ Module tuple.
                                                                                                                   ]
                                                                                                               ],
                                                                                                               "ne",
+                                                                                                              [],
                                                                                                               []
                                                                                                             |),
                                                                                                             [
@@ -35235,6 +38301,7 @@ Module tuple.
                                                                                                               Ty.path
                                                                                                                 "core::cmp::Ordering"
                                                                                                             ],
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -35246,6 +38313,7 @@ Module tuple.
                                                                                                               ]
                                                                                                           ],
                                                                                                           "eq",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -35270,10 +38338,12 @@ Module tuple.
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
+                                                                                                          [],
                                                                                                           [
                                                                                                             T
                                                                                                           ],
                                                                                                           "le",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -35339,7 +38409,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    E,
+                    [],
+                    [ E ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -35361,6 +38439,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -35368,6 +38447,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -35389,6 +38469,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -35396,6 +38477,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -35416,8 +38498,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
+                            [],
                             [ D ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -35441,6 +38525,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -35448,6 +38533,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -35470,6 +38556,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -35477,6 +38564,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -35497,8 +38585,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
+                                    [],
                                     [ C ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -35522,6 +38612,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -35529,6 +38620,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -35558,6 +38650,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -35565,6 +38658,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -35586,8 +38680,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
+                                            [],
                                             [ B ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -35611,6 +38707,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -35618,6 +38715,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -35647,6 +38745,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -35654,6 +38753,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -35678,8 +38778,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -35709,6 +38811,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -35716,6 +38819,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -35745,6 +38849,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -35752,6 +38857,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -35776,8 +38882,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
+                                                            [],
                                                             [ Z ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -35811,6 +38919,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -35822,6 +38931,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -35852,6 +38962,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -35863,6 +38974,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -35887,8 +38999,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
+                                                                    [],
                                                                     [ Y ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -35922,6 +39036,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -35933,6 +39048,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -35966,6 +39082,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -35977,6 +39094,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -36001,8 +39119,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
+                                                                            [],
                                                                             [ X ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -36036,6 +39156,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -36047,6 +39168,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -36080,6 +39202,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -36091,6 +39214,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -36115,8 +39239,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
+                                                                                    [],
                                                                                     [ W ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -36156,6 +39282,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -36167,6 +39294,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -36203,6 +39331,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -36214,6 +39343,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -36238,8 +39368,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
+                                                                                            [],
                                                                                             [ V ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -36281,6 +39413,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -36292,6 +39425,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -36328,6 +39462,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -36339,6 +39474,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -36364,10 +39500,12 @@ Module tuple.
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
+                                                                                                    [],
                                                                                                     [
                                                                                                       U
                                                                                                     ],
                                                                                                     "partial_cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -36410,6 +39548,7 @@ Module tuple.
                                                                                                                   Ty.path
                                                                                                                     "core::cmp::Ordering"
                                                                                                                 ],
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -36421,6 +39560,7 @@ Module tuple.
                                                                                                                   ]
                                                                                                               ],
                                                                                                               "ne",
+                                                                                                              [],
                                                                                                               []
                                                                                                             |),
                                                                                                             [
@@ -36458,6 +39598,7 @@ Module tuple.
                                                                                                               Ty.path
                                                                                                                 "core::cmp::Ordering"
                                                                                                             ],
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -36469,6 +39610,7 @@ Module tuple.
                                                                                                               ]
                                                                                                           ],
                                                                                                           "eq",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -36493,10 +39635,12 @@ Module tuple.
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
+                                                                                                          [],
                                                                                                           [
                                                                                                             T
                                                                                                           ],
                                                                                                           "ge",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -36562,7 +39706,15 @@ Module tuple.
             let~ c :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    E,
+                    [],
+                    [ E ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -36584,6 +39736,7 @@ Module tuple.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -36591,6 +39744,7 @@ Module tuple.
                                   [ Ty.path "core::cmp::Ordering" ]
                               ],
                               "ne",
+                              [],
                               []
                             |),
                             [
@@ -36612,6 +39766,7 @@ Module tuple.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -36619,6 +39774,7 @@ Module tuple.
                               [ Ty.path "core::cmp::Ordering" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -36639,8 +39795,10 @@ Module tuple.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
+                            [],
                             [ D ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -36664,6 +39822,7 @@ Module tuple.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -36671,6 +39830,7 @@ Module tuple.
                                           [ Ty.path "core::cmp::Ordering" ]
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -36693,6 +39853,7 @@ Module tuple.
                                     (Ty.path "core::option::Option")
                                     []
                                     [ Ty.path "core::cmp::Ordering" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -36700,6 +39861,7 @@ Module tuple.
                                       [ Ty.path "core::cmp::Ordering" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -36720,8 +39882,10 @@ Module tuple.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
+                                    [],
                                     [ C ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -36745,6 +39909,7 @@ Module tuple.
                                                 (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -36752,6 +39917,7 @@ Module tuple.
                                                   [ Ty.path "core::cmp::Ordering" ]
                                               ],
                                               "ne",
+                                              [],
                                               []
                                             |),
                                             [
@@ -36781,6 +39947,7 @@ Module tuple.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "core::cmp::Ordering" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -36788,6 +39955,7 @@ Module tuple.
                                               [ Ty.path "core::cmp::Ordering" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -36809,8 +39977,10 @@ Module tuple.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
+                                            [],
                                             [ B ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -36834,6 +40004,7 @@ Module tuple.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -36841,6 +40012,7 @@ Module tuple.
                                                           [ Ty.path "core::cmp::Ordering" ]
                                                       ],
                                                       "ne",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -36870,6 +40042,7 @@ Module tuple.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "core::cmp::Ordering" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -36877,6 +40050,7 @@ Module tuple.
                                                       [ Ty.path "core::cmp::Ordering" ]
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -36901,8 +40075,10 @@ Module tuple.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -36932,6 +40108,7 @@ Module tuple.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "core::cmp::Ordering" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -36939,6 +40116,7 @@ Module tuple.
                                                                   [ Ty.path "core::cmp::Ordering" ]
                                                               ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -36968,6 +40146,7 @@ Module tuple.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "core::cmp::Ordering" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -36975,6 +40154,7 @@ Module tuple.
                                                               [ Ty.path "core::cmp::Ordering" ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -36999,8 +40179,10 @@ Module tuple.
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
+                                                            [],
                                                             [ Z ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -37034,6 +40216,7 @@ Module tuple.
                                                                           Ty.path
                                                                             "core::cmp::Ordering"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -37045,6 +40228,7 @@ Module tuple.
                                                                           ]
                                                                       ],
                                                                       "ne",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -37075,6 +40259,7 @@ Module tuple.
                                                                     []
                                                                     [ Ty.path "core::cmp::Ordering"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -37086,6 +40271,7 @@ Module tuple.
                                                                       ]
                                                                   ],
                                                                   "eq",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -37110,8 +40296,10 @@ Module tuple.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
+                                                                    [],
                                                                     [ Y ],
                                                                     "partial_cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -37145,6 +40333,7 @@ Module tuple.
                                                                                   Ty.path
                                                                                     "core::cmp::Ordering"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -37156,6 +40345,7 @@ Module tuple.
                                                                                   ]
                                                                               ],
                                                                               "ne",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -37189,6 +40379,7 @@ Module tuple.
                                                                               Ty.path
                                                                                 "core::cmp::Ordering"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -37200,6 +40391,7 @@ Module tuple.
                                                                               ]
                                                                           ],
                                                                           "eq",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -37224,8 +40416,10 @@ Module tuple.
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
+                                                                            [],
                                                                             [ X ],
                                                                             "partial_cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -37259,6 +40453,7 @@ Module tuple.
                                                                                           Ty.path
                                                                                             "core::cmp::Ordering"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -37270,6 +40465,7 @@ Module tuple.
                                                                                           ]
                                                                                       ],
                                                                                       "ne",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -37303,6 +40499,7 @@ Module tuple.
                                                                                       Ty.path
                                                                                         "core::cmp::Ordering"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -37314,6 +40511,7 @@ Module tuple.
                                                                                       ]
                                                                                   ],
                                                                                   "eq",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -37338,8 +40536,10 @@ Module tuple.
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
+                                                                                    [],
                                                                                     [ W ],
                                                                                     "partial_cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -37379,6 +40579,7 @@ Module tuple.
                                                                                                   Ty.path
                                                                                                     "core::cmp::Ordering"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -37390,6 +40591,7 @@ Module tuple.
                                                                                                   ]
                                                                                               ],
                                                                                               "ne",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -37426,6 +40628,7 @@ Module tuple.
                                                                                               Ty.path
                                                                                                 "core::cmp::Ordering"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -37437,6 +40640,7 @@ Module tuple.
                                                                                               ]
                                                                                           ],
                                                                                           "eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -37461,8 +40665,10 @@ Module tuple.
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
+                                                                                            [],
                                                                                             [ V ],
                                                                                             "partial_cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -37504,6 +40710,7 @@ Module tuple.
                                                                                                           Ty.path
                                                                                                             "core::cmp::Ordering"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -37515,6 +40722,7 @@ Module tuple.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "ne",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -37551,6 +40759,7 @@ Module tuple.
                                                                                                       Ty.path
                                                                                                         "core::cmp::Ordering"
                                                                                                     ],
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -37562,6 +40771,7 @@ Module tuple.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "eq",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -37587,10 +40797,12 @@ Module tuple.
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
+                                                                                                    [],
                                                                                                     [
                                                                                                       U
                                                                                                     ],
                                                                                                     "partial_cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -37633,6 +40845,7 @@ Module tuple.
                                                                                                                   Ty.path
                                                                                                                     "core::cmp::Ordering"
                                                                                                                 ],
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -37644,6 +40857,7 @@ Module tuple.
                                                                                                                   ]
                                                                                                               ],
                                                                                                               "ne",
+                                                                                                              [],
                                                                                                               []
                                                                                                             |),
                                                                                                             [
@@ -37681,6 +40895,7 @@ Module tuple.
                                                                                                               Ty.path
                                                                                                                 "core::cmp::Ordering"
                                                                                                             ],
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -37692,6 +40907,7 @@ Module tuple.
                                                                                                               ]
                                                                                                           ],
                                                                                                           "eq",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -37716,10 +40932,12 @@ Module tuple.
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
+                                                                                                          [],
                                                                                                           [
                                                                                                             T
                                                                                                           ],
                                                                                                           "gt",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -37805,7 +41023,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", E, [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", E, [], [], "cmp", [], [] |),
                   [
                     M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
                     M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
@@ -37819,7 +41037,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", D, [], "cmp", [] |),
+                          M.get_trait_method (| "core::cmp::Ord", D, [], [], "cmp", [], [] |),
                           [
                             M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
                             M.SubPointer.get_tuple_field (| M.read (| other |), 1 |)
@@ -37833,7 +41051,15 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", C, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    C,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_tuple_field (| M.read (| self |), 2 |);
                                     M.SubPointer.get_tuple_field (| M.read (| other |), 2 |)
@@ -37852,7 +41078,9 @@ Module tuple.
                                             "core::cmp::Ord",
                                             B,
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -37876,7 +41104,9 @@ Module tuple.
                                                     "core::cmp::Ord",
                                                     A,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -37906,7 +41136,9 @@ Module tuple.
                                                             "core::cmp::Ord",
                                                             Z,
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -37936,7 +41168,9 @@ Module tuple.
                                                                     "core::cmp::Ord",
                                                                     Y,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -37966,7 +41200,9 @@ Module tuple.
                                                                             "core::cmp::Ord",
                                                                             X,
                                                                             [],
+                                                                            [],
                                                                             "cmp",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -37996,7 +41232,9 @@ Module tuple.
                                                                                     "core::cmp::Ord",
                                                                                     W,
                                                                                     [],
+                                                                                    [],
                                                                                     "cmp",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -38030,7 +41268,9 @@ Module tuple.
                                                                                             "core::cmp::Ord",
                                                                                             V,
                                                                                             [],
+                                                                                            [],
                                                                                             "cmp",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -38065,7 +41305,9 @@ Module tuple.
                                                                                                     "core::cmp::Ord",
                                                                                                     U,
                                                                                                     [],
+                                                                                                    [],
                                                                                                     "cmp",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -38100,7 +41342,9 @@ Module tuple.
                                                                                                           "core::cmp::Ord",
                                                                                                           T,
                                                                                                           [],
+                                                                                                          [],
                                                                                                           "cmp",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -38237,7 +41481,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", E, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        E,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38247,7 +41499,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", D, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        D,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38257,7 +41517,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        C,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38267,7 +41535,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        B,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38277,7 +41553,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        A,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38287,7 +41571,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Z,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38297,7 +41589,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Y,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38307,7 +41607,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        X,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38317,7 +41625,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        W,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38327,7 +41643,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        V,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38337,7 +41661,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        U,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in
@@ -38347,7 +41679,15 @@ Module tuple.
                 let~ x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        T,
+                        [],
+                        [],
+                        "default",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |) in

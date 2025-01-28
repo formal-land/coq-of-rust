@@ -52,6 +52,7 @@ Module bound.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                     "get_bounds_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| scope |) ]
@@ -68,8 +69,10 @@ Module bound.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.path "alloc::string::String" ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| name |) ]
@@ -115,6 +118,7 @@ Module bound.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                               "get_bounds_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| from |) ]
@@ -132,7 +136,9 @@ Module bound.
                   "move_bytecode_verifier_meter::Meter",
                   Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                   [],
+                  [],
                   "add",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| to |); M.read (| units |) ]
@@ -158,6 +164,7 @@ Module bound.
             M.get_associated_function (|
               Ty.path "move_bytecode_verifier_meter::bound::Bounds",
               "add",
+              [],
               []
             |),
             [
@@ -165,6 +172,7 @@ Module bound.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                   "get_bounds_mut",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| scope |) ]
@@ -243,6 +251,7 @@ Module bound.
                                 M.get_associated_function (|
                                   Ty.path "u128",
                                   "saturating_add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -285,6 +294,7 @@ Module bound.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -293,6 +303,7 @@ Module bound.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -323,6 +334,7 @@ Module bound.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -357,6 +369,7 @@ Module bound.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloc::string::String"
@@ -375,6 +388,7 @@ Module bound.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [ Ty.path "u128" ]
                                                                               |),
                                                                               [
@@ -390,6 +404,7 @@ Module bound.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [ Ty.path "u128" ]
                                                                               |),
                                                                               [ units ]
@@ -399,6 +414,7 @@ Module bound.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [ Ty.path "u128" ]
                                                                               |),
                                                                               [ max ]
@@ -488,7 +504,9 @@ Module bound.
                           "alloc::string::ToString",
                           Ty.path "str",
                           [],
+                          [],
                           "to_string",
+                          [],
                           []
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
@@ -513,7 +531,9 @@ Module bound.
                           "alloc::string::ToString",
                           Ty.path "str",
                           [],
+                          [],
                           "to_string",
+                          [],
                           []
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
@@ -538,7 +558,9 @@ Module bound.
                           "alloc::string::ToString",
                           Ty.path "str",
                           [],
+                          [],
                           "to_string",
+                          [],
                           []
                         |),
                         [ M.read (| Value.String "<unknown>" |) ]
@@ -628,6 +650,7 @@ Module bound.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -719,6 +742,7 @@ Module bound.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -757,6 +781,7 @@ Module bound.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                   "get_bounds",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| scope |) ]
@@ -787,6 +812,7 @@ Module bound.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                   "get_bounds",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| scope |) ]

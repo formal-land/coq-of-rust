@@ -83,6 +83,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -121,6 +122,7 @@ Module reference_safety.
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                             ],
                           "push",
+                          [],
                           []
                         |),
                         [
@@ -159,6 +161,7 @@ Module reference_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
+                                  [],
                                   []
                                 |),
                                 [
@@ -166,6 +169,7 @@ Module reference_safety.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -191,6 +195,7 @@ Module reference_safety.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -210,6 +215,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_abstract_stack::AbsStackError"
@@ -226,6 +232,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Placeholder",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -249,6 +256,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -285,6 +293,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -298,6 +307,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_debug",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
@@ -367,6 +377,7 @@ Module reference_safety.
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                             ],
                           "push_n",
+                          [],
                           []
                         |),
                         [
@@ -406,6 +417,7 @@ Module reference_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
+                                  [],
                                   []
                                 |),
                                 [
@@ -413,6 +425,7 @@ Module reference_safety.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -438,6 +451,7 @@ Module reference_safety.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -457,6 +471,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_abstract_stack::AbsStackError"
@@ -473,6 +488,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Placeholder",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -496,6 +512,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -532,6 +549,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
@@ -545,6 +563,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_debug",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
@@ -614,6 +633,7 @@ Module reference_safety.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| function_context |) ]
@@ -625,6 +645,7 @@ Module reference_safety.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| module |); M.read (| function_context |); M.read (| name_def_map |) ]
@@ -636,7 +657,9 @@ Module reference_safety.
                 "move_bytecode_verifier::absint::AbstractInterpreter",
                 Ty.path "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                 [],
+                [],
                 "analyze_function",
+                [],
                 [ impl_Meter__plus___Sized ]
               |),
               [
@@ -707,6 +730,7 @@ Module reference_safety.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "signature_at",
+                      [],
                       []
                     |),
                     [
@@ -760,7 +784,9 @@ Module reference_safety.
                             ]
                         ],
                       [],
+                      [],
                       "collect",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -799,7 +825,9 @@ Module reference_safety.
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
                             ],
                           [],
+                          [],
                           "rev",
+                          [],
                           []
                         |),
                         [
@@ -811,7 +839,9 @@ Module reference_safety.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
@@ -840,6 +870,7 @@ Module reference_safety.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -854,7 +885,9 @@ Module reference_safety.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -889,6 +922,7 @@ Module reference_safety.
                                                         Ty.path "move_abstract_stack::AbsStackError"
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -903,6 +937,7 @@ Module reference_safety.
                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                           ],
                                                         "pop",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -941,6 +976,7 @@ Module reference_safety.
                               Ty.path "std::hash::random::RandomState"
                             ],
                           "get",
+                          [],
                           [ Ty.path "move_binary_format::file_format::IdentifierIndex" ]
                         |),
                         [
@@ -975,6 +1011,7 @@ Module reference_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "function_def_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -995,6 +1032,7 @@ Module reference_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "function_handle_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1033,6 +1071,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::file_format::FunctionHandle"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -1043,6 +1082,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ function_handle; fh ]
@@ -1070,7 +1110,9 @@ Module reference_safety.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "collect",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -1094,7 +1136,9 @@ Module reference_safety.
                                                   "move_binary_format::file_format::StructDefinitionIndex"
                                               ],
                                             [],
+                                            [],
                                             "cloned",
+                                            [],
                                             [
                                               Ty.path
                                                 "move_binary_format::file_format::StructDefinitionIndex"
@@ -1111,6 +1155,7 @@ Module reference_safety.
                                                       "move_binary_format::file_format::StructDefinitionIndex"
                                                   ],
                                                 "iter",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1126,7 +1171,9 @@ Module reference_safety.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1158,6 +1205,7 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "new",
+                                        [],
                                         []
                                       |),
                                       []
@@ -1180,6 +1228,7 @@ Module reference_safety.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
+                                [],
                                 []
                               |),
                               []
@@ -1194,6 +1243,7 @@ Module reference_safety.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "signature_at",
+                      [],
                       []
                     |),
                     [
@@ -1236,7 +1286,9 @@ Module reference_safety.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1245,6 +1297,7 @@ Module reference_safety.
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                               "call",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -1283,6 +1336,7 @@ Module reference_safety.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1293,6 +1347,7 @@ Module reference_safety.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1330,7 +1385,9 @@ Module reference_safety.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| values |) ]
@@ -1357,7 +1414,9 @@ Module reference_safety.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1394,7 +1453,9 @@ Module reference_safety.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1403,6 +1464,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                                     "push",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -1435,6 +1497,7 @@ Module reference_safety.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -1447,6 +1510,7 @@ Module reference_safety.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -1534,6 +1598,7 @@ Module reference_safety.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| fields |) ]
@@ -1579,7 +1644,9 @@ Module reference_safety.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1617,7 +1684,9 @@ Module reference_safety.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1653,6 +1722,7 @@ Module reference_safety.
                                                             Ty.path
                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                             "is_value",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1669,6 +1739,7 @@ Module reference_safety.
                                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                                       ],
                                                                     "pop",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1707,6 +1778,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "with_message",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1715,6 +1787,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1748,6 +1821,7 @@ Module reference_safety.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_v1_formatted",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -1768,6 +1842,7 @@ Module reference_safety.
                                                                                                         Ty.path
                                                                                                           "core::fmt::rt::Argument",
                                                                                                         "new_display",
+                                                                                                        [],
                                                                                                         [
                                                                                                           Ty.path
                                                                                                             "move_abstract_stack::AbsStackError"
@@ -1787,6 +1862,7 @@ Module reference_safety.
                                                                                                         Ty.path
                                                                                                           "core::fmt::rt::Placeholder",
                                                                                                         "new",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -1816,6 +1892,7 @@ Module reference_safety.
                                                                                                   Ty.path
                                                                                                     "core::fmt::rt::UnsafeArg",
                                                                                                   "new",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 []
@@ -1861,6 +1938,7 @@ Module reference_safety.
                                                                                         Ty.path
                                                                                           "core::fmt::Arguments",
                                                                                         "new_v1",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -1881,6 +1959,7 @@ Module reference_safety.
                                                                                                   Ty.path
                                                                                                     "core::fmt::rt::Argument",
                                                                                                   "new_debug",
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "move_binary_format::errors::PartialVMError"
@@ -1935,6 +2014,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "with_message",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1943,6 +2023,7 @@ Module reference_safety.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1973,6 +2054,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1991,6 +2073,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "none",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               []
@@ -2033,6 +2116,7 @@ Module reference_safety.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_v1",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2052,6 +2136,7 @@ Module reference_safety.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_debug",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"
@@ -2102,7 +2187,9 @@ Module reference_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2111,6 +2198,7 @@ Module reference_safety.
                             Ty.path
                               "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                             "push",
+                            [],
                             []
                           |),
                           [
@@ -2147,6 +2235,7 @@ Module reference_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2157,6 +2246,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2220,6 +2310,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "is_value",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2235,6 +2326,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2273,6 +2365,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2281,6 +2374,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2311,6 +2405,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2331,6 +2426,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -2348,6 +2444,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2377,6 +2474,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -2418,6 +2516,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2433,6 +2532,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -2477,6 +2577,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 "with_message",
+                                [],
                                 []
                               |),
                               [
@@ -2484,6 +2585,7 @@ Module reference_safety.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2509,6 +2611,7 @@ Module reference_safety.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2526,6 +2629,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "none",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -2563,6 +2667,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2576,6 +2681,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_debug",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
@@ -2620,7 +2726,9 @@ Module reference_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2629,6 +2737,7 @@ Module reference_safety.
                             Ty.path
                               "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                             "push_n",
+                            [],
                             []
                           |),
                           [
@@ -2674,6 +2783,7 @@ Module reference_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2684,6 +2794,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2741,6 +2852,7 @@ Module reference_safety.
                     []
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                   "first",
+                  [],
                   []
                 |),
                 [
@@ -2755,7 +2867,9 @@ Module reference_safety.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [
@@ -2764,6 +2878,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "signature_at",
+                            [],
                             []
                           |),
                           [
@@ -2800,7 +2915,9 @@ Module reference_safety.
                             "core::clone::Clone",
                             Ty.path "move_binary_format::file_format::SignatureToken",
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [ M.read (| ty |) ]
@@ -2818,6 +2935,7 @@ Module reference_safety.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -3137,7 +3255,9 @@ Module reference_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3146,7 +3266,9 @@ Module reference_safety.
                             "move_bytecode_verifier_meter::Meter",
                             impl_Meter__plus___Sized,
                             [],
+                            [],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -3186,6 +3308,7 @@ Module reference_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3196,6 +3319,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3227,7 +3351,9 @@ Module reference_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3236,7 +3362,9 @@ Module reference_safety.
                             "move_bytecode_verifier_meter::Meter",
                             impl_Meter__plus___Sized,
                             [],
+                            [],
                             "add_items",
+                            [],
                             []
                           |),
                           [
@@ -3252,6 +3380,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "local_count",
+                                [],
                                 []
                               |),
                               [ M.read (| state |) ]
@@ -3285,6 +3414,7 @@ Module reference_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3295,6 +3425,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3326,7 +3457,9 @@ Module reference_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3335,7 +3468,9 @@ Module reference_safety.
                             "move_bytecode_verifier_meter::Meter",
                             impl_Meter__plus___Sized,
                             [],
+                            [],
                             "add_items",
+                            [],
                             []
                           |),
                           [
@@ -3351,6 +3486,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "graph_size",
+                                [],
                                 []
                               |),
                               [ M.read (| state |) ]
@@ -3384,6 +3520,7 @@ Module reference_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3394,6 +3531,7 @@ Module reference_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3432,6 +3570,7 @@ Module reference_safety.
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                               "release_value",
+                              [],
                               []
                             |),
                             [
@@ -3449,6 +3588,7 @@ Module reference_safety.
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                           ],
                                         "pop",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3487,6 +3627,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "with_message",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3495,6 +3636,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3524,6 +3666,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3544,6 +3687,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_display",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_abstract_stack::AbsStackError"
@@ -3561,6 +3705,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3589,6 +3734,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -3629,6 +3775,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3644,6 +3791,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
@@ -3706,7 +3854,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3715,6 +3865,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "copy_loc",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3751,6 +3902,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3762,6 +3914,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -3796,7 +3949,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -3805,6 +3960,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -3836,6 +3992,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -3847,6 +4004,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -3893,7 +4051,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3902,6 +4062,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "move_loc",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3938,6 +4099,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3949,6 +4111,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -3983,7 +4146,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -3992,6 +4157,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -4023,6 +4189,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -4034,6 +4201,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -4077,7 +4245,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -4086,6 +4256,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "st_loc",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4105,6 +4276,7 @@ Module reference_safety.
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                 ],
                                               "pop",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4143,6 +4315,7 @@ Module reference_safety.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "with_message",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -4151,6 +4324,7 @@ Module reference_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4181,6 +4355,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1_formatted",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4201,6 +4376,7 @@ Module reference_safety.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_display",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "move_abstract_stack::AbsStackError"
@@ -4218,6 +4394,7 @@ Module reference_safety.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
                                                                                   "new",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -4247,6 +4424,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           []
@@ -4288,6 +4466,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4304,6 +4483,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_debug",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError"
@@ -4366,6 +4546,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -4377,6 +4558,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -4414,6 +4596,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4429,6 +4612,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4467,6 +4651,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4475,6 +4660,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4505,6 +4691,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4525,6 +4712,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -4542,6 +4730,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -4571,6 +4760,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -4612,6 +4802,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -4627,6 +4818,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -4683,6 +4875,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4691,6 +4884,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4720,6 +4914,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4738,6 +4933,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -4779,6 +4975,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4793,6 +4990,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -4842,7 +5040,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4851,6 +5051,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "freeze_ref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| state |); M.read (| offset |); M.read (| id |) ]
@@ -4883,6 +5084,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -4894,6 +5096,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -4928,7 +5131,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -4937,6 +5142,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| frozen |) ]
@@ -4968,6 +5174,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -4979,6 +5186,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -5023,693 +5231,713 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (let~ v1 :=
-                                      M.copy (|
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "move_abstract_stack::AbstractStack")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ],
-                                                "pop",
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (let~ v1 :=
+                                    M.copy (|
+                                      M.match_operator (|
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "move_abstract_stack::AbstractStack")
                                                 []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| verifier |),
-                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                  "stack"
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::result::Result::Ok",
-                                                    0
-                                                  |) in
-                                                let x := M.copy (| γ0_0 |) in
-                                                x));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::result::Result::Err",
-                                                    0
-                                                  |) in
-                                                let e := M.copy (| γ0_0 |) in
-                                                let~ err :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError",
-                                                        "with_message",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError",
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [
-                                                            Value.StructTuple
-                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                              []
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::hint::must_use",
-                                                            [],
-                                                            [ Ty.path "alloc::string::String" ]
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              let~ res :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "alloc::fmt::format",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1_formatted",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:192 "
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_display",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_abstract_stack::AbsStackError"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ e ]
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      4;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::UnsafeArg",
-                                                                              "new",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              res
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use (M.alloc (| Value.Bool true |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::panicking::panic_fmt",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    "new_v1",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |)
-                                                                        ]
-                                                                    |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_debug",
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError"
-                                                                              ]
-                                                                            |),
-                                                                            [ err ]
-                                                                          |)
-                                                                        ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                Value.StructTuple
-                                                                  "core::result::Result::Err"
-                                                                  [ M.read (| err |) ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)))
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      |) in
-                                    let~ v2 :=
-                                      M.copy (|
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "move_abstract_stack::AbstractStack")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ],
-                                                "pop",
-                                                []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| verifier |),
-                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                  "stack"
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::result::Result::Ok",
-                                                    0
-                                                  |) in
-                                                let x := M.copy (| γ0_0 |) in
-                                                x));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::result::Result::Err",
-                                                    0
-                                                  |) in
-                                                let e := M.copy (| γ0_0 |) in
-                                                let~ err :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError",
-                                                        "with_message",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError",
-                                                            "new",
-                                                            []
-                                                          |),
-                                                          [
-                                                            Value.StructTuple
-                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                              []
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::hint::must_use",
-                                                            [],
-                                                            [ Ty.path "alloc::string::String" ]
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              let~ res :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "alloc::fmt::format",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1_formatted",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:193 "
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_display",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_abstract_stack::AbsStackError"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ e ]
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      4;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::UnsafeArg",
-                                                                              "new",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              res
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use (M.alloc (| Value.Bool true |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::panicking::panic_fmt",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    "new_v1",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |)
-                                                                        ]
-                                                                    |);
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_debug",
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError"
-                                                                              ]
-                                                                            |),
-                                                                            [ err ]
-                                                                          |)
-                                                                        ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                Value.StructTuple
-                                                                  "core::result::Result::Err"
-                                                                  [ M.read (| err |) ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)))
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      |) in
-                                    let~ value :=
-                                      M.copy (|
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                                    Ty.path
-                                                      "move_binary_format::errors::PartialVMError"
-                                                  ],
-                                                [],
-                                                "branch",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                    "comparison",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| state |);
-                                                    M.read (| offset |);
-                                                    M.read (| v1 |);
-                                                    M.read (| v2 |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual := M.copy (| γ0_0 |) in
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path
-                                                                  "move_binary_format::errors::PartialVMError"
-                                                              ],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val := M.copy (| γ0_0 |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |) in
-                                    M.match_operator (|
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                ],
+                                              "pop",
+                                              [],
                                               []
-                                              [
-                                                Ty.tuple [];
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ],
-                                            [],
-                                            "branch",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                "push",
-                                                []
-                                              |),
-                                              [ M.read (| verifier |); M.read (| value |) ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| verifier |),
+                                                "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                "stack"
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              let x := M.copy (| γ0_0 |) in
+                                              x));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let e := M.copy (| γ0_0 |) in
+                                              let~ err :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
+                                                      "with_message",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
+                                                          "new",
+                                                          [],
                                                           []
-                                                          [
-                                                            Ty.tuple [];
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ],
+                                                        |),
                                                         [
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::hint::must_use",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            let~ res :=
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1_formatted",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:192 "
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_display",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_abstract_stack::AbsStackError"
+                                                                                  ]
+                                                                                |),
+                                                                                [ e ]
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    4;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::UnsafeArg",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            res
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.match_operator (|
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::panicking::panic_fmt",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Arguments",
+                                                                  "new_v1",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [ M.read (| Value.String "" |)
+                                                                      ]
+                                                                  |);
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_debug",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
+                                                                          |),
+                                                                          [ err ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
+                                                                [ M.read (| err |) ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ v2 :=
+                                    M.copy (|
+                                      M.match_operator (|
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "move_abstract_stack::AbstractStack")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                ],
+                                              "pop",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| verifier |),
+                                                "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                "stack"
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Ok",
+                                                  0
+                                                |) in
+                                              let x := M.copy (| γ0_0 |) in
+                                              x));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::result::Result::Err",
+                                                  0
+                                                |) in
+                                              let e := M.copy (| γ0_0 |) in
+                                              let~ err :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
+                                                      "with_message",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
+                                                          "new",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                            []
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::hint::must_use",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            let~ res :=
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1_formatted",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:193 "
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_display",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_abstract_stack::AbsStackError"
+                                                                                  ]
+                                                                                |),
+                                                                                [ e ]
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    4;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::UnsafeArg",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            res
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.match_operator (|
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::panicking::panic_fmt",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Arguments",
+                                                                  "new_v1",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [ M.read (| Value.String "" |)
+                                                                      ]
+                                                                  |);
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_debug",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ]
+                                                                          |),
+                                                                          [ err ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::result::Result::Err"
+                                                                [ M.read (| err |) ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
+                                    |) in
+                                  let~ value :=
+                                    M.copy (|
+                                      M.match_operator (|
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ],
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                  "comparison",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| state |);
+                                                  M.read (| offset |);
+                                                  M.read (| v1 |);
+                                                  M.read (| v2 |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual := M.copy (| γ0_0 |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    M.return_ (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
                                                             [
-                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.tuple [];
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
-                                                            ]
-                                                        ],
-                                                        "from_residual",
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
+                                                            ],
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ]
+                                                          ],
+                                                          "from_residual",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| residual |) ]
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val := M.copy (| γ0_0 |) in
+                                              val))
+                                        ]
+                                      |)
+                                    |) in
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                              "push",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| verifier |); M.read (| value |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
+                                                  |)
+                                                |)
                                               |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -5728,6 +5956,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5743,6 +5972,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5781,6 +6011,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5789,6 +6020,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -5819,6 +6051,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5839,6 +6072,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -5856,6 +6090,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -5885,6 +6120,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -5926,6 +6162,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5941,6 +6178,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -5997,6 +6235,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6005,6 +6244,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -6034,6 +6274,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -6052,6 +6293,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -6093,6 +6335,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6107,6 +6350,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -6156,7 +6400,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6165,6 +6411,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "read_ref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| state |); M.read (| offset |); M.read (| id |) ]
@@ -6197,6 +6444,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6208,6 +6456,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6242,7 +6491,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -6251,6 +6502,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -6282,6 +6534,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -6293,6 +6546,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -6330,6 +6584,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6345,6 +6600,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6383,6 +6639,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6391,6 +6648,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6421,6 +6679,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -6441,6 +6700,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -6458,6 +6718,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -6487,6 +6748,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -6528,6 +6790,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -6543,6 +6806,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -6599,6 +6863,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6607,6 +6872,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -6636,6 +6902,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -6654,6 +6921,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -6695,6 +6963,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6709,6 +6978,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -6756,6 +7026,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6793,6 +7064,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6801,6 +7073,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -6830,6 +7103,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -6850,6 +7124,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -6867,6 +7142,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -6895,6 +7171,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -6935,6 +7212,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6949,6 +7227,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -6997,6 +7276,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [ val_operand ]
@@ -7014,6 +7294,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7021,6 +7302,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7050,6 +7332,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7067,6 +7350,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -7108,6 +7392,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7121,6 +7406,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -7167,7 +7453,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -7176,6 +7464,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "write_ref",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| state |); M.read (| offset |); M.read (| id |) ]
@@ -7207,6 +7496,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -7218,6 +7508,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -7264,7 +7555,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7273,6 +7566,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_loc",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7310,6 +7604,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -7321,6 +7616,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -7355,7 +7651,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -7364,6 +7662,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -7395,6 +7694,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -7406,6 +7706,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -7452,7 +7753,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7461,6 +7764,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_loc",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7498,6 +7802,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -7509,6 +7814,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -7543,7 +7849,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -7552,6 +7860,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -7583,6 +7892,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -7594,6 +7904,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -7633,6 +7944,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7648,6 +7960,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7686,6 +7999,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7694,6 +8008,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -7724,6 +8039,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7744,6 +8060,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -7761,6 +8078,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7790,6 +8108,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -7831,6 +8150,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -7846,6 +8166,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -7902,6 +8223,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -7910,6 +8232,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -7939,6 +8262,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7957,6 +8281,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -7998,6 +8323,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8012,6 +8338,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -8061,7 +8388,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8070,6 +8399,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_field",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8108,6 +8438,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -8119,6 +8450,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -8153,7 +8485,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8162,6 +8496,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -8193,6 +8528,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8204,6 +8540,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8240,6 +8577,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -8263,6 +8601,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8278,6 +8617,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8316,6 +8656,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8324,6 +8665,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8354,6 +8696,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -8374,6 +8717,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -8391,6 +8735,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -8420,6 +8765,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -8461,6 +8807,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -8476,6 +8823,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -8532,6 +8880,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8540,6 +8889,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -8569,6 +8919,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -8587,6 +8938,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -8628,6 +8980,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8642,6 +8995,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -8691,7 +9045,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8700,6 +9056,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_field",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8744,6 +9101,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -8755,6 +9113,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -8789,7 +9148,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8798,6 +9159,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -8829,6 +9191,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8840,6 +9203,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8879,6 +9243,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8894,6 +9259,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -8932,6 +9298,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8940,6 +9307,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8970,6 +9338,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -8990,6 +9359,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -9007,6 +9377,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9036,6 +9407,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -9077,6 +9449,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -9092,6 +9465,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -9148,6 +9522,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9156,6 +9531,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -9185,6 +9561,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -9203,6 +9580,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -9244,6 +9622,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9258,6 +9637,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -9307,7 +9687,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9316,6 +9698,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_field",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9354,6 +9737,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -9365,6 +9749,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -9399,7 +9784,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -9408,6 +9795,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -9439,6 +9827,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -9450,6 +9839,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -9486,6 +9876,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -9509,6 +9900,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     "ref_id",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9524,6 +9916,7 @@ Module reference_safety.
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ],
                                             "pop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9562,6 +9955,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9570,6 +9964,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9600,6 +9995,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1_formatted",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9620,6 +10016,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "move_abstract_stack::AbsStackError"
@@ -9637,6 +10034,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Placeholder",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9666,6 +10064,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::UnsafeArg",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -9707,6 +10106,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -9722,6 +10122,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -9778,6 +10179,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9786,6 +10188,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -9815,6 +10218,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -9833,6 +10237,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -9874,6 +10279,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9888,6 +10294,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -9937,7 +10344,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9946,6 +10355,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_field",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9990,6 +10400,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -10001,6 +10412,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -10035,7 +10447,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -10044,6 +10458,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -10075,6 +10490,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -10086,6 +10502,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -10131,6 +10548,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10147,6 +10565,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10185,6 +10604,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10193,6 +10613,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10224,6 +10645,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -10244,6 +10666,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -10261,6 +10684,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -10290,6 +10714,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -10333,6 +10758,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -10352,6 +10778,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -10399,6 +10826,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10406,6 +10834,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10435,6 +10864,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10452,6 +10882,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -10493,6 +10924,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10506,6 +10938,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -10555,7 +10988,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -10564,6 +10999,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_global",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10601,6 +11037,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -10612,6 +11049,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -10646,7 +11084,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -10655,6 +11095,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -10686,6 +11127,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -10697,6 +11139,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -10742,6 +11185,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -10758,6 +11202,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10796,6 +11241,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -10804,6 +11250,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10835,6 +11282,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -10855,6 +11303,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -10872,6 +11321,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -10901,6 +11351,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -10944,6 +11395,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -10963,6 +11415,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -11010,6 +11463,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11017,6 +11471,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11046,6 +11501,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -11063,6 +11519,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -11104,6 +11561,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11117,6 +11575,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -11156,6 +11615,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -11186,7 +11646,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11195,6 +11657,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_global",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11238,6 +11701,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11249,6 +11713,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11283,7 +11748,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -11292,6 +11759,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -11323,6 +11791,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -11334,6 +11803,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -11379,6 +11849,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11395,6 +11866,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11433,6 +11905,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -11441,6 +11914,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -11472,6 +11946,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -11492,6 +11967,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -11509,6 +11985,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -11538,6 +12015,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -11581,6 +12059,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -11600,6 +12079,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -11647,6 +12127,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -11654,6 +12135,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -11683,6 +12165,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -11700,6 +12183,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -11741,6 +12225,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11754,6 +12239,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -11803,7 +12289,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11812,6 +12300,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_global",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11849,6 +12338,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11860,6 +12350,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11894,7 +12385,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -11903,6 +12396,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -11934,6 +12428,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -11945,6 +12440,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -11990,6 +12486,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12006,6 +12503,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -12044,6 +12542,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -12052,6 +12551,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -12083,6 +12583,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -12103,6 +12604,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -12120,6 +12622,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -12149,6 +12652,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -12192,6 +12696,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -12211,6 +12716,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -12258,6 +12764,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12265,6 +12772,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12294,6 +12802,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -12311,6 +12820,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -12352,6 +12862,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -12365,6 +12876,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -12404,6 +12916,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -12434,7 +12947,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12443,6 +12958,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "borrow_global",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12486,6 +13002,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12497,6 +13014,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12531,7 +13049,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -12540,6 +13060,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -12571,6 +13092,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -12582,6 +13104,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -12627,6 +13150,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12643,6 +13167,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -12681,6 +13206,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -12689,6 +13215,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -12720,6 +13247,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -12740,6 +13268,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -12757,6 +13286,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -12786,6 +13316,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -12829,6 +13360,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -12848,6 +13380,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -12895,6 +13428,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12902,6 +13436,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -12931,6 +13466,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -12948,6 +13484,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -12989,6 +13526,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -13002,6 +13540,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -13051,7 +13590,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13060,6 +13601,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "move_from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13096,6 +13638,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13107,6 +13650,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13141,7 +13685,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -13150,6 +13696,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -13181,6 +13728,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -13192,6 +13740,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -13237,6 +13786,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -13253,6 +13803,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -13291,6 +13842,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -13299,6 +13851,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -13330,6 +13883,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -13350,6 +13904,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -13367,6 +13922,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -13396,6 +13952,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -13439,6 +13996,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13458,6 +14016,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -13505,6 +14064,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -13512,6 +14072,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -13541,6 +14102,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -13558,6 +14120,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -13599,6 +14162,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -13612,6 +14176,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -13651,6 +14216,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -13681,7 +14247,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13690,6 +14258,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "move_from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13732,6 +14301,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13743,6 +14313,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13777,7 +14348,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -13786,6 +14359,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| value |) ]
@@ -13817,6 +14391,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -13828,6 +14403,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -13864,6 +14440,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
+                                [],
                                 []
                               |),
                               [
@@ -13891,7 +14468,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -13936,6 +14515,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -13947,6 +14527,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -13983,6 +14564,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -14003,6 +14585,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
+                                [],
                                 []
                               |),
                               [
@@ -14036,7 +14619,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -14081,6 +14666,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -14092,6 +14678,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -14133,6 +14720,7 @@ Module reference_safety.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
+                                [],
                                 []
                               |),
                               []
@@ -14150,7 +14738,9 @@ Module reference_safety.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14163,6 +14753,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::file_format::Signature",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -14171,6 +14762,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_bytecode_verifier::absint::FunctionContext",
                                                   "return_",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -14206,7 +14798,9 @@ Module reference_safety.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -14244,6 +14838,7 @@ Module reference_safety.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -14262,6 +14857,7 @@ Module reference_safety.
                                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                                       ],
                                                                     "pop",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -14300,6 +14896,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "with_message",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -14308,6 +14905,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -14341,6 +14939,7 @@ Module reference_safety.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_v1_formatted",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -14361,6 +14960,7 @@ Module reference_safety.
                                                                                                         Ty.path
                                                                                                           "core::fmt::rt::Argument",
                                                                                                         "new_display",
+                                                                                                        [],
                                                                                                         [
                                                                                                           Ty.path
                                                                                                             "move_abstract_stack::AbsStackError"
@@ -14380,6 +14980,7 @@ Module reference_safety.
                                                                                                         Ty.path
                                                                                                           "core::fmt::rt::Placeholder",
                                                                                                         "new",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -14409,6 +15010,7 @@ Module reference_safety.
                                                                                                   Ty.path
                                                                                                     "core::fmt::rt::UnsafeArg",
                                                                                                   "new",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 []
@@ -14454,6 +15056,7 @@ Module reference_safety.
                                                                                         Ty.path
                                                                                           "core::fmt::Arguments",
                                                                                         "new_v1",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -14474,6 +15077,7 @@ Module reference_safety.
                                                                                                   Ty.path
                                                                                                     "core::fmt::rt::Argument",
                                                                                                   "new_debug",
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.path
                                                                                                       "move_binary_format::errors::PartialVMError"
@@ -14535,6 +15139,7 @@ Module reference_safety.
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                   ],
                                 "reverse",
+                                [],
                                 []
                               |),
                               [
@@ -14550,7 +15155,9 @@ Module reference_safety.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref_mut",
+                                    [],
                                     []
                                   |),
                                   [ return_values ]
@@ -14571,7 +15178,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -14580,6 +15189,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                     "ret",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14615,6 +15225,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -14626,6 +15237,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -14754,13 +15366,12 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -14797,458 +15408,468 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
-                                                  (M.alloc (|
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                          "is_value",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.match_operator (|
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "move_abstract_stack::AbstractStack")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                    ],
-                                                                  "pop",
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                        "is_value",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.match_operator (|
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_abstract_stack::AbstractStack")
                                                                   []
-                                                                |),
-                                                                [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| verifier |),
-                                                                    "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                                    "stack"
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Ok",
-                                                                      0
-                                                                    |) in
-                                                                  let x := M.copy (| γ0_0 |) in
-                                                                  x));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Err",
-                                                                      0
-                                                                    |) in
-                                                                  let e := M.copy (| γ0_0 |) in
-                                                                  let~ err :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError",
-                                                                          "with_message",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "new",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              Value.StructTuple
-                                                                                "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                []
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::hint::must_use",
-                                                                              [],
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::string::String"
-                                                                              ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ res :=
-                                                                                  M.alloc (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "alloc::fmt::format",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_v1_formatted",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/reference_safety/mod.rs:307 "
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "new_display",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_abstract_stack::AbsStackError"
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      e
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Placeholder",
-                                                                                                      "new",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.Usize
-                                                                                                        0;
-                                                                                                      Value.UnicodeChar
-                                                                                                        32;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                                                        [];
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.U32
-                                                                                                        4;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        [];
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        []
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::UnsafeArg",
-                                                                                                "new",
-                                                                                                []
-                                                                                              |),
-                                                                                              []
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |) in
-                                                                                res
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let γ :=
-                                                                            M.use
-                                                                              (M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)) in
-                                                                          let _ :=
-                                                                            M.is_constant_or_break_match (|
-                                                                              M.read (| γ |),
-                                                                              Value.Bool true
-                                                                            |) in
-                                                                          M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::panicking::panic_fmt",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::Arguments",
-                                                                                      "new_v1",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
-                                                                                            |)
-                                                                                          ]
-                                                                                      |);
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_debug",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [ err
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)));
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.read (|
-                                                                                M.return_ (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Err"
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        err
-                                                                                      |)
-                                                                                    ]
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          |)))
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |)) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              let~ err :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "with_message",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::errors::PartialVMError",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                            []
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    [],
-                                                                    []
-                                                                  |),
                                                                   [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                  ],
+                                                                "pop",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| verifier |),
+                                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                                  "stack"
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Ok",
+                                                                    0
+                                                                  |) in
+                                                                let x := M.copy (| γ0_0 |) in
+                                                                x));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Err",
+                                                                    0
+                                                                  |) in
+                                                                let e := M.copy (| γ0_0 |) in
+                                                                let~ err :=
+                                                                  M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
+                                                                          "move_binary_format::errors::PartialVMError",
+                                                                        "with_message",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:307 (assert)"
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "none",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::panicking::panic_fmt",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
                                                                       [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                              []
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::hint::must_use",
+                                                                            [],
                                                                             [
                                                                               Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"
+                                                                                "alloc::string::String"
                                                                             ]
                                                                           |),
-                                                                          [ err ]
+                                                                          [
+                                                                            M.read (|
+                                                                              let~ res :=
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "alloc::fmt::format",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
+                                                                                          "new_v1_formatted",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:307 "
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [],
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "move_abstract_stack::AbsStackError"
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    e
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Placeholder",
+                                                                                                    "new",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0;
+                                                                                                    Value.UnicodeChar
+                                                                                                      32;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                                      [];
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.U32
+                                                                                                      4;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      [];
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      []
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::UnsafeArg",
+                                                                                              "new",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            []
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |) in
+                                                                              res
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       ]
+                                                                    |)
+                                                                  |) in
+                                                                M.match_operator (|
+                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ :=
+                                                                          M.use
+                                                                            (M.alloc (|
+                                                                              Value.Bool true
+                                                                            |)) in
+                                                                        let _ :=
+                                                                          M.is_constant_or_break_match (|
+                                                                            M.read (| γ |),
+                                                                            Value.Bool true
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::panicking::panic_fmt",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              ""
+                                                                                          |)
+                                                                                        ]
+                                                                                    |);
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [],
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ err ]
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Err"
+                                                                                  [ M.read (| err |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ err :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "with_message",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [],
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "crates/move-bytecode-verifier/src/reference_safety/mod.rs:307 (assert)"
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "none",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |)
-                                                            ]
-                                                          |)
+                                                            |) in
+                                                          res
                                                         |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              Value.StructTuple
-                                                                "core::result::Result::Err"
-                                                                [ M.read (| err |) ]
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use (M.alloc (| Value.Bool true |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_v1",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [ M.read (| Value.String "" |) ]
+                                                                |);
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [],
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
+                                                                        |),
+                                                                        [ err ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              ]
                                                             |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [ M.read (| err |) ]
                                                           |)
                                                         |)
-                                                      |)))
-                                                ]
-                                              |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                        ]
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -15276,337 +15897,673 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
-                                                  (M.alloc (|
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                          "is_value",
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                        "is_value",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.match_operator (|
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_abstract_stack::AbstractStack")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                  ],
+                                                                "pop",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| verifier |),
+                                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                                  "stack"
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Ok",
+                                                                    0
+                                                                  |) in
+                                                                let x := M.copy (| γ0_0 |) in
+                                                                x));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Err",
+                                                                    0
+                                                                  |) in
+                                                                let e := M.copy (| γ0_0 |) in
+                                                                let~ err :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
+                                                                        "with_message",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                              []
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::hint::must_use",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              let~ res :=
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "alloc::fmt::format",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
+                                                                                          "new_v1_formatted",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:311 "
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [],
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "move_abstract_stack::AbsStackError"
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    e
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Placeholder",
+                                                                                                    "new",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0;
+                                                                                                    Value.UnicodeChar
+                                                                                                      32;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                                      [];
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.U32
+                                                                                                      4;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      [];
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      []
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::UnsafeArg",
+                                                                                              "new",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            []
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |) in
+                                                                              res
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                M.match_operator (|
+                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ :=
+                                                                          M.use
+                                                                            (M.alloc (|
+                                                                              Value.Bool true
+                                                                            |)) in
+                                                                        let _ :=
+                                                                          M.is_constant_or_break_match (|
+                                                                            M.read (| γ |),
+                                                                            Value.Bool true
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::panicking::panic_fmt",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              ""
+                                                                                          |)
+                                                                                        ]
+                                                                                    |);
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [],
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ err ]
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Err"
+                                                                                  [ M.read (| err |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ err :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "with_message",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                           []
-                                                        |),
-                                                        [
-                                                          M.match_operator (|
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [],
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
                                                             M.alloc (|
                                                               M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "move_abstract_stack::AbstractStack")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                    ],
-                                                                  "pop",
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| verifier |),
-                                                                    "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                                    "stack"
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "crates/move-bytecode-verifier/src/reference_safety/mod.rs:311 (assert)"
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "none",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Ok",
-                                                                      0
-                                                                    |) in
-                                                                  let x := M.copy (| γ0_0 |) in
-                                                                  x));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Err",
-                                                                      0
-                                                                    |) in
-                                                                  let e := M.copy (| γ0_0 |) in
-                                                                  let~ err :=
-                                                                    M.alloc (|
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use (M.alloc (| Value.Bool true |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_v1",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [ M.read (| Value.String "" |) ]
+                                                                |);
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
-                                                                            "move_binary_format::errors::PartialVMError",
-                                                                          "with_message",
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [],
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
+                                                                        |),
+                                                                        [ err ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [ M.read (| err |) ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "release_value",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (| state |);
+                                          M.read (|
+                                            M.match_operator (|
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "move_abstract_stack::AbstractStack")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                      ],
+                                                    "pop",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| verifier |),
+                                                      "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                      "stack"
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::result::Result::Ok",
+                                                        0
+                                                      |) in
+                                                    let x := M.copy (| γ0_0 |) in
+                                                    x));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::result::Result::Err",
+                                                        0
+                                                      |) in
+                                                    let e := M.copy (| γ0_0 |) in
+                                                    let~ err :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError",
+                                                            "with_message",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
+                                                                "new",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                Value.StructTuple
+                                                                  "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                  []
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::hint::must_use",
+                                                                [],
+                                                                [ Ty.path "alloc::string::String" ]
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  let~ res :=
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "new",
+                                                                                "core::fmt::Arguments",
+                                                                              "new_v1_formatted",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              Value.StructTuple
-                                                                                "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                []
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::hint::must_use",
-                                                                              [],
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::string::String"
-                                                                              ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ res :=
-                                                                                  M.alloc (|
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "crates/move-bytecode-verifier/src/reference_safety/mod.rs:313 "
+                                                                                    |)
+                                                                                  ]
+                                                                              |);
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
                                                                                     M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "alloc::fmt::format",
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_abstract_stack::AbsStackError"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [ e ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |);
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Placeholder",
+                                                                                        "new",
                                                                                         [],
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_v1_formatted",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/reference_safety/mod.rs:311 "
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "new_display",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_abstract_stack::AbsStackError"
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      e
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Placeholder",
-                                                                                                      "new",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.Usize
-                                                                                                        0;
-                                                                                                      Value.UnicodeChar
-                                                                                                        32;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                                                        [];
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.U32
-                                                                                                        4;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        [];
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        []
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::UnsafeArg",
-                                                                                                "new",
-                                                                                                []
-                                                                                              |),
-                                                                                              []
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          0;
+                                                                                        Value.UnicodeChar
+                                                                                          32;
+                                                                                        Value.StructTuple
+                                                                                          "core::fmt::rt::Alignment::Unknown"
+                                                                                          [];
+                                                                                        Value.Integer
+                                                                                          IntegerKind.U32
+                                                                                          4;
+                                                                                        Value.StructTuple
+                                                                                          "core::fmt::rt::Count::Implied"
+                                                                                          [];
+                                                                                        Value.StructTuple
+                                                                                          "core::fmt::rt::Count::Implied"
+                                                                                          []
                                                                                       ]
                                                                                     |)
-                                                                                  |) in
-                                                                                res
+                                                                                  ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::UnsafeArg",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                []
                                                                               |)
                                                                             ]
                                                                           |)
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let γ :=
-                                                                            M.use
-                                                                              (M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)) in
-                                                                          let _ :=
-                                                                            M.is_constant_or_break_match (|
-                                                                              M.read (| γ |),
-                                                                              Value.Bool true
-                                                                            |) in
-                                                                          M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::panicking::panic_fmt",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::Arguments",
-                                                                                      "new_v1",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
-                                                                                            |)
-                                                                                          ]
-                                                                                      |);
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_debug",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [ err
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)));
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.read (|
-                                                                                M.return_ (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Err"
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        err
-                                                                                      |)
-                                                                                    ]
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          |)))
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |)) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              let~ err :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "with_message",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::errors::PartialVMError",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                            []
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
+                                                                  res
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    M.match_operator (|
+                                                      M.alloc (| Value.Tuple [] |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ :=
+                                                              M.use
+                                                                (M.alloc (| Value.Bool true |)) in
+                                                            let _ :=
+                                                              M.is_constant_or_break_match (|
+                                                                M.read (| γ |),
+                                                                Value.Bool true
+                                                              |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
                                                                 M.call_closure (|
                                                                   M.get_function (|
-                                                                    "alloc::fmt::format",
+                                                                    "core::panicking::panic_fmt",
                                                                     [],
                                                                     []
                                                                   |),
@@ -15616,6 +16573,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -15623,377 +16581,58 @@ Module reference_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.read (|
-                                                                                Value.String
-                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:311 (assert)"
+                                                                                Value.String ""
                                                                               |)
                                                                             ]
                                                                         |);
                                                                         M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "none",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::panicking::panic_fmt",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
+                                                                          Value.Array
                                                                             [
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
+                                                                                |),
+                                                                                [ err ]
+                                                                              |)
                                                                             ]
-                                                                          |),
-                                                                          [ err ]
                                                                         |)
                                                                       ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              Value.StructTuple
-                                                                "core::result::Result::Err"
-                                                                [ M.read (| err |) ]
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                        ]
-                                      |) in
-                                    let~ _ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "release_value",
-                                            []
-                                          |),
-                                          [
-                                            M.read (| state |);
-                                            M.read (|
-                                              M.match_operator (|
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "move_abstract_stack::AbstractStack")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                        ],
-                                                      "pop",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| verifier |),
-                                                        "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                        "stack"
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::result::Result::Ok",
-                                                          0
-                                                        |) in
-                                                      let x := M.copy (| γ0_0 |) in
-                                                      x));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::result::Result::Err",
-                                                          0
-                                                        |) in
-                                                      let e := M.copy (| γ0_0 |) in
-                                                      let~ err :=
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_binary_format::errors::PartialVMError",
-                                                              "with_message",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::errors::PartialVMError",
-                                                                  "new",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  Value.StructTuple
-                                                                    "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                    []
-                                                                ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::hint::must_use",
-                                                                  [],
-                                                                  [ Ty.path "alloc::string::String"
-                                                                  ]
-                                                                |),
-                                                                [
-                                                                  M.read (|
-                                                                    let~ res :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_function (|
-                                                                            "alloc::fmt::format",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::Arguments",
-                                                                                "new_v1_formatted",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "crates/move-bytecode-verifier/src/reference_safety/mod.rs:313 "
-                                                                                      |)
-                                                                                    ]
-                                                                                |);
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Argument",
-                                                                                          "new_display",
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "move_abstract_stack::AbsStackError"
-                                                                                          ]
-                                                                                        |),
-                                                                                        [ e ]
-                                                                                      |)
-                                                                                    ]
-                                                                                |);
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Placeholder",
-                                                                                          "new",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          Value.Integer
-                                                                                            IntegerKind.Usize
-                                                                                            0;
-                                                                                          Value.UnicodeChar
-                                                                                            32;
-                                                                                          Value.StructTuple
-                                                                                            "core::fmt::rt::Alignment::Unknown"
-                                                                                            [];
-                                                                                          Value.Integer
-                                                                                            IntegerKind.U32
-                                                                                            4;
-                                                                                          Value.StructTuple
-                                                                                            "core::fmt::rt::Count::Implied"
-                                                                                            [];
-                                                                                          Value.StructTuple
-                                                                                            "core::fmt::rt::Count::Implied"
-                                                                                            []
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::UnsafeArg",
-                                                                                    "new",
-                                                                                    []
-                                                                                  |),
-                                                                                  []
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    res
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      M.match_operator (|
-                                                        M.alloc (| Value.Tuple [] |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let γ :=
-                                                                M.use
-                                                                  (M.alloc (| Value.Bool true |)) in
-                                                              let _ :=
-                                                                M.is_constant_or_break_match (|
-                                                                  M.read (| γ |),
-                                                                  Value.Bool true
-                                                                |) in
-                                                              M.alloc (|
-                                                                M.never_to_any (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "core::panicking::panic_fmt",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::errors::PartialVMError"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ err ]
-                                                                                |)
-                                                                              ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |)
-                                                              |)));
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (M.alloc (|
-                                                                M.never_to_any (|
-                                                                  M.read (|
-                                                                    M.return_ (|
-                                                                      Value.StructTuple
-                                                                        "core::result::Result::Err"
-                                                                        [ M.read (| err |) ]
                                                                     |)
+                                                                  ]
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    Value.StructTuple
+                                                                      "core::result::Result::Err"
+                                                                      [ M.read (| err |) ]
                                                                   |)
                                                                 |)
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                              ]
                                             |)
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -16019,117 +16658,122 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.tuple [];
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ],
-                                            [],
-                                            "branch",
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
                                             []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                "push",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| verifier |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                    "value_for",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| state |);
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "move_binary_format::file_format::SignatureToken::Bool"
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                              "push",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (| verifier |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                  "value_for",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| state |);
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "move_binary_format::file_format::SignatureToken::Bool"
+                                                      []
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
                                                         []
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
+                                                      [],
+                                                      [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.tuple [];
+                                                            Ty.path "core::convert::Infallible";
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "core::convert::Infallible";
-                                                              Ty.path
-                                                                "move_binary_format::errors::PartialVMError"
-                                                            ]
-                                                        ],
-                                                        "from_residual",
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
-                                                    |)
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
                                                   |)
                                                 |)
                                               |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -16153,7 +16797,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16162,6 +16808,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16171,6 +16818,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16211,6 +16859,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16222,6 +16871,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16264,7 +16914,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16273,6 +16925,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16282,6 +16935,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16322,6 +16976,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16333,6 +16988,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16375,7 +17031,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16384,6 +17042,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16393,6 +17052,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16433,6 +17093,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16444,6 +17105,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16486,7 +17148,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16495,6 +17159,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16504,6 +17169,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16544,6 +17210,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16555,6 +17222,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16597,7 +17265,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16606,6 +17276,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16615,6 +17286,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16655,6 +17327,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16666,6 +17339,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16708,7 +17382,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16717,6 +17393,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16726,6 +17403,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16766,6 +17444,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16777,6 +17456,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -16814,6 +17494,7 @@ Module reference_safety.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "constant_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16844,7 +17525,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -16853,6 +17536,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16862,6 +17546,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| state |); M.read (| signature |) ]
@@ -16895,6 +17580,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -16906,6 +17592,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -17076,990 +17763,1016 @@ Module reference_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
-                                                  (M.alloc (|
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                          "is_value",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.match_operator (|
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "move_abstract_stack::AbstractStack")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                    ],
-                                                                  "pop",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| verifier |),
-                                                                    "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                                    "stack"
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Ok",
-                                                                      0
-                                                                    |) in
-                                                                  let x := M.copy (| γ0_0 |) in
-                                                                  x));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Err",
-                                                                      0
-                                                                    |) in
-                                                                  let e := M.copy (| γ0_0 |) in
-                                                                  let~ err :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError",
-                                                                          "with_message",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "new",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              Value.StructTuple
-                                                                                "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                []
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::hint::must_use",
-                                                                              [],
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::string::String"
-                                                                              ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ res :=
-                                                                                  M.alloc (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "alloc::fmt::format",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_v1_formatted",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/reference_safety/mod.rs:346 "
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "new_display",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_abstract_stack::AbsStackError"
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      e
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Placeholder",
-                                                                                                      "new",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.Usize
-                                                                                                        0;
-                                                                                                      Value.UnicodeChar
-                                                                                                        32;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                                                        [];
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.U32
-                                                                                                        4;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        [];
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        []
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::UnsafeArg",
-                                                                                                "new",
-                                                                                                []
-                                                                                              |),
-                                                                                              []
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |) in
-                                                                                res
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let γ :=
-                                                                            M.use
-                                                                              (M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)) in
-                                                                          let _ :=
-                                                                            M.is_constant_or_break_match (|
-                                                                              M.read (| γ |),
-                                                                              Value.Bool true
-                                                                            |) in
-                                                                          M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::panicking::panic_fmt",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::Arguments",
-                                                                                      "new_v1",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
-                                                                                            |)
-                                                                                          ]
-                                                                                      |);
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_debug",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [ err
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)));
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.read (|
-                                                                                M.return_ (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Err"
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        err
-                                                                                      |)
-                                                                                    ]
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          |)))
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |)) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              let~ err :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "with_message",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::errors::PartialVMError",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                            []
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:346 (assert)"
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "none",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::panicking::panic_fmt",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"
-                                                                            ]
-                                                                          |),
-                                                                          [ err ]
-                                                                        |)
-                                                                      ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              Value.StructTuple
-                                                                "core::result::Result::Err"
-                                                                [ M.read (| err |) ]
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                        ]
-                                      |) in
-                                    let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ :=
-                                                M.use
-                                                  (M.alloc (|
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                          "is_value",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.match_operator (|
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "move_abstract_stack::AbstractStack")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                    ],
-                                                                  "pop",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| verifier |),
-                                                                    "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                                    "stack"
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Ok",
-                                                                      0
-                                                                    |) in
-                                                                  let x := M.copy (| γ0_0 |) in
-                                                                  x));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::result::Result::Err",
-                                                                      0
-                                                                    |) in
-                                                                  let e := M.copy (| γ0_0 |) in
-                                                                  let~ err :=
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError",
-                                                                          "with_message",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "new",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              Value.StructTuple
-                                                                                "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                                                []
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::hint::must_use",
-                                                                              [],
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::string::String"
-                                                                              ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ res :=
-                                                                                  M.alloc (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "alloc::fmt::format",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_v1_formatted",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/reference_safety/mod.rs:347 "
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "new_display",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_abstract_stack::AbsStackError"
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      e
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Placeholder",
-                                                                                                      "new",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.Usize
-                                                                                                        0;
-                                                                                                      Value.UnicodeChar
-                                                                                                        32;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Alignment::Unknown"
-                                                                                                        [];
-                                                                                                      Value.Integer
-                                                                                                        IntegerKind.U32
-                                                                                                        4;
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        [];
-                                                                                                      Value.StructTuple
-                                                                                                        "core::fmt::rt::Count::Implied"
-                                                                                                        []
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::UnsafeArg",
-                                                                                                "new",
-                                                                                                []
-                                                                                              |),
-                                                                                              []
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |) in
-                                                                                res
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |) in
-                                                                  M.match_operator (|
-                                                                    M.alloc (| Value.Tuple [] |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let γ :=
-                                                                            M.use
-                                                                              (M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)) in
-                                                                          let _ :=
-                                                                            M.is_constant_or_break_match (|
-                                                                              M.read (| γ |),
-                                                                              Value.Bool true
-                                                                            |) in
-                                                                          M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::panicking::panic_fmt",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::Arguments",
-                                                                                      "new_v1",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
-                                                                                            |)
-                                                                                          ]
-                                                                                      |);
-                                                                                      M.alloc (|
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::rt::Argument",
-                                                                                                "new_debug",
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                ]
-                                                                                              |),
-                                                                                              [ err
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)));
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.read (|
-                                                                                M.return_ (|
-                                                                                  Value.StructTuple
-                                                                                    "core::result::Result::Err"
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        err
-                                                                                      |)
-                                                                                    ]
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          |)))
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |)) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.Bool true
-                                                |) in
-                                              let~ err :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "with_message",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::errors::PartialVMError",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                            []
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::hint::must_use",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            let~ res :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "crates/move-bytecode-verifier/src/reference_safety/mod.rs:347 (assert)"
-                                                                              |)
-                                                                            ]
-                                                                        |);
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "none",
-                                                                              []
-                                                                            |),
-                                                                            []
-                                                                          |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |) in
-                                                            res
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::panicking::panic_fmt",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"
-                                                                            ]
-                                                                          |),
-                                                                          [ err ]
-                                                                        |)
-                                                                      ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              Value.StructTuple
-                                                                "core::result::Result::Err"
-                                                                [ M.read (| err |) ]
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                        ]
-                                      |) in
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (let~ _ :=
                                     M.match_operator (|
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.tuple [];
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ],
-                                            [],
-                                            "branch",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
-                                                "push",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| verifier |);
-                                                Value.StructTuple
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
-                                                  []
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
+                                      M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual := M.copy (| γ0_0 |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  UnOp.not (|
                                                     M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                        "is_value",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.match_operator (|
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_abstract_stack::AbstractStack")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                  ],
+                                                                "pop",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| verifier |),
+                                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                                  "stack"
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Ok",
+                                                                    0
+                                                                  |) in
+                                                                let x := M.copy (| γ0_0 |) in
+                                                                x));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Err",
+                                                                    0
+                                                                  |) in
+                                                                let e := M.copy (| γ0_0 |) in
+                                                                let~ err :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
+                                                                        "with_message",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                              []
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::hint::must_use",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              let~ res :=
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "alloc::fmt::format",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
+                                                                                          "new_v1_formatted",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:346 "
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [],
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "move_abstract_stack::AbsStackError"
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    e
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Placeholder",
+                                                                                                    "new",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0;
+                                                                                                    Value.UnicodeChar
+                                                                                                      32;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                                      [];
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.U32
+                                                                                                      4;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      [];
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      []
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::UnsafeArg",
+                                                                                              "new",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            []
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |) in
+                                                                              res
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                M.match_operator (|
+                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ :=
+                                                                          M.use
+                                                                            (M.alloc (|
+                                                                              Value.Bool true
+                                                                            |)) in
+                                                                        let _ :=
+                                                                          M.is_constant_or_break_match (|
+                                                                            M.read (| γ |),
+                                                                            Value.Bool true
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::panicking::panic_fmt",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              ""
+                                                                                          |)
+                                                                                        ]
+                                                                                    |);
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [],
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ err ]
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Err"
+                                                                                  [ M.read (| err |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ err :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "with_message",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [],
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "crates/move-bytecode-verifier/src/reference_safety/mod.rs:346 (assert)"
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "none",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use (M.alloc (| Value.Bool true |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_v1",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [ M.read (| Value.String "" |) ]
+                                                                |);
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [],
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
+                                                                        |),
+                                                                        [ err ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [ M.read (| err |) ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                  let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                        "is_value",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.match_operator (|
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_abstract_stack::AbstractStack")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                  ],
+                                                                "pop",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| verifier |),
+                                                                  "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                                                  "stack"
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Ok",
+                                                                    0
+                                                                  |) in
+                                                                let x := M.copy (| γ0_0 |) in
+                                                                x));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::result::Result::Err",
+                                                                    0
+                                                                  |) in
+                                                                let e := M.copy (| γ0_0 |) in
+                                                                let~ err :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
+                                                                        "with_message",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                                              []
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::hint::must_use",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              let~ res :=
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "alloc::fmt::format",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
+                                                                                          "new_v1_formatted",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "crates/move-bytecode-verifier/src/reference_safety/mod.rs:347 "
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [],
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "move_abstract_stack::AbsStackError"
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    e
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Placeholder",
+                                                                                                    "new",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0;
+                                                                                                    Value.UnicodeChar
+                                                                                                      32;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                                      [];
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.U32
+                                                                                                      4;
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      [];
+                                                                                                    Value.StructTuple
+                                                                                                      "core::fmt::rt::Count::Implied"
+                                                                                                      []
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::UnsafeArg",
+                                                                                              "new",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            []
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |) in
+                                                                              res
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                M.match_operator (|
+                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ :=
+                                                                          M.use
+                                                                            (M.alloc (|
+                                                                              Value.Bool true
+                                                                            |)) in
+                                                                        let _ :=
+                                                                          M.is_constant_or_break_match (|
+                                                                            M.read (| γ |),
+                                                                            Value.Bool true
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::panicking::panic_fmt",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              ""
+                                                                                          |)
+                                                                                        ]
+                                                                                    |);
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [],
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ err ]
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                Value.StructTuple
+                                                                                  "core::result::Result::Err"
+                                                                                  [ M.read (| err |)
+                                                                                  ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            let~ err :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "with_message",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+                                                          []
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [],
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "crates/move-bytecode-verifier/src/reference_safety/mod.rs:347 (assert)"
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "none",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          []
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use (M.alloc (| Value.Bool true |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_v1",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [ M.read (| Value.String "" |) ]
+                                                                |);
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [],
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ]
+                                                                        |),
+                                                                        [ err ]
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [ M.read (| err |) ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
+                                              "push",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (| verifier |);
+                                              Value.StructTuple
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+                                                []
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual := M.copy (| γ0_0 |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
+                                                      [],
+                                                      [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.tuple [];
+                                                            Ty.path "core::convert::Infallible";
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "core::convert::Infallible";
-                                                              Ty.path
-                                                                "move_binary_format::errors::PartialVMError"
-                                                            ]
-                                                        ],
-                                                        "from_residual",
-                                                        []
-                                                      |),
-                                                      [ M.read (| residual |) ]
-                                                    |)
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
                                                   |)
                                                 |)
                                               |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val := M.copy (| γ0_0 |) in
-                                            val))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val := M.copy (| γ0_0 |) in
+                                          val))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -18077,6 +18790,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -18104,7 +18818,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -18143,6 +18859,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -18154,6 +18871,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -18190,6 +18908,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -18210,6 +18929,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -18243,7 +18963,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -18282,6 +19004,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -18293,6 +19016,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -18329,6 +19053,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -18356,7 +19081,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -18395,6 +19122,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -18406,6 +19134,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -18442,6 +19171,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -18462,6 +19192,7 @@ Module reference_safety.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -18495,7 +19226,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -18534,6 +19267,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -18545,6 +19279,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -18597,6 +19332,7 @@ Module reference_safety.
                                             []
                                             [ Ty.path "u64" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| M.read (| num |) |) ]
@@ -18621,6 +19357,7 @@ Module reference_safety.
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                             ],
                                           "pop_eq_n",
+                                          [],
                                           []
                                         |),
                                         [
@@ -18664,6 +19401,7 @@ Module reference_safety.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "with_message",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -18672,6 +19410,7 @@ Module reference_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -18702,6 +19441,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1_formatted",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -18722,6 +19462,7 @@ Module reference_safety.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_display",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "move_abstract_stack::AbsStackError"
@@ -18739,6 +19480,7 @@ Module reference_safety.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
                                                                                   "new",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -18768,6 +19510,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           []
@@ -18809,6 +19552,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -18825,6 +19569,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_debug",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError"
@@ -18873,6 +19618,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                                         "is_value",
+                                                        [],
                                                         []
                                                       |),
                                                       [ abs_value ]
@@ -18891,6 +19637,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -18899,6 +19646,7 @@ Module reference_safety.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -18929,6 +19677,7 @@ Module reference_safety.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -18947,6 +19696,7 @@ Module reference_safety.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "none",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           []
@@ -18989,6 +19739,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -19004,6 +19755,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
                                                                           "new_debug",
+                                                                          [],
                                                                           [
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
@@ -19056,7 +19808,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19096,6 +19850,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -19107,6 +19862,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -19141,7 +19897,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -19150,6 +19908,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19159,6 +19918,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19178,6 +19938,7 @@ Module reference_safety.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| element_type |) ]
@@ -19215,6 +19976,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -19226,6 +19988,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -19269,6 +20032,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19306,6 +20070,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19314,6 +20079,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -19343,6 +20109,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -19363,6 +20130,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -19380,6 +20148,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -19408,6 +20177,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -19448,6 +20218,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -19462,6 +20233,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -19509,7 +20281,9 @@ Module reference_safety.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19518,6 +20292,7 @@ Module reference_safety.
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                       "vector_op",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19555,6 +20330,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19566,6 +20342,7 @@ Module reference_safety.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19599,7 +20376,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -19608,6 +20387,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19617,6 +20397,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19657,6 +20438,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -19668,6 +20450,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -19712,6 +20495,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -19728,6 +20512,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -19766,6 +20551,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -19774,6 +20560,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -19805,6 +20592,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -19825,6 +20613,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -19842,6 +20631,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -19871,6 +20661,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -19914,6 +20705,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -19933,6 +20725,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -19980,6 +20773,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -19987,6 +20781,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -20016,6 +20811,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20033,6 +20829,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -20074,6 +20871,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -20087,6 +20885,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -20134,6 +20933,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -20171,6 +20971,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20179,6 +20980,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -20208,6 +21010,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -20228,6 +21031,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -20245,6 +21049,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -20273,6 +21078,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -20313,6 +21119,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -20327,6 +21134,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -20376,7 +21184,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -20385,6 +21195,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "vector_element_borrow",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20422,6 +21233,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -20433,6 +21245,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -20467,7 +21280,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -20476,6 +21291,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| elem_ref |) ]
@@ -20507,6 +21323,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -20518,6 +21335,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -20562,6 +21380,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -20578,6 +21397,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -20616,6 +21436,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -20624,6 +21445,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -20655,6 +21477,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -20675,6 +21498,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -20692,6 +21516,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -20721,6 +21546,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -20764,6 +21590,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -20783,6 +21610,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -20830,6 +21658,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -20837,6 +21666,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -20866,6 +21696,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20883,6 +21714,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -20924,6 +21756,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -20937,6 +21770,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -20984,6 +21818,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21021,6 +21856,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21029,6 +21865,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -21058,6 +21895,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -21078,6 +21916,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -21095,6 +21934,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -21123,6 +21963,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -21163,6 +22004,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -21177,6 +22019,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -21226,7 +22069,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21235,6 +22080,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "vector_element_borrow",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21272,6 +22118,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -21283,6 +22130,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -21317,7 +22165,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -21326,6 +22176,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| elem_ref |) ]
@@ -21357,6 +22208,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -21368,6 +22220,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -21412,6 +22265,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -21428,6 +22282,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -21466,6 +22321,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -21474,6 +22330,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -21505,6 +22362,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -21525,6 +22383,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -21542,6 +22401,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -21571,6 +22431,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -21614,6 +22475,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -21633,6 +22495,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -21680,6 +22543,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21687,6 +22551,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -21716,6 +22581,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -21733,6 +22599,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -21774,6 +22641,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -21787,6 +22655,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -21834,6 +22703,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21871,6 +22741,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21879,6 +22750,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -21908,6 +22780,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -21928,6 +22801,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -21945,6 +22819,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -21973,6 +22848,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -22013,6 +22889,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -22027,6 +22904,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -22074,7 +22952,9 @@ Module reference_safety.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22083,6 +22963,7 @@ Module reference_safety.
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                       "vector_op",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22120,6 +23001,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22131,6 +23013,7 @@ Module reference_safety.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22176,6 +23059,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -22213,6 +23097,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22221,6 +23106,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -22250,6 +23136,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22270,6 +23157,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -22287,6 +23175,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -22315,6 +23204,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -22355,6 +23245,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -22369,6 +23260,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -22416,7 +23308,9 @@ Module reference_safety.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22425,6 +23319,7 @@ Module reference_safety.
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                       "vector_op",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22462,6 +23357,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22473,6 +23369,7 @@ Module reference_safety.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22508,7 +23405,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -22548,6 +23447,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -22559,6 +23459,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -22593,7 +23494,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -22602,6 +23505,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -22611,6 +23515,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| state |); element_type ]
@@ -22644,6 +23549,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -22655,6 +23561,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -22707,6 +23614,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22723,6 +23631,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -22761,6 +23670,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22769,6 +23679,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -22800,6 +23711,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -22820,6 +23732,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -22837,6 +23750,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -22866,6 +23780,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -22909,6 +23824,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -22928,6 +23844,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -22975,6 +23892,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -22982,6 +23900,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -23011,6 +23930,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -23028,6 +23948,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -23069,6 +23990,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -23082,6 +24004,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -23130,7 +24053,9 @@ Module reference_safety.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -23170,6 +24095,7 @@ Module reference_safety.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -23181,6 +24107,7 @@ Module reference_safety.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -23215,7 +24142,9 @@ Module reference_safety.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -23224,6 +24153,7 @@ Module reference_safety.
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis",
                                     "push_n",
+                                    [],
                                     []
                                   |),
                                   [
@@ -23233,6 +24163,7 @@ Module reference_safety.
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                         "value_for",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| state |); element_type ]
@@ -23267,6 +24198,7 @@ Module reference_safety.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -23278,6 +24210,7 @@ Module reference_safety.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -23322,6 +24255,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -23338,6 +24272,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -23376,6 +24311,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -23384,6 +24320,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -23415,6 +24352,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -23435,6 +24373,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -23452,6 +24391,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -23481,6 +24421,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -23524,6 +24465,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23543,6 +24485,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -23590,6 +24533,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -23597,6 +24541,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -23626,6 +24571,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -23643,6 +24589,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -23684,6 +24631,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -23697,6 +24645,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -23745,6 +24694,7 @@ Module reference_safety.
                                               Ty.path
                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                               "is_value",
+                                              [],
                                               []
                                             |),
                                             [
@@ -23761,6 +24711,7 @@ Module reference_safety.
                                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ],
                                                       "pop",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -23799,6 +24750,7 @@ Module reference_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -23807,6 +24759,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -23838,6 +24791,7 @@ Module reference_safety.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1_formatted",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -23858,6 +24812,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "move_abstract_stack::AbsStackError"
@@ -23875,6 +24830,7 @@ Module reference_safety.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Placeholder",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -23904,6 +24860,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::UnsafeArg",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -23947,6 +24904,7 @@ Module reference_safety.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23966,6 +24924,7 @@ Module reference_safety.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -24013,6 +24972,7 @@ Module reference_safety.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -24020,6 +24980,7 @@ Module reference_safety.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -24049,6 +25010,7 @@ Module reference_safety.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -24066,6 +25028,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -24107,6 +25070,7 @@ Module reference_safety.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -24120,6 +25084,7 @@ Module reference_safety.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
@@ -24167,6 +25132,7 @@ Module reference_safety.
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ],
                                     "pop",
+                                    [],
                                     []
                                   |),
                                   [
@@ -24204,6 +25170,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24212,6 +25179,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -24241,6 +25209,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -24261,6 +25230,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_abstract_stack::AbsStackError"
@@ -24278,6 +25248,7 @@ Module reference_safety.
                                                                         Ty.path
                                                                           "core::fmt::rt::Placeholder",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -24306,6 +25277,7 @@ Module reference_safety.
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 []
@@ -24346,6 +25318,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -24360,6 +25333,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -24407,7 +25381,9 @@ Module reference_safety.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24416,6 +25392,7 @@ Module reference_safety.
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                       "vector_op",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24453,6 +25430,7 @@ Module reference_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24464,6 +25442,7 @@ Module reference_safety.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24548,7 +25527,9 @@ Module reference_safety.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24593,6 +25574,7 @@ Module reference_safety.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24603,6 +25585,7 @@ Module reference_safety.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24656,6 +25639,7 @@ Module reference_safety.
                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                   ],
                                                 "is_empty",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -24679,6 +25663,7 @@ Module reference_safety.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24687,6 +25672,7 @@ Module reference_safety.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -24716,6 +25702,7 @@ Module reference_safety.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -24734,6 +25721,7 @@ Module reference_safety.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "none",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   []
@@ -24775,6 +25763,7 @@ Module reference_safety.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -24789,6 +25778,7 @@ Module reference_safety.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
@@ -24829,6 +25819,7 @@ Module reference_safety.
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                                 "construct_canonical_state",
+                                [],
                                 []
                               |),
                               [ M.read (| state |) ]

@@ -84,7 +84,9 @@ Module eip7702.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -117,7 +119,9 @@ Module eip7702.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -168,6 +172,7 @@ Module eip7702.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Signed" |); __self_0 ]
@@ -188,6 +193,7 @@ Module eip7702.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Recovered" |); __self_0 ]
@@ -338,6 +344,7 @@ Module eip7702.
                                             Ty.path "alloc::alloc::Global"
                                           ]
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -354,6 +361,7 @@ Module eip7702.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -396,6 +404,7 @@ Module eip7702.
                                             Ty.path "alloc::alloc::Global"
                                           ]
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -412,6 +421,7 @@ Module eip7702.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -470,6 +480,7 @@ Module eip7702.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -605,6 +616,7 @@ Module eip7702.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| signed |) ]
@@ -632,6 +644,7 @@ Module eip7702.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| recovered |) ]
@@ -668,6 +681,7 @@ Module eip7702.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -693,6 +707,7 @@ Module eip7702.
                 M.get_associated_function (|
                   Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
                   "len",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -765,6 +780,7 @@ Module eip7702.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -776,7 +792,9 @@ Module eip7702.
                                   []
                                   [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ],
                                 [],
+                                [],
                                 "map",
+                                [],
                                 [
                                   Ty.path
                                     "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
@@ -805,6 +823,7 @@ Module eip7702.
                                       []
                                       [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -819,7 +838,9 @@ Module eip7702.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| signed |) ]
@@ -843,11 +864,13 @@ Module eip7702.
                                                       "core::convert::Into",
                                                       Ty.path
                                                         "alloy_eip7702::auth_list::SignedAuthorization",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
                                                       ],
                                                       "into",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -857,7 +880,9 @@ Module eip7702.
                                                           Ty.path
                                                             "alloy_eip7702::auth_list::SignedAuthorization",
                                                           [],
+                                                          [],
                                                           "clone",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| signed |) ]
@@ -901,6 +926,7 @@ Module eip7702.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -916,7 +942,9 @@ Module eip7702.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -932,7 +960,9 @@ Module eip7702.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "clone",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| recovered |) ]
@@ -1005,7 +1035,9 @@ Module eip7702.
                                         "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                   ],
                                 [],
+                                [],
                                 "collect",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -1029,7 +1061,9 @@ Module eip7702.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.path
                                         "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
@@ -1057,7 +1091,9 @@ Module eip7702.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| signed |) ]
@@ -1079,11 +1115,13 @@ Module eip7702.
                                                           "core::convert::Into",
                                                           Ty.path
                                                             "alloy_eip7702::auth_list::SignedAuthorization",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
                                                           ],
                                                           "into",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| signed |) ]
@@ -1146,7 +1184,7 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -1383,7 +1421,15 @@ Module eip7702.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -1459,7 +1505,12 @@ Module eip7702.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "write_str",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| s |) ]
                 |)
               |)

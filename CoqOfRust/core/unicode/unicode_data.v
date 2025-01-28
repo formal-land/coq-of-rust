@@ -107,6 +107,7 @@ Module unicode.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| chunk_idx_map |) ]
@@ -156,6 +157,7 @@ Module unicode.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| bitset_canonical |) ]
@@ -177,6 +179,7 @@ Module unicode.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| bitset_canonical |) ]
@@ -286,6 +289,7 @@ Module unicode.
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "rotate_left",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -429,6 +433,7 @@ Module unicode.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "binary_search_by_key",
+                        [],
                         [
                           Ty.path "u32";
                           Ty.function
@@ -457,8 +462,10 @@ Module unicode.
                                             M.get_trait_method (|
                                               "core::ops::bit::Shl",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                              [],
                                               [ Ty.path "i32" ],
                                               "shl",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| header |); Value.Integer IntegerKind.I32 11
@@ -521,6 +528,7 @@ Module unicode.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                 "get",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -560,6 +568,7 @@ Module unicode.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| offsets |) ]
@@ -576,6 +585,7 @@ Module unicode.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                     "unwrap_or",
+                    [],
                     []
                   |),
                   [
@@ -583,6 +593,7 @@ Module unicode.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "map",
+                        [],
                         [
                           Ty.path "u32";
                           Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u32")
@@ -590,7 +601,7 @@ Module unicode.
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                           [ M.read (| last_idx |); Value.Integer IntegerKind.Usize 1 ]
                         |);
                         M.closure
@@ -642,7 +653,9 @@ Module unicode.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -676,7 +689,9 @@ Module unicode.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -6865,7 +6880,7 @@ Module unicode.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "is_ascii", [] |),
+                              M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
                               [ c ]
                             |)
                           |)) in
@@ -6878,6 +6893,7 @@ Module unicode.
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "to_ascii_lowercase",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| M.rust_cast (M.read (| c |)) |) ]
@@ -6902,6 +6918,7 @@ Module unicode.
                                 Ty.path "usize"
                               ],
                             "unwrap_or",
+                            [],
                             []
                           |),
                           [
@@ -6912,6 +6929,7 @@ Module unicode.
                                   []
                                   [ Ty.path "usize"; Ty.path "usize" ],
                                 "map",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "array")
@@ -6933,6 +6951,7 @@ Module unicode.
                                       []
                                       [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                                     "binary_search_by",
+                                    [],
                                     [
                                       Ty.function
                                         [
@@ -6977,7 +6996,9 @@ Module unicode.
                                                           "core::cmp::Ord",
                                                           Ty.path "char",
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [ key; c ]
@@ -7031,6 +7052,7 @@ Module unicode.
                                                                 [ Ty.path "char" ]
                                                             ],
                                                           "unwrap_or_else",
+                                                          [],
                                                           [
                                                             Ty.function
                                                               [ Ty.tuple [] ]
@@ -7049,6 +7071,7 @@ Module unicode.
                                                                 []
                                                                 [ Ty.path "char" ],
                                                               "map",
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "array")
@@ -7075,6 +7098,7 @@ Module unicode.
                                                                 M.get_associated_function (|
                                                                   Ty.path "char",
                                                                   "from_u32",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| u |) ]
@@ -7141,6 +7165,7 @@ Module unicode.
                                                                                         ]
                                                                                     ],
                                                                                   "get_unchecked",
+                                                                                  [],
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                                 |),
@@ -7232,7 +7257,7 @@ Module unicode.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "is_ascii", [] |),
+                              M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
                               [ c ]
                             |)
                           |)) in
@@ -7245,6 +7270,7 @@ Module unicode.
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "to_ascii_uppercase",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| M.rust_cast (M.read (| c |)) |) ]
@@ -7269,6 +7295,7 @@ Module unicode.
                                 Ty.path "usize"
                               ],
                             "unwrap_or",
+                            [],
                             []
                           |),
                           [
@@ -7279,6 +7306,7 @@ Module unicode.
                                   []
                                   [ Ty.path "usize"; Ty.path "usize" ],
                                 "map",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "array")
@@ -7300,6 +7328,7 @@ Module unicode.
                                       []
                                       [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                                     "binary_search_by",
+                                    [],
                                     [
                                       Ty.function
                                         [
@@ -7344,7 +7373,9 @@ Module unicode.
                                                           "core::cmp::Ord",
                                                           Ty.path "char",
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [ key; c ]
@@ -7398,6 +7429,7 @@ Module unicode.
                                                                 [ Ty.path "char" ]
                                                             ],
                                                           "unwrap_or_else",
+                                                          [],
                                                           [
                                                             Ty.function
                                                               [ Ty.tuple [] ]
@@ -7416,6 +7448,7 @@ Module unicode.
                                                                 []
                                                                 [ Ty.path "char" ],
                                                               "map",
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "array")
@@ -7442,6 +7475,7 @@ Module unicode.
                                                                 M.get_associated_function (|
                                                                   Ty.path "char",
                                                                   "from_u32",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| u |) ]
@@ -7508,6 +7542,7 @@ Module unicode.
                                                                                         ]
                                                                                     ],
                                                                                   "get_unchecked",
+                                                                                  [],
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                                 |),

@@ -50,8 +50,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "i32",
+                [],
                 [ Ty.path "into::Number" ],
                 "into",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 5 ]

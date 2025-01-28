@@ -53,6 +53,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "is_ascii",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -67,6 +68,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "as_ascii_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -125,6 +127,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -133,6 +136,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -150,7 +154,9 @@ Module slice.
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
                       ],
                     [],
+                    [],
                     "all",
+                    [],
                     [
                       Ty.function
                         [
@@ -205,6 +211,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.path "u8",
                                           "eq_ignore_ascii_case",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| a |); M.read (| b |) ]
@@ -256,6 +263,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -272,6 +280,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "make_ascii_uppercase",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| byte |) ]
@@ -339,6 +348,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -355,6 +365,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "make_ascii_lowercase",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| byte |) ]
@@ -407,7 +418,9 @@ Module slice.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "flat_map",
+                      [],
                       [
                         Ty.path "core::ascii::EscapeDefault";
                         Ty.path "core::slice::ascii::EscapeByte"
@@ -418,6 +431,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -480,6 +494,7 @@ Module slice.
                                             M.get_associated_function (|
                                               Ty.path "u8",
                                               "is_ascii_whitespace",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| first |) ]
@@ -567,6 +582,7 @@ Module slice.
                                             M.get_associated_function (|
                                               Ty.path "u8",
                                               "is_ascii_whitespace",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| last |) ]
@@ -620,6 +636,7 @@ Module slice.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "trim_ascii_end",
+                [],
                 []
               |),
               [
@@ -627,6 +644,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "trim_ascii_start",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -704,7 +722,9 @@ Module slice.
                           Ty.path "core::slice::ascii::EscapeByte"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -755,7 +775,9 @@ Module slice.
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -791,7 +813,9 @@ Module slice.
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -833,7 +857,9 @@ Module slice.
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
@@ -876,7 +902,9 @@ Module slice.
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [
@@ -909,7 +937,9 @@ Module slice.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::slice::ascii::EscapeAscii",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -958,7 +988,9 @@ Module slice.
                     Ty.path "core::slice::ascii::EscapeByte"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -1060,6 +1092,7 @@ Module slice.
                               Ty.path "core::slice::ascii::EscapeByte"
                             ],
                           "into_parts",
+                          [],
                           []
                         |),
                         [
@@ -1071,7 +1104,9 @@ Module slice.
                                     "core::clone::Clone",
                                     Ty.path "core::slice::ascii::EscapeAscii",
                                     [],
+                                    [],
                                     "clone",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1102,6 +1137,7 @@ Module slice.
                                     []
                                     [ Ty.path "core::ascii::EscapeDefault" ],
                                   "unwrap_or",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1110,6 +1146,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::EscapeDefault",
                                       "empty",
+                                      [],
                                       []
                                     |),
                                     []
@@ -1123,6 +1160,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                   "as_slice",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1139,6 +1177,7 @@ Module slice.
                                               [ Ty.path "u8" ]
                                           ],
                                         "unwrap_or_default",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| slice |) ]
@@ -1156,6 +1195,7 @@ Module slice.
                                     []
                                     [ Ty.path "core::ascii::EscapeDefault" ],
                                   "unwrap_or",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1164,6 +1204,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::EscapeDefault",
                                       "empty",
+                                      [],
                                       []
                                     |),
                                     []
@@ -1180,7 +1221,9 @@ Module slice.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.path "core::ascii::EscapeDefault",
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| front |) ]
@@ -1200,7 +1243,9 @@ Module slice.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.path "core::ascii::EscapeDefault",
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -1240,7 +1285,9 @@ Module slice.
                                                                   Ty.path "core::fmt::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1249,7 +1296,9 @@ Module slice.
                                                                   "core::fmt::Write",
                                                                   Ty.path "core::fmt::Formatter",
                                                                   [],
+                                                                  [],
                                                                   "write_char",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1286,6 +1335,7 @@ Module slice.
                                                                               Ty.path
                                                                                 "core::fmt::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1299,6 +1349,7 @@ Module slice.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -1342,6 +1393,7 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| bytes |) ]
@@ -1386,7 +1438,9 @@ Module slice.
                                                       (Ty.path "bool")
                                                   ],
                                                 [],
+                                                [],
                                                 "count",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1398,7 +1452,9 @@ Module slice.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     [],
+                                                    [],
                                                     "take_while",
+                                                    [],
                                                     [
                                                       Ty.function
                                                         [
@@ -1426,6 +1482,7 @@ Module slice.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| bytes |) ]
@@ -1449,6 +1506,7 @@ Module slice.
                                                                           M.get_associated_function (|
                                                                             Self,
                                                                             "needs_escape.fmt",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| b |) ]
@@ -1470,6 +1528,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "split_at_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| bytes |); M.read (| prefix |) ]
@@ -1509,7 +1568,9 @@ Module slice.
                                                               Ty.path "core::fmt::Error"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1517,6 +1578,7 @@ Module slice.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Formatter",
                                                               "write_str",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| f |); M.read (| prefix |) ]
@@ -1549,6 +1611,7 @@ Module slice.
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1562,6 +1625,7 @@ Module slice.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -1598,6 +1662,7 @@ Module slice.
                                                                   []
                                                                   [ Ty.path "u8" ],
                                                                 "first",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| bytes |) ]
@@ -1625,7 +1690,9 @@ Module slice.
                                                                       Ty.path "core::fmt::Error"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1634,6 +1701,7 @@ Module slice.
                                                                       Ty.path
                                                                         "core::fmt::Formatter",
                                                                       "write_str",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1643,6 +1711,7 @@ Module slice.
                                                                           Ty.path
                                                                             "core::ascii::EscapeDefault",
                                                                           "as_str",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1690,6 +1759,7 @@ Module slice.
                                                                                   Ty.path
                                                                                     "core::fmt::Error"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -1703,6 +1773,7 @@ Module slice.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -1734,6 +1805,7 @@ Module slice.
                                                                   (Ty.path "slice")
                                                                   []
                                                                   [ Ty.path "u8" ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1742,6 +1814,7 @@ Module slice.
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1790,7 +1863,9 @@ Module slice.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.path "core::ascii::EscapeDefault",
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| back |) ]
@@ -1810,7 +1885,9 @@ Module slice.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.path "core::ascii::EscapeDefault",
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -1850,7 +1927,9 @@ Module slice.
                                                                   Ty.path "core::fmt::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1859,7 +1938,9 @@ Module slice.
                                                                   "core::fmt::Write",
                                                                   Ty.path "core::fmt::Formatter",
                                                                   [],
+                                                                  [],
                                                                   "write_char",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1896,6 +1977,7 @@ Module slice.
                                                                               Ty.path
                                                                                 "core::fmt::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1909,6 +1991,7 @@ Module slice.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -1972,6 +2055,7 @@ Module slice.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
@@ -1980,6 +2064,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "EscapeAscii" |) ]
@@ -2029,7 +2114,7 @@ Module slice.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                 [ Value.Integer IntegerKind.U8 128 ]
               |)
             |))).
@@ -2080,6 +2165,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "is_ascii",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| last |) ]
@@ -2116,6 +2202,7 @@ Module slice.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "is_empty",
+                  [],
                   []
                 |),
                 [ M.read (| bytes |) ]
@@ -2228,6 +2315,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| s |) ]
@@ -2239,6 +2327,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
+                        [],
                         []
                       |),
                       [
@@ -2246,6 +2335,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| s |) ]
@@ -2343,6 +2433,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| s |) ]
@@ -2354,6 +2445,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                         "read_unaligned",
+                        [],
                         []
                       |),
                       [ M.rust_cast (M.read (| start |)) ]
@@ -2442,6 +2534,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| start |); M.read (| offset_to_aligned |) ]
@@ -2471,6 +2564,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                                 "is_aligned_to",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2637,6 +2731,7 @@ Module slice.
                                                                       []
                                                                       [ Ty.path "u8" ],
                                                                     "guaranteed_eq",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2647,6 +2742,7 @@ Module slice.
                                                                           []
                                                                           [ Ty.path "usize" ],
                                                                         "cast",
+                                                                        [],
                                                                         [ Ty.path "u8" ]
                                                                       |),
                                                                       [ M.read (| word_ptr |) ]
@@ -2658,6 +2754,7 @@ Module slice.
                                                                           []
                                                                           [ Ty.path "u8" ],
                                                                         "wrapping_add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2697,19 +2794,18 @@ Module slice.
                                                                               |) in
                                                                             Value.Tuple []))
                                                                       ],
-                                                                      M.closure
-                                                                        (fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            match γ with
-                                                                            | [] =>
-                                                                              ltac:(M.monadic
-                                                                                (M.alloc (|
-                                                                                  Value.Bool true
-                                                                                |)))
-                                                                            | _ =>
-                                                                              M.impossible
-                                                                                "wrong number of arguments"
-                                                                            end))
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          match γ with
+                                                                          | [] =>
+                                                                            ltac:(M.monadic
+                                                                              (M.alloc (|
+                                                                                Value.Bool true
+                                                                              |)))
+                                                                          | _ =>
+                                                                            M.impossible
+                                                                              "wrong number of arguments"
+                                                                          end)
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
@@ -2758,6 +2854,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                       "read",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| word_ptr |) ]
@@ -2814,6 +2911,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| word_ptr |); Value.Integer IntegerKind.Usize 1 ]
@@ -2906,6 +3004,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                         "read_unaligned",
+                        [],
                         []
                       |),
                       [
@@ -2914,6 +3013,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                               "add",
+                              [],
                               []
                             |),
                             [

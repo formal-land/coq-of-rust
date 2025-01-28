@@ -46,7 +46,7 @@ Module iter.
                 [
                   ("element",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -84,6 +84,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -133,7 +134,7 @@ Module iter.
                 "core::option::Option::Some"
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -223,7 +224,15 @@ Module iter.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  A,
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -311,7 +320,7 @@ Module iter.
                 "core::option::Option::Some"
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -382,7 +391,15 @@ Module iter.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  A,
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),

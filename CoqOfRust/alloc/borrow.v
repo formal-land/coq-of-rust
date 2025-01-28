@@ -21,7 +21,9 @@ Module borrow.
               "core::ops::deref::Deref",
               Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -51,7 +53,15 @@ Module borrow.
               M.write (|
                 M.read (| target |),
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::borrow::ToOwned", Self, [], "to_owned", [] |),
+                  M.get_trait_method (|
+                    "alloc::borrow::ToOwned",
+                    Self,
+                    [],
+                    [],
+                    "to_owned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -82,7 +92,7 @@ Module borrow.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+            M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -104,7 +114,7 @@ Module borrow.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
+                  M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
                   [ M.read (| target |); M.read (| self |) ]
                 |)
               |) in
@@ -195,8 +205,10 @@ Module borrow.
                           M.get_trait_method (|
                             "core::borrow::Borrow",
                             Ty.associated,
+                            [],
                             [ B ],
                             "borrow",
+                            [],
                             []
                           |),
                           [ M.read (| o |) ]
@@ -211,7 +223,9 @@ Module borrow.
                               "alloc::borrow::ToOwned",
                               B,
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [ M.read (| b |) ]
@@ -265,14 +279,24 @@ Module borrow.
                     let o := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "alloc::borrow::ToOwned", B, [], "clone_into", [] |),
+                        M.get_trait_method (|
+                          "alloc::borrow::ToOwned",
+                          B,
+                          [],
+                          [],
+                          "clone_into",
+                          [],
+                          []
+                        |),
                         [
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::borrow::Borrow",
                               Ty.associated,
+                              [],
                               [ B ],
                               "borrow",
+                              [],
                               []
                             |),
                             [ M.read (| o |) ]
@@ -294,7 +318,9 @@ Module borrow.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -380,6 +406,7 @@ Module borrow.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                 "is_borrowed",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -438,7 +465,9 @@ Module borrow.
                                     "alloc::borrow::ToOwned",
                                     B,
                                     [],
+                                    [],
                                     "to_owned",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| borrowed |) ]
@@ -528,7 +557,15 @@ Module borrow.
                     let borrowed := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "alloc::borrow::ToOwned", B, [], "to_owned", [] |),
+                        M.get_trait_method (|
+                          "alloc::borrow::ToOwned",
+                          B,
+                          [],
+                          [],
+                          "to_owned",
+                          [],
+                          []
+                        |),
                         [ M.read (| borrowed |) ]
                       |)
                     |)));
@@ -593,8 +630,10 @@ Module borrow.
                         M.get_trait_method (|
                           "core::borrow::Borrow",
                           Ty.associated,
+                          [],
                           [ B ],
                           "borrow",
+                          [],
                           []
                         |),
                         [ M.read (| owned |) ]
@@ -652,14 +691,16 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -669,7 +710,9 @@ Module borrow.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -704,14 +747,16 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", B, [ C ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", B, [], [ C ], "eq", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -721,7 +766,9 @@ Module borrow.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -756,14 +803,16 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", B, [], [ B ], "partial_cmp", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -773,7 +822,9 @@ Module borrow.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -829,7 +880,9 @@ Module borrow.
                           "core::fmt::Debug",
                           Ty.apply (Ty.path "&") [] [ B ],
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
                         [ M.read (| b |); M.read (| f |) ]
@@ -842,7 +895,15 @@ Module borrow.
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::fmt::Debug", Ty.associated, [], "fmt", [] |),
+                        M.get_trait_method (|
+                          "core::fmt::Debug",
+                          Ty.associated,
+                          [],
+                          [],
+                          "fmt",
+                          [],
+                          []
+                        |),
                         [ M.read (| o |); M.read (| f |) ]
                       |)
                     |)))
@@ -898,7 +959,9 @@ Module borrow.
                           "core::fmt::Display",
                           Ty.apply (Ty.path "&") [] [ B ],
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
                         [ M.read (| b |); M.read (| f |) ]
@@ -911,7 +974,15 @@ Module borrow.
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::fmt::Display", Ty.associated, [], "fmt", [] |),
+                        M.get_trait_method (|
+                          "core::fmt::Display",
+                          Ty.associated,
+                          [],
+                          [],
+                          "fmt",
+                          [],
+                          []
+                        |),
                         [ M.read (| o |); M.read (| f |) ]
                       |)
                     |)))
@@ -947,7 +1018,15 @@ Module borrow.
             "alloc::borrow::Cow::Owned"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.associated, [], "default", [] |),
+                M.get_trait_method (|
+                  "core::default::Default",
+                  Ty.associated,
+                  [],
+                  [],
+                  "default",
+                  [],
+                  []
+                |),
                 []
               |)
             ]))
@@ -979,14 +1058,16 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ H ] |),
+            M.get_trait_method (| "core::hash::Hash", B, [], [], "hash", [], [ H ] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1025,7 +1106,9 @@ Module borrow.
               "core::ops::deref::Deref",
               Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -1067,8 +1150,10 @@ Module borrow.
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "add_assign",
+                    [],
                     []
                   |),
                   [ self; M.read (| rhs |) ]
@@ -1112,8 +1197,10 @@ Module borrow.
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                     "add_assign",
+                    [],
                     []
                   |),
                   [ self; M.read (| rhs |) ]
@@ -1166,14 +1253,16 @@ Module borrow.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                            M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -1198,7 +1287,12 @@ Module borrow.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "is_empty",
+                                        [],
+                                        []
+                                      |),
                                       [ M.read (| rhs |) ]
                                     |)
                                   |)
@@ -1225,6 +1319,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1233,6 +1328,7 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
@@ -1241,6 +1337,7 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| rhs |) ]
@@ -1255,6 +1352,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [ s; M.read (| lhs |) ]
@@ -1277,6 +1375,7 @@ Module borrow.
                                   M.get_associated_function (|
                                     Ty.path "alloc::string::String",
                                     "push_str",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1287,6 +1386,7 @@ Module borrow.
                                           []
                                           [ Ty.path "str" ],
                                         "to_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -1346,14 +1446,16 @@ Module borrow.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                            M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -1375,7 +1477,12 @@ Module borrow.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "is_empty",
+                                        [],
+                                        []
+                                      |),
                                       [
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1385,7 +1492,9 @@ Module borrow.
                                               []
                                               [ Ty.path "str" ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ rhs ]
@@ -1416,6 +1525,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1424,6 +1534,7 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
@@ -1432,6 +1543,7 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1443,7 +1555,9 @@ Module borrow.
                                                           []
                                                           [ Ty.path "str" ],
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ rhs ]
@@ -1460,6 +1574,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [ s; M.read (| lhs |) ]
@@ -1482,6 +1597,7 @@ Module borrow.
                                   M.get_associated_function (|
                                     Ty.path "alloc::string::String",
                                     "push_str",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1492,6 +1608,7 @@ Module borrow.
                                           []
                                           [ Ty.path "str" ],
                                         "to_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -1504,7 +1621,9 @@ Module borrow.
                                           []
                                           [ Ty.path "str" ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ rhs ]

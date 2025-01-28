@@ -146,6 +146,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -153,6 +154,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -160,6 +162,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -168,6 +171,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Iter" |) ]
@@ -186,7 +190,9 @@ Module collections.
                                   [ T; Ty.path "alloc::alloc::Global" ]
                               ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -203,6 +209,7 @@ Module collections.
                                         [ T; Ty.path "alloc::alloc::Global" ]
                                     ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -362,6 +369,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -369,6 +377,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -376,6 +385,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -384,6 +394,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
@@ -402,7 +413,9 @@ Module collections.
                                   [ T; Ty.path "alloc::alloc::Global" ]
                               ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -419,6 +432,7 @@ Module collections.
                                         [ T; Ty.path "alloc::alloc::Global" ]
                                     ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -510,7 +524,9 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -554,6 +570,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -561,6 +578,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -569,6 +587,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
@@ -702,6 +721,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| node |) ]
@@ -727,6 +747,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| node |) ]
@@ -782,6 +803,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| head |) ]
@@ -864,6 +886,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -927,6 +950,7 @@ Module collections.
                                                 Ty.apply (Ty.path "&") [] [ A ]
                                               ],
                                             "from_raw_in",
+                                            [],
                                             []
                                           |),
                                           [
@@ -943,6 +967,7 @@ Module collections.
                                                       [ T ]
                                                   ],
                                                 "as_ptr",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| node |) ]
@@ -1017,6 +1042,7 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| head |) ]
@@ -1100,6 +1126,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| node |) ]
@@ -1119,6 +1146,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| node |) ]
@@ -1180,6 +1208,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| tail |) ]
@@ -1262,6 +1291,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -1325,6 +1355,7 @@ Module collections.
                                                 Ty.apply (Ty.path "&") [] [ A ]
                                               ],
                                             "from_raw_in",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1341,6 +1372,7 @@ Module collections.
                                                       [ T ]
                                                   ],
                                                 "as_ptr",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| node |) ]
@@ -1415,6 +1447,7 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       "as_ptr",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| tail |) ]
@@ -1497,6 +1530,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                       "as_mut",
+                      [],
                       []
                     |),
                     [ node ]
@@ -1533,6 +1567,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| prev |) ]
@@ -1598,6 +1633,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| next |) ]
@@ -1731,6 +1767,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_mut",
+                                  [],
                                   []
                                 |),
                                 [ existing_prev ]
@@ -1788,6 +1825,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_mut",
+                                  [],
                                   []
                                 |),
                                 [ existing_next ]
@@ -1827,6 +1865,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                           "as_mut",
+                          [],
                           []
                         |),
                         [ splice_start ]
@@ -1846,6 +1885,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
                           "as_mut",
+                          [],
                           []
                         |),
                         [ splice_end ]
@@ -1915,6 +1955,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -1940,6 +1981,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -1997,6 +2039,7 @@ Module collections.
                                     ]
                                 ],
                               "unwrap_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| tail |) ]
@@ -2113,6 +2156,7 @@ Module collections.
                                       ]
                                   ],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -2129,6 +2173,7 @@ Module collections.
                                             [ T ]
                                         ],
                                       "as_mut",
+                                      [],
                                       []
                                     |),
                                     [ split_node ]
@@ -2170,6 +2215,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_mut",
+                                            [],
                                             []
                                           |),
                                           [ tail ]
@@ -2212,7 +2258,15 @@ Module collections.
                               ("len", M.read (| at_ |));
                               ("alloc",
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -2275,11 +2329,20 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "new_in",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -2397,6 +2460,7 @@ Module collections.
                                       ]
                                   ],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -2413,6 +2477,7 @@ Module collections.
                                             [ T ]
                                         ],
                                       "as_mut",
+                                      [],
                                       []
                                     |),
                                     [ split_node ]
@@ -2454,6 +2519,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_mut",
+                                            [],
                                             []
                                           |),
                                           [ head ]
@@ -2506,7 +2572,15 @@ Module collections.
                                 |));
                               ("alloc",
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -2560,11 +2634,20 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "new_in",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -2806,11 +2889,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "unwrap_or",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -2866,11 +2950,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "unwrap_or",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -2925,6 +3010,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "is_none",
+                [],
                 []
               |),
               [
@@ -3022,6 +3108,7 @@ Module collections.
                                       ]
                                   ],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -3050,6 +3137,7 @@ Module collections.
                                       ]
                                   ],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -3111,7 +3199,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
+                [],
                 "any",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool") ]
               |),
               [
@@ -3120,6 +3210,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "iter",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -3141,8 +3232,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ T ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ e; x ]
@@ -3188,6 +3281,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
@@ -3226,6 +3320,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_ref",
+                    [],
                     []
                   |),
                   [
@@ -3261,6 +3356,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_ref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| node |) ]
@@ -3309,6 +3405,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
@@ -3347,6 +3444,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_mut",
+                    [],
                     []
                   |),
                   [
@@ -3382,6 +3480,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| node |) ]
@@ -3430,6 +3529,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
@@ -3468,6 +3568,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_ref",
+                    [],
                     []
                   |),
                   [
@@ -3503,6 +3604,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_ref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| node |) ]
@@ -3551,6 +3653,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
@@ -3589,6 +3692,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "as_mut",
+                    [],
                     []
                   |),
                   [
@@ -3624,6 +3728,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| node |) ]
@@ -3679,6 +3784,7 @@ Module collections.
                           Ty.apply (Ty.path "&") [] [ A ]
                         ],
                       "new_in",
+                      [],
                       []
                     |),
                     [
@@ -3686,6 +3792,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| elt |) ]
@@ -3707,6 +3814,7 @@ Module collections.
                         (Ty.path "core::ptr::non_null::NonNull")
                         []
                         [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&mut")
@@ -3714,6 +3822,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3727,6 +3836,7 @@ Module collections.
                               Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
+                          [],
                           []
                         |),
                         [ M.read (| node |) ]
@@ -3740,6 +3850,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_front_node",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| node_ptr |) ]
@@ -3780,6 +3891,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   T;
                   Ty.function
@@ -3800,6 +3912,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "pop_front_node",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3807,6 +3920,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                   "into_element",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ A ] ]
                 |)
               ]
@@ -3848,6 +3962,7 @@ Module collections.
                           Ty.apply (Ty.path "&") [] [ A ]
                         ],
                       "new_in",
+                      [],
                       []
                     |),
                     [
@@ -3855,6 +3970,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| elt |) ]
@@ -3876,6 +3992,7 @@ Module collections.
                         (Ty.path "core::ptr::non_null::NonNull")
                         []
                         [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&mut")
@@ -3883,6 +4000,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3896,6 +4014,7 @@ Module collections.
                               Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
+                          [],
                           []
                         |),
                         [ M.read (| node |) ]
@@ -3909,6 +4028,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back_node",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| node_ptr |) ]
@@ -3949,6 +4069,7 @@ Module collections.
                       ]
                   ],
                 "map",
+                [],
                 [
                   T;
                   Ty.function
@@ -3969,6 +4090,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "pop_back_node",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3976,6 +4098,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ],
                   "into_element",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ A ] ]
                 |)
               ]
@@ -4041,6 +4164,7 @@ Module collections.
                             []
                             [ T; A ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4068,6 +4192,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4127,6 +4252,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "new_in",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4135,7 +4261,9 @@ Module collections.
                                                 "core::clone::Clone",
                                                 A,
                                                 [],
+                                                [],
                                                 "clone",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4183,6 +4311,7 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "new_in",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4191,7 +4320,9 @@ Module collections.
                                                     "core::clone::Clone",
                                                     A,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4254,6 +4385,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "iter_mut",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4271,7 +4403,9 @@ Module collections.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4305,7 +4439,9 @@ Module collections.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -4343,7 +4479,9 @@ Module collections.
                                                                   []
                                                                   [ T ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -4372,6 +4510,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "iter_mut",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -4389,7 +4528,9 @@ Module collections.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4429,7 +4570,9 @@ Module collections.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -4467,7 +4610,9 @@ Module collections.
                                                                   []
                                                                   [ T ],
                                                                 [],
+                                                                [],
                                                                 "next_back",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -4496,6 +4641,7 @@ Module collections.
                           []
                           [ T; A ],
                         "split_off_after_node",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| split_node |); M.read (| at_ |) ]
@@ -4547,6 +4693,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4574,6 +4721,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4622,6 +4770,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "cursor_front_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -4639,7 +4788,9 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4669,7 +4820,9 @@ Module collections.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -4704,6 +4857,7 @@ Module collections.
                                                           []
                                                           [ T; A ],
                                                         "move_next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ cursor ]
@@ -4721,6 +4875,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -4731,6 +4886,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "remove_current",
+                                [],
                                 []
                               |),
                               [ cursor ]
@@ -4749,6 +4905,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "cursor_back_mut",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -4766,7 +4923,9 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4796,7 +4955,9 @@ Module collections.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -4831,6 +4992,7 @@ Module collections.
                                                           []
                                                           [ T; A ],
                                                         "move_prev",
+                                                        [],
                                                         []
                                                       |),
                                                       [ cursor ]
@@ -4848,6 +5010,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -4858,6 +5021,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "remove_current",
+                                [],
                                 []
                               |),
                               [ cursor ]
@@ -4897,6 +5061,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "retain_mut",
+                      [],
                       [
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
@@ -4921,8 +5086,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
                                             F,
+                                            [],
                                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                             "call_mut",
+                                            [],
                                             []
                                           |),
                                           [ f; Value.Tuple [ M.read (| elem |) ] ]
@@ -4977,6 +5144,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "cursor_front_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4998,6 +5166,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "current",
+                                  [],
                                   []
                                 |),
                                 [ cursor ]
@@ -5023,8 +5192,10 @@ Module collections.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
+                                              [],
                                               [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [ f; Value.Tuple [ M.read (| node |) ] ]
@@ -5042,6 +5213,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                           "unwrap",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5053,6 +5225,7 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "remove_current",
+                                              [],
                                               []
                                             |),
                                             [ cursor ]
@@ -5072,6 +5245,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "move_next",
+                                          [],
                                           []
                                         |),
                                         [ cursor ]
@@ -5187,6 +5361,7 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -5322,6 +5497,7 @@ Module collections.
                                             ]
                                         ],
                                       "take",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5356,6 +5532,7 @@ Module collections.
                                                 [ T ]
                                             ],
                                           "as_mut",
+                                          [],
                                           []
                                         |),
                                         [ tail ]
@@ -5382,6 +5559,7 @@ Module collections.
                                                 [ T ]
                                             ],
                                           "as_mut",
+                                          [],
                                           []
                                         |),
                                         [ other_head ]
@@ -5418,6 +5596,7 @@ Module collections.
                                             ]
                                         ],
                                       "take",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5537,6 +5716,7 @@ Module collections.
                                             ]
                                         ],
                                       "is_some",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5549,6 +5729,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "pop_front_node",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5682,6 +5863,7 @@ Module collections.
                                   ]
                               ],
                             "map",
+                            [],
                             [
                               Ty.apply (Ty.path "&") [] [ T ];
                               Ty.function
@@ -5738,6 +5920,7 @@ Module collections.
                                                               [ T ]
                                                           ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| node |) ]
@@ -5844,7 +6027,9 @@ Module collections.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -5934,6 +6119,7 @@ Module collections.
                                   ]
                               ],
                             "map",
+                            [],
                             [
                               Ty.apply (Ty.path "&") [] [ T ];
                               Ty.function
@@ -5990,6 +6176,7 @@ Module collections.
                                                               [ T ]
                                                           ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| node |) ]
@@ -6114,7 +6301,9 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -6202,6 +6391,7 @@ Module collections.
                                   ]
                               ],
                             "map",
+                            [],
                             [
                               Ty.apply (Ty.path "&mut") [] [ T ];
                               Ty.function
@@ -6258,6 +6448,7 @@ Module collections.
                                                               [ T ]
                                                           ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| node |) ]
@@ -6364,7 +6555,9 @@ Module collections.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "alloc::collections::linked_list::IterMut") [] [ T ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -6454,6 +6647,7 @@ Module collections.
                                   ]
                               ],
                             "map",
+                            [],
                             [
                               Ty.apply (Ty.path "&mut") [] [ T ];
                               Ty.function
@@ -6510,6 +6704,7 @@ Module collections.
                                                               [ T ]
                                                           ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| node |) ]
@@ -6634,7 +6829,9 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -6765,6 +6962,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6772,6 +6970,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6779,6 +6978,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -6787,6 +6987,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
@@ -6804,6 +7005,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ],
                           "index",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -6871,6 +7073,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6878,6 +7081,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6885,6 +7089,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -6893,6 +7098,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
@@ -6913,6 +7119,7 @@ Module collections.
                             []
                             [ T; A ],
                           "index",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -6974,7 +7181,9 @@ Module collections.
                                   ]
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -7009,6 +7218,7 @@ Module collections.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "usize" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -7016,6 +7226,7 @@ Module collections.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -7101,6 +7312,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -7177,6 +7389,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_ref",
+                                  [],
                                   []
                                 |),
                                 [ current ]
@@ -7245,6 +7458,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -7292,11 +7506,17 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or",
+                              [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -7305,6 +7525,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7355,6 +7576,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_ref",
+                                  [],
                                   []
                                 |),
                                 [ current ]
@@ -7375,11 +7597,17 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
+                              [],
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -7410,6 +7638,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7463,6 +7692,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
@@ -7511,6 +7741,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_ptr",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| current |) ]
@@ -7594,6 +7825,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ current ]
@@ -7617,6 +7849,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
@@ -7664,6 +7897,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ptr",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| next |) ]
@@ -7749,6 +7983,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ current ]
@@ -7772,6 +8007,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
@@ -7819,6 +8055,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ptr",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| prev |) ]
@@ -7856,6 +8093,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front",
+                [],
                 []
               |),
               [
@@ -7890,6 +8128,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back",
+                [],
                 []
               |),
               [
@@ -7975,7 +8214,9 @@ Module collections.
                                   ]
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -8010,6 +8251,7 @@ Module collections.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "usize" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -8017,6 +8259,7 @@ Module collections.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -8102,6 +8345,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -8178,6 +8422,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_ref",
+                                  [],
                                   []
                                 |),
                                 [ current ]
@@ -8246,6 +8491,7 @@ Module collections.
                             [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ],
                       "take",
+                      [],
                       []
                     |),
                     [
@@ -8293,11 +8539,17 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or",
+                              [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -8306,6 +8558,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8356,6 +8609,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "as_ref",
+                                  [],
                                   []
                                 |),
                                 [ current ]
@@ -8376,11 +8630,17 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
+                              [],
                               [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "checked_sub",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -8411,6 +8671,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8464,6 +8725,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                   ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
@@ -8512,6 +8774,7 @@ Module collections.
                                               [ T ]
                                           ],
                                         "as_ptr",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| current |) ]
@@ -8595,6 +8858,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ current ]
@@ -8618,6 +8882,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
@@ -8665,6 +8930,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ptr",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| next |) ]
@@ -8750,6 +9016,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ current ]
@@ -8773,6 +9040,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
@@ -8820,6 +9088,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ptr",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| prev |) ]
@@ -8950,6 +9219,7 @@ Module collections.
                         (Ty.path "&mut")
                         []
                         [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -8957,6 +9227,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "into",
+                      [],
                       []
                     |),
                     [
@@ -8970,6 +9241,7 @@ Module collections.
                               Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
+                          [],
                           []
                         |),
                         [
@@ -8986,6 +9258,7 @@ Module collections.
                                   Ty.apply (Ty.path "&") [] [ A ]
                                 ],
                               "new_in",
+                              [],
                               []
                             |),
                             [
@@ -8996,6 +9269,7 @@ Module collections.
                                     []
                                     [ T ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| item |) ]
@@ -9063,6 +9337,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ node ]
@@ -9079,6 +9354,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "splice_nodes",
+                      [],
                       []
                     |),
                     [
@@ -9128,6 +9404,7 @@ Module collections.
                                       ]
                                   ],
                                 "is_none",
+                                [],
                                 []
                               |),
                               [
@@ -9208,6 +9485,7 @@ Module collections.
                         (Ty.path "&mut")
                         []
                         [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -9215,6 +9493,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                       ],
                       "into",
+                      [],
                       []
                     |),
                     [
@@ -9228,6 +9507,7 @@ Module collections.
                               Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "leak",
+                          [],
                           []
                         |),
                         [
@@ -9244,6 +9524,7 @@ Module collections.
                                   Ty.apply (Ty.path "&") [] [ A ]
                                 ],
                               "new_in",
+                              [],
                               []
                             |),
                             [
@@ -9254,6 +9535,7 @@ Module collections.
                                     []
                                     [ T ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| item |) ]
@@ -9321,6 +9603,7 @@ Module collections.
                                       [ T ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [ node ]
@@ -9337,6 +9620,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "splice_nodes",
+                      [],
                       []
                     |),
                     [
@@ -9428,7 +9712,9 @@ Module collections.
                                     ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -9460,6 +9746,7 @@ Module collections.
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -9467,6 +9754,7 @@ Module collections.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -9509,6 +9797,7 @@ Module collections.
                                     [ T ]
                                 ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [ unlinked_node ]
@@ -9527,6 +9816,7 @@ Module collections.
                             []
                             [ T; A ],
                           "unlink_node",
+                          [],
                           []
                         |),
                         [
@@ -9553,6 +9843,7 @@ Module collections.
                               Ty.apply (Ty.path "&") [] [ A ]
                             ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [
@@ -9568,6 +9859,7 @@ Module collections.
                                     [ T ]
                                 ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| unlinked_node |) ]
@@ -9666,7 +9958,9 @@ Module collections.
                                     ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -9707,6 +10001,7 @@ Module collections.
                                                 []
                                                 [ T; A ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -9714,6 +10009,7 @@ Module collections.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -9756,6 +10052,7 @@ Module collections.
                                     [ T ]
                                 ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [ unlinked_node ]
@@ -9774,6 +10071,7 @@ Module collections.
                             []
                             [ T; A ],
                           "unlink_node",
+                          [],
                           []
                         |),
                         [
@@ -9799,6 +10097,7 @@ Module collections.
                               [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
                               ],
                             "as_mut",
+                            [],
                             []
                           |),
                           [ unlinked_node ]
@@ -9819,6 +10118,7 @@ Module collections.
                               [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ]
                               ],
                             "as_mut",
+                            [],
                             []
                           |),
                           [ unlinked_node ]
@@ -9846,7 +10146,15 @@ Module collections.
                             ("len", Value.Integer IntegerKind.Usize 1);
                             ("alloc",
                               M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  A,
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (|
@@ -10004,6 +10312,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "split_off_after_node",
+                    [],
                     []
                   |),
                   [
@@ -10077,6 +10386,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "split_off_before_node",
+                    [],
                     []
                   |),
                   [
@@ -10134,6 +10444,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_front",
+                      [],
                       []
                     |),
                     [
@@ -10195,6 +10506,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back",
+                      [],
                       []
                     |),
                     [
@@ -10224,6 +10536,7 @@ Module collections.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 "is_none",
+                                [],
                                 []
                               |),
                               [
@@ -10235,6 +10548,7 @@ Module collections.
                                         []
                                         [ T; A ],
                                       "current",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -10310,6 +10624,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [
@@ -10354,6 +10669,7 @@ Module collections.
                                                     [ T ]
                                                 ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -10372,6 +10688,7 @@ Module collections.
                                               ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10408,6 +10725,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "move_next",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -10441,6 +10759,7 @@ Module collections.
                               []
                               [ T; A ],
                             "pop_front",
+                            [],
                             []
                           |),
                           [
@@ -10503,6 +10822,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "is_empty",
+                                [],
                                 []
                               |),
                               [
@@ -10547,6 +10867,7 @@ Module collections.
                                                     [ T ]
                                                 ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -10565,6 +10886,7 @@ Module collections.
                                               ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -10630,6 +10952,7 @@ Module collections.
                                                         ]
                                                     ],
                                                   "is_none",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10684,6 +11007,7 @@ Module collections.
                               []
                               [ T; A ],
                             "pop_back",
+                            [],
                             []
                           |),
                           [
@@ -10722,6 +11046,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front",
+                [],
                 []
               |),
               [
@@ -10756,6 +11081,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "front_mut",
+                [],
                 []
               |),
               [
@@ -10790,6 +11116,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back",
+                [],
                 []
               |),
               [
@@ -10824,6 +11151,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "back_mut",
+                [],
                 []
               |),
               [
@@ -10895,6 +11223,7 @@ Module collections.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "detach_all_nodes",
+                            [],
                             []
                           |),
                           [ M.read (| list |) ]
@@ -10973,6 +11302,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ref",
+                                            [],
                                             []
                                           |),
                                           [ node ]
@@ -10992,6 +11322,7 @@ Module collections.
                                     []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "splice_nodes",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11042,6 +11373,7 @@ Module collections.
                                                   ]
                                               ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
@@ -11135,6 +11467,7 @@ Module collections.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "detach_all_nodes",
+                            [],
                             []
                           |),
                           [ M.read (| list |) ]
@@ -11213,6 +11546,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ref",
+                                            [],
                                             []
                                           |),
                                           [ node ]
@@ -11232,6 +11566,7 @@ Module collections.
                                     []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "splice_nodes",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11385,6 +11720,7 @@ Module collections.
                                                   [ T ]
                                               ],
                                             "as_ref",
+                                            [],
                                             []
                                           |),
                                           [ node ]
@@ -11420,9 +11756,11 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                   ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11448,6 +11786,7 @@ Module collections.
                                                                   [ T ]
                                                               ],
                                                             "as_mut",
+                                                            [],
                                                             []
                                                           |),
                                                           [ node ]
@@ -11477,6 +11816,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "unlink_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -11511,6 +11851,7 @@ Module collections.
                                                                 Ty.apply (Ty.path "&") [] [ A ]
                                                               ],
                                                             "from_raw_in",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -11528,6 +11869,7 @@ Module collections.
                                                                       [ T ]
                                                                   ],
                                                                 "as_ptr",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| node |) ]
@@ -11659,6 +12001,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -11666,6 +12009,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -11674,6 +12018,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
@@ -11722,6 +12067,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "pop_front",
+                [],
                 []
               |),
               [
@@ -11811,6 +12157,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "pop_back",
+                [],
                 []
               |),
               [
@@ -11884,7 +12231,9 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 [],
+                [],
                 "into_iter",
+                [],
                 []
               |),
               [
@@ -11895,6 +12244,7 @@ Module collections.
                       []
                       [ T; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -11943,6 +12293,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -11957,8 +12308,10 @@ Module collections.
                         (Ty.path "alloc::collections::linked_list::LinkedList")
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [ I ]
                     |),
                     [ list; M.read (| iter |) ]
@@ -12049,6 +12402,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "iter",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -12099,6 +12453,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 "iter_mut",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -12143,8 +12498,10 @@ Module collections.
                     M.get_trait_method (|
                       "alloc::collections::SpecExtend",
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      [],
                       [ I ],
                       "spec_extend",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| iter |) ]
@@ -12179,6 +12536,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "push_back",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| elem |) ]
@@ -12231,7 +12589,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.associated,
                       [],
+                      [],
                       "for_each",
+                      [],
                       [ Ty.function [ Ty.tuple [ Ty.associated ] ] (Ty.tuple []) ]
                     |),
                     [
@@ -12240,7 +12600,9 @@ Module collections.
                           "core::iter::traits::collect::IntoIterator",
                           I,
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| iter |) ]
@@ -12265,6 +12627,7 @@ Module collections.
                                               []
                                               [ Ty.associated; A ],
                                             "push_back",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| elt |) ]
@@ -12325,6 +12688,7 @@ Module collections.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "append",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| other |) ]
@@ -12376,8 +12740,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -12392,7 +12758,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ T ]
                         |),
                         [
@@ -12401,7 +12769,9 @@ Module collections.
                               "core::iter::traits::collect::IntoIterator",
                               I,
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -12450,6 +12820,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "push_back",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| elem |) ]
@@ -12497,6 +12868,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -12505,6 +12877,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -12516,7 +12889,9 @@ Module collections.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                     [],
+                    [],
                     "eq",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -12537,6 +12912,7 @@ Module collections.
                           []
                           [ T; A ],
                         "iter",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -12566,6 +12942,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -12574,6 +12951,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -12585,7 +12963,9 @@ Module collections.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                     [],
+                    [],
                     "ne",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -12606,6 +12986,7 @@ Module collections.
                           []
                           [ T; A ],
                         "iter",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -12666,7 +13047,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
+                [],
                 "partial_cmp",
+                [],
                 [
                   Ty.apply
                     (Ty.path "&")
@@ -12679,6 +13062,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -12719,7 +13103,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                 [],
+                [],
                 "cmp",
+                [],
                 [
                   Ty.apply
                     (Ty.path "&")
@@ -12732,6 +13118,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -12775,11 +13162,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "new_in",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -12797,8 +13185,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -12813,7 +13203,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [] [ T ],
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ T ]
                         |),
                         [
@@ -12824,6 +13216,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "iter",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -12871,6 +13264,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                       "iter",
+                      [],
                       []
                     |),
                     [ M.read (| source |) ]
@@ -12893,6 +13287,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -12904,6 +13299,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| source |) ]
@@ -12921,6 +13317,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "split_off",
+                                [],
                                 []
                               |),
                               [
@@ -12932,6 +13329,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| source |) ]
@@ -12969,7 +13367,9 @@ Module collections.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -12981,7 +13381,9 @@ Module collections.
                                 []
                                 [ T ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
@@ -13002,6 +13404,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "iter_mut",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -13043,7 +13446,9 @@ Module collections.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -13076,7 +13481,9 @@ Module collections.
                                                 "core::clone::Clone",
                                                 T,
                                                 [],
+                                                [],
                                                 "clone_from",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| elem |); M.read (| source_elem |) ]
@@ -13106,7 +13513,9 @@ Module collections.
                                     []
                                     [ T ],
                                   [],
+                                  [],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ source_iter ]
@@ -13123,8 +13532,10 @@ Module collections.
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
                                 []
                                 [ T; A ],
+                              [],
                               [ T ],
                               "extend",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -13147,7 +13558,9 @@ Module collections.
                                     []
                                     [ T ],
                                   [],
+                                  [],
                                   "cloned",
+                                  [],
                                   [ T ]
                                 |),
                                 [ M.read (| source_iter |) ]
@@ -13196,6 +13609,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugList",
                 "finish",
+                [],
                 []
               |),
               [
@@ -13203,6 +13617,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugList",
                     "entries",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.apply
@@ -13222,6 +13637,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_list",
+                          [],
                           []
                         |),
                         [ M.read (| f |) ]
@@ -13267,7 +13683,15 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
+                    M.get_trait_method (|
+                      "core::hash::Hasher",
+                      H,
+                      [],
+                      [],
+                      "write_length_prefix",
+                      [],
+                      []
+                    |),
                     [
                       M.read (| state |);
                       M.call_closure (|
@@ -13277,6 +13701,7 @@ Module collections.
                             []
                             [ T; A ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -13300,7 +13725,9 @@ Module collections.
                               [ T; A ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -13323,7 +13750,9 @@ Module collections.
                                         []
                                         [ T ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -13353,7 +13782,9 @@ Module collections.
                                               "core::hash::Hash",
                                               T,
                                               [],
+                                              [],
                                               "hash",
+                                              [],
                                               [ H ]
                                             |),
                                             [ M.read (| elt |); M.read (| state |) ]
@@ -13410,8 +13841,10 @@ Module collections.
                   (Ty.path "alloc::collections::linked_list::LinkedList")
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ T ],
                 "from_iter",
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [ M.read (| arr |) ]

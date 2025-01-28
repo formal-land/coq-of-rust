@@ -28,7 +28,9 @@ Module collections.
                     "core::clone::Clone",
                     Ty.path "alloc::collections::TryReserveErrorKind",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -76,8 +78,10 @@ Module collections.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "alloc::collections::TryReserveErrorKind",
+              [],
               [ Ty.path "alloc::collections::TryReserveErrorKind" ],
               "eq",
+              [],
               []
             |),
             [
@@ -149,6 +153,7 @@ Module collections.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -193,7 +198,9 @@ Module collections.
               "core::clone::Clone",
               Ty.path "alloc::collections::TryReserveErrorKind",
               [],
+              [],
               "clone",
+              [],
               []
             |),
             [
@@ -287,7 +294,9 @@ Module collections.
                                 "core::clone::Clone",
                                 Ty.path "core::alloc::layout::Layout",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -298,7 +307,9 @@ Module collections.
                                 "core::clone::Clone",
                                 Ty.tuple [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_1 |) ]
@@ -414,6 +425,7 @@ Module collections.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::alloc::layout::Layout" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -421,6 +433,7 @@ Module collections.
                                         [ Ty.path "core::alloc::layout::Layout" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -430,8 +443,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ __self_1; __arg1_1 ]
@@ -521,6 +536,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CapacityOverflow" |) ]
@@ -548,6 +564,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field2_finish",
+                          [],
                           []
                         |),
                         [
@@ -673,7 +690,9 @@ Module collections.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -681,6 +700,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [ M.read (| fmt |); M.read (| Value.String "memory allocation failed" |)
@@ -710,6 +730,7 @@ Module collections.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -720,6 +741,7 @@ Module collections.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -775,7 +797,12 @@ Module collections.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
                     [ M.read (| fmt |); M.read (| reason |) ]
                   |)
                 |)

@@ -85,6 +85,7 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -93,6 +94,7 @@ Module future.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "Pending" |) ]

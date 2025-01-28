@@ -43,8 +43,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_trait_method (|
                       "core::convert::From",
                       Ty.path "alloc::string::String",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "from",
+                      [],
                       []
                     |),
                     [ M.read (| Value.String "Alice" |) ]
@@ -57,6 +59,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.U8 20 ]
@@ -92,6 +95,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -110,6 +114,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -142,6 +147,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -160,6 +166,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [ name ]
@@ -182,6 +189,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -202,6 +210,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
@@ -266,6 +275,7 @@ Module main.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [

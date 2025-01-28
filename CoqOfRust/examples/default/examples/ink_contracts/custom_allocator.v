@@ -39,6 +39,7 @@ Module Impl_custom_allocator_CustomAllocator.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ],
                   "into_vec",
+                  [],
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
@@ -56,6 +57,7 @@ Module Impl_custom_allocator_CustomAllocator.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.alloc (| Value.Array [ M.read (| init_value |) ] |) ]
@@ -79,10 +81,23 @@ Module Impl_custom_allocator_CustomAllocator.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "custom_allocator::CustomAllocator", "new", [] |),
+          M.get_associated_function (|
+            Ty.path "custom_allocator::CustomAllocator",
+            "new",
+            [],
+            []
+          |),
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "bool",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]
@@ -112,8 +127,10 @@ Module Impl_custom_allocator_CustomAllocator.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [ Ty.path "usize" ],
                   "index_mut",
+                  [],
                   []
                 |),
                 [
@@ -134,8 +151,10 @@ Module Impl_custom_allocator_CustomAllocator.
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ Ty.path "usize" ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -175,8 +194,10 @@ Module Impl_custom_allocator_CustomAllocator.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.path "usize" ],
               "index",
+              [],
               []
             |),
             [

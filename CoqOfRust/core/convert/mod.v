@@ -51,7 +51,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
+            M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -81,7 +81,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
+            M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -111,7 +111,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::AsMut", T, [ U ], "as_mut", [] |),
+            M.get_trait_method (| "core::convert::AsMut", T, [], [ U ], "as_mut", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -141,7 +141,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::From", U, [ T ], "from", [] |),
+            M.get_trait_method (| "core::convert::From", U, [], [ T ], "from", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -228,7 +228,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::TryFrom", U, [ T ], "try_from", [] |),
+            M.get_trait_method (| "core::convert::TryFrom", U, [], [ T ], "try_from", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -268,7 +268,7 @@ Module convert.
             "core::result::Result::Ok"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::convert::Into", U, [ T ], "into", [] |),
+                M.get_trait_method (| "core::convert::Into", U, [], [ T ], "into", [], [] |),
                 [ M.read (| value |) ]
               |)
             ]))

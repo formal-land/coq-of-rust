@@ -215,6 +215,7 @@ Module char.
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                 "map_err",
+                [],
                 [
                   Ty.path "core::char::TryFromCharError";
                   Ty.function
@@ -227,8 +228,10 @@ Module char.
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     Ty.path "u8",
+                    [],
                     [ Ty.path "u32" ],
                     "try_from",
+                    [],
                     []
                   |),
                   [
@@ -236,8 +239,10 @@ Module char.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "u32",
+                        [],
                         [ Ty.path "char" ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| c |) ]
@@ -299,6 +304,7 @@ Module char.
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                 "map_err",
+                [],
                 [
                   Ty.path "core::char::TryFromCharError";
                   Ty.function
@@ -311,8 +317,10 @@ Module char.
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     Ty.path "u16",
+                    [],
                     [ Ty.path "u32" ],
                     "try_from",
+                    [],
                     []
                   |),
                   [
@@ -320,8 +328,10 @@ Module char.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "u32",
+                        [],
                         [ Ty.path "char" ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| c |) ]
@@ -411,7 +421,9 @@ Module char.
                       "core::clone::Clone",
                       Ty.path "core::char::convert::CharErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -448,6 +460,7 @@ Module char.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -499,8 +512,10 @@ Module char.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::char::convert::CharErrorKind",
+                [],
                 [ Ty.path "core::char::convert::CharErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -622,7 +637,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -818,14 +833,16 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::error::Error",
                     Ty.path "core::char::convert::ParseCharError",
                     [],
+                    [],
                     "description",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -869,7 +886,7 @@ Module char.
               let~ chars :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "chars", [] |),
+                    M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                     [ M.read (| s |) ]
                   |)
                 |) in
@@ -882,7 +899,9 @@ Module char.
                           "core::iter::traits::iterator::Iterator",
                           Ty.path "core::str::iter::Chars",
                           [],
+                          [],
                           "next",
+                          [],
                           []
                         |),
                         [ chars ]
@@ -892,7 +911,9 @@ Module char.
                           "core::iter::traits::iterator::Iterator",
                           Ty.path "core::str::iter::Chars",
                           [],
+                          [],
                           "next",
+                          [],
                           []
                         |),
                         [ chars ]
@@ -1004,7 +1025,7 @@ Module char.
                         (M.alloc (|
                           BinOp.ge (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                               [
                                 BinOp.bit_xor
                                   (M.read (| i |))
@@ -1144,6 +1165,7 @@ Module char.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1194,8 +1216,10 @@ Module char.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.tuple [],
+                [],
                 [ Ty.tuple [] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1268,7 +1292,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.read (| Value.String "converted integer out of range for `char`" |);
                 M.read (| f |)
@@ -1326,6 +1350,7 @@ Module char.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [

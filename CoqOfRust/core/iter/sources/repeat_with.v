@@ -60,7 +60,7 @@ Module iter.
                 [
                   ("repeater",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -102,6 +102,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish_non_exhaustive",
+                  [],
                   []
                 |),
                 [
@@ -110,6 +111,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "RepeatWith" |) ]
@@ -154,8 +156,10 @@ Module iter.
                     M.get_trait_method (|
                       "core::ops::function::FnMut",
                       F,
+                      [],
                       [ Ty.tuple [] ],
                       "call_mut",
+                      [],
                       []
                     |),
                     [
@@ -236,8 +240,10 @@ Module iter.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
+                                  [],
                                   [ Ty.tuple [] ],
                                   "call_mut",
+                                  [],
                                   []
                                 |),
                                 [
@@ -261,7 +267,9 @@ Module iter.
                                         "core::ops::try_trait::Try",
                                         R,
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -269,8 +277,10 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
                                             Fold,
+                                            [],
                                             [ Ty.tuple [ Acc; A ] ],
                                             "call_mut",
+                                            [],
                                             []
                                           |),
                                           [
@@ -299,8 +309,10 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     R,
+                                                    [],
                                                     [ Ty.associated ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]

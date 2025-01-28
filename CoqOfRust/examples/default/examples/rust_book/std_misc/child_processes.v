@@ -33,6 +33,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
@@ -41,12 +42,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Command", "output", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Command", "output", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "std::process::Command",
                         "arg",
+                        [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [
@@ -55,6 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "std::process::Command",
                               "new",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ M.read (| Value.String "rustc" |) ]
@@ -85,6 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -103,6 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "std::io::error::Error" ]
                                                     |),
                                                     [ e ]
@@ -133,6 +138,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "std::process::ExitStatus",
                           "success",
+                          [],
                           []
                         |),
                         [
@@ -151,6 +157,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
+                        [],
                         []
                       |),
                       [
@@ -162,7 +169,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -186,6 +195,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -201,6 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::borrow::Cow")
@@ -227,6 +238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
+                        [],
                         []
                       |),
                       [
@@ -238,7 +250,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -262,6 +276,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -277,6 +292,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::borrow::Cow")

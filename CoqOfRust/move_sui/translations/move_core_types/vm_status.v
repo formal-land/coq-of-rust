@@ -262,7 +262,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -363,7 +363,15 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -1468,7 +1476,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -3480,7 +3488,15 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -3591,8 +3607,10 @@ Module vm_status.
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "u64",
+                  [],
                   [ Ty.path "u64" ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [ __self_discr; __arg1_discr ]
@@ -3645,7 +3663,7 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
                 [ __self_discr; __arg1_discr ]
               |)
             |)
@@ -7028,8 +7046,10 @@ Module vm_status.
                       M.get_trait_method (|
                         "core::convert::Into",
                         Ty.path "move_core_types::vm_status::StatusCode",
+                        [],
                         [ Ty.path "u64" ],
                         "into",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -7307,15 +7327,17 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let serializer := M.alloc (| serializer |) in
           M.call_closure (|
-            M.get_trait_method (| "serde::ser::Serializer", S, [], "serialize_u64", [] |),
+            M.get_trait_method (| "serde::ser::Serializer", S, [], [], "serialize_u64", [], [] |),
             [
               M.read (| serializer |);
               M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.path "move_core_types::vm_status::StatusCode",
+                  [],
                   [ Ty.path "u64" ],
                   "into",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
@@ -7370,7 +7392,9 @@ Module vm_status.
               "serde::de::Deserializer",
               D,
               [],
+              [],
               "deserialize_u64",
+              [],
               [ Ty.path "move_core_types::vm_status::deserialize::StatusCodeVisitor" ]
             |),
             [

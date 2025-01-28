@@ -13,6 +13,7 @@ Module eip2.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "from_be_bytes",
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
               []
             |),
             [

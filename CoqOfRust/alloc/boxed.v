@@ -31,6 +31,7 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ x ]
@@ -55,6 +56,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_uninit_in",
+              [],
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
@@ -80,6 +82,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_zeroed_in",
+              [],
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
@@ -106,6 +109,7 @@ Module boxed.
             M.get_trait_method (|
               "core::convert::Into",
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "core::pin::Pin")
@@ -114,6 +118,7 @@ Module boxed.
                   ]
               ],
               "into",
+              [],
               []
             |),
             [
@@ -121,6 +126,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| x |) ]
@@ -147,6 +153,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_in",
+              [],
               []
             |),
             [ M.read (| x |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -177,6 +184,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_uninit_in",
+              [],
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
@@ -207,6 +215,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_new_zeroed_in",
+              [],
               []
             |),
             [ Value.StructTuple "alloc::alloc::Global" [] ]
@@ -232,6 +241,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
+              [],
               []
             |),
             [ M.read (| raw |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -258,6 +268,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw",
+              [],
               []
             |),
             [
@@ -265,6 +276,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| ptr |) ]
@@ -308,6 +320,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "new_uninit_in",
+                    [],
                     []
                   |),
                   [ M.read (| alloc |) ]
@@ -316,12 +329,18 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "write", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    "write",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| boxed |) ]
@@ -338,6 +357,7 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
+                  [],
                   []
                 |),
                 [ M.read (| boxed |) ]
@@ -397,7 +417,9 @@ Module boxed.
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -405,6 +427,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                                 "try_new_uninit_in",
+                                [],
                                 []
                               |),
                               [ M.read (| alloc |) ]
@@ -436,6 +459,7 @@ Module boxed.
                                             Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -446,6 +470,7 @@ Module boxed.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -473,6 +498,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -480,6 +506,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| boxed |) ]
@@ -500,6 +527,7 @@ Module boxed.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
                             ],
                           "assume_init",
+                          [],
                           []
                         |),
                         [ M.read (| boxed |) ]
@@ -547,6 +575,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "new",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
@@ -558,6 +587,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "try_new_uninit_in",
+                    [],
                     []
                   |),
                   [ M.read (| alloc |) ]
@@ -645,6 +675,7 @@ Module boxed.
                                         [ T ]
                                     ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -658,6 +689,7 @@ Module boxed.
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "new",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -676,6 +708,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -702,7 +735,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -711,7 +746,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 A,
                                                 [],
+                                                [],
                                                 "allocate",
+                                                [],
                                                 []
                                               |),
                                               [ alloc; M.read (| layout |) ]
@@ -753,6 +790,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -763,6 +801,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -802,6 +841,7 @@ Module boxed.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
                             ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [
@@ -813,6 +853,7 @@ Module boxed.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -863,6 +904,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "new",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
@@ -874,6 +916,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "try_new_zeroed_in",
+                    [],
                     []
                   |),
                   [ M.read (| alloc |) ]
@@ -961,6 +1004,7 @@ Module boxed.
                                         [ T ]
                                     ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -974,6 +1018,7 @@ Module boxed.
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "new",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -992,6 +1037,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1018,7 +1064,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1027,7 +1075,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 A,
                                                 [],
+                                                [],
                                                 "allocate_zeroed",
+                                                [],
                                                 []
                                               |),
                                               [ alloc; M.read (| layout |) ]
@@ -1069,6 +1119,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -1079,6 +1130,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -1118,6 +1170,7 @@ Module boxed.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
                             ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [
@@ -1129,6 +1182,7 @@ Module boxed.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -1166,6 +1220,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "into_pin",
+              [],
               []
             |),
             [
@@ -1173,6 +1228,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                   "new_in",
+                  [],
                   []
                 |),
                 [ M.read (| x |); M.read (| alloc |) ]
@@ -1210,6 +1266,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| boxed |) ]
@@ -1230,6 +1287,7 @@ Module boxed.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -1282,6 +1340,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                   "new_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| raw |) ]
@@ -1317,6 +1376,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "from_raw_in",
+              [],
               []
             |),
             [
@@ -1324,6 +1384,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [ M.read (| raw |) ]
@@ -1357,6 +1418,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -1393,6 +1455,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
               "new_unchecked",
+              [],
               []
             |),
             [
@@ -1400,6 +1463,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                   "into_raw",
+                  [],
                   []
                 |),
                 [ M.read (| b |) ]
@@ -1447,6 +1511,7 @@ Module boxed.
                       []
                       [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -1463,7 +1528,9 @@ Module boxed.
                         []
                         [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
                       [],
+                      [],
                       "deref_mut",
+                      [],
                       []
                     |),
                     [ b ]
@@ -1484,7 +1551,9 @@ Module boxed.
                             []
                             [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ b ]
@@ -1529,6 +1598,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -1548,6 +1618,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -1587,6 +1658,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -1606,8 +1678,10 @@ Module boxed.
                             M.get_trait_method (|
                               "core::convert::From",
                               Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                              [],
                               [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                               "from",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -1704,6 +1778,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "into_raw",
+              [],
               []
             |),
             [ M.read (| b |) ]
@@ -1739,6 +1814,7 @@ Module boxed.
                 []
                 [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
               "new_unchecked",
+              [],
               []
             |),
             [ M.read (| boxed |) ]
@@ -1778,6 +1854,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_box",
+              [],
               []
             |),
             [
@@ -1788,6 +1865,7 @@ Module boxed.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "with_capacity",
+                  [],
                   []
                 |),
                 [ M.read (| len |) ]
@@ -1822,6 +1900,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_box",
+              [],
               []
             |),
             [
@@ -1832,6 +1911,7 @@ Module boxed.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "with_capacity_zeroed",
+                  [],
                   []
                 |),
                 [ M.read (| len |) ]
@@ -1902,6 +1982,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -1917,6 +1998,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "array",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1968,6 +2050,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -1989,7 +2072,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1998,7 +2083,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 Ty.path "alloc::alloc::Global",
                                                 [],
+                                                [],
                                                 "allocate",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2050,6 +2137,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2060,6 +2148,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2098,6 +2187,7 @@ Module boxed.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "into_box",
+                          [],
                           []
                         |),
                         [
@@ -2108,6 +2198,7 @@ Module boxed.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw_parts_in",
+                              [],
                               []
                             |),
                             [
@@ -2115,6 +2206,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
@@ -2193,6 +2285,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -2208,6 +2301,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "array",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2259,6 +2353,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -2280,7 +2375,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2289,7 +2386,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 Ty.path "alloc::alloc::Global",
                                                 [],
+                                                [],
                                                 "allocate_zeroed",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2341,6 +2440,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2351,6 +2451,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2389,6 +2490,7 @@ Module boxed.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "into_box",
+                          [],
                           []
                         |),
                         [
@@ -2399,6 +2501,7 @@ Module boxed.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw_parts_in",
+                              [],
                               []
                             |),
                             [
@@ -2406,6 +2509,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
@@ -2454,6 +2558,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "into_box",
+              [],
               []
             |),
             [
@@ -2461,6 +2566,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                   "with_capacity_in",
+                  [],
                   []
                 |),
                 [ M.read (| len |); M.read (| alloc |) ]
@@ -2496,6 +2602,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "into_box",
+              [],
               []
             |),
             [
@@ -2503,6 +2610,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                   "with_capacity_zeroed_in",
+                  [],
                   []
                 |),
                 [ M.read (| len |); M.read (| alloc |) ]
@@ -2577,6 +2685,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -2592,6 +2701,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "array",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2643,6 +2753,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -2664,7 +2775,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2673,7 +2786,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 A,
                                                 [],
+                                                [],
                                                 "allocate",
+                                                [],
                                                 []
                                               |),
                                               [ alloc; M.read (| layout |) ]
@@ -2720,6 +2835,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2730,6 +2846,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2765,6 +2882,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "into_box",
+                          [],
                           []
                         |),
                         [
@@ -2772,6 +2890,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "from_raw_parts_in",
+                              [],
                               []
                             |),
                             [
@@ -2779,6 +2898,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
@@ -2861,6 +2981,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "dangling",
+                                  [],
                                   []
                                 |),
                                 []
@@ -2876,6 +2997,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "array",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2927,6 +3049,7 @@ Module boxed.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -2948,7 +3071,9 @@ Module boxed.
                                                 Ty.path "core::alloc::AllocError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2957,7 +3082,9 @@ Module boxed.
                                                 "core::alloc::Allocator",
                                                 A,
                                                 [],
+                                                [],
                                                 "allocate_zeroed",
+                                                [],
                                                 []
                                               |),
                                               [ alloc; M.read (| layout |) ]
@@ -3004,6 +3131,7 @@ Module boxed.
                                                               ];
                                                             Ty.path "core::alloc::AllocError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -3014,6 +3142,7 @@ Module boxed.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -3049,6 +3178,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "into_box",
+                          [],
                           []
                         |),
                         [
@@ -3056,6 +3186,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "from_raw_parts_in",
+                              [],
                               []
                             |),
                             [
@@ -3063,6 +3194,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
@@ -3115,6 +3247,7 @@ Module boxed.
                       []
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3132,6 +3265,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -3169,6 +3303,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "write",
+                    [],
                     []
                   |),
                   [ M.read (| boxed |); M.read (| value |) ]
@@ -3182,6 +3317,7 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
+                  [],
                   []
                 |),
                 [ M.read (| boxed |) ]
@@ -3237,6 +3373,7 @@ Module boxed.
                         A
                       ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3257,6 +3394,7 @@ Module boxed.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -3309,6 +3447,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value_raw",
+                    [],
                     [ T ]
                   |),
                   [
@@ -3318,6 +3457,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| ptr |) ]
@@ -3338,6 +3478,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
+                                [],
                                 []
                               |),
                               [ layout ]
@@ -3353,7 +3494,9 @@ Module boxed.
                             "core::alloc::Allocator",
                             A,
                             [],
+                            [],
                             "deallocate",
+                            [],
                             []
                           |),
                           [
@@ -3369,9 +3512,11 @@ Module boxed.
                                   (Ty.path "core::ptr::non_null::NonNull")
                                   []
                                   [ Ty.path "u8" ],
+                                [],
                                 [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ]
                                 ],
                                 "from",
+                                [],
                                 []
                               |),
                               [
@@ -3379,6 +3524,7 @@ Module boxed.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                                     "cast",
+                                    [],
                                     [ Ty.path "u8" ]
                                   |),
                                   [ M.read (| ptr |) ]
@@ -3424,11 +3570,12 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                 []
               |)
             ]
@@ -3473,6 +3620,7 @@ Module boxed.
                       []
                       [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
                     "dangling",
+                    [],
                     []
                   |),
                   []
@@ -3531,6 +3679,7 @@ Module boxed.
                               [ Ty.path "u8" ]
                           ],
                         "dangling",
+                        [],
                         []
                       |),
                       []
@@ -3541,6 +3690,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "str" ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -3552,6 +3702,7 @@ Module boxed.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| bytes |) ]
@@ -3603,11 +3754,12 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "new_uninit_in",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_tuple_field (|
                           M.read (| self |),
@@ -3626,7 +3778,9 @@ Module boxed.
                     "core::clone::CloneToUninit",
                     T,
                     [],
+                    [],
                     "clone_to_uninit",
+                    [],
                     []
                   |),
                   [
@@ -3635,6 +3789,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| boxed |) ]
@@ -3650,6 +3805,7 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                   "assume_init",
+                  [],
                   []
                 |),
                 [ M.read (| boxed |) ]
@@ -3675,7 +3831,7 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
+                  M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| source |) |) ]
                 |)
               |) in
@@ -3720,6 +3876,7 @@ Module boxed.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -3730,11 +3887,12 @@ Module boxed.
                         ]
                     ],
                     "into",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| M.read (| self |) |) ]
                     |)
                   ]
@@ -3774,7 +3932,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3793,7 +3951,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "ne", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3825,7 +3983,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3844,7 +4002,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3863,7 +4021,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3882,7 +4040,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3901,7 +4059,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3939,7 +4097,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3985,7 +4143,7 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
+                  M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                   [ M.read (| M.read (| self |) |); M.read (| state |) ]
                 |)
               |) in
@@ -4018,7 +4176,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "finish", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "finish", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4037,7 +4195,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4056,7 +4214,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_u8", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u8", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4075,7 +4233,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_u16", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u16", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4094,7 +4252,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_u32", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u32", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4113,7 +4271,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_u64", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u64", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4132,7 +4290,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_u128", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_u128", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4151,7 +4309,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_usize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_usize", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4170,7 +4328,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_i8", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i8", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4189,7 +4347,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_i16", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i16", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4208,7 +4366,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_i32", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i32", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4227,7 +4385,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_i64", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i64", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4246,7 +4404,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_i128", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_i128", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4265,7 +4423,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_isize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_isize", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4289,7 +4447,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_length_prefix", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_length_prefix", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4308,7 +4466,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", T, [], "write_str", [] |),
+            M.get_trait_method (| "core::hash::Hasher", T, [], [], "write_str", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4360,6 +4518,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ M.read (| t |) ]
@@ -4395,6 +4554,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
               "into_pin",
+              [],
               []
             |),
             [ M.read (| boxed |) ]
@@ -4436,11 +4596,17 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "into_boxed_slice",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "to_vec",
+                  [],
+                  []
+                |),
                 [ M.read (| slice |) ]
               |)
             ]
@@ -4484,7 +4650,12 @@ Module boxed.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "slice") [] [ T ],
+                    "len",
+                    [],
+                    []
+                  |),
                   [ M.read (| slice |) ]
                 |)
               |) in
@@ -4497,6 +4668,7 @@ Module boxed.
                       []
                       [ T; Ty.path "alloc::alloc::Global" ],
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ M.read (| len |) ]
@@ -4511,6 +4683,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| slice |) ]
@@ -4522,6 +4695,7 @@ Module boxed.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "ptr",
+                        [],
                         []
                       |),
                       [ buf ]
@@ -4544,6 +4718,7 @@ Module boxed.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "assume_init",
+                  [],
                   []
                 |),
                 [
@@ -4554,6 +4729,7 @@ Module boxed.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "into_box",
+                      [],
                       []
                     |),
                     [
@@ -4562,6 +4738,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -4609,8 +4786,10 @@ Module boxed.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+              [],
               [ T ],
               "from_slice",
+              [],
               []
             |),
             [ M.read (| slice |) ]
@@ -4670,8 +4849,10 @@ Module boxed.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -4690,6 +4871,7 @@ Module boxed.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -4697,6 +4879,7 @@ Module boxed.
                               [ T; Ty.path "alloc::alloc::Global" ]
                           ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]
@@ -4744,13 +4927,15 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                   "from",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| s |) ]
                   |)
                 ]
@@ -4806,8 +4991,10 @@ Module boxed.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -4826,8 +5013,10 @@ Module boxed.
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ Ty.path "alloc::string::String" ],
                           "from",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -4874,6 +5063,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| s |) ]
@@ -4894,6 +5084,7 @@ Module boxed.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -4946,6 +5137,7 @@ Module boxed.
                 []
                 [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ M.read (| array |) ]
@@ -5002,6 +5194,7 @@ Module boxed.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| boxed_slice |) ]
@@ -5082,6 +5275,7 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                   "into_raw_with_allocator",
+                  [],
                   []
                 |),
                 [ M.read (| boxed_slice |) ]
@@ -5102,6 +5296,7 @@ Module boxed.
                           []
                           [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                         "from_raw_in",
+                        [],
                         []
                       |),
                       [ M.rust_cast (M.read (| ptr |)); M.read (| alloc |) ]
@@ -5165,6 +5360,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| boxed_slice |) ]
@@ -5268,6 +5464,7 @@ Module boxed.
                                   []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ vec ]
@@ -5285,6 +5482,7 @@ Module boxed.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "into_boxed_slice",
+                            [],
                             []
                           |),
                           [ M.read (| vec |) ]
@@ -5357,6 +5555,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5374,6 +5573,7 @@ Module boxed.
                                 []
                                 [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                               "downcast_unchecked",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5438,6 +5638,7 @@ Module boxed.
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
@@ -5474,6 +5675,7 @@ Module boxed.
                       []
                       [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -5491,6 +5693,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -5542,6 +5745,7 @@ Module boxed.
                                   ("core::marker::Send::AutoTrait", [])
                                 ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5566,6 +5770,7 @@ Module boxed.
                                   A
                                 ],
                               "downcast_unchecked",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5634,6 +5839,7 @@ Module boxed.
                                                 ("core::marker::Send::AutoTrait", [])
                                               ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
@@ -5674,6 +5880,7 @@ Module boxed.
                         A
                       ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -5691,6 +5898,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -5751,6 +5959,7 @@ Module boxed.
                                   ("core::marker::Sync::AutoTrait", [])
                                 ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5776,6 +5985,7 @@ Module boxed.
                                   A
                                 ],
                               "downcast_unchecked",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -5846,6 +6056,7 @@ Module boxed.
                                                 ("core::marker::Sync::AutoTrait", [])
                                               ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
@@ -5890,6 +6101,7 @@ Module boxed.
                         A
                       ],
                     "into_raw_with_allocator",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -5907,6 +6119,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           "from_raw_in",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
@@ -5939,7 +6152,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5970,7 +6183,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6011,7 +6224,9 @@ Module boxed.
                   "core::fmt::Pointer",
                   Ty.apply (Ty.path "*const") [] [ T ],
                   [],
+                  [],
                   "fmt",
+                  [],
                   []
                 |),
                 [ ptr; M.read (| f |) ]
@@ -6130,7 +6345,15 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "next", [] |),
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              I,
+              [],
+              [],
+              "next",
+              [],
+              []
+            |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6152,7 +6375,9 @@ Module boxed.
               "core::iter::traits::iterator::Iterator",
               I,
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -6173,7 +6398,15 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
-            M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              I,
+              [],
+              [],
+              "nth",
+              [],
+              []
+            |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6195,7 +6428,9 @@ Module boxed.
               "alloc::boxed::BoxIter",
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
               [],
+              [],
               "last",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -6249,7 +6484,9 @@ Module boxed.
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
               [],
+              [],
               "fold",
+              [],
               [
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
                 Ty.function
@@ -6260,7 +6497,7 @@ Module boxed.
             [
               M.read (| self |);
               Value.StructTuple "core::option::Option::None" [];
-              M.get_associated_function (| Self, "some.last", [] |)
+              M.get_associated_function (| Self, "some.last", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6291,7 +6528,15 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "last", [] |),
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              I,
+              [],
+              [],
+              "last",
+              [],
+              []
+            |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6325,7 +6570,9 @@ Module boxed.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               I,
               [],
+              [],
               "next_back",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -6350,7 +6597,9 @@ Module boxed.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               I,
               [],
+              [],
               "nth_back",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| n |) ]
@@ -6390,7 +6639,9 @@ Module boxed.
               "core::iter::traits::exact_size::ExactSizeIterator",
               I,
               [],
+              [],
               "len",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -6414,7 +6665,9 @@ Module boxed.
               "core::iter::traits::exact_size::ExactSizeIterator",
               I,
               [],
+              [],
               "is_empty",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -6469,7 +6722,15 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::function::FnOnce", F, [ Args ], "call_once", [] |),
+            M.get_trait_method (|
+              "core::ops::function::FnOnce",
+              F,
+              [],
+              [ Args ],
+              "call_once",
+              [],
+              []
+            |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6509,7 +6770,15 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::function::FnMut", F, [ Args ], "call_mut", [] |),
+            M.get_trait_method (|
+              "core::ops::function::FnMut",
+              F,
+              [],
+              [ Args ],
+              "call_mut",
+              [],
+              []
+            |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6540,7 +6809,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::function::Fn", F, [ Args ], "call", [] |),
+            M.get_trait_method (| "core::ops::function::Fn", F, [], [ Args ], "call", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6585,8 +6854,10 @@ Module boxed.
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnOnce",
               F,
+              [],
               [ Args ],
               "async_call_once",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -6640,8 +6911,10 @@ Module boxed.
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnMut",
               F,
+              [],
               [ Args ],
               "async_call_mut",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -6686,8 +6959,10 @@ Module boxed.
             M.get_trait_method (|
               "core::ops::async_function::AsyncFn",
               F,
+              [],
               [ Args ],
               "async_call",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
@@ -6752,6 +7027,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; Ty.path "alloc::alloc::Global" ],
               "into_boxed_slice",
+              [],
               []
             |),
             [
@@ -6760,7 +7036,9 @@ Module boxed.
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
                   [],
+                  [],
                   "collect",
+                  [],
                   [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; Ty.path "alloc::alloc::Global" ] ]
                 |),
                 [
@@ -6769,7 +7047,9 @@ Module boxed.
                       "core::iter::traits::collect::IntoIterator",
                       T,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| iter |) ]
@@ -6862,7 +7142,9 @@ Module boxed.
               "core::iter::traits::collect::IntoIterator",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; A ],
               [],
+              [],
               "into_iter",
+              [],
               []
             |),
             [
@@ -6870,6 +7152,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ I ],
                   "into_vec",
+                  [],
                   [ A ]
                 |),
                 [ M.read (| self |) ]
@@ -6919,7 +7202,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6965,7 +7248,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter_mut", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter_mut", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7000,14 +7283,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.path "char" ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7040,14 +7330,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7080,14 +7377,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7120,14 +7424,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.path "alloc::string::String" ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7161,14 +7472,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7203,14 +7521,21 @@ Module boxed.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                   "from_iter",
+                  [],
                   [ T ]
                 |),
                 [ M.read (| iter |) ]
@@ -7249,7 +7574,7 @@ Module boxed.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -7258,6 +7583,7 @@ Module boxed.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                         "allocator",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -7270,6 +7596,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "into_boxed_slice",
+                  [],
                   []
                 |),
                 [
@@ -7277,6 +7604,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ T ],
                       "to_vec_in",
+                      [],
                       [ A ]
                     |),
                     [ M.read (| M.read (| self |) |); M.read (| alloc |) ]
@@ -7318,6 +7646,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| M.read (| self |) |) ]
@@ -7326,6 +7655,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| M.read (| source |) |) ]
@@ -7339,6 +7669,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "clone_from_slice",
+                            [],
                             []
                           |),
                           [ M.read (| M.read (| self |) |); M.read (| M.read (| source |) |) ]
@@ -7358,7 +7689,9 @@ Module boxed.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [ M.read (| source |) ]
@@ -7526,12 +7859,21 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let arg := M.alloc (| arg |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+            M.get_trait_method (|
+              "core::ops::coroutine::Coroutine",
+              G,
+              [],
+              [ R ],
+              "resume",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -7549,7 +7891,9 @@ Module boxed.
                               [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ]
                           ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ self ]
@@ -7600,7 +7944,15 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let arg := M.alloc (| arg |) in
           M.call_closure (|
-            M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+            M.get_trait_method (|
+              "core::ops::coroutine::Coroutine",
+              G,
+              [],
+              [ R ],
+              "resume",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -7609,6 +7961,7 @@ Module boxed.
                     []
                     [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ],
                   "as_mut",
+                  [],
                   []
                 |),
                 [
@@ -7630,7 +7983,9 @@ Module boxed.
                             ]
                         ],
                       [],
+                      [],
                       "deref_mut",
+                      [],
                       []
                     |),
                     [ self ]
@@ -7676,12 +8031,13 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let cx := M.alloc (| cx |) in
           M.call_closure (|
-            M.get_trait_method (| "core::future::future::Future", F, [], "poll", [] |),
+            M.get_trait_method (| "core::future::future::Future", F, [], [], "poll", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -7699,7 +8055,9 @@ Module boxed.
                               [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ] ]
                           ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ self ]
@@ -7747,7 +8105,9 @@ Module boxed.
               "core::async_iter::async_iter::AsyncIterator",
               S,
               [],
+              [],
               "poll_next",
+              [],
               []
             |),
             [
@@ -7755,6 +8115,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -7777,7 +8138,9 @@ Module boxed.
                               ]
                           ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ self ]
@@ -7807,7 +8170,9 @@ Module boxed.
               "core::async_iter::async_iter::AsyncIterator",
               S,
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -7862,6 +8227,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::error::Error::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -7880,6 +8246,7 @@ Module boxed.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "into_raw",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -7896,6 +8263,7 @@ Module boxed.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               "from_raw",
+                              [],
                               []
                             |),
                             [ M.rust_cast (M.read (| raw |)) ]
@@ -7956,6 +8324,7 @@ Module boxed.
                         ]
                     ],
                   "map_err",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -7997,6 +8366,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.dyn [ ("core::error::Error::Trait", []) ],
                       "downcast",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| err |) ]
@@ -8099,6 +8469,7 @@ Module boxed.
                         ]
                     ],
                   "map_err",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -8144,6 +8515,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.dyn [ ("core::error::Error::Trait", []) ],
                       "downcast",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| err |) ]
@@ -8224,6 +8596,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ M.read (| err |) ]
@@ -8270,6 +8643,7 @@ Module boxed.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ M.read (| err |) ]
@@ -8340,6 +8714,7 @@ Module boxed.
                 []
                 [ Ty.path "alloc::boxed::from::StringError"; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             [ Value.StructTuple "alloc::boxed::from::StringError" [ M.read (| err |) ] ]
@@ -8392,8 +8767,10 @@ Module boxed.
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.path "alloc::string::String" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| str_err |) ]
@@ -8453,8 +8830,10 @@ Module boxed.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [ Ty.path "alloc::string::String" ],
               "from",
+              [],
               []
             |),
             [
@@ -8462,8 +8841,10 @@ Module boxed.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| err |) ]
@@ -8505,8 +8886,10 @@ Module boxed.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.path "alloc::string::String" ],
               "from",
+              [],
               []
             |),
             [
@@ -8514,8 +8897,10 @@ Module boxed.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| err |) ]
@@ -8573,8 +8958,10 @@ Module boxed.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [ Ty.path "alloc::string::String" ],
               "from",
+              [],
               []
             |),
             [
@@ -8582,8 +8969,10 @@ Module boxed.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| err |) ]
@@ -8626,8 +9015,10 @@ Module boxed.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.path "alloc::string::String" ],
               "from",
+              [],
               []
             |),
             [
@@ -8635,8 +9026,10 @@ Module boxed.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| err |) ]
@@ -8671,7 +9064,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8689,7 +9082,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "cause", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8707,7 +9100,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8729,7 +9122,7 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::error::Error", T, [], "provide", [] |),
+                  M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
                   [ M.read (| M.read (| self |) |); M.read (| request |) ]
                 |)
               |) in

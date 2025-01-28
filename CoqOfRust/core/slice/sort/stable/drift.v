@@ -125,6 +125,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| v |) ]
@@ -246,6 +247,7 @@ Module slice.
                                   [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                               ],
                             "uninit",
+                            [],
                             []
                           |),
                           []
@@ -265,6 +267,7 @@ Module slice.
                                   [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                               ],
                             "cast",
+                            [],
                             [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                           |),
                           [
@@ -280,6 +283,7 @@ Module slice.
                                       [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [ run_storage ]
@@ -301,6 +305,7 @@ Module slice.
                                   [ Ty.path "u8" ]
                               ],
                             "uninit",
+                            [],
                             []
                           |),
                           []
@@ -320,6 +325,7 @@ Module slice.
                                   [ Ty.path "u8" ]
                               ],
                             "cast",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [
@@ -335,6 +341,7 @@ Module slice.
                                       [ Ty.path "u8" ]
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [ desired_depth_storage ]
@@ -349,6 +356,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                             "new_sorted",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 0 ]
@@ -399,6 +407,7 @@ Module slice.
                                                       M.get_trait_method (|
                                                         "core::ops::index::IndexMut",
                                                         Ty.apply (Ty.path "slice") [] [ T ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeFrom")
@@ -406,6 +415,7 @@ Module slice.
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -439,6 +449,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| prev_run |) ]
@@ -452,6 +463,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| next_run |) ]
@@ -472,6 +484,7 @@ Module slice.
                                                     Ty.path
                                                       "core::slice::sort::stable::drift::DriftsortRun",
                                                     "new_sorted",
+                                                    [],
                                                     []
                                                   |),
                                                   [ Value.Integer IntegerKind.Usize 0 ]
@@ -512,6 +525,7 @@ Module slice.
                                                                       []
                                                                       [ Ty.path "u8" ],
                                                                     "add",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -546,6 +560,7 @@ Module slice.
                                                                 "core::slice::sort::stable::drift::DriftsortRun"
                                                             ],
                                                           "add",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -565,6 +580,7 @@ Module slice.
                                                             Ty.path
                                                               "core::slice::sort::stable::drift::DriftsortRun",
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| left |) ]
@@ -574,6 +590,7 @@ Module slice.
                                                             Ty.path
                                                               "core::slice::sort::stable::drift::DriftsortRun",
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| prev_run |) ]
@@ -593,6 +610,7 @@ Module slice.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "get_unchecked_mut",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
@@ -670,6 +688,7 @@ Module slice.
                                                   "core::slice::sort::stable::drift::DriftsortRun"
                                               ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| runs |); M.read (| stack_len |) ]
@@ -682,6 +701,7 @@ Module slice.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| desired_depths |); M.read (| stack_len |) ]
@@ -734,6 +754,7 @@ Module slice.
                                             Ty.path
                                               "core::slice::sort::stable::drift::DriftsortRun",
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| next_run |) ]
@@ -758,6 +779,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                         "sorted",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| prev_run |) ]
@@ -837,6 +859,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -910,7 +933,7 @@ Module slice.
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                      M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                       [
                         BinOp.bit_xor
                           (BinOp.Wrap.mul (| M.read (| scale_factor |), M.read (| x |) |))
@@ -951,7 +974,7 @@ Module slice.
                 let~ ilog :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
+                      M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
                       [ BinOp.bit_or (M.read (| n |)) (Value.Integer IntegerKind.Usize 1) ]
                     |)
                   |) in
@@ -1023,6 +1046,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -1039,6 +1063,7 @@ Module slice.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| scratch |) ]
@@ -1061,6 +1086,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                         "sorted",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| left |) ]
@@ -1071,6 +1097,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                       "sorted",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| right |) ]
@@ -1094,6 +1121,7 @@ Module slice.
                                               Ty.path
                                                 "core::slice::sort::stable::drift::DriftsortRun",
                                               "sorted",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| left |) ]
@@ -1118,6 +1146,7 @@ Module slice.
                                             M.get_trait_method (|
                                               "core::ops::index::IndexMut",
                                               Ty.apply (Ty.path "slice") [] [ T ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -1125,6 +1154,7 @@ Module slice.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1138,6 +1168,7 @@ Module slice.
                                                         Ty.path
                                                           "core::slice::sort::stable::drift::DriftsortRun",
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| left |) ]
@@ -1169,6 +1200,7 @@ Module slice.
                                               Ty.path
                                                 "core::slice::sort::stable::drift::DriftsortRun",
                                               "sorted",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| right |) ]
@@ -1193,6 +1225,7 @@ Module slice.
                                             M.get_trait_method (|
                                               "core::ops::index::IndexMut",
                                               Ty.apply (Ty.path "slice") [] [ T ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeFrom")
@@ -1200,6 +1233,7 @@ Module slice.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1213,6 +1247,7 @@ Module slice.
                                                         Ty.path
                                                           "core::slice::sort::stable::drift::DriftsortRun",
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| left |) ]
@@ -1244,6 +1279,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| left |) ]
@@ -1257,6 +1293,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                               "new_sorted",
+                              [],
                               []
                             |),
                             [ M.read (| len |) ]
@@ -1269,6 +1306,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                               "new_unsorted",
+                              [],
                               []
                             |),
                             [ M.read (| len |) ]
@@ -1338,6 +1376,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| v |) ]
@@ -1427,6 +1466,7 @@ Module slice.
                                                                         []
                                                                         [ T ],
                                                                       "reverse",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1437,6 +1477,7 @@ Module slice.
                                                                             (Ty.path "slice")
                                                                             []
                                                                             [ T ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1445,6 +1486,7 @@ Module slice.
                                                                               [ Ty.path "usize" ]
                                                                           ],
                                                                           "index_mut",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1474,6 +1516,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "new_sorted",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| run_len |) ]
@@ -1508,7 +1551,9 @@ Module slice.
                                         "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
                                         T,
                                         [],
+                                        [],
                                         "small_sort_threshold",
+                                        [],
                                         []
                                       |),
                                       []
@@ -1530,6 +1575,7 @@ Module slice.
                                       M.get_trait_method (|
                                         "core::ops::index::IndexMut",
                                         Ty.apply (Ty.path "slice") [] [ T ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
@@ -1537,6 +1583,7 @@ Module slice.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1558,6 +1605,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                   "new_sorted",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| eager_run_len |) ]
@@ -1570,6 +1618,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                   "new_unsorted",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1615,13 +1664,14 @@ Module slice.
                     BinOp.Wrap.mul (|
                       Value.Integer IntegerKind.U32 2,
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
+                        M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
                         [
                           BinOp.bit_or
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| v |) ]

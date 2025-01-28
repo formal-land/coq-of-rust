@@ -22,8 +22,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ U ],
                 "equal",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
@@ -47,8 +49,10 @@ Module slice.
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ U ],
                 "not_equal",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
@@ -94,7 +98,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::slice::cmp::SliceOrd", T, [], "compare", [] |),
+              M.get_trait_method (| "core::slice::cmp::SliceOrd", T, [], [], "compare", [], [] |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -129,7 +133,9 @@ Module slice.
                 "core::slice::cmp::SlicePartialOrd",
                 T,
                 [],
+                [],
                 "partial_compare",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
@@ -164,8 +170,10 @@ Module slice.
                 M.get_trait_method (|
                   "core::slice::cmp::SlicePartialEq",
                   Self,
+                  [],
                   [ B ],
                   "equal",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -225,6 +233,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -233,6 +242,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ B ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -256,7 +266,9 @@ Module slice.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -269,6 +281,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -294,7 +307,9 @@ Module slice.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -332,8 +347,10 @@ Module slice.
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               A,
+                                                              [],
                                                               [ B ],
                                                               "ne",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -426,6 +443,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -434,6 +452,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ B ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -469,6 +488,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ A ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -478,6 +498,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ B ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| other |) ]
@@ -551,6 +572,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| left |) ]
@@ -559,6 +581,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| right |) ]
@@ -572,8 +595,10 @@ Module slice.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ A ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -590,8 +615,10 @@ Module slice.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ A ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -611,7 +638,9 @@ Module slice.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -641,7 +670,9 @@ Module slice.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -673,8 +704,10 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
+                                                    [],
                                                     [ A ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -727,8 +760,10 @@ Module slice.
                       M.get_trait_method (|
                         "core::cmp::PartialOrd",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "usize" ],
                         "partial_cmp",
+                        [],
                         []
                       |),
                       [
@@ -737,6 +772,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| left |) ]
@@ -747,6 +783,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| right |) ]
@@ -793,7 +830,15 @@ Module slice.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::slice::cmp::SliceOrd", A, [], "compare", [] |),
+                  M.get_trait_method (|
+                    "core::slice::cmp::SliceOrd",
+                    A,
+                    [],
+                    [],
+                    "compare",
+                    [],
+                    []
+                  |),
                   [ M.read (| left |); M.read (| right |) ]
                 |)
               ]))
@@ -1070,6 +1115,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| left |) ]
@@ -1078,6 +1124,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| right |) ]
@@ -1091,8 +1138,10 @@ Module slice.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ A ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -1109,8 +1158,10 @@ Module slice.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ A ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -1130,7 +1181,9 @@ Module slice.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -1160,7 +1213,9 @@ Module slice.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -1193,7 +1248,9 @@ Module slice.
                                                     "core::cmp::Ord",
                                                     A,
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1237,13 +1294,22 @@ Module slice.
                       |)) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "cmp",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| left |) ]
@@ -1254,6 +1320,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ A ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| right |) ]
@@ -1380,6 +1447,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| left |) ]
@@ -1389,6 +1457,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| right |) ]
@@ -1410,6 +1479,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left |) ]
@@ -1418,6 +1488,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| right |) ]
@@ -1431,6 +1502,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ A ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| left |) ]
@@ -1443,6 +1515,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ A ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| right |) ]
@@ -1457,6 +1530,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ A ],
                       "cast",
+                      [],
                       [ Ty.path "u8" ]
                     |),
                     [
@@ -1464,6 +1538,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| left |) ]
@@ -1477,6 +1552,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ A ],
                       "cast",
+                      [],
                       [ Ty.path "u8" ]
                     |),
                     [
@@ -1484,6 +1560,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ A ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| right |) ]
@@ -1519,7 +1596,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ order; M.alloc (| Value.Integer IntegerKind.Isize 0 |) ]
                 |)
               |)
@@ -1564,13 +1641,20 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "any",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool") ]
               |),
               [
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter",
+                      [],
+                      []
+                    |),
                     [ M.read (| x |) ]
                   |)
                 |);
@@ -1590,8 +1674,10 @@ Module slice.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       T,
+                                      [],
                                       [ T ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| y |); M.read (| self |) ]
@@ -1632,6 +1718,7 @@ Module slice.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "is_some",
+                [],
                 []
               |),
               [
@@ -1686,6 +1773,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| x |) ]
@@ -1694,6 +1782,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| x |) ]
@@ -1706,6 +1795,7 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     "is_some",
+                    [],
                     []
                   |),
                   [

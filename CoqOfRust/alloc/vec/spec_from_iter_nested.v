@@ -56,7 +56,9 @@ Module vec.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [ iterator ]
@@ -77,6 +79,7 @@ Module vec.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -101,7 +104,9 @@ Module vec.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "size_hint",
+                                      [],
                                       []
                                     |),
                                     [ iterator ]
@@ -131,6 +136,7 @@ Module vec.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "saturating_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -150,6 +156,7 @@ Module vec.
                                                 []
                                                 [ T; Ty.path "alloc::alloc::Global" ],
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| initial_capacity |) ]
@@ -168,6 +175,7 @@ Module vec.
                                                       []
                                                       [ T; Ty.path "alloc::alloc::Global" ],
                                                     "as_mut_ptr",
+                                                    [],
                                                     []
                                                   |),
                                                   [ vector ]
@@ -185,6 +193,7 @@ Module vec.
                                                   []
                                                   [ T; Ty.path "alloc::alloc::Global" ],
                                                 "set_len",
+                                                [],
                                                 []
                                               |),
                                               [ vector; Value.Integer IntegerKind.Usize 1 ]
@@ -206,8 +215,10 @@ Module vec.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ T; I ],
                           "spec_extend",
+                          [],
                           []
                         |),
                         [ vector; M.read (| iterator |) ]
@@ -263,7 +274,9 @@ Module vec.
                           "core::iter::traits::iterator::Iterator",
                           I,
                           [],
+                          [],
                           "size_hint",
+                          [],
                           []
                         |),
                         [ iterator ]
@@ -289,6 +302,7 @@ Module vec.
                                   []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 "with_capacity",
+                                [],
                                 []
                               |),
                               [ M.read (| upper |) ]
@@ -305,6 +319,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -327,8 +342,10 @@ Module vec.
                     M.get_trait_method (|
                       "alloc::vec::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ T; I ],
                       "spec_extend",
+                      [],
                       []
                     |),
                     [ vector; M.read (| iterator |) ]

@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
           "custom_environment::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -137,7 +145,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -148,7 +158,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -159,7 +171,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -170,7 +184,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -181,7 +197,9 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -272,7 +290,7 @@ Module Impl_custom_environment_Topics.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "custom_environment::Topics", "init_env", [] |),
+          M.get_associated_function (| Ty.path "custom_environment::Topics", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -294,7 +312,9 @@ Module Impl_custom_environment_Topics.
             "core::default::Default",
             Ty.path "custom_environment::Topics",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -319,13 +339,19 @@ Module Impl_custom_environment_Topics.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "custom_environment::Env", "emit_event", [] |),
+                M.get_associated_function (|
+                  Ty.path "custom_environment::Env",
+                  "emit_event",
+                  [],
+                  []
+                |),
                 [
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "custom_environment::Topics",
                         "env",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -339,7 +365,9 @@ Module Impl_custom_environment_Topics.
                           "core::default::Default",
                           Ty.path "custom_environment::EventWithTopics",
                           [],
+                          [],
                           "default",
+                          [],
                           []
                         |),
                         []

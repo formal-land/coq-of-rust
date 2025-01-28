@@ -48,6 +48,7 @@ Module io.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -55,6 +56,7 @@ Module io.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -62,6 +64,7 @@ Module io.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -69,6 +72,7 @@ Module io.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -77,6 +81,7 @@ Module io.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |); M.read (| Value.String "BorrowedBuf" |) ]
@@ -104,6 +109,7 @@ Module io.
                         M.get_associated_function (|
                           Ty.path "core::io::borrowed_buf::BorrowedBuf",
                           "capacity",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -151,6 +157,7 @@ Module io.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -183,6 +190,7 @@ Module io.
                                 ]
                             ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -193,6 +201,7 @@ Module io.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_uninit_slice_mut",
+                              [],
                               []
                             |),
                             [ M.read (| M.use (M.alloc (| M.read (| slice |) |)) |) ]
@@ -280,6 +289,7 @@ Module io.
                   []
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ],
                 "len",
+                [],
                 []
               |),
               [
@@ -370,6 +380,7 @@ Module io.
                             [ Ty.path "u8" ]
                         ],
                       "get_unchecked",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                     |),
                     [
@@ -400,6 +411,7 @@ Module io.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "slice_assume_init_ref",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -440,6 +452,7 @@ Module io.
                             [ Ty.path "u8" ]
                         ],
                       "get_unchecked_mut",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                     |),
                     [
@@ -470,6 +483,7 @@ Module io.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -629,6 +643,7 @@ Module io.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -741,6 +756,7 @@ Module io.
                 M.get_associated_function (|
                   Ty.path "core::io::borrowed_buf::BorrowedBuf",
                   "capacity",
+                  [],
                   []
                 |),
                 [
@@ -838,6 +854,7 @@ Module io.
                             [ Ty.path "u8" ]
                         ],
                       "get_unchecked",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
@@ -894,6 +911,7 @@ Module io.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "slice_assume_init_ref",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -934,6 +952,7 @@ Module io.
                             [ Ty.path "u8" ]
                         ],
                       "get_unchecked_mut",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
@@ -990,6 +1009,7 @@ Module io.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -1019,6 +1039,7 @@ Module io.
                   []
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ],
                 "get_unchecked_mut",
+                [],
                 [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
               |),
               [
@@ -1078,6 +1099,7 @@ Module io.
                   []
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ],
                 "get_unchecked_mut",
+                [],
                 [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
               |),
               [
@@ -1138,7 +1160,7 @@ Module io.
               let~ filled :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "strict_add", [] |),
+                    M.get_associated_function (| Ty.path "usize", "strict_add", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1330,6 +1352,7 @@ Module io.
                     M.get_associated_function (|
                       Ty.path "core::io::borrowed_buf::BorrowedCursor",
                       "uninit_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1362,6 +1385,7 @@ Module io.
                                   [ Ty.path "u8" ]
                               ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| uninit |) ]
@@ -1379,6 +1403,7 @@ Module io.
                                   [ Ty.path "u8" ]
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| uninit |) ]
@@ -1404,6 +1429,7 @@ Module io.
                     M.get_associated_function (|
                       Ty.path "core::io::borrowed_buf::BorrowedBuf",
                       "capacity",
+                      [],
                       []
                     |),
                     [
@@ -1530,6 +1556,7 @@ Module io.
                                     M.get_associated_function (|
                                       Ty.path "core::io::borrowed_buf::BorrowedCursor",
                                       "capacity",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -1538,6 +1565,7 @@ Module io.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf |) ]
@@ -1572,6 +1600,7 @@ Module io.
                           []
                           [ Ty.path "u8" ],
                         "copy_from_slice",
+                        [],
                         []
                       |),
                       [
@@ -1587,9 +1616,11 @@ Module io.
                                   []
                                   [ Ty.path "u8" ]
                               ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index_mut",
+                            [],
                             []
                           |),
                           [
@@ -1597,6 +1628,7 @@ Module io.
                               M.get_associated_function (|
                                 Ty.path "core::io::borrowed_buf::BorrowedCursor",
                                 "as_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1609,6 +1641,7 @@ Module io.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf |) ]
@@ -1628,6 +1661,7 @@ Module io.
                       M.get_associated_function (|
                         Ty.path "core::io::borrowed_buf::BorrowedCursor",
                         "set_init",
+                        [],
                         []
                       |),
                       [
@@ -1636,6 +1670,7 @@ Module io.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| buf |) ]
@@ -1665,6 +1700,7 @@ Module io.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| buf |) ]

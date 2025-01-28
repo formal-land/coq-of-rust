@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field1_finish",
+            [],
             []
           |),
           [
@@ -93,7 +94,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::default::Default",
                 Ty.path "scoping_rules_lifetimes_traits::Borrowed",
                 [],
+                [],
                 "default",
+                [],
                 []
               |),
               []
@@ -106,7 +109,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -120,6 +128,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
                               |),
                               [ b ]

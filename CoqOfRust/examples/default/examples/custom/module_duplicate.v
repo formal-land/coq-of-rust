@@ -23,6 +23,7 @@ Module foo.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [ M.alloc (| Value.Array [ M.read (| Value.String "foo::gre::bar
@@ -61,6 +62,7 @@ Module foo.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [ M.alloc (| Value.Array [ M.read (| Value.String "foo::bar

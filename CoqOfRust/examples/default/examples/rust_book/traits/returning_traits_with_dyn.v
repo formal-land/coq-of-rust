@@ -105,6 +105,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         [ Ty.path "returning_traits_with_dyn::Sheep"; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
@@ -121,6 +122,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
@@ -165,7 +167,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -184,6 +191,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               |),
                               [
@@ -193,7 +201,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "returning_traits_with_dyn::Animal",
                                       Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ],
                                       [],
+                                      [],
                                       "noise",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| animal |) ]

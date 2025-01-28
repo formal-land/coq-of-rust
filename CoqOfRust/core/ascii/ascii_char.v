@@ -804,7 +804,7 @@ Module ascii.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |)
@@ -858,8 +858,10 @@ Module ascii.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "u8",
+                    [],
                     [ Ty.path "u8" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ __self_discr; __arg1_discr ]
@@ -901,7 +903,15 @@ Module ascii.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u8",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -955,6 +965,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "from_u8_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -1032,6 +1043,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "digit_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| d |) ]
@@ -1094,6 +1106,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.digit_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| d |) ]
@@ -1106,7 +1119,7 @@ Module ascii.
               let~ byte :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
+                    M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
                     [ M.read (| UnsupportedLiteral |); M.read (| d |) ]
                   |)
                 |) in
@@ -1115,6 +1128,7 @@ Module ascii.
                   M.get_associated_function (|
                     Ty.path "core::ascii::ascii_char::AsciiChar",
                     "from_u8_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| byte |) ]
@@ -1173,6 +1187,7 @@ Module ascii.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                 "as_str",
+                [],
                 []
               |),
               [
@@ -1381,12 +1396,13 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+              M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                     "as_str",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1414,12 +1430,13 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ascii::ascii_char::AsciiChar",
                     "as_str",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1488,7 +1505,7 @@ Module ascii.
                           M.is_struct_tuple (| γ, "core::ascii::ascii_char::AsciiChar::Null" |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
                           |)
                         |)));
@@ -1502,7 +1519,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
                           |)
                         |)));
@@ -1516,7 +1533,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
                           |)
                         |)));
@@ -1530,7 +1547,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
                           |)
                         |)));
@@ -1544,7 +1561,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [
                               Value.StructTuple
                                 "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
@@ -1562,7 +1579,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" []
                             ]
                           |)
@@ -1572,13 +1589,19 @@ Module ascii.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u8", "is_ascii_control", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u8",
+                                "is_ascii_control",
+                                [],
+                                []
+                              |),
                               [
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::ascii::ascii_char::AsciiChar",
                                       "to_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| M.read (| self |) |) ]
@@ -1595,6 +1618,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "to_u8",
+                                [],
                                 []
                               |),
                               [ M.read (| M.read (| self |) |) ]
@@ -1609,8 +1633,10 @@ Module ascii.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1632,8 +1658,10 @@ Module ascii.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1701,6 +1729,7 @@ Module ascii.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [
@@ -1712,6 +1741,7 @@ Module ascii.
                                   []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "as_str",
+                                [],
                                 []
                               |),
                               [
@@ -1722,6 +1752,7 @@ Module ascii.
                                       (Ty.path "array")
                                       [ Value.Integer IntegerKind.Usize 6 ]
                                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -1729,6 +1760,7 @@ Module ascii.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [

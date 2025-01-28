@@ -32,8 +32,10 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
               "eq",
+              [],
               []
             |),
             [
@@ -52,8 +54,10 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -142,8 +146,10 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
+            [],
             [ A; B ],
             "last",
+            [],
             []
           |),
           [ M.read (| container |) ]
@@ -152,8 +158,10 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
+            [],
             [ A; B ],
             "first",
+            [],
             []
           |),
           [ M.read (| container |) ]
@@ -203,7 +211,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -222,6 +235,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                               |),
                               [ M.alloc (| number_1 |) ]
@@ -230,6 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                               |),
                               [ M.alloc (| number_2 |) ]
@@ -238,6 +253,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -246,8 +262,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "generics_associated_types_problem::Contains",
                                       Ty.path "generics_associated_types_problem::Container",
+                                      [],
                                       [ Ty.path "i32"; Ty.path "i32" ],
                                       "contains",
+                                      [],
                                       []
                                     |),
                                     [ container; number_1; number_2 ]
@@ -270,7 +288,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -287,6 +310,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -295,8 +319,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "generics_associated_types_problem::Contains",
                                       Ty.path "generics_associated_types_problem::Container",
+                                      [],
                                       [ Ty.path "i32"; Ty.path "i32" ],
                                       "first",
+                                      [],
                                       []
                                     |),
                                     [ container ]
@@ -319,7 +345,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -334,6 +365,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -342,8 +374,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "generics_associated_types_problem::Contains",
                                       Ty.path "generics_associated_types_problem::Container",
+                                      [],
                                       [ Ty.path "i32"; Ty.path "i32" ],
                                       "last",
+                                      [],
                                       []
                                     |),
                                     [ container ]
@@ -366,7 +400,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -383,6 +422,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [

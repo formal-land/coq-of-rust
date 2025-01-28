@@ -51,6 +51,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -86,6 +87,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| v |) ]
@@ -102,6 +104,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ T ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -119,6 +122,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ T ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -154,6 +158,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ T ],
                               "sub_ptr",
+                              [],
                               []
                             |),
                             [
@@ -181,6 +186,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ T ],
                               "sub_ptr",
+                              [],
                               []
                             |),
                             [
@@ -284,6 +290,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -298,6 +305,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -328,6 +336,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -342,6 +351,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -372,6 +382,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -386,6 +397,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -451,11 +463,13 @@ Module slice.
                       M.get_trait_method (|
                         "core::ops::function::FnMut",
                         F,
+                        [],
                         [
                           Ty.tuple
                             [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                         ],
                         "call_mut",
+                        [],
                         []
                       |),
                       [ M.read (| is_less |); Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
@@ -467,11 +481,13 @@ Module slice.
                       M.get_trait_method (|
                         "core::ops::function::FnMut",
                         F,
+                        [],
                         [
                           Ty.tuple
                             [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                         ],
                         "call_mut",
+                        [],
                         []
                       |),
                       [ M.read (| is_less |); Value.Tuple [ M.read (| a |); M.read (| c |) ] ]
@@ -492,6 +508,7 @@ Module slice.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 F,
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -500,6 +517,7 @@ Module slice.
                                     ]
                                 ],
                                 "call_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| is_less |); Value.Tuple [ M.read (| b |); M.read (| c |) ]

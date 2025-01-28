@@ -35,7 +35,7 @@ Module clone.
                     [
                       M.read (| dst |);
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                        M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                         [ M.read (| src |) ]
                       |)
                     ]
@@ -84,7 +84,12 @@ Module clone.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
                     [ M.read (| src |) ]
                   |)
                 |) in
@@ -111,6 +116,7 @@ Module clone.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| dst |) ]
@@ -172,6 +178,7 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -209,6 +216,7 @@ Module clone.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::clone::uninit::InitializingSlice") [] [ T ],
                       "from_fully_uninit",
+                      [],
                       []
                     |),
                     [ M.read (| uninit_ref |) ]
@@ -223,7 +231,9 @@ Module clone.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| src |) ]
@@ -243,7 +253,9 @@ Module clone.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -275,6 +287,7 @@ Module clone.
                                                   []
                                                   [ T ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -284,7 +297,9 @@ Module clone.
                                                     "core::clone::Clone",
                                                     T,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| element_ref |) ]
@@ -388,7 +403,12 @@ Module clone.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
                     [ M.read (| src |) ]
                   |)
                 |) in
@@ -415,6 +435,7 @@ Module clone.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| dst |) ]
@@ -476,6 +497,7 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -515,6 +537,7 @@ Module clone.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| src |) ]
@@ -523,6 +546,7 @@ Module clone.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| dst |) ]
@@ -621,6 +645,7 @@ Module clone.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "write",
+                      [],
                       []
                     |),
                     [
@@ -698,6 +723,7 @@ Module clone.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "slice_as_mut_ptr",
+                          [],
                           []
                         |),
                         [

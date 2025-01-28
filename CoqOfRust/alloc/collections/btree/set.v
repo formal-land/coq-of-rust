@@ -43,7 +43,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ H ]
                 |),
                 [
@@ -90,6 +92,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -97,6 +100,7 @@ Module collections.
                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -165,6 +169,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -172,6 +177,7 @@ Module collections.
                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
                   ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [
@@ -223,7 +229,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "cmp",
+                  [],
                   []
                 |),
                 [
@@ -278,7 +286,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -321,7 +331,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "clone_from",
+                        [],
                         []
                       |),
                       [
@@ -391,6 +403,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -398,6 +411,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -406,6 +420,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Iter" |) ]
@@ -420,7 +435,9 @@ Module collections.
                               []
                               [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [
@@ -479,6 +496,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -537,6 +555,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -678,6 +697,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -685,6 +705,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -692,6 +713,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -700,6 +722,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |); M.read (| Value.String "Stitch" |) ]
@@ -738,6 +761,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -745,6 +769,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -752,6 +777,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -760,6 +786,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |); M.read (| Value.String "Search" |) ]
@@ -791,6 +818,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -798,6 +826,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -806,6 +835,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_tuple",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); M.read (| Value.String "Iterate" |) ]
@@ -852,6 +882,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -859,6 +890,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -867,6 +899,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Difference" |) ]
@@ -927,6 +960,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -934,6 +968,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -942,6 +977,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "SymmetricDifference" |) ]
@@ -1077,6 +1113,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -1084,6 +1121,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1091,6 +1129,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1099,6 +1138,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |); M.read (| Value.String "Stitch" |) ]
@@ -1137,6 +1177,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -1144,6 +1185,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1151,6 +1193,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1159,6 +1202,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |); M.read (| Value.String "Search" |) ]
@@ -1190,6 +1234,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "finish",
+                              [],
                               []
                             |),
                             [
@@ -1197,6 +1242,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1205,6 +1251,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_tuple",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); M.read (| Value.String "Answer" |) ]
@@ -1251,6 +1298,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -1258,6 +1306,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -1266,6 +1315,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Intersection" |) ]
@@ -1326,6 +1376,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -1333,6 +1384,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -1341,6 +1393,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Union" |) ]
@@ -1402,6 +1455,7 @@ Module collections.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -1441,6 +1495,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "new_in",
+                        [],
                         []
                       |),
                       [ M.read (| alloc |) ]
@@ -1481,6 +1536,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "range",
+                        [],
                         [ K; R ]
                       |),
                       [
@@ -1573,6 +1629,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -1584,6 +1641,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -1630,6 +1688,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |) ]
@@ -1667,6 +1726,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -1679,6 +1739,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -1726,6 +1787,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "iter",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
@@ -1760,7 +1822,9 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1773,7 +1837,9 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1826,34 +1892,34 @@ Module collections.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "alloc::collections::btree::set::DifferenceInner::Iterate"
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::set::BTreeSet")
-                                                                              []
-                                                                              [ T; A ],
-                                                                            "iter",
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::set::BTreeSet")
                                                                             []
-                                                                          |),
-                                                                          [ M.read (| self |) ]
-                                                                        |)
-                                                                      ]
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                                            [ T; A ],
+                                                                          "iter",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| self |) ]
+                                                                      |)
+                                                                    ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -1876,6 +1942,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -1892,7 +1959,9 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
                                                             [ self_iter ]
@@ -1924,6 +1993,7 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
@@ -1940,7 +2010,9 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next_back",
+                                                              [],
                                                               []
                                                             |),
                                                             [ self_iter ]
@@ -1964,6 +2036,7 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
@@ -1977,6 +2050,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
@@ -2007,6 +2081,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -2029,6 +2104,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -2043,7 +2119,9 @@ Module collections.
                                                                     []
                                                                     [ T ],
                                                                   [],
+                                                                  [],
                                                                   "peekable",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2055,6 +2133,7 @@ Module collections.
                                                                         []
                                                                         [ T; A ],
                                                                       "iter",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| other |) ]
@@ -2114,6 +2193,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -2121,6 +2201,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2129,6 +2210,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| other |) ]
@@ -2208,6 +2290,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -2219,6 +2302,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -2289,6 +2373,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -2301,6 +2386,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -2373,7 +2459,9 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2386,7 +2474,9 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2439,25 +2529,24 @@ Module collections.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "alloc::collections::btree::set::IntersectionInner::Answer"
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
-                                                                      ]
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                                    [
+                                                                      Value.StructTuple
+                                                                        "core::option::Option::None"
+                                                                        []
+                                                                    ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -2512,6 +2601,7 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
@@ -2525,6 +2615,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
@@ -2555,6 +2646,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -2575,6 +2667,7 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| other |) ]
@@ -2588,6 +2681,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -2618,6 +2712,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
@@ -2640,6 +2735,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
@@ -2653,6 +2749,7 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
@@ -2702,6 +2799,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -2709,6 +2807,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2717,6 +2816,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| other |) ]
@@ -2752,6 +2852,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "clear",
+                  [],
                   []
                 |),
                 [
@@ -2797,6 +2898,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "contains_key",
+                  [],
                   [ Q ]
                 |),
                 [
@@ -2838,8 +2940,10 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ Q ],
                   "get",
+                  [],
                   []
                 |),
                 [
@@ -2882,6 +2986,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "is_none",
+                  [],
                   []
                 |),
                 [
@@ -2894,7 +2999,9 @@ Module collections.
                           []
                           [ T; A ],
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
@@ -2906,6 +3013,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "intersection",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| other |) ]
@@ -3014,6 +3122,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -3025,6 +3134,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| other |) ]
@@ -3059,6 +3169,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -3070,6 +3181,7 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -3127,6 +3239,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -3139,6 +3252,7 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other |) ]
@@ -3190,6 +3304,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -3203,7 +3318,9 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self_min |); M.read (| other_min |) ]
@@ -3240,7 +3357,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ self_iter ]
@@ -3265,7 +3384,9 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self_max |); M.read (| other_max |) ]
@@ -3302,7 +3423,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next_back",
+                                                      [],
                                                       []
                                                     |),
                                                     [ self_iter ]
@@ -3338,7 +3461,9 @@ Module collections.
                                                             []
                                                             [ T ],
                                                           [],
+                                                          [],
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ self_iter ]
@@ -3352,6 +3477,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| other |) ]
@@ -3381,7 +3507,9 @@ Module collections.
                                                           []
                                                           [ T ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self_iter |) ]
@@ -3405,7 +3533,9 @@ Module collections.
                                                                         []
                                                                         [ T ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ iter ]
@@ -3454,6 +3584,7 @@ Module collections.
                                                                                             [ T; A
                                                                                             ],
                                                                                           "contains",
+                                                                                          [],
                                                                                           [ T ]
                                                                                         |),
                                                                                         [
@@ -3507,6 +3638,7 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| other |) ]
@@ -3523,7 +3655,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ other_iter ]
@@ -3540,7 +3674,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next_back",
+                                                      [],
                                                       []
                                                     |),
                                                     [ other_iter ]
@@ -3557,7 +3693,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ self_iter ]
@@ -3592,6 +3730,7 @@ Module collections.
                                                                         [ T ]
                                                                     ],
                                                                   "map_or",
+                                                                  [],
                                                                   [
                                                                     Ty.path "core::cmp::Ordering";
                                                                     Ty.function
@@ -3618,7 +3757,9 @@ Module collections.
                                                                         []
                                                                         [ T ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ other_iter ]
@@ -3646,7 +3787,9 @@ Module collections.
                                                                                         "core::cmp::Ord",
                                                                                         T,
                                                                                         [],
+                                                                                        [],
                                                                                         "cmp",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -3702,7 +3845,9 @@ Module collections.
                                                                           []
                                                                           [ T ],
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ self_iter ]
@@ -3776,6 +3921,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "is_subset",
+                  [],
                   []
                 |),
                 [ M.read (| other |); M.read (| self |) ]
@@ -3817,6 +3963,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -3844,6 +3991,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "first_key_value",
+                      [],
                       []
                     |),
                     [
@@ -3912,6 +4060,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -3939,6 +4088,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "last_key_value",
+                      [],
                       []
                     |),
                     [
@@ -4003,6 +4153,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -4022,6 +4173,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "pop_first",
+                      [],
                       []
                     |),
                     [
@@ -4084,6 +4236,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -4103,6 +4256,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "pop_last",
+                      [],
                       []
                     |),
                     [
@@ -4161,6 +4315,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "is_none",
+                  [],
                   []
                 |),
                 [
@@ -4172,6 +4327,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "insert",
+                        [],
                         []
                       |),
                       [
@@ -4186,7 +4342,9 @@ Module collections.
                             "core::default::Default",
                             Ty.path "alloc::collections::btree::set_val::SetValZST",
                             [],
+                            [],
                             "default",
+                            [],
                             []
                           |),
                           []
@@ -4225,8 +4383,10 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ T ],
                   "replace",
+                  [],
                   []
                 |),
                 [
@@ -4268,6 +4428,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "is_some",
+                  [],
                   []
                 |),
                 [
@@ -4279,6 +4440,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "remove",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4323,8 +4485,10 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ Q ],
                   "take",
+                  [],
                   []
                 |),
                 [
@@ -4376,7 +4540,9 @@ Module collections.
                             A
                           ],
                         [],
+                        [],
                         "for_each",
+                        [],
                         [ Ty.function [ T ] (Ty.tuple []) ]
                       |),
                       [
@@ -4387,6 +4553,7 @@ Module collections.
                               []
                               [ T; A ],
                             "extract_if",
+                            [],
                             [
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
@@ -4412,9 +4579,11 @@ Module collections.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                     ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [ f; Value.Tuple [ M.read (| v |) ] ]
@@ -4465,6 +4634,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "append",
+                        [],
                         []
                       |),
                       [
@@ -4522,6 +4692,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "split_off",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4573,6 +4744,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "extract_if_inner",
+                        [],
                         []
                       |),
                       [
@@ -4632,6 +4804,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "keys",
+                        [],
                         []
                       |),
                       [
@@ -4668,6 +4841,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -4706,6 +4880,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4751,6 +4926,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "lower_bound",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4802,6 +4978,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "lower_bound_mut",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4853,6 +5030,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "upper_bound",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4904,6 +5082,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "upper_bound_mut",
+                        [],
                         [ Q ]
                       |),
                       [
@@ -4949,7 +5128,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                           Ty.function
@@ -4981,7 +5162,9 @@ Module collections.
                                                   Ty.path
                                                     "alloc::collections::btree::set_val::SetValZST",
                                                   [],
+                                                  [],
                                                   "default",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -5003,6 +5186,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "bulk_build_from_sorted_iter",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::map::Map")
@@ -5069,7 +5253,9 @@ Module collections.
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "collect",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -5083,7 +5269,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 I,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |) ]
@@ -5107,6 +5295,7 @@ Module collections.
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         "is_empty",
+                                        [],
                                         []
                                       |),
                                       [ inputs ]
@@ -5128,6 +5317,7 @@ Module collections.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -5145,6 +5335,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "sort",
+                            [],
                             []
                           |),
                           [
@@ -5156,7 +5347,9 @@ Module collections.
                                   []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 [],
+                                [],
                                 "deref_mut",
+                                [],
                                 []
                               |),
                               [ inputs ]
@@ -5172,6 +5365,7 @@ Module collections.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "from_sorted_iter",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -5188,7 +5382,9 @@ Module collections.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| inputs |) ]
@@ -5279,6 +5475,7 @@ Module collections.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -5296,6 +5493,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "sort",
+                            [],
                             []
                           |),
                           [ arr ]
@@ -5308,7 +5506,9 @@ Module collections.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
@@ -5324,7 +5524,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "array") [ N ] [ T ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| arr |) ]
@@ -5350,7 +5552,9 @@ Module collections.
                                                       Ty.path
                                                         "alloc::collections::btree::set_val::SetValZST",
                                                       [],
+                                                      [],
                                                       "default",
+                                                      [],
                                                       []
                                                     |),
                                                     []
@@ -5376,6 +5580,7 @@ Module collections.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "bulk_build_from_sorted_iter",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
@@ -5451,7 +5656,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5516,6 +5723,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "iter",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -5574,6 +5782,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -5581,6 +5790,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -5589,6 +5799,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
@@ -5611,6 +5822,7 @@ Module collections.
                                   ]
                               ],
                             "map",
+                            [],
                             [
                               Ty.apply (Ty.path "&") [] [ T ];
                               Ty.function
@@ -5641,6 +5853,7 @@ Module collections.
                                   []
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                                 "peek",
+                                [],
                                 []
                               |),
                               [
@@ -5743,8 +5956,10 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| pred |); Value.Tuple [ M.read (| k |) ]
@@ -5765,6 +5980,7 @@ Module collections.
                         []
                         [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                       "map",
+                      [],
                       [
                         T;
                         Ty.function
@@ -5786,6 +6002,7 @@ Module collections.
                             []
                             [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                           "next",
+                          [],
                           [
                             Ty.function
                               [
@@ -5810,7 +6027,15 @@ Module collections.
                           |);
                           mapped_pred;
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -5870,6 +6095,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -5936,7 +6162,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.associated,
                         [],
+                        [],
                         "for_each",
+                        [],
                         [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
                       |),
                       [
@@ -5945,7 +6173,9 @@ Module collections.
                             "core::iter::traits::collect::IntoIterator",
                             Iter,
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -5973,6 +6203,7 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "insert",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |); M.read (| elem |) ]
@@ -6016,6 +6247,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                         "insert",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| elem |) ]
@@ -6062,8 +6294,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
+                        [],
                         [ T ],
                         "extend",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6078,7 +6312,9 @@ Module collections.
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "cloned",
+                            [],
                             [ T ]
                           |),
                           [
@@ -6087,7 +6323,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 I,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |) ]
@@ -6136,6 +6374,7 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| elem |) ]
@@ -6185,6 +6424,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -6231,6 +6471,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6245,7 +6486,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Difference") [] [ T; A ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6253,6 +6496,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "difference",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| rhs |) ]
@@ -6263,6 +6507,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6271,7 +6516,9 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -6340,6 +6587,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6361,7 +6609,9 @@ Module collections.
                         []
                         [ T ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6369,6 +6619,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "symmetric_difference",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| rhs |) ]
@@ -6379,6 +6630,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6387,7 +6639,9 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -6459,6 +6713,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6477,7 +6732,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Intersection") [] [ T; A ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6485,6 +6742,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "intersection",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| rhs |) ]
@@ -6495,6 +6753,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6503,7 +6762,9 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -6575,6 +6836,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6588,7 +6850,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Union") [] [ T ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6596,6 +6860,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "union",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| rhs |) ]
@@ -6606,6 +6871,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6614,7 +6880,9 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -6676,6 +6944,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugSet",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -6683,6 +6952,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugSet",
                       "entries",
+                      [],
                       [
                         Ty.apply (Ty.path "&") [] [ T ];
                         Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ]
@@ -6694,6 +6964,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_set",
+                            [],
                             []
                           |),
                           [ M.read (| f |) ]
@@ -6703,6 +6974,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -6750,7 +7022,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -6800,7 +7074,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
@@ -6833,7 +7109,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -6863,7 +7141,9 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ self ]
@@ -6890,7 +7170,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -6917,7 +7199,9 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ self ]
@@ -6965,7 +7249,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
@@ -7011,7 +7297,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -7072,6 +7360,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -7092,7 +7381,9 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -7151,7 +7442,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -7205,7 +7498,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7250,6 +7545,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -7270,7 +7566,9 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
@@ -7337,7 +7635,9 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -7399,7 +7699,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7444,7 +7746,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -7502,6 +7806,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -7530,7 +7835,9 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -7581,7 +7888,9 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ self ]
@@ -7608,7 +7917,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -7635,7 +7946,9 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ self ]
@@ -7690,6 +8003,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -7718,7 +8032,9 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
@@ -7801,7 +8117,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7889,7 +8207,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self_iter |) ]
@@ -7908,7 +8228,9 @@ Module collections.
                                                 [ T ]
                                             ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| other_iter |) ]
@@ -7945,7 +8267,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self_iter |) ]
@@ -7975,7 +8299,9 @@ Module collections.
                                           []
                                           [ T ],
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| iter |) ]
@@ -8080,7 +8406,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8092,7 +8420,9 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self_iter |) ]
@@ -8121,6 +8451,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -8128,6 +8459,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -8168,6 +8500,7 @@ Module collections.
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                 ],
                                               "map_or",
+                                              [],
                                               [
                                                 Ty.path "core::cmp::Ordering";
                                                 Ty.function
@@ -8198,6 +8531,7 @@ Module collections.
                                                         [ T ]
                                                     ],
                                                   "peek",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| other_iter |) ]
@@ -8220,7 +8554,9 @@ Module collections.
                                                                     "core::cmp::Ord",
                                                                     T,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -8277,7 +8613,9 @@ Module collections.
                                                               []
                                                               [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -8290,7 +8628,9 @@ Module collections.
                                                                   []
                                                                   [ T ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| self_iter |) ]
@@ -8325,6 +8665,7 @@ Module collections.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -8336,6 +8677,7 @@ Module collections.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -8375,7 +8717,9 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| other_iter |) ]
@@ -8406,7 +8750,9 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| other_iter |) ]
@@ -8453,7 +8799,9 @@ Module collections.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8466,7 +8814,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| self_iter |) ]
@@ -8495,6 +8845,7 @@ Module collections.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -8505,6 +8856,7 @@ Module collections.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -8543,6 +8895,7 @@ Module collections.
                                                             []
                                                             [ T; A ],
                                                           "contains",
+                                                          [],
                                                           [ T ]
                                                         |),
                                                         [
@@ -8594,7 +8947,9 @@ Module collections.
                                     []
                                     [ T ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| iter |) ]
@@ -8669,7 +9024,9 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self_iter |) ]
@@ -8687,7 +9044,9 @@ Module collections.
                                           [ T ]
                                       ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| other_iter |) ]
@@ -8722,7 +9081,9 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self_iter |) ]
@@ -8734,6 +9095,7 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| M.read (| other_set |) |) ]
@@ -8761,7 +9123,9 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| iter |) ]
@@ -8785,6 +9149,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self_len |); M.read (| other_len |) ]
@@ -8816,7 +9181,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Difference") [] [ T; A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -8878,7 +9245,9 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -8946,6 +9315,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "nexts",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -8971,7 +9341,9 @@ Module collections.
                                     "core::cmp::Ord",
                                     Ty.apply (Ty.path "&") [] [ T ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |)
                                 ]
@@ -8999,6 +9371,7 @@ Module collections.
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                     "is_none",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9010,6 +9383,7 @@ Module collections.
                                                             []
                                                             [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                           "and",
+                                                          [],
                                                           [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                         |),
                                                         [ M.read (| a_next |); M.read (| b_next |) ]
@@ -9034,6 +9408,7 @@ Module collections.
                                                         []
                                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                       "or",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| a_next |); M.read (| b_next |) ]
@@ -9079,6 +9454,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "lens",
+                        [],
                         []
                       |),
                       [
@@ -9128,7 +9504,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::SymmetricDifference") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -9233,7 +9611,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| a |) ]
@@ -9247,7 +9627,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| b |) ]
@@ -9284,7 +9666,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| small_iter |) ]
@@ -9401,7 +9785,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9413,7 +9799,9 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| a |) ]
@@ -9442,6 +9830,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -9449,6 +9838,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -9482,7 +9872,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9494,7 +9886,9 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| b |) ]
@@ -9523,6 +9917,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -9530,6 +9925,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -9563,7 +9959,9 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| a_next |); M.read (| b_next |) ]
@@ -9590,7 +9988,9 @@ Module collections.
                                                             []
                                                             [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9603,7 +10003,9 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| a |) ]
@@ -9638,6 +10040,7 @@ Module collections.
                                                                             []
                                                                             [ T ]
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -9649,6 +10052,7 @@ Module collections.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -9691,7 +10095,9 @@ Module collections.
                                                             []
                                                             [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9704,7 +10110,9 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| b |) ]
@@ -9739,6 +10147,7 @@ Module collections.
                                                                             []
                                                                             [ T ]
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -9750,6 +10159,7 @@ Module collections.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -9830,7 +10240,9 @@ Module collections.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9843,7 +10255,9 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| small_iter |) ]
@@ -9872,6 +10286,7 @@ Module collections.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -9882,6 +10297,7 @@ Module collections.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -9919,6 +10335,7 @@ Module collections.
                                                           []
                                                           [ T; A ],
                                                         "contains",
+                                                        [],
                                                         [ T ]
                                                       |),
                                                       [
@@ -9968,6 +10385,7 @@ Module collections.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "take",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| answer |) ]
@@ -10046,7 +10464,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| a |) ]
@@ -10059,7 +10479,9 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| b |) ]
@@ -10094,7 +10516,9 @@ Module collections.
                                         []
                                         [ T ],
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| small_iter |) ]
@@ -10167,7 +10591,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Intersection") [] [ T; A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -10229,7 +10655,9 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -10282,6 +10710,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "nexts",
+                        [],
                         [
                           Ty.function
                             [
@@ -10301,7 +10730,9 @@ Module collections.
                           "core::cmp::Ord",
                           Ty.apply (Ty.path "&") [] [ T ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |)
                       ]
@@ -10322,6 +10753,7 @@ Module collections.
                                 []
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                               "or",
+                              [],
                               []
                             |),
                             [ M.read (| a_next |); M.read (| b_next |) ]
@@ -10356,6 +10788,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "lens",
+                        [],
                         []
                       |),
                       [
@@ -10408,7 +10841,9 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Union") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [ self ]
@@ -10482,7 +10917,9 @@ Module collections.
                           []
                           [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -10523,7 +10960,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -10570,7 +11007,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -10617,7 +11054,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [ M.read (| f |); M.read (| Value.String "CursorMutKey" |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -10663,6 +11100,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10690,6 +11128,7 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -10755,6 +11194,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10782,6 +11222,7 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "prev",
+                      [],
                       []
                     |),
                     [
@@ -10847,6 +11288,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10874,6 +11316,7 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
@@ -10939,6 +11382,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10966,6 +11410,7 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
@@ -11036,6 +11481,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11063,6 +11509,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -11128,6 +11575,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11155,6 +11603,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "prev",
+                      [],
                       []
                     |),
                     [
@@ -11225,6 +11674,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11252,6 +11702,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
@@ -11322,6 +11773,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11349,6 +11801,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
@@ -11414,6 +11867,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "as_cursor",
+                        [],
                         []
                       |),
                       [
@@ -11459,6 +11913,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "with_mutable_key",
+                        [],
                         []
                       |),
                       [
@@ -11502,6 +11957,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -11545,6 +12001,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -11588,6 +12045,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after",
+                  [],
                   []
                 |),
                 [
@@ -11631,6 +12089,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before",
+                  [],
                   []
                 |),
                 [
@@ -11673,6 +12132,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -11692,6 +12152,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_next",
+                      [],
                       []
                     |),
                     [
@@ -11753,6 +12214,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -11772,6 +12234,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_prev",
+                      [],
                       []
                     |),
                     [
@@ -11842,6 +12305,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -11869,6 +12333,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -11934,6 +12399,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -11961,6 +12427,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "prev",
+                      [],
                       []
                     |),
                     [
@@ -12031,6 +12498,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -12058,6 +12526,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
@@ -12128,6 +12597,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -12155,6 +12625,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
@@ -12220,6 +12691,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "as_cursor",
+                        [],
                         []
                       |),
                       [
@@ -12261,6 +12733,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -12304,6 +12777,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -12347,6 +12821,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after",
+                  [],
                   []
                 |),
                 [
@@ -12390,6 +12865,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before",
+                  [],
                   []
                 |),
                 [
@@ -12432,6 +12908,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -12451,6 +12928,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_next",
+                      [],
                       []
                     |),
                     [
@@ -12512,6 +12990,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -12531,6 +13010,7 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_prev",
+                      [],
                       []
                     |),
                     [

@@ -35,14 +35,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ path :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
+              M.get_associated_function (|
+                Ty.path "std::path::Path",
+                "new",
+                [],
+                [ Ty.path "str" ]
+              |),
               [ M.read (| Value.String "." |) ]
             |)
           |) in
         let~ _display :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
+              M.get_associated_function (| Ty.path "std::path::Path", "display", [], [] |),
               [ M.read (| path |) ]
             |)
           |) in
@@ -52,6 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::Path",
                 "join",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [
@@ -60,7 +66,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::ops::deref::Deref",
                     Ty.path "std::path::PathBuf",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -69,6 +77,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "std::path::Path",
                           "join",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| path |); M.read (| Value.String "a" |) ]
@@ -86,6 +95,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "c" |) ]
@@ -97,6 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
@@ -108,6 +119,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "set_file_name",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "package.tgz" |) ]
@@ -116,14 +128,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::path::Path", "to_str", [] |),
+              M.get_associated_function (| Ty.path "std::path::Path", "to_str", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.path "std::path::PathBuf",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ new_path ]
@@ -161,6 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -179,6 +194,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
                                     [ s ]

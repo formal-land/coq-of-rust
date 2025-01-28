@@ -70,6 +70,7 @@ Module Impl_enums_testcase_linked_list_List.
                   []
                   [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -129,6 +130,7 @@ Module Impl_enums_testcase_linked_list_List.
                         M.get_associated_function (|
                           Ty.path "enums_testcase_linked_list::List",
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| M.read (| tail |) |) ]
@@ -204,6 +206,7 @@ Module Impl_enums_testcase_linked_list_List.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
@@ -221,6 +224,7 @@ Module Impl_enums_testcase_linked_list_List.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "u32" ]
                                               |),
                                               [ head ]
@@ -229,6 +233,7 @@ Module Impl_enums_testcase_linked_list_List.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -237,6 +242,7 @@ Module Impl_enums_testcase_linked_list_List.
                                                     M.get_associated_function (|
                                                       Ty.path "enums_testcase_linked_list::List",
                                                       "stringify",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| M.read (| tail |) |) ]
@@ -277,6 +283,7 @@ Module Impl_enums_testcase_linked_list_List.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [ M.alloc (| Value.Array [ M.read (| Value.String "Nil" |) ] |)
@@ -322,7 +329,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ list :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "enums_testcase_linked_list::List", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "enums_testcase_linked_list::List",
+                "new",
+                [],
+                []
+              |),
               []
             |)
           |) in
@@ -333,6 +345,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
                 "prepend",
+                [],
                 []
               |),
               [ M.read (| list |); Value.Integer IntegerKind.U32 1 ]
@@ -345,6 +358,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
                 "prepend",
+                [],
                 []
               |),
               [ M.read (| list |); Value.Integer IntegerKind.U32 2 ]
@@ -357,6 +371,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "enums_testcase_linked_list::List",
                 "prepend",
+                [],
                 []
               |),
               [ M.read (| list |); Value.Integer IntegerKind.U32 3 ]
@@ -369,7 +384,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -386,6 +406,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [
@@ -394,6 +415,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "enums_testcase_linked_list::List",
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ list ]
@@ -416,7 +438,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -429,6 +456,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "alloc::string::String" ]
                               |),
                               [
@@ -437,6 +465,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "enums_testcase_linked_list::List",
                                       "stringify",
+                                      [],
                                       []
                                     |),
                                     [ list ]

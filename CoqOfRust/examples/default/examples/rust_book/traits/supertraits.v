@@ -39,7 +39,12 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                   M.get_function (| "alloc::fmt::format", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -57,6 +62,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -66,7 +72,9 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                         "supertraits::Person",
                                         Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ],
                                         [],
+                                        [],
                                         "name",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| student |) ]
@@ -78,6 +86,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -87,7 +96,9 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                         "supertraits::Student",
                                         Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ],
                                         [],
+                                        [],
                                         "university",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| student |) ]
@@ -99,6 +110,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -108,7 +120,9 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                         "supertraits::Programmer",
                                         Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ],
                                         [],
+                                        [],
                                         "fav_language",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| student |) ]
@@ -120,6 +134,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -129,7 +144,9 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                         "supertraits::CompSciStudent",
                                         Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ],
                                         [],
+                                        [],
                                         "git_username",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| student |) ]

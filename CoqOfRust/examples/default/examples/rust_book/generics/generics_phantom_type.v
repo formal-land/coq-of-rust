@@ -36,7 +36,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -55,8 +55,10 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [],
                 [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -121,7 +123,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -140,8 +142,10 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [],
                 [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
+                [],
                 []
               |),
               [

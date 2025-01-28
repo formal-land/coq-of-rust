@@ -35,7 +35,15 @@ Module interface.
             [
               ("gas_used",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -50,7 +58,9 @@ Module interface.
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -87,6 +97,7 @@ Module interface.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -162,8 +173,10 @@ Module interface.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloy_primitives::bytes_::Bytes",
+                  [],
                   [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -243,7 +256,15 @@ Module interface.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -260,7 +281,9 @@ Module interface.
                   "core::hash::Hash",
                   Ty.path "alloy_primitives::bytes_::Bytes",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -373,7 +396,9 @@ Module interface.
                               "core::clone::Clone",
                               Ty.path "revm_precompile::interface::PrecompileError",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -400,7 +425,9 @@ Module interface.
                                 "core::clone::Clone",
                                 Ty.path "alloc::string::String",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -450,6 +477,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Error" |); __self_0 ]
@@ -470,6 +498,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -574,6 +603,7 @@ Module interface.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -581,6 +611,7 @@ Module interface.
                                       [ Ty.path "revm_precompile::interface::PrecompileError" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -611,8 +642,10 @@ Module interface.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -708,7 +741,15 @@ Module interface.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -731,7 +772,9 @@ Module interface.
                           "core::hash::Hash",
                           Ty.path "revm_precompile::interface::PrecompileError",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -753,7 +796,9 @@ Module interface.
                           "core::hash::Hash",
                           Ty.path "alloc::string::String",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -796,7 +841,9 @@ Module interface.
                   "alloc::string::ToString",
                   Ty.path "revm_precompile::interface::PrecompileErrors",
                   [],
+                  [],
                   "to_string",
+                  [],
                   []
                 |),
                 [ value ]
@@ -863,7 +910,9 @@ Module interface.
                           "core::fmt::Display",
                           Ty.path "revm_precompile::interface::PrecompileError",
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
                         [ M.read (| e |); M.read (| f |) ]
@@ -884,6 +933,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [
@@ -893,7 +943,9 @@ Module interface.
                               "core::ops::deref::Deref",
                               Ty.path "alloc::string::String",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| msg |) ]
@@ -1177,7 +1229,9 @@ Module interface.
                               "core::clone::Clone",
                               Ty.path "alloc::string::String",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1225,6 +1279,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "OutOfGas" |) ]
@@ -1243,6 +1298,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Blake2WrongLength" |) ]
@@ -1261,6 +1317,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Blake2WrongFinalIndicatorFlag" |)
@@ -1280,6 +1337,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ModexpExpOverflow" |) ]
@@ -1298,6 +1356,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ModexpBaseOverflow" |) ]
@@ -1316,6 +1375,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ModexpModOverflow" |) ]
@@ -1334,6 +1394,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bn128FieldPointNotAMember" |) ]
@@ -1352,6 +1413,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bn128AffineGFailedToCreate" |) ]
@@ -1370,6 +1432,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bn128PairLength" |) ]
@@ -1388,6 +1451,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BlobInvalidInputLength" |) ]
@@ -1406,6 +1470,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BlobMismatchedVersion" |) ]
@@ -1424,6 +1489,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BlobVerifyKzgProofFailed" |) ]
@@ -1444,6 +1510,7 @@ Module interface.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Other" |); __self_0 ]
@@ -1540,8 +1607,10 @@ Module interface.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1621,7 +1690,15 @@ Module interface.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -1644,7 +1721,9 @@ Module interface.
                           "core::hash::Hash",
                           Ty.path "alloc::string::String",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -1685,8 +1764,10 @@ Module interface.
                 M.get_trait_method (|
                   "core::convert::Into",
                   impl_Into_String_,
+                  [],
                   [ Ty.path "alloc::string::String" ],
                   "into",
+                  [],
                   []
                 |),
                 [ M.read (| err |) ]
@@ -1936,7 +2017,9 @@ Module interface.
                               "core::ops::deref::Deref",
                               Ty.path "alloc::string::String",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| s |) ]
@@ -1947,7 +2030,7 @@ Module interface.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [ M.read (| f |); M.read (| s |) ]
               |)
             |)

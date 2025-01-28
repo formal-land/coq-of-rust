@@ -43,7 +43,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -62,7 +62,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "i8", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -81,7 +81,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u8", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -101,7 +101,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u8", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -121,7 +121,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "u8", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -140,7 +140,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "u8", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -179,7 +179,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "u8", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -200,7 +200,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "u8", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -220,7 +220,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -240,7 +240,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "u8", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -266,7 +266,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i8", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -315,7 +315,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i8", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -362,7 +362,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -420,7 +420,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -503,6 +503,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -541,7 +542,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -600,7 +601,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -655,7 +656,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -713,7 +714,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -796,6 +797,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -834,7 +836,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -893,7 +895,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -948,7 +950,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1006,7 +1008,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1089,6 +1091,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -1199,7 +1202,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1290,7 +1293,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i8", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -1320,7 +1323,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1447,7 +1450,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1538,7 +1541,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i8", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -1568,7 +1571,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1622,7 +1625,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -1707,6 +1710,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1744,7 +1748,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -1819,7 +1823,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "i8", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -1850,7 +1854,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -1932,6 +1936,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -1992,7 +1997,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -2043,7 +2048,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "i8", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -2074,7 +2079,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2156,6 +2161,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -2220,7 +2226,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -2228,7 +2234,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -2271,14 +2277,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "i8", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -2319,14 +2325,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "i8", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -2434,6 +2440,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "i8",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -2523,6 +2530,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "i8",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -2654,6 +2662,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i8",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -2698,7 +2707,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i8", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "i8", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -2855,7 +2864,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2924,7 +2933,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2996,14 +3005,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "i8", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -3039,7 +3048,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3106,7 +3115,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3155,7 +3164,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -3232,7 +3241,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3273,7 +3282,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3317,7 +3326,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3344,7 +3353,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3372,7 +3381,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3399,7 +3408,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3423,7 +3432,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i8", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3447,7 +3456,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "i8", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -3479,7 +3488,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "i8", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -3519,14 +3528,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "i8", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -3551,7 +3560,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "i8", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3699,6 +3708,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "i8",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -3724,6 +3734,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "i8",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -3748,7 +3759,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "i8", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -3787,6 +3798,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "i8",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -3840,6 +3852,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "i8",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -3916,7 +3929,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -3930,7 +3943,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -3973,7 +3986,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -4059,7 +4072,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -4073,7 +4086,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -4117,7 +4130,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -4283,7 +4296,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i8", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -4400,7 +4413,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i8", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -4481,7 +4494,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "i8", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -4506,7 +4519,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "i8", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -4530,7 +4543,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -4641,6 +4654,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i8",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -4711,7 +4725,12 @@ Module num.
                             M.write (|
                               r,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i8", "overflowing_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "i8",
+                                  "overflowing_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -5032,7 +5051,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "i8", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -5199,11 +5218,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i8", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "i8", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -5520,7 +5539,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "i8", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -5607,7 +5626,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "i8", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -5650,17 +5669,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "u8", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -5712,6 +5731,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5741,7 +5761,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "i8", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -5798,7 +5818,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "i8", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -5855,7 +5875,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i8", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "i8", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -5927,7 +5947,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "u8", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -6078,7 +6098,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -6132,7 +6152,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -6140,7 +6160,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -6244,10 +6264,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "to_be", [] |),
+                M.get_associated_function (| Ty.path "i8", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -6268,10 +6288,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "to_le", [] |),
+                M.get_associated_function (| Ty.path "i8", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -6320,10 +6340,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "from_be", [] |),
+            M.get_associated_function (| Ty.path "i8", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -6345,10 +6365,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "from_le", [] |),
+            M.get_associated_function (| Ty.path "i8", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -6562,7 +6582,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -6601,7 +6621,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -6633,34 +6653,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -6776,6 +6795,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -6893,6 +6913,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7015,6 +7036,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i8",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -7033,6 +7055,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -7146,6 +7169,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i8",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7245,6 +7269,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i8",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -7263,6 +7288,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -7376,6 +7402,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i8",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7508,7 +7535,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7527,7 +7554,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "i16", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7546,7 +7573,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7566,7 +7593,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u16", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7586,7 +7613,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "u16", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7605,7 +7632,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "u16", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7644,7 +7671,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "u16", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7665,7 +7692,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "u16", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7685,7 +7712,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7705,7 +7732,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "u16", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7731,7 +7758,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i16", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7780,7 +7807,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i16", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7827,7 +7854,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -7885,7 +7912,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -7968,6 +7995,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -8006,7 +8034,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8065,7 +8093,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8120,7 +8148,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8178,7 +8206,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8261,6 +8289,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -8299,7 +8328,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8358,7 +8387,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8413,7 +8442,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8471,7 +8500,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8554,6 +8583,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -8664,7 +8694,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8755,7 +8785,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i16", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -8785,7 +8815,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -8912,7 +8942,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -9003,7 +9033,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i16", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -9033,7 +9063,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -9087,7 +9117,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -9172,6 +9202,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -9209,7 +9240,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -9284,7 +9315,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "i16", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -9315,7 +9346,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -9397,6 +9428,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -9457,7 +9489,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -9508,7 +9540,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "i16", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -9539,7 +9571,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -9621,6 +9653,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -9685,7 +9718,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -9693,7 +9726,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -9736,14 +9769,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "i16", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -9784,14 +9817,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "i16", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -9899,6 +9932,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "i16",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -9988,6 +10022,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "i16",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -10119,6 +10154,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i16",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -10163,7 +10199,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i16", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "i16", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -10320,7 +10356,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10389,7 +10425,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10461,14 +10497,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "i16", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -10504,7 +10540,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10571,7 +10607,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10620,7 +10656,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -10697,7 +10733,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10738,7 +10774,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10782,7 +10818,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10809,7 +10845,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10837,7 +10873,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10864,7 +10900,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -10888,7 +10924,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i16", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -10913,7 +10949,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "i16", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -10945,7 +10981,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "i16", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -10985,14 +11021,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "i16", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -11017,7 +11053,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "i16", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -11165,6 +11201,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "i16",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -11190,6 +11227,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "i16",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -11214,7 +11252,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "i16", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -11253,6 +11291,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "i16",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -11306,6 +11345,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "i16",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -11382,7 +11422,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -11396,7 +11436,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -11439,7 +11479,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -11525,7 +11565,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -11539,7 +11579,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -11583,7 +11623,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -11755,7 +11795,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i16", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -11872,7 +11912,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i16", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -11953,7 +11993,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "i16", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -11978,7 +12018,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "i16", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -12002,7 +12042,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -12113,6 +12153,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i16",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -12186,6 +12227,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "i16",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -12508,7 +12550,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "i16", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -12675,11 +12717,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i16", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "i16", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -12999,7 +13041,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "i16", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -13089,7 +13131,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "i16", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -13132,17 +13174,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "u16", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -13194,6 +13236,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13223,7 +13266,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "i16", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -13280,7 +13323,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "i16", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -13337,7 +13380,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i16", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "i16", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -13409,7 +13452,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "u16", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -13560,7 +13603,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i16", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -13614,7 +13657,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -13622,7 +13665,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -13726,10 +13769,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "to_be", [] |),
+                M.get_associated_function (| Ty.path "i16", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -13750,10 +13793,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "to_le", [] |),
+                M.get_associated_function (| Ty.path "i16", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -13802,10 +13845,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "from_be", [] |),
+            M.get_associated_function (| Ty.path "i16", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -13827,10 +13870,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "from_le", [] |),
+            M.get_associated_function (| Ty.path "i16", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -14044,7 +14087,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -14083,7 +14126,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -14115,34 +14158,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -14258,6 +14300,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -14375,6 +14418,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -14497,6 +14541,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i16",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -14515,6 +14560,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -14628,6 +14674,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i16",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -14727,6 +14774,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i16",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -14745,6 +14793,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -14858,6 +14907,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i16",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -14990,7 +15040,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15009,7 +15059,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "i32", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15028,7 +15078,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15048,7 +15098,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u32", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15068,7 +15118,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "u32", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15087,7 +15137,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "u32", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15126,7 +15176,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "u32", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15147,7 +15197,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "u32", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15167,7 +15217,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15187,7 +15237,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "u32", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15213,7 +15263,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i32", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15262,7 +15312,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i32", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15309,7 +15359,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15367,7 +15417,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15450,6 +15500,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -15488,7 +15539,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15547,7 +15598,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15602,7 +15653,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15660,7 +15711,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15743,6 +15794,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -15781,7 +15833,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15840,7 +15892,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15895,7 +15947,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -15953,7 +16005,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16036,6 +16088,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -16146,7 +16199,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16237,7 +16290,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i32", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -16267,7 +16320,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16394,7 +16447,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16485,7 +16538,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i32", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -16515,7 +16568,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16569,7 +16622,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -16654,6 +16707,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -16691,7 +16745,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -16766,7 +16820,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "i32", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -16797,7 +16851,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -16879,6 +16933,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -16939,7 +16994,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -16990,7 +17045,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "i32", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -17021,7 +17076,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -17103,6 +17158,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -17167,7 +17223,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -17175,7 +17231,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -17218,14 +17274,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "i32", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -17266,14 +17322,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "i32", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -17381,6 +17437,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "i32",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -17470,6 +17527,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "i32",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -17601,6 +17659,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i32",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -17645,7 +17704,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i32", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "i32", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -17802,7 +17861,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -17871,7 +17930,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -17943,14 +18002,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "i32", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -17986,7 +18045,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18053,7 +18112,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18102,7 +18161,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -18179,7 +18238,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18220,7 +18279,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18264,7 +18323,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18291,7 +18350,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18319,7 +18378,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18346,7 +18405,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18370,7 +18429,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -18395,7 +18454,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "i32", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -18427,7 +18486,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "i32", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -18467,14 +18526,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "i32", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -18499,7 +18558,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "i32", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18647,6 +18706,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "i32",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -18672,6 +18732,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "i32",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -18696,7 +18757,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "i32", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -18735,6 +18796,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "i32",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -18788,6 +18850,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "i32",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -18864,7 +18927,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -18878,7 +18941,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -18921,7 +18984,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -19007,7 +19070,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -19021,7 +19084,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -19065,7 +19128,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -19237,7 +19300,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i32", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -19354,7 +19417,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i32", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -19435,7 +19498,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "i32", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -19460,7 +19523,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "i32", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -19484,7 +19547,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -19595,6 +19658,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i32",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -19668,6 +19732,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "i32",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -19990,7 +20055,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "i32", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -20157,11 +20222,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i32", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "i32", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -20481,7 +20546,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "i32", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -20571,7 +20636,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "i32", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -20614,17 +20679,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "u32", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -20676,6 +20741,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20705,7 +20771,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "i32", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -20762,7 +20828,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "i32", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -20819,7 +20885,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "i32", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -20891,7 +20957,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "u32", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -21042,7 +21108,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i32", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -21096,7 +21162,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -21104,7 +21170,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -21208,10 +21274,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "to_be", [] |),
+                M.get_associated_function (| Ty.path "i32", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -21232,10 +21298,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "to_le", [] |),
+                M.get_associated_function (| Ty.path "i32", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -21284,10 +21350,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "from_be", [] |),
+            M.get_associated_function (| Ty.path "i32", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -21309,10 +21375,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "from_le", [] |),
+            M.get_associated_function (| Ty.path "i32", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -21526,7 +21592,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -21565,7 +21631,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -21597,34 +21663,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -21740,6 +21805,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -21857,6 +21923,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -21979,6 +22046,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i32",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -21997,6 +22065,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -22110,6 +22179,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i32",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -22209,6 +22279,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i32",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -22227,6 +22298,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -22340,6 +22412,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i32",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -22472,7 +22545,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22491,7 +22564,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "i64", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22510,7 +22583,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22530,7 +22603,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u64", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22550,7 +22623,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "u64", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22569,7 +22642,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "u64", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22608,7 +22681,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22629,7 +22702,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22649,7 +22722,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22669,7 +22742,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "u64", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22695,7 +22768,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i64", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22744,7 +22817,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i64", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -22791,7 +22864,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -22849,7 +22922,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -22932,6 +23005,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -22970,7 +23044,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23029,7 +23103,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23084,7 +23158,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23142,7 +23216,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23225,6 +23299,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -23263,7 +23338,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23322,7 +23397,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23377,7 +23452,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23435,7 +23510,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23518,6 +23593,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -23628,7 +23704,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23719,7 +23795,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i64", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -23749,7 +23825,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23876,7 +23952,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -23967,7 +24043,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i64", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -23997,7 +24073,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -24051,7 +24127,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -24136,6 +24212,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -24173,7 +24250,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -24248,7 +24325,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "i64", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -24279,7 +24356,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -24361,6 +24438,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -24421,7 +24499,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -24472,7 +24550,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "i64", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -24503,7 +24581,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -24585,6 +24663,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -24649,7 +24728,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -24657,7 +24736,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -24700,14 +24779,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "i64", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -24748,14 +24827,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "i64", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -24863,6 +24942,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "i64",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -24952,6 +25032,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "i64",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -25083,6 +25164,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i64",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -25127,7 +25209,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i64", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "i64", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -25284,7 +25366,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25353,7 +25435,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25425,14 +25507,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "i64", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -25468,7 +25550,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25535,7 +25617,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25584,7 +25666,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -25661,7 +25743,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25702,7 +25784,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25746,7 +25828,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25773,7 +25855,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25801,7 +25883,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25828,7 +25910,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -25852,7 +25934,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i64", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -25877,7 +25959,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "i64", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -25909,7 +25991,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "i64", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -25949,14 +26031,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "i64", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -25981,7 +26063,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "i64", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -26129,6 +26211,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "i64",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -26154,6 +26237,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "i64",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -26178,7 +26262,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "i64", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -26217,6 +26301,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "i64",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -26270,6 +26355,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "i64",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -26346,7 +26432,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -26360,7 +26446,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -26403,7 +26489,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -26489,7 +26575,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -26503,7 +26589,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -26547,7 +26633,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -26719,7 +26805,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i64", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -26836,7 +26922,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i64", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -26917,7 +27003,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "i64", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -26942,7 +27028,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "i64", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -26966,7 +27052,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -27077,6 +27163,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i64",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -27150,6 +27237,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "i64",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -27472,7 +27560,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "i64", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -27639,11 +27727,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i64", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "i64", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -27963,7 +28051,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "i64", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -28053,7 +28141,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "i64", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -28096,17 +28184,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "u64", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -28158,6 +28246,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28187,7 +28276,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "i64", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -28244,7 +28333,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "i64", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -28301,7 +28390,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i64", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "i64", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -28373,7 +28462,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "u64", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -28524,7 +28613,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i64", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -28578,7 +28667,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -28586,7 +28675,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -28690,10 +28779,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "to_be", [] |),
+                M.get_associated_function (| Ty.path "i64", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -28714,10 +28803,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "to_le", [] |),
+                M.get_associated_function (| Ty.path "i64", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -28766,10 +28855,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "from_be", [] |),
+            M.get_associated_function (| Ty.path "i64", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -28791,10 +28880,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "from_le", [] |),
+            M.get_associated_function (| Ty.path "i64", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -29008,7 +29097,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -29047,7 +29136,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -29079,34 +29168,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -29222,6 +29310,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -29339,6 +29428,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -29461,6 +29551,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i64",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -29479,6 +29570,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -29592,6 +29684,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i64",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -29691,6 +29784,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i64",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -29709,6 +29803,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -29822,6 +29917,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i64",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -29954,7 +30050,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -29973,7 +30069,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "i128", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -29992,7 +30088,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30012,7 +30108,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u128", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30032,7 +30128,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "u128", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30051,7 +30147,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "u128", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30090,7 +30186,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "u128", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30111,7 +30207,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "u128", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30131,7 +30227,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30151,7 +30247,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "u128", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30177,7 +30273,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i128", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30226,7 +30322,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "i128", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -30273,7 +30369,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30331,7 +30427,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30414,6 +30510,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -30452,7 +30549,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "i128",
+                    "overflowing_add_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30511,7 +30613,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "i128",
+                    "overflowing_add_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30566,7 +30673,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30624,7 +30731,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30707,6 +30814,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -30745,7 +30853,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "i128",
+                    "overflowing_sub_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30804,7 +30917,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "i128",
+                    "overflowing_sub_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30859,7 +30977,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -30917,7 +31035,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31000,6 +31118,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -31110,7 +31229,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31201,7 +31320,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i128", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -31231,7 +31350,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31358,7 +31477,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31449,7 +31568,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i128", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -31479,7 +31598,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31533,7 +31652,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -31618,6 +31737,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -31655,7 +31775,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -31730,7 +31850,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "i128", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -31761,7 +31881,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -31843,6 +31963,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -31903,7 +32024,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -31954,7 +32075,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "i128", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -31985,7 +32106,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -32067,6 +32188,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -32131,7 +32253,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -32139,7 +32261,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -32182,14 +32304,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "i128", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -32230,14 +32352,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "i128", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -32345,6 +32467,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "i128",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -32434,6 +32557,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "i128",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -32565,6 +32689,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i128",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -32609,7 +32734,12 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "i128", "strict_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "i128",
+                                  "strict_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -32766,7 +32896,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -32835,7 +32965,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -32907,14 +33037,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "i128", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -32950,7 +33080,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33020,7 +33150,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33069,7 +33199,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -33146,7 +33276,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "i128", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33187,7 +33317,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i128", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33231,7 +33361,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33258,7 +33388,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33286,7 +33416,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33313,7 +33443,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33337,7 +33467,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "i128", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -33362,7 +33492,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "i128", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -33394,7 +33524,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "i128", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -33434,14 +33564,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "i128", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -33466,7 +33596,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33614,6 +33744,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "i128",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -33639,6 +33770,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "i128",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -33663,7 +33795,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "i128", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -33702,6 +33834,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "i128",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -33755,6 +33888,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "i128",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -33835,7 +33969,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33849,7 +33983,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -33892,7 +34026,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33982,7 +34116,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -33996,7 +34130,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -34040,7 +34174,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "i128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -34216,7 +34350,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i128", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -34333,7 +34467,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "i128", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -34414,7 +34548,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "i128", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -34439,7 +34573,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "i128", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -34463,7 +34597,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -34574,6 +34708,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "i128",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -34647,6 +34782,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "i128",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -34969,7 +35105,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "i128", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -35136,11 +35272,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "i128", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "i128", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -35460,7 +35596,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "i128", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -35550,7 +35686,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "i128", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -35593,17 +35729,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "u128", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -35655,6 +35791,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -35684,7 +35821,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "i128", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -35741,7 +35878,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "i128", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -35798,7 +35935,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "i128", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "i128", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -35870,7 +36007,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "u128", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -36021,7 +36158,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "i128", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -36075,7 +36212,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -36083,7 +36220,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -36187,10 +36324,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "to_be", [] |),
+                M.get_associated_function (| Ty.path "i128", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -36211,10 +36348,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "to_le", [] |),
+                M.get_associated_function (| Ty.path "i128", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -36263,10 +36400,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "from_be", [] |),
+            M.get_associated_function (| Ty.path "i128", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -36288,10 +36425,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "from_le", [] |),
+            M.get_associated_function (| Ty.path "i128", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -36505,7 +36642,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -36544,7 +36681,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -36576,34 +36713,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -36719,6 +36855,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -36836,6 +36973,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -36958,6 +37096,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i128",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -36976,6 +37115,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -37089,6 +37229,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i128",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -37188,6 +37329,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "i128",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -37206,6 +37348,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -37319,6 +37462,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "i128",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -37451,7 +37595,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37470,7 +37614,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "isize", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37489,7 +37633,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "usize", "leading_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37509,7 +37653,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "usize", "trailing_zeros", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37529,7 +37673,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "leading_ones", [] |),
+            M.get_associated_function (| Ty.path "usize", "leading_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37548,7 +37692,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "trailing_ones", [] |),
+            M.get_associated_function (| Ty.path "usize", "trailing_ones", [], [] |),
             [ M.rust_cast (M.read (| self |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37587,7 +37731,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
+              M.get_associated_function (| Ty.path "usize", "rotate_left", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37608,7 +37752,7 @@ Module num.
           let n := M.alloc (| n |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
+              M.get_associated_function (| Ty.path "usize", "rotate_right", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| n |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37628,7 +37772,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
+              M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37648,7 +37792,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
+              M.get_associated_function (| Ty.path "usize", "reverse_bits", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37674,7 +37818,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "isize", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37723,7 +37867,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "isize", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -37770,7 +37914,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -37828,7 +37972,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -37911,6 +38055,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -37949,7 +38094,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "isize",
+                    "overflowing_add_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38008,7 +38158,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "isize",
+                    "overflowing_add_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38063,7 +38218,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38121,7 +38276,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38204,6 +38359,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -38242,7 +38398,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "isize",
+                    "overflowing_sub_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38301,7 +38462,12 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub_unsigned", [] |),
+                  M.get_associated_function (|
+                    Ty.path "isize",
+                    "overflowing_sub_unsigned",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38356,7 +38522,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38414,7 +38580,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38497,6 +38663,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -38607,7 +38774,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38698,7 +38865,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "isize", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -38728,7 +38895,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38855,7 +39022,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -38946,7 +39113,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "isize", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -38976,7 +39143,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -39030,7 +39197,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -39115,6 +39282,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_neg",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -39152,7 +39320,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -39227,7 +39395,12 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "unchecked_shl", [] |),
+                            M.get_associated_function (|
+                              Ty.path "isize",
+                              "unchecked_shl",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -39258,7 +39431,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -39340,6 +39513,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -39400,7 +39574,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -39451,7 +39625,12 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+                            M.get_associated_function (|
+                              Ty.path "isize",
+                              "unchecked_shr",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -39482,7 +39661,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -39564,6 +39743,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -39628,7 +39808,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -39636,7 +39816,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [], [] |),
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
@@ -39679,14 +39859,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "checked_neg", [] |),
+                        M.get_associated_function (| Ty.path "isize", "checked_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -39727,14 +39907,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "strict_neg", [] |),
+                        M.get_associated_function (| Ty.path "isize", "strict_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -39842,6 +40022,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "isize",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -39931,6 +40112,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "isize",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -40062,6 +40244,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "isize",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -40106,7 +40289,12 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "isize", "strict_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "isize",
+                                  "strict_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -40262,7 +40450,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40331,7 +40519,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40403,14 +40591,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "saturating_neg", [] |),
+                        M.get_associated_function (| Ty.path "isize", "saturating_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -40446,7 +40634,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40516,7 +40704,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40565,7 +40753,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -40642,7 +40830,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40683,7 +40871,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40727,7 +40915,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_div", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40754,7 +40942,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_div_euclid", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_div_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40782,7 +40970,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_rem", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_rem", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40809,7 +40997,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_rem_euclid", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_rem_euclid", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -40833,7 +41021,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
             [
               M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |);
               M.read (| self |)
@@ -40860,7 +41048,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "isize", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -40892,7 +41080,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "isize", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -40932,14 +41120,14 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "wrapping_neg", [] |),
+                        M.get_associated_function (| Ty.path "isize", "wrapping_neg", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -40964,7 +41152,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "isize", "wrapping_abs", [] |),
+              M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
               [ M.read (| self |) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -41112,6 +41300,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "isize",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -41137,6 +41326,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "isize",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -41161,7 +41351,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "isize", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -41200,6 +41390,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "isize",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -41253,6 +41444,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "isize",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -41329,7 +41521,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -41343,7 +41535,12 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "overflowing_add", [] |),
+                          M.get_associated_function (|
+                            Ty.path "isize",
+                            "overflowing_add",
+                            [],
+                            []
+                          |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -41386,7 +41583,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -41472,7 +41669,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -41486,7 +41683,12 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "overflowing_sub", [] |),
+                          M.get_associated_function (|
+                            Ty.path "isize",
+                            "overflowing_sub",
+                            [],
+                            []
+                          |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -41530,7 +41732,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "isize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -41702,7 +41904,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "isize", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -41821,7 +42023,7 @@ Module num.
                       Value.Tuple
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "isize", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |);
                           Value.Bool false
@@ -41902,7 +42104,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "isize", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -41927,7 +42129,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "isize", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -41951,7 +42153,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "wrapping_abs", [] |),
+                M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
               BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
@@ -42063,6 +42265,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "isize",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -42136,6 +42339,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "isize",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -42458,7 +42662,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "checked_isqrt", [] |),
+                  M.get_associated_function (| Ty.path "isize", "checked_isqrt", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -42625,11 +42829,11 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "isize", "wrapping_add", [], [] |),
                         [
                           M.read (| r |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "wrapping_abs", [] |),
+                            M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
                             [ M.read (| rhs |) ]
                           |)
                         ]
@@ -42955,7 +43159,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "checked_rem", [] |),
+                          M.get_associated_function (| Ty.path "isize", "checked_rem", [], [] |),
                           [ M.read (| self |); M.read (| rhs |) ]
                         |)
                       |),
@@ -43045,7 +43249,7 @@ Module num.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "isize", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| m |) |)
@@ -43088,17 +43292,17 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Self, "demap.midpoint", [] |),
+            M.get_associated_function (| Self, "demap.midpoint", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "midpoint", [] |),
+                M.get_associated_function (| Ty.path "usize", "midpoint", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "map.midpoint", [] |),
+                    M.get_associated_function (| Self, "map.midpoint", [], [] |),
                     [ M.read (| rhs |) ]
                   |)
                 ]
@@ -43150,6 +43354,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -43179,7 +43384,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "isize", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -43236,7 +43441,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "isize", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -43293,7 +43498,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "isize", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "isize", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -43365,7 +43570,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_ilog", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_ilog", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| base |)) ]
                       |)
                     |)))
@@ -43516,7 +43721,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "isize", "is_negative", [] |),
+                            M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |)) in
@@ -43570,7 +43775,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| other |)); M.rust_cast (M.read (| self |)) ]
                       |)
                     |)));
@@ -43578,7 +43783,7 @@ Module num.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                        M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                       |)
                     |)))
@@ -43685,10 +43890,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "to_be", [] |),
+                M.get_associated_function (| Ty.path "isize", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -43709,10 +43914,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "to_le", [] |),
+                M.get_associated_function (| Ty.path "isize", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -43761,10 +43966,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "from_be", [] |),
+            M.get_associated_function (| Ty.path "isize", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -43786,10 +43991,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "from_le", [] |),
+            M.get_associated_function (| Ty.path "isize", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -43871,7 +44076,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "from_str_radix", [] |),
+                  M.get_associated_function (| Ty.path "i64", "from_str_radix", [], [] |),
                   [ M.read (| src |); M.read (| radix |) ]
                 |)
               |),
@@ -43927,7 +44132,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -43973,7 +44178,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44050,7 +44255,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u8", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44069,7 +44274,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u8", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44218,7 +44423,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44267,7 +44472,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44393,7 +44598,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -44476,6 +44681,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -44514,7 +44720,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -44573,7 +44779,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -44683,7 +44889,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -44766,6 +44972,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -44811,7 +45018,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -44859,7 +45066,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -44917,7 +45124,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -45000,6 +45207,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -45134,7 +45342,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u8", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -45278,7 +45486,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u8", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -45350,6 +45558,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -45379,7 +45588,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "u8", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -45436,7 +45645,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "u8", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -45493,7 +45702,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "u8", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -45633,6 +45842,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -45642,6 +45852,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u8",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -45654,7 +45865,12 @@ Module num.
                                         M.write (|
                                           r,
                                           M.call_closure (|
-                                            M.get_associated_function (| Ty.path "u8", "pow", [] |),
+                                            M.get_associated_function (|
+                                              Ty.path "u8",
+                                              "pow",
+                                              [],
+                                              []
+                                            |),
                                             [ M.read (| base |); M.read (| n |) ]
                                           |)
                                         |) in
@@ -45751,6 +45967,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -45774,6 +45991,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -45813,6 +46031,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -45836,6 +46055,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -45870,7 +46090,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -45927,7 +46147,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -46002,7 +46222,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "u8", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -46033,7 +46253,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -46115,6 +46335,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -46175,7 +46396,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "u8", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -46226,7 +46447,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "u8", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -46257,7 +46478,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -46339,6 +46560,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -46399,7 +46621,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "u8", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -46508,6 +46730,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u8",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -46597,6 +46820,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "u8",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -46728,6 +46952,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u8",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -46772,7 +46997,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "u8", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -46831,7 +47056,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -46926,7 +47151,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u8", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -46967,7 +47192,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "u8", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -46994,7 +47219,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "u8", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -47054,7 +47279,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -47184,7 +47409,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "u8", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -47208,7 +47433,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "u8", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -47240,7 +47465,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "u8", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -47396,6 +47621,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u8",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -47421,6 +47647,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u8",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -47445,7 +47672,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "u8", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -47484,6 +47711,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u8",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -47537,6 +47765,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u8",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -47613,7 +47842,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -47627,7 +47856,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -47674,7 +47903,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -47760,7 +47989,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u8", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -47774,7 +48003,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u8", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "u8", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -47848,10 +48077,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -48015,7 +48244,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.U8 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.U8 0 |)
@@ -48040,7 +48269,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "u8", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -48065,7 +48294,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "u8", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -48176,6 +48405,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u8",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -48246,7 +48476,12 @@ Module num.
                             M.write (|
                               r,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "overflowing_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "overflowing_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -48769,7 +49004,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u8", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "u8", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -48812,7 +49047,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u8", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "u8", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -48886,7 +49121,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -48980,7 +49215,12 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "one_less_than_next_power_of_two", [] |),
+              M.get_associated_function (|
+                Ty.path "u8",
+                "one_less_than_next_power_of_two",
+                [],
+                []
+              |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U8 1
@@ -49006,10 +49246,15 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "u8", "checked_add", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "one_less_than_next_power_of_two", [] |),
+                M.get_associated_function (|
+                  Ty.path "u8",
+                  "one_less_than_next_power_of_two",
+                  [],
+                  []
+                |),
                 [ M.read (| self |) ]
               |);
               Value.Integer IntegerKind.U8 1
@@ -49036,10 +49281,15 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "one_less_than_next_power_of_two", [] |),
+                M.get_associated_function (|
+                  Ty.path "u8",
+                  "one_less_than_next_power_of_two",
+                  [],
+                  []
+                |),
                 [ M.read (| self |) ]
               |);
               Value.Integer IntegerKind.U8 1
@@ -49062,10 +49312,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "to_be", [] |),
+                M.get_associated_function (| Ty.path "u8", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -49086,10 +49336,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "to_le", [] |),
+                M.get_associated_function (| Ty.path "u8", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -49138,10 +49388,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "from_be", [] |),
+            M.get_associated_function (| Ty.path "u8", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -49163,10 +49413,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "from_le", [] |),
+            M.get_associated_function (| Ty.path "u8", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -49242,7 +49492,7 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "unchecked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u16", "unchecked_mul", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |) in
@@ -49282,10 +49532,10 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u16", "unchecked_mul", [] |),
+                      M.get_associated_function (| Ty.path "u16", "unchecked_mul", [], [] |),
                       [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                     |);
                     M.rust_cast (M.read (| carry |))
@@ -49357,6 +49607,7 @@ Module num.
             M.get_associated_function (|
               Ty.path "core::ascii::ascii_char::AsciiChar",
               "from_u8",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -49382,7 +49633,7 @@ Module num.
             (BinOp.Wrap.mul (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "is_ascii_lowercase", [] |),
+                  M.get_associated_function (| Ty.path "u8", "is_ascii_lowercase", [], [] |),
                   [ M.read (| self |) ]
                 |)),
               M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
@@ -49409,7 +49660,7 @@ Module num.
             (BinOp.Wrap.mul (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "is_ascii_uppercase", [] |),
+                  M.get_associated_function (| Ty.path "u8", "is_ascii_uppercase", [], [] |),
                   [ M.read (| self |) ]
                 |)),
               M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
@@ -49456,11 +49707,11 @@ Module num.
           let other := M.alloc (| other |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |),
+              M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
               [ M.read (| self |) ]
             |),
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |),
+              M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
               [ M.read (| other |) ]
             |)
           |)))
@@ -49485,7 +49736,7 @@ Module num.
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [] |),
+                  M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -49512,7 +49763,7 @@ Module num.
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |),
+                  M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -49546,13 +49797,12 @@ Module num.
                         fun γ => ltac:(M.monadic (Value.Tuple []));
                         fun γ => ltac:(M.monadic (Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -49897,13 +50147,12 @@ Module num.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -49944,13 +50193,12 @@ Module num.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -50148,7 +50396,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -50187,7 +50435,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -50219,34 +50467,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -50362,6 +50609,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -50479,6 +50727,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -50601,6 +50850,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u8",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -50619,6 +50869,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -50732,6 +50983,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u8",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -50831,6 +51083,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u8",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -50849,6 +51102,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -50962,6 +51216,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u8",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -51077,7 +51332,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -51123,7 +51378,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51200,7 +51455,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51219,7 +51474,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u16", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51368,7 +51623,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51417,7 +51672,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51543,7 +51798,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -51626,6 +51881,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -51664,7 +51920,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -51723,7 +51979,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -51833,7 +52089,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -51916,6 +52172,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -51961,7 +52218,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -52009,7 +52266,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -52067,7 +52324,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -52150,6 +52407,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -52284,7 +52542,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u16", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -52428,7 +52686,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u16", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -52500,6 +52758,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -52529,7 +52788,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "u16", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -52586,7 +52845,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "u16", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -52643,7 +52902,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "u16", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -52783,6 +53042,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -52792,6 +53052,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u16",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -52807,6 +53068,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u16",
                                               "pow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| n |) ]
@@ -52905,6 +53167,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -52928,6 +53191,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -52967,6 +53231,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -52990,6 +53255,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -53024,7 +53290,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -53081,7 +53347,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -53156,7 +53422,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "u16", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -53187,7 +53453,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -53269,6 +53535,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -53329,7 +53596,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "u16", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -53380,7 +53647,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "u16", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -53411,7 +53678,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -53493,6 +53760,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -53553,7 +53821,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "u16", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -53662,6 +53930,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u16",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -53751,6 +54020,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "u16",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -53882,6 +54152,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u16",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -53926,7 +54197,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u16", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "u16", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -53985,7 +54256,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -54080,7 +54351,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u16", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -54121,7 +54392,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "u16", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54148,7 +54419,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "u16", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -54208,7 +54479,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54338,7 +54609,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "u16", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -54363,7 +54634,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "u16", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -54395,7 +54666,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "u16", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -54551,6 +54822,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u16",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -54576,6 +54848,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u16",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -54600,7 +54873,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "u16", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -54639,6 +54912,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u16",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -54692,6 +54966,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u16",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -54768,7 +55043,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -54782,7 +55057,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -54829,7 +55104,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -54915,7 +55190,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u16", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -54929,7 +55204,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "u16", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -55003,10 +55278,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -55170,7 +55445,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.U16 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.U16 0 |)
@@ -55195,7 +55470,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "u16", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -55220,7 +55495,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "u16", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -55331,6 +55606,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u16",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -55404,6 +55680,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "u16",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -55928,7 +56205,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "u16", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -55971,7 +56248,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "u16", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -56045,7 +56322,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -56139,7 +56416,12 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "one_less_than_next_power_of_two", [] |),
+              M.get_associated_function (|
+                Ty.path "u16",
+                "one_less_than_next_power_of_two",
+                [],
+                []
+              |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U16 1
@@ -56165,12 +56447,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "u16", "checked_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u16",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -56199,12 +56482,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u16",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -56229,10 +56513,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -56253,10 +56537,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "to_le", [] |),
+                M.get_associated_function (| Ty.path "u16", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -56305,10 +56589,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+            M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -56330,10 +56614,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "from_le", [] |),
+            M.get_associated_function (| Ty.path "u16", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -56409,7 +56693,7 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "unchecked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u32", "unchecked_mul", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |) in
@@ -56449,10 +56733,10 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u32", "unchecked_mul", [] |),
+                      M.get_associated_function (| Ty.path "u32", "unchecked_mul", [], [] |),
                       [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                     |);
                     M.rust_cast (M.read (| carry |))
@@ -56668,7 +56952,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -56707,7 +56991,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -56739,34 +57023,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -56882,6 +57165,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -56999,6 +57283,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -57121,6 +57406,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u16",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -57139,6 +57425,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -57252,6 +57539,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u16",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -57351,6 +57639,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u16",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -57369,6 +57658,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -57482,6 +57772,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u16",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -57597,7 +57888,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -57643,7 +57934,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -57720,7 +58011,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -57739,7 +58030,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u32", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -57888,7 +58179,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -57937,7 +58228,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -58063,7 +58354,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58146,6 +58437,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58184,7 +58476,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58243,7 +58535,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58353,7 +58645,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58436,6 +58728,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58481,7 +58774,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -58529,7 +58822,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58587,7 +58880,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -58670,6 +58963,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58804,7 +59098,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u32", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -58948,7 +59242,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u32", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -59020,6 +59314,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -59049,7 +59344,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "u32", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -59106,7 +59401,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "u32", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -59163,7 +59458,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "u32", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -59303,6 +59598,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u32",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -59312,6 +59608,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u32",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -59327,6 +59624,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u32",
                                               "pow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| n |) ]
@@ -59425,6 +59723,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -59448,6 +59747,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -59487,6 +59787,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -59510,6 +59811,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -59544,7 +59846,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -59601,7 +59903,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -59676,7 +59978,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "u32", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -59707,7 +60009,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -59789,6 +60091,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -59849,7 +60152,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "u32", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -59900,7 +60203,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "u32", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -59931,7 +60234,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -60013,6 +60316,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -60073,7 +60377,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "u32", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -60182,6 +60486,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u32",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -60271,6 +60576,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "u32",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -60402,6 +60708,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u32",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -60446,7 +60753,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u32", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "u32", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -60505,7 +60812,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -60600,7 +60907,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u32", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -60641,7 +60948,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "u32", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60668,7 +60975,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "u32", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -60728,7 +61035,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60858,7 +61165,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -60883,7 +61190,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "u32", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -60915,7 +61222,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "u32", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -61071,6 +61378,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u32",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -61096,6 +61404,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u32",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -61120,7 +61429,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "u32", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -61159,6 +61468,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u32",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -61212,6 +61522,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u32",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -61288,7 +61599,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -61302,7 +61613,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -61349,7 +61660,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -61435,7 +61746,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u32", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -61449,7 +61760,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u32", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "u32", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -61523,10 +61834,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -61690,7 +62001,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.U32 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.U32 0 |)
@@ -61715,7 +62026,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "u32", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -61740,7 +62051,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "u32", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -61851,6 +62162,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u32",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -61924,6 +62236,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "u32",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -62448,7 +62761,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "u32", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -62491,7 +62804,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -62565,7 +62878,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -62659,7 +62972,12 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "one_less_than_next_power_of_two", [] |),
+              M.get_associated_function (|
+                Ty.path "u32",
+                "one_less_than_next_power_of_two",
+                [],
+                []
+              |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -62685,12 +63003,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u32",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -62719,12 +63038,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u32",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -62749,10 +63069,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "to_be", [] |),
+                M.get_associated_function (| Ty.path "u32", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -62773,10 +63093,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "to_le", [] |),
+                M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -62825,10 +63145,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "from_be", [] |),
+            M.get_associated_function (| Ty.path "u32", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -62850,10 +63170,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "from_le", [] |),
+            M.get_associated_function (| Ty.path "u32", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -62929,7 +63249,7 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "unchecked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u64", "unchecked_mul", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |) in
@@ -62969,10 +63289,10 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "unchecked_mul", [] |),
+                      M.get_associated_function (| Ty.path "u64", "unchecked_mul", [], [] |),
                       [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                     |);
                     M.rust_cast (M.read (| carry |))
@@ -63163,7 +63483,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -63202,7 +63522,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -63234,34 +63554,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -63377,6 +63696,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -63494,6 +63814,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -63616,6 +63937,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u32",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -63633,6 +63955,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "char",
                                                                       "to_digit",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -63745,6 +64068,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u32",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -63844,6 +64168,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u32",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -63861,6 +64186,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "char",
                                                                       "to_digit",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -63973,6 +64299,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u32",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -64088,7 +64415,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -64134,7 +64461,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64211,7 +64538,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64230,7 +64557,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u64", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64379,7 +64706,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64428,7 +64755,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -64554,7 +64881,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -64637,6 +64964,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -64675,7 +65003,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -64734,7 +65062,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -64844,7 +65172,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -64927,6 +65255,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -64972,7 +65301,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -65020,7 +65349,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -65078,7 +65407,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -65161,6 +65490,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -65295,7 +65625,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u64", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -65439,7 +65769,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u64", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -65511,6 +65841,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -65540,7 +65871,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -65597,7 +65928,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -65654,7 +65985,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -65794,6 +66125,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -65803,6 +66135,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -65818,6 +66151,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u64",
                                               "pow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| n |) ]
@@ -65916,6 +66250,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -65939,6 +66274,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -65978,6 +66314,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -66001,6 +66338,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -66035,7 +66373,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -66092,7 +66430,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -66167,7 +66505,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "u64", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -66198,7 +66536,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -66280,6 +66618,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -66340,7 +66679,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "u64", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -66391,7 +66730,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "u64", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -66422,7 +66761,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -66504,6 +66843,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -66564,7 +66904,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "u64", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -66673,6 +67013,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -66762,6 +67103,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "u64",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -66893,6 +67235,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -66937,7 +67280,7 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "strict_mul", [] |),
+                                M.get_associated_function (| Ty.path "u64", "strict_mul", [], [] |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -66996,7 +67339,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -67091,7 +67434,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -67132,7 +67475,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "u64", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67159,7 +67502,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "u64", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -67219,7 +67562,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67349,7 +67692,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -67374,7 +67717,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "u64", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -67406,7 +67749,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "u64", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -67562,6 +67905,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u64",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -67587,6 +67931,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u64",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -67611,7 +67956,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "u64", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -67650,6 +67995,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -67703,6 +68049,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -67779,7 +68126,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -67793,7 +68140,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -67840,7 +68187,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -67926,7 +68273,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -67940,7 +68287,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -68014,10 +68361,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -68181,7 +68528,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.U64 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.U64 0 |)
@@ -68206,7 +68553,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "u64", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -68231,7 +68578,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "u64", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -68342,6 +68689,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -68415,6 +68763,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "u64",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -68939,7 +69288,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "u64", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -68982,7 +69331,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -69056,7 +69405,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -69150,7 +69499,12 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "one_less_than_next_power_of_two", [] |),
+              M.get_associated_function (|
+                Ty.path "u64",
+                "one_less_than_next_power_of_two",
+                [],
+                []
+              |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U64 1
@@ -69176,12 +69530,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u64",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -69210,12 +69565,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u64",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -69240,10 +69596,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "to_be", [] |),
+                M.get_associated_function (| Ty.path "u64", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -69264,10 +69620,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "to_le", [] |),
+                M.get_associated_function (| Ty.path "u64", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -69316,10 +69672,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "from_be", [] |),
+            M.get_associated_function (| Ty.path "u64", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -69341,10 +69697,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "from_le", [] |),
+            M.get_associated_function (| Ty.path "u64", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -69420,7 +69776,7 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "unchecked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |) in
@@ -69460,10 +69816,10 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u128", "unchecked_mul", [] |),
+                      M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
                       [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                     |);
                     M.rust_cast (M.read (| carry |))
@@ -69654,7 +70010,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -69693,7 +70049,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -69725,34 +70081,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -69868,6 +70223,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -69985,6 +70341,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -70107,6 +70464,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -70125,6 +70483,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -70238,6 +70597,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u64",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -70337,6 +70697,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -70355,6 +70716,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -70468,6 +70830,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u64",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -70583,7 +70946,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -70629,7 +70992,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -70706,7 +71069,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -70725,7 +71088,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "u128", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -70874,7 +71237,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -70923,7 +71286,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -71049,7 +71412,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71132,6 +71495,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71170,7 +71534,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71229,7 +71593,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71339,7 +71703,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71422,6 +71786,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71467,7 +71832,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -71515,7 +71880,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71573,7 +71938,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -71656,6 +72021,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71790,7 +72156,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u128", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -71934,7 +72300,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "u128", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -72006,6 +72372,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -72035,7 +72402,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "u128", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -72092,7 +72459,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "u128", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -72149,7 +72516,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "u128", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -72289,6 +72656,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u128",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -72298,6 +72666,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u128",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -72313,6 +72682,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u128",
                                               "pow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| n |) ]
@@ -72411,6 +72781,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -72437,6 +72808,7 @@ Module num.
                                 []
                                 [ Ty.path "u128" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -72476,6 +72848,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -72502,6 +72875,7 @@ Module num.
                                 []
                                 [ Ty.path "u128" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -72536,7 +72910,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -72593,7 +72967,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -72668,7 +73042,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "unchecked_shl", [] |),
+                            M.get_associated_function (| Ty.path "u128", "unchecked_shl", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -72699,7 +73073,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -72781,6 +73155,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -72841,7 +73216,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "u128", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -72892,7 +73267,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "unchecked_shr", [] |),
+                            M.get_associated_function (| Ty.path "u128", "unchecked_shr", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -72923,7 +73298,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -73005,6 +73380,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -73065,7 +73441,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "u128", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -73174,6 +73550,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u128",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -73263,6 +73640,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "u128",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -73394,6 +73772,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u128",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -73438,7 +73817,12 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u128", "strict_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u128",
+                                  "strict_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -73497,7 +73881,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -73595,7 +73979,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u128", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -73636,7 +74020,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "u128", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73663,7 +74047,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "u128", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -73723,7 +74107,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73853,7 +74237,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "u128", "wrapping_sub", [], [] |),
             [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |); M.read (| self |)
             ]
           |)))
@@ -73878,7 +74262,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "u128", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -73910,7 +74294,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "u128", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -74066,6 +74450,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u128",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -74091,6 +74476,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u128",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -74115,7 +74501,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "u128", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -74154,6 +74540,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u128",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -74207,6 +74594,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u128",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -74287,7 +74675,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -74301,7 +74689,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "overflowing_add", [] |),
+                          M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -74348,7 +74736,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -74438,7 +74826,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u128", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -74452,7 +74840,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u128", "overflowing_sub", [] |),
+                          M.get_associated_function (| Ty.path "u128", "overflowing_sub", [], [] |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -74526,10 +74914,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -74697,7 +75085,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.U128 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.U128 0 |)
@@ -74722,7 +75110,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "u128", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -74747,7 +75135,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "u128", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -74858,6 +75246,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u128",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -74931,6 +75320,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "u128",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -75455,7 +75845,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u128", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "u128", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -75498,7 +75888,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "u128", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -75572,7 +75962,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -75666,7 +76056,12 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "one_less_than_next_power_of_two", [] |),
+              M.get_associated_function (|
+                Ty.path "u128",
+                "one_less_than_next_power_of_two",
+                [],
+                []
+              |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U128 1
@@ -75692,12 +76087,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "u128", "checked_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u128",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -75726,12 +76122,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "u128",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -75756,10 +76153,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "to_be", [] |),
+                M.get_associated_function (| Ty.path "u128", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -75780,10 +76177,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "to_le", [] |),
+                M.get_associated_function (| Ty.path "u128", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -75832,10 +76229,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "from_be", [] |),
+            M.get_associated_function (| Ty.path "u128", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -75857,10 +76254,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "from_le", [] |),
+            M.get_associated_function (| Ty.path "u128", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -76091,7 +76488,7 @@ Module num.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                  M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                                   [ M.read (| src |) ]
                                 |)
                               |)) in
@@ -76130,7 +76527,7 @@ Module num.
                 let~ src :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| src |) ]
                     |)
                   |) in
@@ -76162,34 +76559,33 @@ Module num.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  Value.StructRecord
-                                                    "core::num::error::ParseIntError"
-                                                    [
-                                                      ("kind",
-                                                        Value.StructTuple
-                                                          "core::num::error::IntErrorKind::InvalidDigit"
-                                                          [])
-                                                    ]
-                                                ]
-                                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -76305,6 +76701,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -76422,6 +76819,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "to_digit",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -76544,6 +76942,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u128",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -76562,6 +76961,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -76675,6 +77075,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u128",
                                                                       "checked_add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -76774,6 +77175,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u128",
                                                                 "checked_mul",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -76792,6 +77194,7 @@ Module num.
                                                                       M.get_associated_function (|
                                                                         Ty.path "char",
                                                                         "to_digit",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -76905,6 +77308,7 @@ Module num.
                                                                     M.get_associated_function (|
                                                                       Ty.path "u128",
                                                                       "checked_sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -77020,7 +77424,7 @@ Module num.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
               [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
             |)
           |))).
@@ -77066,7 +77470,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "count_ones", [] |),
+            M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77143,7 +77547,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "leading_zeros", [] |),
+            M.get_associated_function (| Ty.path "usize", "leading_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77162,7 +77566,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "trailing_zeros", [] |),
+            M.get_associated_function (| Ty.path "usize", "trailing_zeros", [], [] |),
             [ UnOp.not (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77307,7 +77711,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
             [ M.read (| x |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77356,7 +77760,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
+            M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77482,7 +77886,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -77565,6 +77969,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_add",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -77603,7 +78008,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -77662,7 +78067,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add_signed", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add_signed", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -77772,7 +78177,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -77855,6 +78260,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -77900,7 +78306,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                     [ M.read (| self |); M.read (| rhs |) ]
                   |))
               |) in
@@ -77948,7 +78354,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -78006,7 +78412,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -78089,6 +78495,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_mul",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -78223,7 +78630,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "div_euclid", [] |),
+                            M.get_associated_function (| Ty.path "usize", "div_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -78367,7 +78774,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "rem_euclid", [] |),
+                            M.get_associated_function (| Ty.path "usize", "rem_euclid", [], [] |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -78439,6 +78846,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -78468,7 +78876,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_ilog", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_ilog", [], [] |),
                           [ M.read (| self |); M.read (| base |) ]
                         |)
                       |) in
@@ -78525,7 +78933,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_ilog2", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_ilog2", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -78582,7 +78990,7 @@ Module num.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "checked_ilog10", [] |),
+                          M.get_associated_function (| Ty.path "usize", "checked_ilog10", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |) in
@@ -78722,6 +79130,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "usize",
                                                 "ilog2",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -78731,6 +79140,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "ilog2",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base |) ]
@@ -78746,6 +79156,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "pow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| n |) ]
@@ -78844,6 +79255,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -78870,6 +79282,7 @@ Module num.
                                 []
                                 [ Ty.path "usize" ],
                               "ilog2",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -78909,6 +79322,7 @@ Module num.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -78935,6 +79349,7 @@ Module num.
                                 []
                                 [ Ty.path "usize" ],
                               "ilog10",
+                              [],
                               []
                             |),
                             [ M.read (| x |) ]
@@ -78969,7 +79384,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -79026,7 +79441,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_neg", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_neg", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -79101,7 +79516,12 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "unchecked_shl", [] |),
+                            M.get_associated_function (|
+                              Ty.path "usize",
+                              "unchecked_shl",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -79132,7 +79552,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_shl", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_shl", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -79214,6 +79634,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shl",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -79274,7 +79695,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "unchecked_shl", [] |),
+                        M.get_associated_function (| Ty.path "usize", "unchecked_shl", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -79325,7 +79746,12 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "unchecked_shr", [] |),
+                            M.get_associated_function (|
+                              Ty.path "usize",
+                              "unchecked_shr",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| rhs |) ]
                           |)
                         ]
@@ -79356,7 +79782,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_shr", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_shr", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -79438,6 +79864,7 @@ Module num.
                             M.get_associated_function (|
                               Self,
                               "precondition_check.unchecked_shr",
+                              [],
                               []
                             |),
                             [ M.read (| rhs |) ]
@@ -79498,7 +79925,7 @@ Module num.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "unchecked_shr", [] |),
+                        M.get_associated_function (| Ty.path "usize", "unchecked_shr", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |)));
@@ -79607,6 +80034,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "checked_mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| acc |); M.read (| base |) ]
@@ -79696,6 +80124,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "checked_mul",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| base |); M.read (| base |) ]
@@ -79827,6 +80256,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "strict_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -79871,7 +80301,12 @@ Module num.
                             M.write (|
                               base,
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "usize", "strict_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "usize",
+                                  "strict_mul",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| base |); M.read (| base |) ]
                               |)
                             |) in
@@ -79930,7 +80365,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -80028,7 +80463,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -80069,7 +80504,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "wrapping_div", [] |),
+            M.get_associated_function (| Ty.path "usize", "wrapping_div", [], [] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -80096,7 +80531,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "checked_pow", [] |),
+                  M.get_associated_function (| Ty.path "usize", "checked_pow", [], [] |),
                   [ M.read (| self |); M.read (| exp |) ]
                 |)
               |),
@@ -80156,7 +80591,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
             [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -80286,7 +80721,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+            M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
             [
               M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |);
               M.read (| self |)
@@ -80313,7 +80748,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "unchecked_shl", [] |),
+            M.get_associated_function (| Ty.path "usize", "unchecked_shl", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -80345,7 +80780,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "unchecked_shr", [] |),
+            M.get_associated_function (| Ty.path "usize", "unchecked_shr", [], [] |),
             [
               M.read (| self |);
               BinOp.bit_and
@@ -80501,6 +80936,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "usize",
                                                         "wrapping_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| acc |); M.read (| base |) ]
@@ -80526,6 +80962,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "wrapping_mul",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| base |); M.read (| base |) ]
@@ -80550,7 +80987,7 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                            M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                             [ M.read (| acc |); M.read (| base |) ]
                           |)
                         |)));
@@ -80589,6 +81026,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "usize",
                                                     "wrapping_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| acc |); M.read (| base |) ]
@@ -80642,6 +81080,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "wrapping_mul",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| base |); M.read (| base |) ]
@@ -80718,7 +81157,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -80732,7 +81171,12 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "overflowing_add", [] |),
+                          M.get_associated_function (|
+                            Ty.path "usize",
+                            "overflowing_add",
+                            [],
+                            []
+                          |),
                           [ M.read (| a |); M.rust_cast (M.read (| carry |)) ]
                         |)
                       |),
@@ -80779,7 +81223,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_add", [], [] |),
                   [ M.read (| self |); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -80865,7 +81309,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "overflowing_sub", [], [] |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -80879,7 +81323,12 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "overflowing_sub", [] |),
+                          M.get_associated_function (|
+                            Ty.path "usize",
+                            "overflowing_sub",
+                            [],
+                            []
+                          |),
                           [ M.read (| a |); M.rust_cast (M.read (| borrow |)) ]
                         |)
                       |),
@@ -80953,10 +81402,10 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_associated_function (| Ty.path "i32", "abs", [] |),
+                          M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [] |),
+                              M.get_associated_function (| Ty.path "i32", "wrapping_sub", [], [] |),
                               [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| other |)) ]
                             |)
                           ]
@@ -81120,7 +81569,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+                M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                 [ UnOp.not (| M.read (| self |) |); Value.Integer IntegerKind.Usize 1 ]
               |);
               BinOp.ne (| M.read (| self |), Value.Integer IntegerKind.Usize 0 |)
@@ -81145,7 +81594,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "wrapping_shl", [] |),
+                M.get_associated_function (| Ty.path "usize", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -81170,7 +81619,7 @@ Module num.
           Value.Tuple
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "wrapping_shr", [] |),
+                M.get_associated_function (| Ty.path "usize", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
               BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
@@ -81282,6 +81731,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| acc |); M.read (| base |) ]
@@ -81355,6 +81805,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "overflowing_mul",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| base |); M.read (| base |) ]
@@ -81877,7 +82328,7 @@ Module num.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_rem", [] |),
+                        M.get_associated_function (| Ty.path "usize", "checked_rem", [], [] |),
                         [ M.read (| self |); M.read (| rhs |) ]
                       |)
                     |),
@@ -81920,7 +82371,7 @@ Module num.
                         (let r := M.copy (| γ |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
                             [
                               M.read (| self |);
                               BinOp.Wrap.sub (| M.read (| rhs |), M.read (| r |) |)
@@ -81994,7 +82445,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "count_ones", [] |),
+              M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.U32 1
@@ -82095,6 +82546,7 @@ Module num.
               M.get_associated_function (|
                 Ty.path "usize",
                 "one_less_than_next_power_of_two",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -82122,12 +82574,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
+            M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "usize",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -82156,12 +82609,13 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
+            M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "usize",
                   "one_less_than_next_power_of_two",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -82186,10 +82640,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "to_be", [] |),
+                M.get_associated_function (| Ty.path "usize", "to_be", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -82210,10 +82664,10 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "to_le", [] |),
+                M.get_associated_function (| Ty.path "usize", "to_le", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -82262,10 +82716,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "from_be", [] |),
+            M.get_associated_function (| Ty.path "usize", "from_be", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -82287,10 +82741,10 @@ Module num.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "from_le", [] |),
+            M.get_associated_function (| Ty.path "usize", "from_le", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -82366,7 +82820,7 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "unchecked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |) in
@@ -82406,10 +82860,10 @@ Module num.
             let~ wide :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
+                  M.get_associated_function (| Ty.path "u128", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u128", "unchecked_mul", [] |),
+                      M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
                       [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                     |);
                     M.rust_cast (M.read (| carry |))
@@ -82461,7 +82915,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [], [] |),
             [ repeat (| M.read (| x |), Value.Integer IntegerKind.Usize 8 |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82522,6 +82976,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "wrapping_shl",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| r |); Value.Integer IntegerKind.U32 16 ]
@@ -82573,7 +83028,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "from_str_radix", [] |),
+                  M.get_associated_function (| Ty.path "u64", "from_str_radix", [], [] |),
                   [ M.read (| src |); M.read (| radix |) ]
                 |)
               |),
@@ -82765,7 +83220,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -82830,7 +83285,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "isize", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "isize", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82862,7 +83317,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i8", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "i8", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82894,7 +83349,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i16", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "i16", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82926,7 +83381,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i32", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "i32", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82958,7 +83413,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i64", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "i64", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -82990,7 +83445,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "i128", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "i128", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83022,7 +83477,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "usize", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "usize", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83054,7 +83509,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u8", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "u8", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83086,7 +83541,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u16", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "u16", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83118,7 +83573,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "u32", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83150,7 +83605,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "u64", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83182,7 +83637,7 @@ Module num.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "from_str_radix", [] |),
+            M.get_associated_function (| Ty.path "u128", "from_str_radix", [], [] |),
             [ M.read (| src |); Value.Integer IntegerKind.U32 10 ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -83217,6 +83672,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "len",
+                  [],
                   []
                 |),
                 [ M.read (| digits |) ]
@@ -83249,7 +83705,7 @@ Module num.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [
                 M.alloc (|
                   Value.Array
@@ -83283,7 +83739,7 @@ Module num.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.alloc (|
                   Value.Array
@@ -83300,6 +83756,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_display",
+                          [],
                           [ Ty.path "u32" ]
                         |),
                         [ radix ]

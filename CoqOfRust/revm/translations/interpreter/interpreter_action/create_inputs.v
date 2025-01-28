@@ -41,7 +41,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -58,7 +60,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_context_interface::cfg::CreateScheme",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -78,7 +82,9 @@ Module interpreter_action.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -95,7 +101,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -108,7 +116,15 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -144,6 +160,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
@@ -225,8 +242,10 @@ Module interpreter_action.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloy_primitives::bits::address::Address",
+                        [],
                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -247,8 +266,10 @@ Module interpreter_action.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "revm_context_interface::cfg::CreateScheme",
+                          [],
                           [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -273,6 +294,7 @@ Module interpreter_action.
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -281,6 +303,7 @@ Module interpreter_action.
                             []
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -302,8 +325,10 @@ Module interpreter_action.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bytes_::Bytes",
+                      [],
                       [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -431,7 +456,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -451,7 +478,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "revm_context_interface::cfg::CreateScheme",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -474,7 +503,9 @@ Module interpreter_action.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -494,7 +525,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -509,7 +542,15 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -572,6 +613,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bits::address::Address",
                             "create",
+                            [],
                             []
                           |),
                           [
@@ -598,6 +640,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bits::address::Address",
                             "create2_from_code",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "array")
@@ -625,6 +668,10 @@ Module interpreter_action.
                                   ]
                                   [],
                                 "to_be_bytes",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 []
                               |),
                               [ salt ]

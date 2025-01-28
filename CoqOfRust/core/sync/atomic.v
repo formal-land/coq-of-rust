@@ -27,7 +27,12 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicBool",
+                "new",
+                [],
+                []
+              |),
               [ Value.Bool false ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -82,6 +87,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "new",
+                [],
                 []
               |),
               [ M.call_closure (| M.get_function (| "core::ptr::null_mut", [], [ T ] |), [] |) ]
@@ -203,7 +209,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -363,7 +369,15 @@ Module sync.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -384,7 +398,12 @@ Module sync.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicBool",
+                "new",
+                [],
+                []
+              |),
               [ Value.Bool false ]
             |)
           |))).
@@ -410,6 +429,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| v |)) ]
@@ -435,6 +455,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicBool" ]
               |),
               [ M.read (| ptr |) ]
@@ -460,6 +481,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                   "get",
+                  [],
                   []
                 |),
                 [
@@ -545,6 +567,7 @@ Module sync.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                   "into_inner",
+                  [],
                   []
                 |),
                 [
@@ -587,6 +610,7 @@ Module sync.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -633,6 +657,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -697,6 +722,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.path "core::sync::atomic::AtomicBool",
                                     "fetch_or",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); Value.Bool true; M.read (| order |) ]
@@ -709,6 +735,7 @@ Module sync.
                                   M.get_associated_function (|
                                     Ty.path "core::sync::atomic::AtomicBool",
                                     "fetch_and",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); Value.Bool false; M.read (| order |) ]
@@ -731,6 +758,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [
@@ -779,6 +807,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicBool",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -950,6 +979,7 @@ Module sync.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1044,6 +1074,7 @@ Module sync.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1104,6 +1135,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicBool",
                                         "fetch_or",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |); Value.Bool false; M.read (| order |) ]
@@ -1116,6 +1148,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicBool",
                                         "swap",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |); M.read (| new |); M.read (| order |) ]
@@ -1164,6 +1197,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1273,6 +1307,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicBool",
                                         "compare_exchange",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1303,6 +1338,7 @@ Module sync.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                               "get",
+                              [],
                               []
                             |),
                             [
@@ -1380,6 +1416,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1438,6 +1475,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicBool",
                             "fetch_xor",
+                            [],
                             []
                           |),
                           [ M.read (| self |); Value.Bool true; M.read (| order |) ]
@@ -1450,6 +1488,7 @@ Module sync.
                           M.get_associated_function (|
                             Ty.path "core::sync::atomic::AtomicBool",
                             "swap",
+                            [],
                             []
                           |),
                           [ M.read (| self |); Value.Bool true; M.read (| order |) ]
@@ -1484,6 +1523,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1526,6 +1566,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1562,6 +1603,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.path "core::sync::atomic::AtomicBool",
                 "fetch_xor",
+                [],
                 []
               |),
               [ M.read (| self |); Value.Bool true; M.read (| order |) ]
@@ -1585,6 +1627,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "cast",
+                [],
                 [ Ty.path "bool" ]
               |),
               [
@@ -1592,6 +1635,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -1646,6 +1690,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicBool",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -1665,8 +1710,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "bool" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -1685,6 +1732,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicBool",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1775,6 +1823,7 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| p |) ]
@@ -1803,6 +1852,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "cast",
+                [],
                 [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
               |),
               [ M.read (| ptr |) ]
@@ -1832,6 +1882,7 @@ Module sync.
                   []
                   [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -1955,6 +2006,7 @@ Module sync.
                   []
                   [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -2003,6 +2055,7 @@ Module sync.
                         []
                         [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -2056,6 +2109,7 @@ Module sync.
                             []
                             [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -2108,6 +2162,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -2158,6 +2213,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -2248,6 +2304,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -2315,6 +2372,7 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -2381,6 +2439,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -2400,8 +2459,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -2420,6 +2481,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2506,12 +2568,13 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "fetch_byte_add",
+                [],
                 []
               |),
               [
                 M.read (| self |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| val |);
                     M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
@@ -2549,12 +2612,13 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "fetch_byte_sub",
+                [],
                 []
               |),
               [
                 M.read (| self |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| val |);
                     M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
@@ -2590,7 +2654,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
@@ -2606,6 +2670,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -2652,7 +2717,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
@@ -2668,6 +2733,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -2709,7 +2775,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
@@ -2725,6 +2791,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -2766,7 +2833,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
@@ -2782,6 +2849,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -2823,7 +2891,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [ T ] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_function (|
@@ -2839,6 +2907,7 @@ Module sync.
                           []
                           [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                         "get",
+                        [],
                         []
                       |),
                       [
@@ -2883,6 +2952,7 @@ Module sync.
                   []
                   [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "get",
+                [],
                 []
               |),
               [
@@ -2915,7 +2985,12 @@ Module sync.
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicBool",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| b |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2948,6 +3023,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                 "new",
+                [],
                 []
               |),
               [ M.read (| p |) ]
@@ -2985,14 +3061,16 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [] |),
+              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "i8",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -3020,7 +3098,7 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [] |),
+              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [], [] |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3049,13 +3127,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "i8", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "i8", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI8",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -3110,6 +3189,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -3135,6 +3215,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicI8" ]
               |),
               [ M.read (| ptr |) ]
@@ -3158,6 +3239,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -3270,6 +3352,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -3308,6 +3391,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -3349,6 +3433,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -3391,6 +3476,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3439,6 +3525,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI8",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -3517,6 +3604,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3571,6 +3659,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3613,6 +3702,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3652,6 +3742,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3691,6 +3782,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3730,6 +3822,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3769,6 +3862,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3808,6 +3902,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -3860,6 +3955,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicI8",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -3879,8 +3975,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "i8" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -3899,6 +3997,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicI8",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3982,6 +4081,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4021,6 +4121,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4054,6 +4155,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -4091,14 +4193,16 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [] |),
+              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "u8",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -4126,7 +4230,7 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [] |),
+              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [], [] |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4155,13 +4259,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "u8", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "u8", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU8",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -4216,6 +4321,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -4241,6 +4347,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicU8" ]
               |),
               [ M.read (| ptr |) ]
@@ -4264,6 +4371,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -4376,6 +4484,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -4414,6 +4523,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -4455,6 +4565,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -4497,6 +4608,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4545,6 +4657,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU8",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -4623,6 +4736,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4677,6 +4791,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4719,6 +4834,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4758,6 +4874,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4797,6 +4914,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4836,6 +4954,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4875,6 +4994,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4914,6 +5034,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -4966,6 +5087,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicU8",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -4985,8 +5107,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "u8" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -5005,6 +5129,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicU8",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5088,6 +5213,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5127,6 +5253,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5160,6 +5287,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -5197,14 +5325,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI16", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI16",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "i16",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -5232,7 +5367,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI16", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI16",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5261,13 +5401,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "i16", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "i16", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI16",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -5322,6 +5463,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -5347,6 +5489,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicI16" ]
               |),
               [ M.read (| ptr |) ]
@@ -5370,6 +5513,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -5482,6 +5626,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -5520,6 +5665,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -5561,6 +5707,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -5603,6 +5750,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5651,6 +5799,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI16",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -5729,6 +5878,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5783,6 +5933,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5825,6 +5976,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5864,6 +6016,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5903,6 +6056,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5942,6 +6096,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -5981,6 +6136,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6020,6 +6176,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6072,6 +6229,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicI16",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -6091,8 +6249,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "i16" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -6111,6 +6271,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicI16",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6194,6 +6355,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6233,6 +6395,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6266,6 +6429,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -6303,14 +6467,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU16", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU16",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "u16",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -6338,7 +6509,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU16", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU16",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6367,13 +6543,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "u16", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "u16", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU16",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -6428,6 +6605,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -6453,6 +6631,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicU16" ]
               |),
               [ M.read (| ptr |) ]
@@ -6476,6 +6655,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -6588,6 +6768,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -6626,6 +6807,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -6667,6 +6849,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -6709,6 +6892,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6757,6 +6941,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU16",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -6835,6 +7020,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6889,6 +7075,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6931,6 +7118,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -6970,6 +7158,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7009,6 +7198,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7048,6 +7238,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7087,6 +7278,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7126,6 +7318,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7178,6 +7371,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicU16",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -7197,8 +7391,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "u16" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -7217,6 +7413,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicU16",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7300,6 +7497,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7339,6 +7537,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7372,6 +7571,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -7409,14 +7609,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI32", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI32",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "i32",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -7444,7 +7651,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI32", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI32",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7473,13 +7685,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "i32", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "i32", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI32",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -7534,6 +7747,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -7559,6 +7773,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicI32" ]
               |),
               [ M.read (| ptr |) ]
@@ -7582,6 +7797,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -7694,6 +7910,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -7732,6 +7949,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -7773,6 +7991,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -7815,6 +8034,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7863,6 +8083,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI32",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -7941,6 +8162,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -7995,6 +8217,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8037,6 +8260,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8076,6 +8300,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8115,6 +8340,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8154,6 +8380,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8193,6 +8420,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8232,6 +8460,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8284,6 +8513,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicI32",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -8303,8 +8533,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "i32" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -8323,6 +8555,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicI32",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8406,6 +8639,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8445,6 +8679,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8478,6 +8713,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -8515,14 +8751,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU32", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU32",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "u32",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -8550,7 +8793,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU32", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU32",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8579,13 +8827,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "u32", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "u32", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU32",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -8640,6 +8889,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -8665,6 +8915,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicU32" ]
               |),
               [ M.read (| ptr |) ]
@@ -8688,6 +8939,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -8800,6 +9052,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -8838,6 +9091,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -8879,6 +9133,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -8921,6 +9176,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -8969,6 +9225,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU32",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -9047,6 +9304,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9101,6 +9359,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9143,6 +9402,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9182,6 +9442,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9221,6 +9482,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9260,6 +9522,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9299,6 +9562,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9338,6 +9602,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9390,6 +9655,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicU32",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -9409,8 +9675,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "u32" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -9429,6 +9697,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicU32",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9512,6 +9781,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9551,6 +9821,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -9584,6 +9855,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -9621,14 +9893,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI64", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI64",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "i64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -9656,7 +9935,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI64", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicI64",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -9685,13 +9969,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "i64", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "i64", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI64",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -9746,6 +10031,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -9771,6 +10057,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicI64" ]
               |),
               [ M.read (| ptr |) ]
@@ -9794,6 +10081,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -9906,6 +10194,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -9944,6 +10233,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -9985,6 +10275,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -10027,6 +10318,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10075,6 +10367,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicI64",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -10153,6 +10446,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10207,6 +10501,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10249,6 +10544,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10288,6 +10584,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10327,6 +10624,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10366,6 +10664,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10405,6 +10704,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10444,6 +10744,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10496,6 +10797,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicI64",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -10515,8 +10817,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "i64" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -10535,6 +10839,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicI64",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -10618,6 +10923,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10657,6 +10963,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -10690,6 +10997,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -10727,14 +11035,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU64", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU64",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -10762,7 +11077,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU64", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicU64",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -10791,13 +11111,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "u64", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "u64", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU64",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -10852,6 +11173,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -10877,6 +11199,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicU64" ]
               |),
               [ M.read (| ptr |) ]
@@ -10900,6 +11223,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -11012,6 +11336,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -11050,6 +11375,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -11091,6 +11417,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -11133,6 +11460,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11181,6 +11509,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicU64",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -11259,6 +11588,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11313,6 +11643,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11355,6 +11686,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11394,6 +11726,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11433,6 +11766,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11472,6 +11806,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11511,6 +11846,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11550,6 +11886,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11602,6 +11939,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicU64",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -11621,8 +11959,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "u64" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -11641,6 +11981,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicU64",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11724,6 +12065,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11763,6 +12105,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -11796,6 +12139,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -11833,14 +12177,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicIsize",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "isize",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -11868,7 +12219,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicIsize",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11897,13 +12253,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "isize", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "isize", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicIsize",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -11958,6 +12315,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -11983,6 +12341,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicIsize" ]
               |),
               [ M.read (| ptr |) ]
@@ -12006,6 +12365,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -12118,6 +12478,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -12156,6 +12517,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -12201,6 +12563,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -12243,6 +12606,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12291,6 +12655,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicIsize",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -12369,6 +12734,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12423,6 +12789,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12465,6 +12832,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12504,6 +12872,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12543,6 +12912,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12582,6 +12952,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12621,6 +12992,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12660,6 +13032,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12712,6 +13085,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicIsize",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -12731,8 +13105,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "isize" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -12751,6 +13127,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicIsize",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12834,6 +13211,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12873,6 +13251,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -12906,6 +13285,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -12943,14 +13323,21 @@ Module sync.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicUsize",
+                "new",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "usize",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -12978,7 +13365,12 @@ Module sync.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicUsize",
+                "new",
+                [],
+                []
+              |),
               [ M.read (| v |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13007,13 +13399,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "usize", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "usize", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicUsize",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -13068,6 +13461,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -13093,6 +13487,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
                 "cast",
+                [],
                 [ Ty.path "core::sync::atomic::AtomicUsize" ]
               |),
               [ M.read (| ptr |) ]
@@ -13116,6 +13511,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -13228,6 +13624,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -13266,6 +13663,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -13311,6 +13709,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -13353,6 +13752,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13401,6 +13801,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicUsize",
                       "compare_exchange",
+                      [],
                       []
                     |),
                     [
@@ -13479,6 +13880,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13533,6 +13935,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13575,6 +13978,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13614,6 +14018,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13653,6 +14058,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13692,6 +14098,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13731,6 +14138,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13770,6 +14178,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13822,6 +14231,7 @@ Module sync.
                         M.get_associated_function (|
                           Ty.path "core::sync::atomic::AtomicUsize",
                           "load",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| fetch_order |) ]
@@ -13841,8 +14251,10 @@ Module sync.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.path "usize" ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [ f; Value.Tuple [ M.read (| prev |) ] ]
@@ -13861,6 +14273,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::sync::atomic::AtomicUsize",
                                         "compare_exchange_weak",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13944,6 +14357,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -13983,6 +14397,7 @@ Module sync.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -14016,6 +14431,7 @@ Module sync.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -14037,7 +14453,12 @@ Module sync.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicIsize",
+                "new",
+                [],
+                []
+              |),
               [ Value.Integer IntegerKind.Isize 0 ]
             |)
           |))).
@@ -14047,7 +14468,12 @@ Module sync.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "core::sync::atomic::AtomicUsize",
+                "new",
+                [],
+                []
+              |),
               [ Value.Integer IntegerKind.Usize 0 ]
             |)
           |))).
@@ -14169,6 +14595,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -14198,6 +14625,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -14287,6 +14715,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -14316,6 +14745,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -14908,6 +15338,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14941,6 +15372,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15331,6 +15763,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15364,6 +15797,7 @@ Module sync.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16113,6 +16547,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -16225,6 +16660,7 @@ Module sync.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -16267,13 +16703,14 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", Ty.path "bool", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", Ty.path "bool", [], [], "fmt", [], [] |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::sync::atomic::AtomicBool",
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -16317,7 +16754,9 @@ Module sync.
                 "core::fmt::Debug",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
@@ -16326,6 +16765,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "load",
+                      [],
                       []
                     |),
                     [
@@ -16370,7 +16810,9 @@ Module sync.
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
@@ -16379,6 +16821,7 @@ Module sync.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
                       "load",
+                      [],
                       []
                     |),
                     [

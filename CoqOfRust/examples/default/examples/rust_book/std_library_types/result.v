@@ -39,7 +39,7 @@ Module checked.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -181,7 +181,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "sqrt", [] |),
+                          M.get_associated_function (| Ty.path "f64", "sqrt", [], [] |),
                           [ M.read (| x |) ]
                         |)
                       ]
@@ -232,7 +232,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "ln", [] |),
+                          M.get_associated_function (| Ty.path "f64", "ln", [], [] |),
                           [ M.read (| x |) ]
                         |)
                       ]
@@ -290,6 +290,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -301,6 +302,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [ Ty.path "result::checked::MathError" ]
                                     |),
                                     [ why ]
@@ -344,6 +346,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
+                                    [],
                                     []
                                   |),
                                   [
@@ -355,6 +358,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",
+                                              [],
                                               [ Ty.path "result::checked::MathError" ]
                                             |),
                                             [ why ]
@@ -402,6 +406,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -415,6 +420,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_debug",
+                                                      [],
                                                       [ Ty.path "result::checked::MathError" ]
                                                     |),
                                                     [ why ]
@@ -467,7 +473,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -480,6 +491,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "f64" ]
                               |),
                               [

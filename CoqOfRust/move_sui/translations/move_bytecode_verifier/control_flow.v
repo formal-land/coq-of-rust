@@ -45,6 +45,7 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "function_handle_at",
+                      [],
                       []
                     |),
                     [
@@ -72,6 +73,7 @@ Module control_flow.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -94,7 +96,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -140,6 +144,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -151,6 +156,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -179,6 +185,7 @@ Module control_flow.
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -206,7 +213,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -251,6 +260,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -262,6 +272,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -288,6 +299,7 @@ Module control_flow.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -312,7 +324,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -352,6 +366,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -363,6 +378,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -430,6 +446,7 @@ Module control_flow.
                     []
                     [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                   "unwrap_or",
+                  [],
                   []
                 |),
                 [
@@ -449,6 +466,7 @@ Module control_flow.
                     []
                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                   "last",
+                  [],
                   []
                 |),
                 [
@@ -463,7 +481,9 @@ Module control_flow.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [
@@ -489,6 +509,7 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -511,6 +532,7 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Bytecode",
                             "is_unconditional_branch",
+                            [],
                             []
                           |),
                           [ M.read (| last |) ]
@@ -526,6 +548,7 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "at_code_offset",
+                            [],
                             []
                           |),
                           [
@@ -533,6 +556,7 @@ Module control_flow.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -554,6 +578,7 @@ Module control_flow.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -672,6 +697,7 @@ Module control_flow.
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                       "unwrap_or",
+                      [],
                       []
                     |),
                     [
@@ -679,6 +705,7 @@ Module control_flow.
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::absint::FunctionContext",
                           "index",
+                          [],
                           []
                         |),
                         [ M.read (| function_context |) ]
@@ -717,6 +744,7 @@ Module control_flow.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "at_code_offset",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -725,6 +753,7 @@ Module control_flow.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| code |) ]
@@ -747,6 +776,7 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -754,6 +784,7 @@ Module control_flow.
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::absint::FunctionContext",
                           "cfg",
+                          [],
                           []
                         |),
                         [ M.read (| function_context |) ]
@@ -767,6 +798,7 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                       "new",
+                      [],
                       []
                     |),
                     [ summary ]
@@ -781,7 +813,9 @@ Module control_flow.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -790,7 +824,9 @@ Module control_flow.
                               "core::iter::traits::iterator::Iterator",
                               Ty.associated,
                               [],
+                              [],
                               "rev",
+                              [],
                               []
                             |),
                             [
@@ -798,6 +834,7 @@ Module control_flow.
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                                   "preorder",
+                                  [],
                                   []
                                 |),
                                 [ summary ]
@@ -824,7 +861,9 @@ Module control_flow.
                                           []
                                           [ Ty.associated ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -854,6 +893,7 @@ Module control_flow.
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopSummary",
                                                 "back_edges",
+                                                [],
                                                 []
                                               |),
                                               [ summary; M.read (| head |) ]
@@ -879,6 +919,7 @@ Module control_flow.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "is_empty",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| back |) ]
@@ -912,6 +953,7 @@ Module control_flow.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               []
@@ -938,7 +980,9 @@ Module control_flow.
                                                           ]
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| back |) ]
@@ -965,7 +1009,9 @@ Module control_flow.
                                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ iter ]
@@ -1000,6 +1046,7 @@ Module control_flow.
                                                                           Ty.path
                                                                             "move_bytecode_verifier::loop_summary::LoopPartition",
                                                                           "containing_loop",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1023,11 +1070,13 @@ Module control_flow.
                                                                                     "core::cmp::PartialEq",
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::loop_summary::NodeId",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                                                     ],
                                                                                     "ne",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ node; head ]
@@ -1053,6 +1102,7 @@ Module control_flow.
                                                                                         "alloc::alloc::Global"
                                                                                     ],
                                                                                   "insert",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -1096,7 +1146,9 @@ Module control_flow.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "collect",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -1121,7 +1173,9 @@ Module control_flow.
                                                           "move_bytecode_verifier::loop_summary::NodeId"
                                                       ],
                                                     [],
+                                                    [],
                                                     "copied",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::loop_summary::NodeId"
@@ -1140,6 +1194,7 @@ Module control_flow.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ body ]
@@ -1170,6 +1225,7 @@ Module control_flow.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "pop",
+                                                              [],
                                                               []
                                                             |),
                                                             [ frontier ]
@@ -1203,7 +1259,9 @@ Module control_flow.
                                                                       ]
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "into_iter",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1212,6 +1270,7 @@ Module control_flow.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                     "pred_edges",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ summary; M.read (| node |) ]
@@ -1240,7 +1299,9 @@ Module control_flow.
                                                                                     "move_bytecode_verifier::loop_summary::NodeId"
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "next",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ iter ]
@@ -1278,6 +1339,7 @@ Module control_flow.
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::loop_summary::LoopPartition",
                                                                                       "containing_loop",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1307,6 +1369,7 @@ Module control_flow.
                                                                                                     Ty.path
                                                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                                                     "is_descendant",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -1356,6 +1419,7 @@ Module control_flow.
                                                                                                           Ty.path
                                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                                         ]),
+                                                                                                    [],
                                                                                                     [
                                                                                                       Ty.tuple
                                                                                                         [
@@ -1366,6 +1430,7 @@ Module control_flow.
                                                                                                         ]
                                                                                                     ],
                                                                                                     "call",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -1380,6 +1445,7 @@ Module control_flow.
                                                                                                             Ty.path
                                                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                                                             "block",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -1412,11 +1478,13 @@ Module control_flow.
                                                                                         "core::cmp::PartialEq",
                                                                                         Ty.path
                                                                                           "move_bytecode_verifier::loop_summary::NodeId",
+                                                                                        [],
                                                                                         [
                                                                                           Ty.path
                                                                                             "move_bytecode_verifier::loop_summary::NodeId"
                                                                                         ],
                                                                                         "ne",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [ pred; head ]
@@ -1435,6 +1503,7 @@ Module control_flow.
                                                                                                 "alloc::alloc::Global"
                                                                                             ],
                                                                                           "insert",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -1479,6 +1548,7 @@ Module control_flow.
                                                                                                     "alloc::alloc::Global"
                                                                                                 ],
                                                                                               "push",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -1532,6 +1602,7 @@ Module control_flow.
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopPartition",
                                                 "collapse_loop",
+                                                [],
                                                 []
                                               |),
                                               [ partition; M.read (| head |); body ]
@@ -1598,6 +1669,7 @@ Module control_flow.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ]),
+                                                                    [],
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -1607,6 +1679,7 @@ Module control_flow.
                                                                         ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1621,6 +1694,7 @@ Module control_flow.
                                                                             Ty.path
                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                             "block",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [

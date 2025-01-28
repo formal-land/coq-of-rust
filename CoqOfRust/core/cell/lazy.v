@@ -70,6 +70,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "core::cell::lazy::State::Uninit" [ M.read (| f |) ] ]
@@ -112,6 +113,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -203,6 +205,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -242,6 +245,7 @@ Module cell.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                             "really_init",
+                            [],
                             []
                           |),
                           [ M.read (| this |) ]
@@ -333,6 +337,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get_mut",
+                      [],
                       []
                     |),
                     [
@@ -371,7 +376,12 @@ Module cell.
                             |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Self, "really_init_mut.force_mut", [] |),
+                              M.get_associated_function (|
+                                Self,
+                                "really_init_mut.force_mut",
+                                [],
+                                []
+                              |),
                               [ M.read (| state |) ]
                             |)
                           |)));
@@ -450,6 +460,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -488,8 +499,10 @@ Module cell.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [] ]
@@ -504,6 +517,7 @@ Module cell.
                                 []
                                 [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                               "write",
+                              [],
                               []
                             |),
                             [
@@ -514,6 +528,7 @@ Module cell.
                                     []
                                     [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [
@@ -539,6 +554,7 @@ Module cell.
                                 []
                                 [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                               "get",
+                              [],
                               []
                             |),
                             [
@@ -600,6 +616,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get_mut",
+                      [],
                       []
                     |),
                     [
@@ -669,6 +686,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -733,6 +751,7 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                 "force",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -769,12 +788,13 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; Ty.function [] T ],
                 "new",
+                [],
                 []
               |),
               [
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_trait_method (| "core::default::Default", T, [], "default", [] |))
+                  (M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -817,6 +837,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_tuple",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "LazyCell" |) ]
@@ -829,6 +850,7 @@ Module cell.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -849,6 +871,7 @@ Module cell.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [ d; M.read (| data |) ]
@@ -862,6 +885,7 @@ Module cell.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -871,6 +895,7 @@ Module cell.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -890,6 +915,7 @@ Module cell.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "finish",
+                    [],
                     []
                   |),
                   [ d ]
@@ -921,7 +947,7 @@ Module cell.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array

@@ -147,6 +147,7 @@ Module collections.
                               ]
                           ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -165,6 +166,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -217,6 +219,7 @@ Module collections.
                             A
                           ],
                         "new_uninit_in",
+                        [],
                         []
                       |),
                       [ M.read (| alloc |) ]
@@ -228,6 +231,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "init",
+                        [],
                         []
                       |),
                       [
@@ -243,6 +247,7 @@ Module collections.
                                   [ K; V ]
                               ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| leaf |) ]
@@ -269,6 +274,7 @@ Module collections.
                           A
                         ],
                       "assume_init",
+                      [],
                       []
                     |),
                     [ M.read (| leaf |) ]
@@ -355,6 +361,7 @@ Module collections.
                             A
                           ],
                         "new_uninit_in",
+                        [],
                         []
                       |),
                       [ M.read (| alloc |) ]
@@ -366,6 +373,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "init",
+                        [],
                         []
                       |),
                       [
@@ -382,6 +390,7 @@ Module collections.
                                     [ K; V ]
                                 ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| node |) ]
@@ -411,6 +420,7 @@ Module collections.
                           A
                         ],
                       "assume_init",
+                      [],
                       []
                     |),
                     [ M.read (| node |) ]
@@ -655,6 +665,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Leaf"
                     ],
                   "from_new_leaf",
+                  [],
                   [ A ]
                 |),
                 [
@@ -662,6 +673,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                       "new",
+                      [],
                       [ A ]
                     |),
                     [ M.read (| alloc |) ]
@@ -708,6 +720,7 @@ Module collections.
                               []
                               [ K; V ]
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "&mut")
@@ -720,6 +733,7 @@ Module collections.
                             ]
                         ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -736,6 +750,7 @@ Module collections.
                                 A
                               ],
                             "leak",
+                            [],
                             []
                           |),
                           [ M.read (| leaf |) ]
@@ -793,6 +808,7 @@ Module collections.
                           []
                           [ K; V ],
                         "new",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| alloc |) ]
@@ -817,6 +833,7 @@ Module collections.
                               ]
                           ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -851,6 +868,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Internal"
                         ],
                       "from_new_internal",
+                      [],
                       [ A ]
                     |),
                     [
@@ -961,6 +979,7 @@ Module collections.
                               [ K; V ]
                           ],
                         "cast",
+                        [],
                         [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
                         ]
                       |),
@@ -977,6 +996,7 @@ Module collections.
                                   []
                                   [ K; V ]
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -989,6 +1009,7 @@ Module collections.
                                 ]
                             ],
                             "from",
+                            [],
                             []
                           |),
                           [
@@ -1005,6 +1026,7 @@ Module collections.
                                     A
                                   ],
                                 "leak",
+                                [],
                                 []
                               |),
                               [ M.read (| internal |) ]
@@ -1038,6 +1060,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "correct_all_childrens_parent_links",
+                        [],
                         []
                       |),
                       [
@@ -1054,6 +1077,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::Internal"
                                 ],
                               "borrow_mut",
+                              [],
                               []
                             |),
                             [ this ]
@@ -1162,6 +1186,7 @@ Module collections.
                                   [ K; V ]
                               ],
                             "cast",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
@@ -1210,6 +1235,7 @@ Module collections.
                       [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
                       ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [
@@ -1321,6 +1347,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "as_internal_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1379,6 +1406,7 @@ Module collections.
                         ]
                     ],
                   "get_unchecked_mut",
+                  [],
                   [ I ]
                 |),
                 [
@@ -1404,6 +1432,7 @@ Module collections.
                             ]
                         ],
                       "as_mut_slice",
+                      [ Value.Integer IntegerKind.Usize 12 ],
                       []
                     |),
                     [
@@ -1420,6 +1449,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "as_internal_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1467,7 +1497,9 @@ Module collections.
                           "core::iter::traits::collect::IntoIterator",
                           R,
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| range |) ]
@@ -1487,7 +1519,9 @@ Module collections.
                                         "core::iter::traits::iterator::Iterator",
                                         R,
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1549,6 +1583,7 @@ Module collections.
                                                                                 "alloc::collections::btree::node::marker::Internal"
                                                                             ],
                                                                           "len",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| self |) ]
@@ -1613,6 +1648,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::Edge"
                                                   ],
                                                 "correct_parent_link",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1639,6 +1675,7 @@ Module collections.
                                                           "alloc::collections::btree::node::marker::Edge"
                                                       ],
                                                     "new_edge",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1657,6 +1694,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Internal"
                                                           ],
                                                         "reborrow_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -1717,6 +1755,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1736,6 +1775,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "correct_childrens_parent_links",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::ops::range::RangeInclusive")
@@ -1752,6 +1792,7 @@ Module collections.
                               []
                               [ Ty.path "usize" ],
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 0; M.read (| len |) ]
@@ -1858,6 +1899,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1869,8 +1911,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "u16" ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| M.read (| len |) |) ]
@@ -1921,6 +1965,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -1936,6 +1981,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -1953,6 +1999,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -1968,6 +2015,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
@@ -1998,6 +2046,7 @@ Module collections.
                               ]
                           ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -2013,6 +2062,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "edge_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply
@@ -2066,6 +2116,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "correct_parent_link",
+                        [],
                         []
                       |),
                       [
@@ -2087,6 +2138,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "new_edge",
+                            [],
                             []
                           |),
                           [
@@ -2102,6 +2154,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "reborrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -2151,8 +2204,10 @@ Module collections.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "usize",
+                  [],
                   [ Ty.path "u16" ],
                   "from",
+                  [],
                   []
                 |),
                 [
@@ -2165,6 +2220,7 @@ Module collections.
                             []
                             [ BorrowType; K; V; Type_ ],
                           "as_leaf_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2285,6 +2341,7 @@ Module collections.
                     []
                     [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ] ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [
@@ -2352,6 +2409,7 @@ Module collections.
                             []
                             [ BorrowType; K; V; Type_ ],
                           "as_leaf_ptr",
+                          [],
                           []
                         |),
                         [ self ]
@@ -2381,6 +2439,7 @@ Module collections.
                             ]
                         ],
                       "ok_or",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -2411,6 +2470,7 @@ Module collections.
                                 ]
                             ],
                           "map",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
@@ -2483,6 +2543,7 @@ Module collections.
                                     ]
                                 ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [
@@ -2523,6 +2584,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Internal"
                                                         ],
                                                       "from_internal",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2544,8 +2606,10 @@ Module collections.
                                                     M.get_trait_method (|
                                                       "core::convert::From",
                                                       Ty.path "usize",
+                                                      [],
                                                       [ Ty.path "u16" ],
                                                       "from",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2557,6 +2621,7 @@ Module collections.
                                                             []
                                                             [ Ty.path "u16" ],
                                                           "assume_init",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2621,6 +2686,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "new_edge",
+                  [],
                   []
                 |),
                 [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -2662,6 +2728,7 @@ Module collections.
                           []
                           [ BorrowType; K; V; Type_ ],
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -2681,6 +2748,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "new_edge",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| len |) ]
@@ -2725,6 +2793,7 @@ Module collections.
                           []
                           [ BorrowType; K; V; Type_ ],
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -2770,6 +2839,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "new_kv",
+                      [],
                       []
                     |),
                     [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
@@ -2814,6 +2884,7 @@ Module collections.
                           []
                           [ BorrowType; K; V; Type_ ],
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -2859,6 +2930,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "new_kv",
+                      [],
                       []
                     |),
                     [
@@ -2949,6 +3021,7 @@ Module collections.
                                                 []
                                                 [ K; V ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
@@ -2962,6 +3035,7 @@ Module collections.
                                               ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3132,6 +3206,7 @@ Module collections.
                           []
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ self ]
@@ -3175,6 +3250,7 @@ Module collections.
                           []
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ],
                         "into_leaf",
+                        [],
                         []
                       |),
                       [ M.read (| M.read (| self |) |) ]
@@ -3185,6 +3261,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                       "slice_assume_init_ref",
+                      [],
                       []
                     |),
                     [
@@ -3195,6 +3272,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                           "get_unchecked",
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
@@ -3211,8 +3289,10 @@ Module collections.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u16" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3336,6 +3416,7 @@ Module collections.
                               ]
                           ],
                         "ok",
+                        [],
                         []
                       |),
                       [
@@ -3351,6 +3432,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "ascend",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -3362,7 +3444,15 @@ Module collections.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
+                        M.get_trait_method (|
+                          "core::alloc::Allocator",
+                          A,
+                          [],
+                          [],
+                          "deallocate",
+                          [],
+                          []
+                        |),
                         [
                           alloc;
                           M.call_closure (|
@@ -3377,6 +3467,7 @@ Module collections.
                                     [ K; V ]
                                 ],
                               "cast",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [ M.read (| node |) ]
@@ -3405,6 +3496,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.path "core::alloc::layout::Layout",
                                           "new",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path
@@ -3423,6 +3515,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.path "core::alloc::layout::Layout",
                                           "new",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::LeafNode")
@@ -3529,6 +3622,7 @@ Module collections.
                           []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -3571,6 +3665,7 @@ Module collections.
                           []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ self ]
@@ -3658,6 +3753,7 @@ Module collections.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                   "get_unchecked_mut",
+                  [],
                   [ I ]
                 |),
                 [
@@ -3668,6 +3764,7 @@ Module collections.
                         [ Value.Integer IntegerKind.Usize 11 ]
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                       "as_mut_slice",
+                      [ Value.Integer IntegerKind.Usize 11 ],
                       []
                     |),
                     [
@@ -3680,6 +3777,7 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
                               ],
                             "as_leaf_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -3729,6 +3827,7 @@ Module collections.
                     []
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                   "get_unchecked_mut",
+                  [],
                   [ I ]
                 |),
                 [
@@ -3739,6 +3838,7 @@ Module collections.
                         [ Value.Integer IntegerKind.Usize 11 ]
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                       "as_mut_slice",
+                      [ Value.Integer IntegerKind.Usize 11 ],
                       []
                     |),
                     [
@@ -3751,6 +3851,7 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
                               ],
                             "as_leaf_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -3793,6 +3894,7 @@ Module collections.
                       []
                       [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                     "as_leaf_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3895,6 +3997,7 @@ Module collections.
                           []
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -3958,6 +4061,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_
                           ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ self ]
@@ -3987,6 +4091,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_ref",
+                        [],
                         []
                       |),
                       [
@@ -4007,6 +4112,7 @@ Module collections.
                                   ]
                               ],
                             "get_unchecked",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ M.read (| keys |); M.read (| idx |) ]
@@ -4020,6 +4126,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
+                        [],
                         []
                       |),
                       [
@@ -4040,6 +4147,7 @@ Module collections.
                                   ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ M.read (| vals |); M.read (| idx |) ]
@@ -4109,6 +4217,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "as_leaf_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4132,6 +4241,7 @@ Module collections.
                           []
                           [ Ty.path "u16" ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -4410,6 +4520,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "ascend",
+                        [],
                         []
                       |),
                       [
@@ -4464,6 +4575,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Edge"
                                   ],
                                 "left_kv",
+                                [],
                                 []
                               |),
                               [ M.read (| parent_edge |) ]
@@ -4543,6 +4655,7 @@ Module collections.
                                                           "alloc::collections::btree::node::marker::Edge"
                                                       ],
                                                     "descend",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4569,6 +4682,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::KV"
                                                           ],
                                                         "left_edge",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| left_parent_kv |) ]
@@ -4611,6 +4725,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::Edge"
                                           ],
                                         "right_kv",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| parent_edge |) ]
@@ -4691,6 +4806,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "descend",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4717,6 +4833,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::KV"
                                                                   ],
                                                                 "right_edge",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| right_parent_kv |) ]
@@ -4748,6 +4865,7 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4765,6 +4883,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "none",
+                                                          [],
                                                           []
                                                         |),
                                                         []
@@ -4848,6 +4967,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "borrow_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4867,6 +4987,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "as_leaf_mut",
+                        [],
                         []
                       |),
                       [ root_node ]
@@ -4912,6 +5033,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Leaf"
                     ],
                   "forget_type",
+                  [],
                   []
                 |),
                 [
@@ -4927,6 +5049,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "new_leaf",
+                      [],
                       [ A ]
                     |),
                     [ M.read (| alloc |) ]
@@ -5035,6 +5158,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Internal"
                                                 ],
                                               "forget_type",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5053,6 +5177,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Internal"
                                                     ],
                                                   "new_internal",
+                                                  [],
                                                   [ A ]
                                                 |),
                                                 [ M.read (| old_root |); M.read (| alloc |) ]
@@ -5187,6 +5312,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "cast_to_internal_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -5202,6 +5328,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "borrow_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5223,6 +5350,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "as_internal_ptr",
+                        [],
                         []
                       |),
                       [ internal_self ]
@@ -5252,6 +5380,7 @@ Module collections.
                               ]
                           ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -5291,6 +5420,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "clear_parent_link",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -5299,7 +5429,15 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
+                      M.get_trait_method (|
+                        "core::alloc::Allocator",
+                        A,
+                        [],
+                        [],
+                        "deallocate",
+                        [],
+                        []
+                      |),
                       [
                         alloc;
                         M.call_closure (|
@@ -5314,6 +5452,7 @@ Module collections.
                                   [ K; V ]
                               ],
                             "cast",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [ M.read (| top |) ]
@@ -5322,6 +5461,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "new",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::InternalNode")
@@ -5545,6 +5685,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -5556,8 +5697,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "u16" ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| M.read (| len |) |) ]
@@ -5608,6 +5751,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -5623,6 +5767,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -5640,6 +5785,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -5655,6 +5801,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
@@ -5685,6 +5832,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "new_kv",
+                      [],
                       []
                     |),
                     [
@@ -5753,6 +5901,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::KV"
                     ],
                   "into_val_mut",
+                  [],
                   []
                 |),
                 [
@@ -5768,6 +5917,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "push_with_handle",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| key |); M.read (| val |) ]
@@ -6152,6 +6302,7 @@ Module collections.
                                                     []
                                                     [ BorrowType; K; V; NodeType ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ node ]
@@ -6232,6 +6383,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "new_edge",
+                  [],
                   []
                 |),
                 [
@@ -6290,6 +6442,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "new_edge",
+                  [],
                   []
                 |),
                 [
@@ -6391,6 +6544,7 @@ Module collections.
                                   []
                                   [ BorrowType; K; V; NodeType ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
@@ -6471,6 +6625,7 @@ Module collections.
                           []
                           [ BorrowType; K; V; NodeType ],
                         "reborrow",
+                        [],
                         []
                       |),
                       [
@@ -6546,6 +6701,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "reborrow_mut",
+                        [],
                         []
                       |),
                       [
@@ -6604,6 +6760,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "dormant",
+                        [],
                         []
                       |),
                       [
@@ -6680,6 +6837,7 @@ Module collections.
                             NodeType
                           ],
                         "awaken",
+                        [],
                         []
                       |),
                       [
@@ -6775,6 +6933,7 @@ Module collections.
                                                     []
                                                     [ BorrowType; K; V; NodeType ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ node ]
@@ -6885,6 +7044,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
                                   "new_kv",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6971,6 +7131,7 @@ Module collections.
                                       []
                                       [ BorrowType; K; V; NodeType ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7002,6 +7163,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
                                   "new_kv",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7318,6 +7480,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Leaf"
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7376,6 +7539,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::Leaf"
                             ],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -7410,6 +7574,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -7462,6 +7627,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -7507,6 +7673,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [
@@ -7538,6 +7705,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "new_kv",
+                      [],
                       []
                     |),
                     [
@@ -7629,6 +7797,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Leaf"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7666,6 +7835,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Edge"
                                   ],
                                 "insert_fit",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| key |); M.read (| val |) ]
@@ -7693,6 +7863,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
                                   "dormant",
+                                  [],
                                   []
                                 |),
                                 [ handle ]
@@ -7749,6 +7920,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "new_kv",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7785,6 +7957,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "split",
+                                        [],
                                         [ A ]
                                       |),
                                       [ M.read (| middle |); M.read (| alloc |) ]
@@ -7828,6 +8001,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "new_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7846,6 +8020,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Leaf"
                                                         ],
                                                       "reborrow_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7893,6 +8068,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "new_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7911,6 +8087,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Leaf"
                                                         ],
                                                       "borrow_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -7950,6 +8127,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "dormant",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7976,6 +8154,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "insert_fit",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8084,6 +8263,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::Edge"
                                 ],
                               "insert",
+                              [],
                               [ A ]
                             |),
                             [
@@ -8091,7 +8271,15 @@ Module collections.
                               M.read (| key |);
                               M.read (| value |);
                               M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  A,
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
                                 [ alloc ]
                               |)
                             ]
@@ -8128,6 +8316,7 @@ Module collections.
                                               Ty.path "alloc::collections::btree::node::marker::KV"
                                             ],
                                           "awaken",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| handle |) ]
@@ -8162,6 +8351,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                                           ],
                                         "forget_node_type",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| split |) ]
@@ -8204,6 +8394,7 @@ Module collections.
                                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                                       ],
                                                     "ascend",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8252,6 +8443,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "insert",
+                                                            [],
                                                             [ A ]
                                                           |),
                                                           [
@@ -8288,7 +8480,9 @@ Module collections.
                                                                 "core::clone::Clone",
                                                                 A,
                                                                 [],
+                                                                [],
                                                                 "clone",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ alloc ]
@@ -8331,6 +8525,7 @@ Module collections.
                                                                               "alloc::collections::btree::node::marker::KV"
                                                                           ],
                                                                         "awaken",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| handle |) ]
@@ -8362,6 +8557,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::Internal"
                                                                     ],
                                                                   "forget_node_type",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| split |) ]
@@ -8387,6 +8583,7 @@ Module collections.
                                                                 M.get_trait_method (|
                                                                   "core::ops::function::FnOnce",
                                                                   impl_FnOnce_SplitResult_'a__K__V__marker_LeafOrInternal__,
+                                                                  [],
                                                                   [
                                                                     Ty.tuple
                                                                       [
@@ -8403,6 +8600,7 @@ Module collections.
                                                                       ]
                                                                   ],
                                                                   "call_once",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8443,6 +8641,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::KV"
                                                                   ],
                                                                 "awaken",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| handle |) ]
@@ -8526,6 +8725,7 @@ Module collections.
                               [ K; V ]
                           ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -8541,6 +8741,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "as_internal_ptr",
+                            [],
                             []
                           |),
                           [
@@ -8582,6 +8783,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "descend",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -8601,6 +8803,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "set_parent_link",
+                        [],
                         []
                       |),
                       [ child; M.read (| ptr |); M.read (| idx |) ]
@@ -8680,6 +8883,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Internal"
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8807,6 +9011,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::Internal"
                             ],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -8841,6 +9046,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -8893,6 +9099,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -8955,6 +9162,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "edge_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -9029,6 +9237,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [
@@ -9055,6 +9264,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "correct_childrens_parent_links",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
@@ -9210,6 +9420,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9247,6 +9458,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Edge"
                                   ],
                                 "insert_fit",
+                                [],
                                 []
                               |),
                               [ self; M.read (| key |); M.read (| val |); M.read (| edge |) ]
@@ -9303,6 +9515,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "new_kv",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9339,6 +9552,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "split",
+                                        [],
                                         [ A ]
                                       |),
                                       [ M.read (| middle |); M.read (| alloc |) ]
@@ -9382,6 +9596,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "new_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9400,6 +9615,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Internal"
                                                         ],
                                                       "reborrow_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9447,6 +9663,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "new_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9465,6 +9682,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Internal"
                                                         ],
                                                       "borrow_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9504,6 +9722,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::Edge"
                                           ],
                                         "insert_fit",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9593,6 +9812,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "as_internal_ptr",
+                        [],
                         []
                       |),
                       [
@@ -9623,6 +9843,7 @@ Module collections.
                               ]
                           ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -9648,6 +9869,7 @@ Module collections.
                                   ]
                               ],
                             "get_unchecked",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -9734,6 +9956,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "new_edge",
+                  [],
                   []
                 |),
                 [
@@ -9749,6 +9972,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Internal"
                         ],
                       "forget_type",
+                      [],
                       []
                     |),
                     [
@@ -9856,6 +10080,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9904,6 +10129,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; NodeType
                           ],
                         "into_leaf",
+                        [],
                         []
                       |),
                       [
@@ -9923,6 +10149,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_ref",
+                        [],
                         []
                       |),
                       [
@@ -9934,6 +10161,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
                             "get_unchecked",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -9960,6 +10188,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_ref",
+                        [],
                         []
                       |),
                       [
@@ -9971,6 +10200,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
                             "get_unchecked",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -10034,6 +10264,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                   "assume_init_mut",
+                  [],
                   []
                 |),
                 [
@@ -10044,6 +10275,7 @@ Module collections.
                         []
                         [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ],
                       "key_area_mut",
+                      [],
                       [
                         Ty.path "usize";
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -10133,6 +10365,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10181,6 +10414,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "into_leaf_mut",
+                        [],
                         []
                       |),
                       [
@@ -10199,6 +10433,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                       "assume_init_mut",
+                      [],
                       []
                     |),
                     [
@@ -10209,6 +10444,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                           "get_unchecked_mut",
+                          [],
                           [ Ty.path "usize" ]
                         |),
                         [
@@ -10299,6 +10535,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10347,6 +10584,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "into_leaf_mut",
+                        [],
                         []
                       |),
                       [
@@ -10366,6 +10604,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_mut",
+                        [],
                         []
                       |),
                       [
@@ -10377,6 +10616,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -10403,6 +10643,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
+                        [],
                         []
                       |),
                       [
@@ -10414,6 +10655,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -10508,6 +10750,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10556,6 +10799,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "as_leaf_mut",
+                        [],
                         []
                       |),
                       [
@@ -10573,6 +10817,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_mut",
+                        [],
                         []
                       |),
                       [
@@ -10584,6 +10829,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -10610,6 +10856,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
+                        [],
                         []
                       |),
                       [
@@ -10621,6 +10868,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -10690,6 +10938,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "kv_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -10802,6 +11051,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10850,6 +11100,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -10892,6 +11143,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -10907,6 +11159,7 @@ Module collections.
                                 NodeType
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -10936,6 +11189,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -10951,6 +11205,7 @@ Module collections.
                                 NodeType
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.path "usize";
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
@@ -10995,6 +11250,7 @@ Module collections.
                                 NodeType
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -11036,9 +11292,11 @@ Module collections.
                               [ Value.Integer IntegerKind.Usize 11 ]
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index_mut",
+                            [],
                             []
                           |),
                           [
@@ -11076,6 +11334,7 @@ Module collections.
                                 NodeType
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -11117,9 +11376,11 @@ Module collections.
                               [ Value.Integer IntegerKind.Usize 11 ]
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index_mut",
+                            [],
                             []
                           |),
                           [
@@ -11146,6 +11407,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [
@@ -11214,6 +11476,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; NodeType ],
                   "into_key_val_mut_at",
+                  [],
                   []
                 |),
                 [
@@ -11319,6 +11582,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11367,6 +11631,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; NodeType
                           ],
                         "as_leaf_dying",
+                        [],
                         []
                       |),
                       [
@@ -11384,6 +11649,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -11395,6 +11661,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -11421,6 +11688,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_read",
+                        [],
                         []
                       |),
                       [
@@ -11432,6 +11700,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -11524,6 +11793,7 @@ Module collections.
                                                       NodeType
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11572,6 +11842,7 @@ Module collections.
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; NodeType
                           ],
                         "as_leaf_dying",
+                        [],
                         []
                       |),
                       [
@@ -11589,6 +11860,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_drop",
+                        [],
                         []
                       |),
                       [
@@ -11600,6 +11872,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -11626,6 +11899,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_drop",
+                        [],
                         []
                       |),
                       [
@@ -11637,6 +11911,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -11710,6 +11985,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "new",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| alloc |) ]
@@ -11735,6 +12011,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "split_leaf_data",
+                        [],
                         []
                       |),
                       [ self; M.read (| new_node |) ]
@@ -11754,6 +12031,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "from_new_leaf",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| new_node |) ]
@@ -11817,6 +12095,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -11849,6 +12128,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "key_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -11900,6 +12180,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Leaf"
                               ],
                             "val_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -11944,6 +12225,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [
@@ -11979,6 +12261,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "left_edge",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -12056,6 +12339,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -12076,6 +12360,7 @@ Module collections.
                           []
                           [ K; V ],
                         "new",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| alloc |) ]
@@ -12101,6 +12386,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "split_leaf_data",
+                        [],
                         []
                       |),
                       [
@@ -12119,8 +12405,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "u16" ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -12169,6 +12457,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Internal"
                               ],
                             "edge_area_mut",
+                            [],
                             [
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
@@ -12242,9 +12531,11 @@ Module collections.
                                       ]
                                   ]
                               ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index_mut",
+                            [],
                             []
                           |),
                           [
@@ -12293,6 +12584,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "from_new_internal",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| new_node |); M.read (| height |) ]
@@ -12422,6 +12714,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "descend",
+                            [],
                             []
                           |),
                           [
@@ -12443,6 +12736,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "left_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| self1 |) ]
@@ -12468,6 +12762,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "descend",
+                            [],
                             []
                           |),
                           [
@@ -12489,6 +12784,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "right_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| self2 |) ]
@@ -12586,6 +12882,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -12631,6 +12928,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -12739,6 +13037,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -12763,6 +13062,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -12904,6 +13204,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ parent_node ]
@@ -12932,6 +13233,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ left_node ]
@@ -12960,6 +13262,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ right_node ]
@@ -13032,6 +13335,7 @@ Module collections.
                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
                                   "len_mut",
+                                  [],
                                   []
                                 |),
                                 [ left_node ]
@@ -13060,6 +13364,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::Internal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -13096,6 +13401,7 @@ Module collections.
                                     []
                                     [ K ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13112,6 +13418,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -13148,6 +13455,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -13184,6 +13492,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -13239,6 +13548,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::Internal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -13275,6 +13585,7 @@ Module collections.
                                     []
                                     [ V ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13291,6 +13602,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -13327,6 +13639,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -13363,6 +13676,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -13428,6 +13742,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::Internal"
                                         ],
                                       "edge_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -13489,6 +13804,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Internal"
                                     ],
                                   "correct_childrens_parent_links",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -13525,6 +13841,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Internal"
                                     ],
                                   "len_mut",
+                                  [],
                                   []
                                 |),
                                 [ parent_node ]
@@ -13573,6 +13890,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "cast_to_internal_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
@@ -13590,6 +13908,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::LeafOrInternal"
                                                 ],
                                               "reborrow_mut",
+                                              [],
                                               []
                                             |),
                                             [ left_node ]
@@ -13613,6 +13932,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "cast_to_internal_unchecked",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| right_node |) ]
@@ -13652,6 +13972,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Internal"
                                                 ],
                                               "edge_area_mut",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -13707,6 +14028,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Internal"
                                                 ],
                                               "edge_area_mut",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
@@ -13772,6 +14094,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Internal"
                                             ],
                                           "correct_childrens_parent_links",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
@@ -13805,7 +14128,9 @@ Module collections.
                                           "core::alloc::Allocator",
                                           A,
                                           [],
+                                          [],
                                           "deallocate",
+                                          [],
                                           []
                                         |),
                                         [
@@ -13823,6 +14148,7 @@ Module collections.
                                                     [ K; V ]
                                                 ],
                                               "cast",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [
@@ -13839,6 +14165,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "new",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path
@@ -13862,7 +14189,9 @@ Module collections.
                                           "core::alloc::Allocator",
                                           A,
                                           [],
+                                          [],
                                           "deallocate",
+                                          [],
                                           []
                                         |),
                                         [
@@ -13880,6 +14209,7 @@ Module collections.
                                                     [ K; V ]
                                                 ],
                                               "cast",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [
@@ -13896,6 +14226,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "new",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path
@@ -13917,6 +14248,7 @@ Module collections.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [
                                 Ty.tuple
                                   [
@@ -13942,6 +14274,7 @@ Module collections.
                                   ]
                               ],
                               "call_once",
+                              [],
                               []
                             |),
                             [
@@ -13987,6 +14320,7 @@ Module collections.
                     []
                     [ K; V ],
                   "do_merge",
+                  [],
                   [
                     Ty.function
                       [
@@ -14097,6 +14431,7 @@ Module collections.
                     []
                     [ K; V ],
                   "do_merge",
+                  [],
                   [
                     Ty.function
                       [
@@ -14228,6 +14563,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -14253,6 +14589,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -14343,6 +14680,7 @@ Module collections.
                           []
                           [ K; V ],
                         "merge_tracking_child",
+                        [],
                         [ A ]
                       |),
                       [ M.read (| self |); M.read (| alloc |) ]
@@ -14403,6 +14741,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "new_edge",
+                      [],
                       []
                     |),
                     [ M.read (| child |); M.read (| new_idx |) ]
@@ -14450,6 +14789,7 @@ Module collections.
                           []
                           [ K; V ],
                         "bulk_steal_left",
+                        [],
                         []
                       |),
                       [ self; Value.Integer IntegerKind.Usize 1 ]
@@ -14474,6 +14814,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "new_edge",
+                      [],
                       []
                     |),
                     [
@@ -14530,6 +14871,7 @@ Module collections.
                           []
                           [ K; V ],
                         "bulk_steal_right",
+                        [],
                         []
                       |),
                       [ self; Value.Integer IntegerKind.Usize 1 ]
@@ -14554,6 +14896,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "new_edge",
+                      [],
                       []
                     |),
                     [
@@ -14703,6 +15046,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| left_node |) ]
@@ -14730,6 +15074,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| right_node |) ]
@@ -14828,6 +15173,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| left_node |) ]
@@ -14848,6 +15194,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| right_node |) ]
@@ -14876,6 +15223,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "key_area_mut",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -14924,6 +15272,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "val_area_mut",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -14972,6 +15321,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "key_area_mut",
+                              [],
                               [
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                                 Ty.apply
@@ -15011,6 +15361,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "key_area_mut",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -15064,6 +15415,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "val_area_mut",
+                              [],
                               [
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                                 Ty.apply
@@ -15103,6 +15455,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "val_area_mut",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -15141,6 +15494,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                           "assume_init_read",
+                          [],
                           []
                         |),
                         [
@@ -15156,6 +15510,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "key_area_mut",
+                              [],
                               [
                                 Ty.path "usize";
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -15172,6 +15527,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                           "assume_init_read",
+                          [],
                           []
                         |),
                         [
@@ -15187,6 +15543,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "val_area_mut",
+                              [],
                               [
                                 Ty.path "usize";
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
@@ -15217,6 +15574,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "replace_kv",
+                          [],
                           []
                         |),
                         [
@@ -15246,6 +15604,7 @@ Module collections.
                                     []
                                     [ K ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15262,6 +15621,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -15291,6 +15651,7 @@ Module collections.
                                     []
                                     [ V ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15307,6 +15668,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -15346,6 +15708,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [
@@ -15362,6 +15725,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "reborrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| left_node |) ]
@@ -15380,6 +15744,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [
@@ -15396,6 +15761,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "reborrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| right_node |) ]
@@ -15454,6 +15820,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -15529,6 +15896,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -15586,6 +15954,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -15637,6 +16006,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::Range")
@@ -15826,6 +16196,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| left_node |) ]
@@ -15853,6 +16224,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| right_node |) ]
@@ -15951,6 +16323,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| left_node |) ]
@@ -15971,6 +16344,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len_mut",
+                        [],
                         []
                       |),
                       [ M.read (| right_node |) ]
@@ -15984,6 +16358,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                           "assume_init_read",
+                          [],
                           []
                         |),
                         [
@@ -15999,6 +16374,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "key_area_mut",
+                              [],
                               [
                                 Ty.path "usize";
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
@@ -16021,6 +16397,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                           "assume_init_read",
+                          [],
                           []
                         |),
                         [
@@ -16036,6 +16413,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "val_area_mut",
+                              [],
                               [
                                 Ty.path "usize";
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
@@ -16072,6 +16450,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "replace_kv",
+                          [],
                           []
                         |),
                         [
@@ -16101,6 +16480,7 @@ Module collections.
                                     []
                                     [ K ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16117,6 +16497,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -16140,6 +16521,7 @@ Module collections.
                                     []
                                     [ V ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16156,6 +16538,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.path "usize";
                                         Ty.apply
@@ -16192,6 +16575,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -16234,6 +16618,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -16289,6 +16674,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -16331,6 +16717,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -16386,6 +16773,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "key_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -16435,6 +16823,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "val_area_mut",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -16481,6 +16870,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [
@@ -16497,6 +16887,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "reborrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| left_node |) ]
@@ -16515,6 +16906,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [
@@ -16531,6 +16923,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "reborrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| right_node |) ]
@@ -16589,6 +16982,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -16635,6 +17029,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -16714,6 +17109,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "edge_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -16772,6 +17168,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::Range")
@@ -16812,6 +17209,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::Range")
@@ -16924,6 +17322,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "new_edge",
+                  [],
                   []
                 |),
                 [
@@ -16935,6 +17334,7 @@ Module collections.
                         [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "forget_type",
+                      [],
                       []
                     |),
                     [
@@ -17017,6 +17417,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::KV"
                     ],
                   "new_kv",
+                  [],
                   []
                 |),
                 [
@@ -17028,6 +17429,7 @@ Module collections.
                         [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "forget_type",
+                      [],
                       []
                     |),
                     [
@@ -17121,6 +17523,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "force",
+                        [],
                         []
                       |),
                       [
@@ -17256,6 +17659,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "cast_to_leaf_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17399,6 +17803,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "into_node",
+                        [],
                         []
                       |),
                       [
@@ -17421,6 +17826,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "reborrow_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -17442,6 +17848,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ left_node ]
@@ -17465,6 +17872,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "reborrow_mut",
+                        [],
                         []
                       |),
                       [ M.read (| right |) ]
@@ -17494,6 +17902,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ right_node ]
@@ -17595,6 +18004,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "len_mut",
+                                [],
                                 []
                               |),
                               [ left_node ]
@@ -17616,6 +18026,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "len_mut",
+                                [],
                                 []
                               |),
                               [ right_node ]
@@ -17644,6 +18055,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "key_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -17683,6 +18095,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "key_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -17731,6 +18144,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "val_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -17770,6 +18184,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "val_area_mut",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -17813,6 +18228,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "force",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| left_node |) ]
@@ -17830,6 +18246,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "force",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| right_node |) ]
@@ -17889,6 +18306,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Internal"
                                               ],
                                             "edge_area_mut",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
@@ -17948,6 +18366,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Internal"
                                               ],
                                             "edge_area_mut",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
@@ -18007,6 +18426,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::Internal"
                                           ],
                                         "correct_childrens_parent_links",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
@@ -18156,6 +18576,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "forget_type",
+                        [],
                         []
                       |),
                       [
@@ -18189,6 +18610,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Leaf"
                           ],
                         "forget_type",
+                        [],
                         []
                       |),
                       [
@@ -18249,6 +18671,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "forget_type",
+                        [],
                         []
                       |),
                       [
@@ -18282,6 +18705,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "forget_type",
+                        [],
                         []
                       |),
                       [
@@ -18524,6 +18948,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18580,6 +19005,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18628,6 +19054,7 @@ Module collections.
                                             [ T ]
                                         ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| slice_ptr |); M.read (| idx |) ]
@@ -18644,6 +19071,7 @@ Module collections.
                                           [ T ]
                                       ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -18671,6 +19099,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "write",
+                      [],
                       []
                     |),
                     [
@@ -18681,6 +19110,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| slice_ptr |); M.read (| idx |) ]
@@ -18725,6 +19155,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18781,6 +19212,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18792,6 +19224,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "assume_init_read",
+                      [],
                       []
                     |),
                     [
@@ -18802,6 +19235,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| slice_ptr |); M.read (| idx |) ]
@@ -18828,6 +19262,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -18842,6 +19277,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| slice_ptr |); M.read (| idx |) ]
@@ -18885,6 +19321,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18909,6 +19346,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [ M.read (| slice_ptr |); M.read (| distance |) ]
@@ -18923,6 +19361,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -18964,6 +19403,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -18986,6 +19426,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| slice_ptr |); M.read (| distance |) ]
@@ -18999,6 +19440,7 @@ Module collections.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -19054,6 +19496,7 @@ Module collections.
                                             [ T ]
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| src |) ]
@@ -19070,6 +19513,7 @@ Module collections.
                                             [ T ]
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| dst |) ]
@@ -19107,6 +19551,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| src |) ]
@@ -19118,6 +19563,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| dst |) ]
@@ -19129,6 +19575,7 @@ Module collections.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| src |) ]

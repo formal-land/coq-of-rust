@@ -75,6 +75,7 @@ Module str.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
@@ -145,7 +146,7 @@ Module str.
           let~ trunc_len :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "floor_char_boundary", [] |),
+                M.get_associated_function (| Ty.path "str", "floor_char_boundary", [], [] |),
                 [
                   M.read (| s |);
                   M.read (|
@@ -160,8 +161,10 @@ Module str.
                 M.get_trait_method (|
                   "core::ops::index::Index",
                   Ty.path "str",
+                  [],
                   [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                   "index",
+                  [],
                   []
                 |),
                 [
@@ -185,7 +188,7 @@ Module str.
                             BinOp.lt (|
                               M.read (| trunc_len |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| s |) ]
                               |)
                             |)
@@ -209,7 +212,7 @@ Module str.
                             BinOp.gt (|
                               M.read (| begin |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| s |) ]
                               |)
                             |),
@@ -217,7 +220,7 @@ Module str.
                               (BinOp.gt (|
                                 M.read (| end_ |),
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                   [ M.read (| s |) ]
                                 |)
                               |)))
@@ -243,6 +246,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| s |) ]
@@ -267,6 +271,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
+                                    [],
                                     []
                                   |),
                                   [
@@ -285,6 +290,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [ oob_index ]
@@ -293,6 +299,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
+                                              [],
                                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                             |),
                                             [ s_trunc ]
@@ -301,6 +308,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
+                                              [],
                                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                             |),
                                             [ ellipsis ]
@@ -339,6 +347,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -358,6 +367,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ begin ]
@@ -366,6 +376,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ end_ ]
@@ -374,6 +385,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ s_trunc ]
@@ -382,6 +394,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ ellipsis ]
@@ -412,6 +425,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| s |); M.read (| begin |) ]
@@ -427,7 +441,7 @@ Module str.
           let~ char_start :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "floor_char_boundary", [] |),
+                M.get_associated_function (| Ty.path "str", "floor_char_boundary", [], [] |),
                 [ M.read (| s |); M.read (| index |) ]
               |)
             |) in
@@ -437,6 +451,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -445,18 +460,21 @@ Module str.
                       "core::iter::traits::iterator::Iterator",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "chars", [] |),
+                          M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                           [
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::index::Index",
                                 Ty.path "str",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -464,6 +482,7 @@ Module str.
                                     [ Ty.path "usize" ]
                                 ],
                                 "index",
+                                [],
                                 []
                               |),
                               [
@@ -491,7 +510,7 @@ Module str.
                     BinOp.Wrap.add (|
                       M.read (| char_start |),
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                        M.get_associated_function (| Ty.path "char", "len_utf8", [], [] |),
                         [ M.read (| ch |) ]
                       |)
                     |))
@@ -502,7 +521,7 @@ Module str.
               M.get_function (| "core::panicking::panic_fmt", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array
@@ -521,6 +540,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ index ]
@@ -529,6 +549,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_debug",
+                              [],
                               [ Ty.path "char" ]
                             |),
                             [ ch ]
@@ -537,6 +558,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_debug",
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ]
                             |),
@@ -546,6 +568,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ s_trunc ]
@@ -554,6 +577,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ ellipsis ]
@@ -594,11 +618,12 @@ Module str.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "len",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -620,7 +645,7 @@ Module str.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "len", [] |),
+              M.get_associated_function (| Ty.path "str", "len", [], [] |),
               [ M.read (| self |) ]
             |),
             Value.Integer IntegerKind.Usize 0
@@ -690,11 +715,12 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         [ Ty.path "usize" ]
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                           [ M.read (| self |) ]
                         |);
                         M.read (| index |)
@@ -709,7 +735,7 @@ Module str.
                           BinOp.eq (|
                             M.read (| index |),
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
                               [ M.read (| self |) ]
                             |)
                           |)
@@ -729,6 +755,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "u8",
                               "is_utf8_char_boundary",
+                              [],
                               []
                             |),
                             [ M.read (| b |) ]
@@ -777,7 +804,7 @@ Module str.
                           BinOp.ge (|
                             M.read (| index |),
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
                               [ M.read (| self |) ]
                             |)
                           |)
@@ -785,7 +812,7 @@ Module str.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -794,7 +821,7 @@ Module str.
                     (let~ lower_bound :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                          M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
                           [ M.read (| index |); Value.Integer IntegerKind.Usize 3 ]
                         |)
                       |) in
@@ -805,7 +832,9 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "rposition",
+                            [],
                             [
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
@@ -818,6 +847,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -825,6 +855,7 @@ Module str.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeInclusive")
@@ -832,6 +863,7 @@ Module str.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -839,6 +871,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "as_bytes",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -850,6 +883,7 @@ Module str.
                                             []
                                             [ Ty.path "usize" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| lower_bound |); M.read (| index |) ]
@@ -875,6 +909,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "u8",
                                                   "is_utf8_char_boundary",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| M.read (| b |) |) ]
@@ -893,6 +928,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             "unwrap_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| new_index |) ]
@@ -939,7 +975,7 @@ Module str.
                           BinOp.gt (|
                             M.read (| index |),
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
                               [ M.read (| self |) ]
                             |)
                           |)
@@ -947,7 +983,7 @@ Module str.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     |)));
@@ -956,14 +992,22 @@ Module str.
                     (let~ upper_bound :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::Ord",
+                            Ty.path "usize",
+                            [],
+                            [],
+                            "min",
+                            [],
+                            []
+                          |),
                           [
                             BinOp.Wrap.add (|
                               M.read (| index |),
                               Value.Integer IntegerKind.Usize 4
                             |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
+                              M.get_associated_function (| Ty.path "str", "len", [], [] |),
                               [ M.read (| self |) ]
                             |)
                           ]
@@ -974,6 +1018,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "map_or",
+                          [],
                           [
                             Ty.path "usize";
                             Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
@@ -985,7 +1030,9 @@ Module str.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "position",
+                              [],
                               [
                                 Ty.function
                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
@@ -998,6 +1045,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1005,6 +1053,7 @@ Module str.
                                       M.get_trait_method (|
                                         "core::ops::index::Index",
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
@@ -1012,6 +1061,7 @@ Module str.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1019,6 +1069,7 @@ Module str.
                                           M.get_associated_function (|
                                             Ty.path "str",
                                             "as_bytes",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -1050,6 +1101,7 @@ Module str.
                                                   M.get_associated_function (|
                                                     Ty.path "u8",
                                                     "is_utf8_char_boundary",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| M.read (| b |) |) ]
@@ -1187,8 +1239,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
+              [],
               [ Ty.path "str" ],
               "get",
+              [],
               []
             |),
             [ M.read (| i |); M.read (| self |) ]
@@ -1213,8 +1267,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
+              [],
               [ Ty.path "str" ],
               "get_mut",
+              [],
               []
             |),
             [ M.read (| i |); M.read (| self |) ]
@@ -1242,8 +1298,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
+              [],
               [ Ty.path "str" ],
               "get_unchecked",
+              [],
               []
             |),
             [ M.read (| i |); M.read (| self |) ]
@@ -1272,8 +1330,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
+              [],
               [ Ty.path "str" ],
               "get_unchecked_mut",
+              [],
               []
             |),
             [ M.read (| i |); M.read (| self |) ]
@@ -1303,8 +1363,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+              [],
               [ Ty.path "str" ],
               "get_unchecked",
+              [],
               []
             |),
             [
@@ -1339,8 +1401,10 @@ Module str.
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+              [],
               [ Ty.path "str" ],
               "get_unchecked_mut",
+              [],
               []
             |),
             [
@@ -1374,7 +1438,7 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "split_at_checked", [] |),
+                  M.get_associated_function (| Ty.path "str", "split_at_checked", [], [] |),
                   [ M.read (| self |); M.read (| mid |) ]
                 |)
               |),
@@ -1435,14 +1499,24 @@ Module str.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "is_char_boundary",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| mid |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "split_at_mut_unchecked", [] |),
+                        M.get_associated_function (|
+                          Ty.path "str",
+                          "split_at_mut_unchecked",
+                          [],
+                          []
+                        |),
                         [ M.read (| self |); M.read (| mid |) ]
                       |)
                     |)));
@@ -1491,7 +1565,12 @@ Module str.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "is_char_boundary",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| mid |) ]
                           |)
                         |)) in
@@ -1506,6 +1585,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -1527,6 +1607,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -1542,7 +1623,12 @@ Module str.
                                       ("start", M.read (| mid |));
                                       ("end_",
                                         M.call_closure (|
-                                          M.get_associated_function (| Ty.path "str", "len", [] |),
+                                          M.get_associated_function (|
+                                            Ty.path "str",
+                                            "len",
+                                            [],
+                                            []
+                                          |),
                                           [ M.read (| self |) ]
                                         |))
                                     ]
@@ -1589,7 +1675,12 @@ Module str.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "is_char_boundary",
+                              [],
+                              []
+                            |),
                             [ M.read (| self |); M.read (| mid |) ]
                           |)
                         |)) in
@@ -1602,6 +1693,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "str",
                               "split_at_mut_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| mid |) ]
@@ -1642,14 +1734,14 @@ Module str.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_mut_ptr", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_mut_ptr", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -1683,6 +1775,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |); M.read (| mid |) ]
@@ -1719,11 +1812,12 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "iter",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   ]
@@ -1750,7 +1844,7 @@ Module str.
               ("front_offset", Value.Integer IntegerKind.Usize 0);
               ("iter",
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                   [ M.read (| self |) ]
                 |))
             ]))
@@ -1777,7 +1871,9 @@ Module str.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                   [],
+                  [],
                   "copied",
+                  [],
                   [ Ty.path "u8" ]
                 |),
                 [
@@ -1785,11 +1881,12 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "iter",
+                      [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                        M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                         [ M.read (| self |) ]
                       |)
                     ]
@@ -1824,7 +1921,9 @@ Module str.
                       []
                       [ Ty.path "core::str::IsWhitespace" ],
                     [],
+                    [],
                     "filter",
+                    [],
                     [ Ty.path "core::str::IsNotEmpty" ]
                   |),
                   [
@@ -1832,6 +1931,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.path "str",
                         "split",
+                        [],
                         [ Ty.path "core::str::IsWhitespace" ]
                       |),
                       [ M.read (| self |); Value.StructTuple "core::str::IsWhitespace" [] ]
@@ -1875,7 +1975,9 @@ Module str.
                         Ty.path "core::str::BytesIsNotEmpty"
                       ],
                     [],
+                    [],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                       Ty.path "core::str::UnsafeBytesToStr"
@@ -1890,7 +1992,9 @@ Module str.
                           []
                           [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ],
                         [],
+                        [],
                         "filter",
+                        [],
                         [ Ty.path "core::str::BytesIsNotEmpty" ]
                       |),
                       [
@@ -1898,11 +2002,12 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "split",
+                            [],
                             [ Ty.path "core::str::IsAsciiWhitespace" ]
                           |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                              M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                               [ M.read (| self |) ]
                             |);
                             Value.StructTuple "core::str::IsAsciiWhitespace" []
@@ -1945,7 +2050,9 @@ Module str.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ],
                   [],
+                  [],
                   "map",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "core::str::LinesMap" ]
                 |),
                 [
@@ -1953,6 +2060,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.path "str",
                       "split_inclusive",
+                      [],
                       [ Ty.path "char" ]
                     |),
                     [ M.read (| self |); Value.UnicodeChar 10 ]
@@ -1980,7 +2088,7 @@ Module str.
             "core::str::iter::LinesAny"
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "lines", [] |),
+                M.get_associated_function (| Ty.path "str", "lines", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]))
@@ -2004,7 +2112,7 @@ Module str.
             [
               ("chars",
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                   [ M.read (| self |) ]
                 |));
               ("extra", Value.Integer IntegerKind.U16 0)
@@ -2026,7 +2134,15 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_contained_in", [] |),
+            M.get_trait_method (|
+              "core::str::pattern::Pattern",
+              P,
+              [],
+              [],
+              "is_contained_in",
+              [],
+              []
+            |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2046,7 +2162,15 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_prefix_of", [] |),
+            M.get_trait_method (|
+              "core::str::pattern::Pattern",
+              P,
+              [],
+              [],
+              "is_prefix_of",
+              [],
+              []
+            |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2069,7 +2193,15 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_suffix_of", [] |),
+            M.get_trait_method (|
+              "core::str::pattern::Pattern",
+              P,
+              [],
+              [],
+              "is_suffix_of",
+              [],
+              []
+            |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2095,6 +2227,7 @@ Module str.
                 []
                 [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
               "map",
+              [],
               [
                 Ty.path "usize";
                 Ty.function
@@ -2108,7 +2241,9 @@ Module str.
                   "core::str::pattern::Searcher",
                   Ty.associated,
                   [],
+                  [],
                   "next_match",
+                  [],
                   []
                 |),
                 [
@@ -2118,7 +2253,9 @@ Module str.
                         "core::str::pattern::Pattern",
                         P,
                         [],
+                        [],
                         "into_searcher",
+                        [],
                         []
                       |),
                       [ M.read (| pat |); M.read (| self |) ]
@@ -2173,6 +2310,7 @@ Module str.
                 []
                 [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
               "map",
+              [],
               [
                 Ty.path "usize";
                 Ty.function
@@ -2186,7 +2324,9 @@ Module str.
                   "core::str::pattern::ReverseSearcher",
                   Ty.associated,
                   [],
+                  [],
                   "next_match_back",
+                  [],
                   []
                 |),
                 [
@@ -2196,7 +2336,9 @@ Module str.
                         "core::str::pattern::Pattern",
                         P,
                         [],
+                        [],
                         "into_searcher",
+                        [],
                         []
                       |),
                       [ M.read (| pat |); M.read (| self |) ]
@@ -2256,7 +2398,7 @@ Module str.
                   ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                       [ M.read (| self |) ]
                     |));
                   ("matcher",
@@ -2265,7 +2407,9 @@ Module str.
                         "core::str::pattern::Pattern",
                         P,
                         [],
+                        [],
                         "into_searcher",
+                        [],
                         []
                       |),
                       [ M.read (| pat |); M.read (| self |) ]
@@ -2305,7 +2449,7 @@ Module str.
                   ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                       [ M.read (| self |) ]
                     |));
                   ("matcher",
@@ -2314,7 +2458,9 @@ Module str.
                         "core::str::pattern::Pattern",
                         P,
                         [],
+                        [],
                         "into_searcher",
+                        [],
                         []
                       |),
                       [ M.read (| pat |); M.read (| self |) ]
@@ -2350,7 +2496,7 @@ Module str.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                      M.get_associated_function (| Ty.path "str", "split", [], [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
                   |),
@@ -2383,7 +2529,7 @@ Module str.
                   M.SubPointer.get_struct_tuple_field (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                        M.get_associated_function (| Ty.path "str", "split", [], [ P ] |),
                         [ M.read (| self |); M.read (| pat |) ]
                       |)
                     |),
@@ -2420,7 +2566,7 @@ Module str.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "split_terminator", [ P ] |),
+                      M.get_associated_function (| Ty.path "str", "split_terminator", [], [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
                   |),
@@ -2458,7 +2604,7 @@ Module str.
                       M.SubPointer.get_struct_tuple_field (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "split", [ P ] |),
+                            M.get_associated_function (| Ty.path "str", "split", [], [ P ] |),
                             [ M.read (| self |); M.read (| pat |) ]
                           |)
                         |),
@@ -2496,7 +2642,7 @@ Module str.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "splitn", [ P ] |),
+                      M.get_associated_function (| Ty.path "str", "splitn", [], [ P ] |),
                       [ M.read (| self |); M.read (| n |); M.read (| pat |) ]
                     |)
                   |),
@@ -2537,7 +2683,9 @@ Module str.
                             []
                             [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2546,7 +2694,9 @@ Module str.
                               "core::str::pattern::Searcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_match",
+                              [],
                               []
                             |),
                             [
@@ -2556,7 +2706,9 @@ Module str.
                                     "core::str::pattern::Pattern",
                                     P,
                                     [],
+                                    [],
                                     "into_searcher",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| delimiter |); M.read (| self |) ]
@@ -2594,6 +2746,7 @@ Module str.
                                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                                             ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -2601,6 +2754,7 @@ Module str.
                                           [ Ty.path "core::convert::Infallible" ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2638,6 +2792,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -2656,6 +2811,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeFrom")
@@ -2712,7 +2868,9 @@ Module str.
                             []
                             [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2721,7 +2879,9 @@ Module str.
                               "core::str::pattern::ReverseSearcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_match_back",
+                              [],
                               []
                             |),
                             [
@@ -2731,7 +2891,9 @@ Module str.
                                     "core::str::pattern::Pattern",
                                     P,
                                     [],
+                                    [],
                                     "into_searcher",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| delimiter |); M.read (| self |) ]
@@ -2769,6 +2931,7 @@ Module str.
                                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                                             ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -2776,6 +2939,7 @@ Module str.
                                           [ Ty.path "core::convert::Infallible" ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2813,6 +2977,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -2831,6 +2996,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeFrom")
@@ -2879,7 +3045,9 @@ Module str.
                       "core::str::pattern::Pattern",
                       P,
                       [],
+                      [],
                       "into_searcher",
+                      [],
                       []
                     |),
                     [ M.read (| pat |); M.read (| self |) ]
@@ -2912,7 +3080,7 @@ Module str.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "matches", [ P ] |),
+                      M.get_associated_function (| Ty.path "str", "matches", [], [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
                   |),
@@ -2948,7 +3116,9 @@ Module str.
                       "core::str::pattern::Pattern",
                       P,
                       [],
+                      [],
                       "into_searcher",
+                      [],
                       []
                     |),
                     [ M.read (| pat |); M.read (| self |) ]
@@ -2982,7 +3152,7 @@ Module str.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
+                      M.get_associated_function (| Ty.path "str", "match_indices", [], [ P ] |),
                       [ M.read (| self |); M.read (| pat |) ]
                     |)
                   |),
@@ -3011,6 +3181,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "str",
               "trim_matches",
+              [],
               [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
             |),
             [
@@ -3031,6 +3202,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "is_whitespace",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| c |) ]
@@ -3060,6 +3232,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "str",
               "trim_start_matches",
+              [],
               [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
             |),
             [
@@ -3080,6 +3253,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "is_whitespace",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| c |) ]
@@ -3109,6 +3283,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "str",
               "trim_end_matches",
+              [],
               [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
             |),
             [
@@ -3129,6 +3304,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "is_whitespace",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| c |) ]
@@ -3155,7 +3331,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "trim_start", [] |),
+            M.get_associated_function (| Ty.path "str", "trim_start", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3174,7 +3350,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "trim_end", [] |),
+            M.get_associated_function (| Ty.path "str", "trim_end", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3218,7 +3394,9 @@ Module str.
                     "core::str::pattern::Pattern",
                     P,
                     [],
+                    [],
                     "into_searcher",
+                    [],
                     []
                   |),
                   [ M.read (| pat |); M.read (| self |) ]
@@ -3237,7 +3415,9 @@ Module str.
                               "core::str::pattern::Searcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_reject",
+                              [],
                               []
                             |),
                             [ matcher ]
@@ -3272,7 +3452,9 @@ Module str.
                               "core::str::pattern::ReverseSearcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_reject_back",
+                              [],
                               []
                             |),
                             [ matcher ]
@@ -3297,6 +3479,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.path "str",
                   "get_unchecked",
+                  [],
                   [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                 |),
                 [
@@ -3334,7 +3517,7 @@ Module str.
             let~ i :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -3345,7 +3528,9 @@ Module str.
                     "core::str::pattern::Pattern",
                     P,
                     [],
+                    [],
                     "into_searcher",
+                    [],
                     []
                   |),
                   [ M.read (| pat |); M.read (| self |) ]
@@ -3364,7 +3549,9 @@ Module str.
                               "core::str::pattern::Searcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_reject",
+                              [],
                               []
                             |),
                             [ matcher ]
@@ -3389,6 +3576,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.path "str",
                   "get_unchecked",
+                  [],
                   [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                 |),
                 [
@@ -3399,7 +3587,7 @@ Module str.
                       ("start", M.read (| i |));
                       ("end_",
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "len", [] |),
+                          M.get_associated_function (| Ty.path "str", "len", [], [] |),
                           [ M.read (| self |) ]
                         |))
                     ]
@@ -3425,7 +3613,15 @@ Module str.
           (let self := M.alloc (| self |) in
           let prefix := M.alloc (| prefix |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::pattern::Pattern", P, [], "strip_prefix_of", [] |),
+            M.get_trait_method (|
+              "core::str::pattern::Pattern",
+              P,
+              [],
+              [],
+              "strip_prefix_of",
+              [],
+              []
+            |),
             [ M.read (| prefix |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3448,7 +3644,15 @@ Module str.
           (let self := M.alloc (| self |) in
           let suffix := M.alloc (| suffix |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::pattern::Pattern", P, [], "strip_suffix_of", [] |),
+            M.get_trait_method (|
+              "core::str::pattern::Pattern",
+              P,
+              [],
+              [],
+              "strip_suffix_of",
+              [],
+              []
+            |),
             [ M.read (| suffix |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3485,7 +3689,9 @@ Module str.
                     "core::str::pattern::Pattern",
                     P,
                     [],
+                    [],
                     "into_searcher",
+                    [],
                     []
                   |),
                   [ M.read (| pat |); M.read (| self |) ]
@@ -3504,7 +3710,9 @@ Module str.
                               "core::str::pattern::ReverseSearcher",
                               Ty.associated,
                               [],
+                              [],
                               "next_reject_back",
+                              [],
                               []
                             |),
                             [ matcher ]
@@ -3529,6 +3737,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.path "str",
                   "get_unchecked",
+                  [],
                   [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                 |),
                 [
@@ -3558,7 +3767,7 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "trim_start_matches", [ P ] |),
+            M.get_associated_function (| Ty.path "str", "trim_start_matches", [], [ P ] |),
             [ M.read (| self |); M.read (| pat |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3582,7 +3791,7 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "trim_end_matches", [ P ] |),
+            M.get_associated_function (| Ty.path "str", "trim_end_matches", [], [ P ] |),
             [ M.read (| self |); M.read (| pat |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3602,7 +3811,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::str::traits::FromStr", F, [], "from_str", [] |),
+            M.get_trait_method (| "core::str::traits::FromStr", F, [], [], "from_str", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3627,11 +3836,12 @@ Module str.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "is_ascii",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -3656,11 +3866,12 @@ Module str.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "as_ascii",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -3685,15 +3896,16 @@ Module str.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "eq_ignore_ascii_case",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| other |) ]
               |)
             ]
@@ -3720,7 +3932,7 @@ Module str.
             let~ me :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes_mut", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_bytes_mut", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -3729,6 +3941,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "make_ascii_uppercase",
+                  [],
                   []
                 |),
                 [ M.read (| me |) ]
@@ -3757,7 +3970,7 @@ Module str.
             let~ me :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes_mut", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_bytes_mut", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -3766,6 +3979,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "make_ascii_lowercase",
+                  [],
                   []
                 |),
                 [ M.read (| me |) ]
@@ -3797,11 +4011,12 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "trim_ascii_start",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 ]
@@ -3833,11 +4048,12 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "trim_ascii_end",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 ]
@@ -3869,11 +4085,12 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "trim_ascii",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 ]
@@ -3907,7 +4124,7 @@ Module str.
             let~ chars :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -3929,7 +4146,9 @@ Module str.
                               [ Ty.path "core::char::EscapeDebug" ]
                           ],
                         [],
+                        [],
                         "chain",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -3950,7 +4169,9 @@ Module str.
                               []
                               [ Ty.path "core::char::EscapeDebug" ],
                             [],
+                            [],
                             "flatten",
+                            [],
                             []
                           |),
                           [
@@ -3962,7 +4183,9 @@ Module str.
                                   []
                                   [ Ty.path "core::char::EscapeDebug" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -3970,6 +4193,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                                     "map",
+                                    [],
                                     [
                                       Ty.path "core::char::EscapeDebug";
                                       Ty.function
@@ -3983,7 +4207,9 @@ Module str.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.path "core::str::iter::Chars",
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ chars ]
@@ -4004,6 +4230,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "escape_debug_ext",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4030,7 +4257,9 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             Ty.path "core::str::iter::Chars",
                             [],
+                            [],
                             "flat_map",
+                            [],
                             [
                               Ty.path "core::char::EscapeDebug";
                               Ty.path "core::str::CharEscapeDebugContinue"
@@ -4070,12 +4299,14 @@ Module str.
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "core::str::iter::Chars",
                     [],
+                    [],
                     "flat_map",
+                    [],
                     [ Ty.path "core::char::EscapeDefault"; Ty.path "core::str::CharEscapeDefault" ]
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "chars", [] |),
+                      M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                       [ M.read (| self |) ]
                     |);
                     Value.StructTuple "core::str::CharEscapeDefault" []
@@ -4107,12 +4338,14 @@ Module str.
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "core::str::iter::Chars",
                     [],
+                    [],
                     "flat_map",
+                    [],
                     [ Ty.path "core::char::EscapeUnicode"; Ty.path "core::str::CharEscapeUnicode" ]
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "chars", [] |),
+                      M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                       [ M.read (| self |) ]
                     |);
                     Value.StructTuple "core::str::CharEscapeUnicode" []
@@ -4140,15 +4373,16 @@ Module str.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "subslice_range",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| self |) ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| substr |) ]
               |)
             ]
@@ -4189,7 +4423,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

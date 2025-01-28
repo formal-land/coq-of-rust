@@ -585,6 +585,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "cast",
+                            [],
                             [ Ty.tuple [] ]
                           |),
                           [
@@ -592,8 +593,10 @@ Module fmt.
                               M.get_trait_method (|
                                 "core::convert::From",
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                                 "from",
+                                [],
                                 []
                               |),
                               [ M.read (| x |) ]
@@ -650,11 +653,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |))
+                M.pointer_coercion
+                  (M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -673,11 +677,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |))
+                M.pointer_coercion
+                  (M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -696,7 +701,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ClosureFnPointer(Safe) *)
@@ -745,11 +750,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |))
+                M.pointer_coercion
+                  (M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -768,12 +774,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |))
+                  (M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -793,12 +799,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |))
+                  (M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -818,11 +824,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |))
+                M.pointer_coercion
+                  (M.get_trait_method (| "core::fmt::Pointer", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -841,11 +848,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |))
+                M.pointer_coercion
+                  (M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -864,12 +872,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |))
+                  (M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -889,12 +897,12 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.read (| x |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |))
+                  (M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

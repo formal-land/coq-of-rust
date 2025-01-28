@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
           "updated_incrementer::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -138,6 +146,7 @@ Module Impl_updated_incrementer_Incrementer.
           M.get_associated_function (|
             Ty.path "updated_incrementer::Incrementer",
             "init_env",
+            [],
             []
           |),
           []
@@ -201,7 +210,12 @@ Module Impl_updated_incrementer_Incrementer.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -221,6 +235,7 @@ Module Impl_updated_incrementer_Incrementer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [
@@ -292,6 +307,7 @@ Module Impl_updated_incrementer_Incrementer.
                     []
                     [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
                   "unwrap_or_else",
+                  [],
                   [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple [])
                   ]
                 |),
@@ -300,6 +316,7 @@ Module Impl_updated_incrementer_Incrementer.
                     M.get_associated_function (|
                       Ty.path "updated_incrementer::Env",
                       "set_code_hash",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "array")
@@ -313,6 +330,7 @@ Module Impl_updated_incrementer_Incrementer.
                           M.get_associated_function (|
                             Ty.path "updated_incrementer::Incrementer",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -362,7 +380,12 @@ Module Impl_updated_incrementer_Incrementer.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -379,6 +402,7 @@ Module Impl_updated_incrementer_Incrementer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "array")

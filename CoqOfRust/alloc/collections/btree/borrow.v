@@ -72,8 +72,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        [],
                         [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| t |) ]
@@ -85,6 +87,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |) ]
@@ -126,6 +129,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [
@@ -161,6 +165,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [
@@ -201,6 +206,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
                 [

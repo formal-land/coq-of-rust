@@ -120,6 +120,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                     "as_slice",
+                    [],
                     []
                   |),
                   [ M.read (| v |) ]
@@ -166,8 +167,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::iter::traits::collect::FromIterator",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [ T ],
                     "from_iter",
+                    [],
                     [ I ]
                   |),
                   [ M.read (| it |) ]

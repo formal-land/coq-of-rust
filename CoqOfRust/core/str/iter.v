@@ -29,7 +29,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -74,6 +76,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
               [
@@ -107,6 +110,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "from_u32_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ch |) ]
@@ -134,7 +138,12 @@ Module str.
               M.get_function (| "core::str::count::count_chars", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::str::iter::Chars",
+                    "as_str",
+                    [],
+                    []
+                  |),
                   [ self ]
                 |)
               ]
@@ -222,6 +231,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "array_chunks",
+                                [],
                                 []
                               |),
                               [
@@ -232,6 +242,7 @@ Module str.
                                       []
                                       [ Ty.path "u8" ],
                                     "as_slice",
+                                    [],
                                     []
                                   |),
                                   [
@@ -281,7 +292,9 @@ Module str.
                                                 [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ chunks ]
@@ -326,7 +339,9 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -362,7 +377,9 @@ Module str.
                                                                   []
                                                                   [ Ty.path "usize" ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -444,7 +461,9 @@ Module str.
                                                         (Ty.path "u8")
                                                     ],
                                                   [],
+                                                  [],
                                                   "sum",
+                                                  [],
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
@@ -456,7 +475,9 @@ Module str.
                                                         [ Value.Integer IntegerKind.Usize 32 ]
                                                         [ Ty.path "bool" ],
                                                       [],
+                                                      [],
                                                       "map",
+                                                      [],
                                                       [
                                                         Ty.path "u8";
                                                         Ty.function
@@ -473,7 +494,9 @@ Module str.
                                                             [ Value.Integer IntegerKind.Usize 32 ]
                                                             [ Ty.path "bool" ],
                                                           [],
+                                                          [],
                                                           "into_iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| start_bytes |) ]
@@ -536,6 +559,7 @@ Module str.
                                       [ Ty.path "usize" ]
                                   ],
                                 "unwrap_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -547,7 +571,9 @@ Module str.
                                       []
                                       [ Ty.path "u8" ],
                                     [],
+                                    [],
                                     "advance_by",
+                                    [],
                                     []
                                   |),
                                   [
@@ -581,7 +607,9 @@ Module str.
                                                   []
                                                   [ Ty.path "u8" ],
                                                 [],
+                                                [],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -610,6 +638,7 @@ Module str.
                                                 []
                                                 [ Ty.path "u8" ],
                                               "as_slice",
+                                              [],
                                               []
                                             |),
                                             [
@@ -669,6 +698,7 @@ Module str.
                                                   [ Ty.path "usize" ]
                                               ],
                                             "unwrap_unchecked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -680,7 +710,9 @@ Module str.
                                                   []
                                                   [ Ty.path "u8" ],
                                                 [],
+                                                [],
                                                 "advance_by",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -741,7 +773,9 @@ Module str.
                                               []
                                               [ Ty.path "u8" ],
                                             [],
+                                            [],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [
@@ -777,6 +811,7 @@ Module str.
                                         []
                                         [ Ty.path "u8" ],
                                       "as_slice",
+                                      [],
                                       []
                                     |),
                                     [
@@ -816,6 +851,7 @@ Module str.
                                           [ Ty.path "usize" ]
                                       ],
                                     "unwrap_unchecked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -827,7 +863,9 @@ Module str.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "advance_by",
+                                        [],
                                         []
                                       |),
                                       [
@@ -865,6 +903,7 @@ Module str.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -889,6 +928,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remainder |) ]
@@ -924,7 +964,9 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -966,7 +1008,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -1021,7 +1065,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1029,6 +1075,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -1037,6 +1084,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String "Chars(" |) ] |)
@@ -1068,6 +1116,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1078,6 +1127,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1109,7 +1159,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1117,6 +1169,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugList",
                                 "finish",
+                                [],
                                 []
                               |),
                               [
@@ -1124,6 +1177,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugList",
                                     "entries",
+                                    [],
                                     [ Ty.path "char"; Ty.path "core::str::iter::Chars" ]
                                   |),
                                   [
@@ -1132,6 +1186,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_list",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |) ]
@@ -1142,7 +1197,9 @@ Module str.
                                         "core::clone::Clone",
                                         Ty.path "core::str::iter::Chars",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -1175,6 +1232,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1185,6 +1243,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1216,7 +1275,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1224,6 +1285,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -1232,6 +1294,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String ")" |) ] |) ]
@@ -1262,6 +1325,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1272,6 +1336,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1325,6 +1390,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
               [
@@ -1358,6 +1424,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "from_u32_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ch |) ]
@@ -1411,6 +1478,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                     "as_slice",
+                    [],
                     []
                   |),
                   [
@@ -1451,7 +1519,15 @@ Module str.
               [
                 ("front_offset",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1466,7 +1542,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1503,6 +1581,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -1568,7 +1647,9 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -1591,7 +1672,9 @@ Module str.
                       "core::iter::traits::iterator::Iterator",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
@@ -1632,7 +1715,9 @@ Module str.
                               "core::iter::traits::exact_size::ExactSizeIterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "len",
+                              [],
                               []
                             |),
                             [
@@ -1688,7 +1773,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -1719,7 +1806,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -1749,7 +1838,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::CharIndices",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -1792,6 +1883,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.path "char" ];
                   Ty.function
@@ -1805,7 +1897,9 @@ Module str.
                     "core::iter::traits::double_ended::DoubleEndedIterator",
                     Ty.path "core::str::iter::Chars",
                     [],
+                    [],
                     "next_back",
+                    [],
                     []
                   |),
                   [
@@ -1847,7 +1941,9 @@ Module str.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1910,7 +2006,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
+              M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1981,7 +2077,9 @@ Module str.
                       []
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2018,6 +2116,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -2067,7 +2166,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -2099,7 +2200,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -2131,7 +2234,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -2161,7 +2266,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -2192,7 +2299,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
@@ -2229,7 +2338,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "all",
+                [],
                 [ F ]
               |),
               [
@@ -2266,7 +2377,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "any",
+                [],
                 [ F ]
               |),
               [
@@ -2303,7 +2416,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "find",
+                [],
                 [ P ]
               |),
               [
@@ -2340,7 +2455,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "position",
+                [],
                 [ P ]
               |),
               [
@@ -2377,7 +2494,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "rposition",
+                [],
                 [ P ]
               |),
               [
@@ -2417,7 +2536,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "__iterator_get_unchecked",
+                [],
                 []
               |),
               [
@@ -2475,7 +2596,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -2508,7 +2631,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
@@ -2545,7 +2670,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "rfind",
+                [],
                 [ P ]
               |),
               [
@@ -2594,7 +2721,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
               [
@@ -2626,7 +2755,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -2727,7 +2858,9 @@ Module str.
                           "core::clone::Clone",
                           Ty.associated,
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -2794,6 +2927,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -2801,6 +2935,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -2808,6 +2943,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -2815,6 +2951,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -2822,6 +2959,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugStruct",
                                 "field",
+                                [],
                                 []
                               |),
                               [
@@ -2829,6 +2967,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugStruct",
                                     "field",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2837,6 +2976,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_struct",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |); M.read (| Value.String "SplitInternal" |)
@@ -3007,6 +3147,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "get_unchecked",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
@@ -3020,7 +3161,9 @@ Module str.
                                                       "core::str::pattern::Searcher",
                                                       Ty.associated,
                                                       [],
+                                                      [],
                                                       "haystack",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3137,7 +3280,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
@@ -3156,7 +3301,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match",
+                          [],
                           []
                         |),
                         [
@@ -3187,6 +3334,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3232,6 +3380,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3314,7 +3463,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
@@ -3333,7 +3484,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match",
+                          [],
                           []
                         |),
                         [
@@ -3363,6 +3516,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3408,6 +3562,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3531,6 +3686,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -3553,6 +3709,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| elt |) ]
@@ -3620,7 +3777,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
@@ -3639,7 +3798,9 @@ Module str.
                           "core::str::pattern::ReverseSearcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match_back",
+                          [],
                           []
                         |),
                         [
@@ -3670,6 +3831,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3727,6 +3889,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "get_unchecked",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -3889,6 +4052,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back_inclusive",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -3911,6 +4075,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| elt |) ]
@@ -3978,7 +4143,9 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
@@ -3997,7 +4164,9 @@ Module str.
                           "core::str::pattern::ReverseSearcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match_back",
+                          [],
                           []
                         |),
                         [
@@ -4027,6 +4196,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -4084,6 +4254,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "get_unchecked",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -4181,6 +4352,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.path "str",
                             "get_unchecked",
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
                           [
@@ -4189,7 +4361,9 @@ Module str.
                                 "core::str::pattern::Searcher",
                                 Ty.associated,
                                 [],
+                                [],
                                 "haystack",
+                                [],
                                 []
                               |),
                               [
@@ -4263,6 +4437,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -4270,6 +4445,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -4278,6 +4454,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Split" |) ]
@@ -4325,6 +4502,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -4370,7 +4548,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -4423,6 +4603,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -4430,6 +4611,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -4438,6 +4620,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "RSplit" |) ]
@@ -4485,6 +4668,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -4530,7 +4714,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -4596,6 +4782,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -4636,6 +4823,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -4676,6 +4864,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -4712,6 +4901,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -4760,6 +4950,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -4767,6 +4958,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -4775,6 +4967,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "SplitTerminator" |) ]
@@ -4823,6 +5016,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -4869,7 +5063,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -4923,6 +5119,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -4930,6 +5127,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -4938,6 +5136,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "RSplitTerminator" |) ]
@@ -4986,6 +5185,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -5032,7 +5232,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -5101,6 +5303,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -5142,6 +5345,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -5183,6 +5387,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -5220,6 +5425,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -5266,7 +5472,9 @@ Module str.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -5327,6 +5535,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -5334,6 +5543,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -5341,6 +5551,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -5349,6 +5560,7 @@ Module str.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_struct",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "SplitNInternal" |) ]
@@ -5446,6 +5658,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
+                            [],
                             []
                           |),
                           [
@@ -5475,6 +5688,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next",
+                            [],
                             []
                           |),
                           [
@@ -5557,6 +5771,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
+                            [],
                             []
                           |),
                           [
@@ -5586,6 +5801,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next_back",
+                            [],
                             []
                           |),
                           [
@@ -5622,6 +5838,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -5669,6 +5886,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -5676,6 +5894,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -5684,6 +5903,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "SplitN" |) ]
@@ -5731,6 +5951,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -5776,7 +5997,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -5829,6 +6052,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -5836,6 +6060,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -5844,6 +6069,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "RSplitN" |) ]
@@ -5891,6 +6117,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -5936,7 +6163,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -6002,6 +6231,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -6038,6 +6268,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -6079,7 +6310,15 @@ Module str.
                   "core::str::iter::MatchIndicesInternal"
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [
                         M.SubPointer.get_struct_tuple_field (|
                           M.read (| s |),
@@ -6131,6 +6370,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6138,6 +6378,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6146,6 +6387,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MatchIndicesInternal" |) ]
@@ -6197,6 +6439,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
@@ -6210,7 +6453,9 @@ Module str.
                     "core::str::pattern::Searcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match",
+                    [],
                     []
                   |),
                   [
@@ -6243,6 +6488,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "get_unchecked",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
@@ -6256,7 +6502,9 @@ Module str.
                                               "core::str::pattern::Searcher",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "haystack",
+                                              [],
                                               []
                                             |),
                                             [
@@ -6313,6 +6561,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
@@ -6326,7 +6575,9 @@ Module str.
                     "core::str::pattern::ReverseSearcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match_back",
+                    [],
                     []
                   |),
                   [
@@ -6359,6 +6610,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "get_unchecked",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
@@ -6372,7 +6624,9 @@ Module str.
                                               "core::str::pattern::Searcher",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "haystack",
+                                              [],
                                               []
                                             |),
                                             [
@@ -6436,6 +6690,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6443,6 +6698,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6451,6 +6707,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MatchIndices" |) ]
@@ -6500,6 +6757,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -6546,7 +6804,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -6600,6 +6860,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6607,6 +6868,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6615,6 +6877,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "RMatchIndices" |) ]
@@ -6664,6 +6927,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -6710,7 +6974,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -6779,6 +7045,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -6820,6 +7087,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -6865,7 +7133,15 @@ Module str.
                   "core::str::iter::MatchesInternal"
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [
                         M.SubPointer.get_struct_tuple_field (|
                           M.read (| s |),
@@ -6917,6 +7193,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -6924,6 +7201,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -6932,6 +7210,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MatchesInternal" |) ]
@@ -6984,6 +7263,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
@@ -6997,7 +7277,9 @@ Module str.
                     "core::str::pattern::Searcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match",
+                    [],
                     []
                   |),
                   [
@@ -7027,6 +7309,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -7040,7 +7323,9 @@ Module str.
                                           "core::str::pattern::Searcher",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "haystack",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7094,6 +7379,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
@@ -7107,7 +7393,9 @@ Module str.
                     "core::str::pattern::ReverseSearcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match_back",
+                    [],
                     []
                   |),
                   [
@@ -7137,6 +7425,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -7150,7 +7439,9 @@ Module str.
                                           "core::str::pattern::Searcher",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "haystack",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7209,6 +7500,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -7216,6 +7508,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -7224,6 +7517,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Matches" |) ]
@@ -7271,6 +7565,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -7316,7 +7611,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7369,6 +7666,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -7376,6 +7674,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -7384,6 +7683,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "RMatches" |) ]
@@ -7431,6 +7731,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -7476,7 +7777,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7542,6 +7845,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -7582,6 +7886,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
@@ -7644,7 +7949,9 @@ Module str.
                         Ty.path "core::str::LinesMap"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7681,6 +7988,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -7733,7 +8041,9 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -7768,7 +8078,9 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -7797,7 +8109,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -7843,7 +8157,9 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -7893,6 +8209,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -7938,7 +8255,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.path "core::str::iter::Lines",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7975,6 +8294,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -8021,7 +8341,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -8050,7 +8372,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -8095,7 +8419,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -8176,7 +8502,9 @@ Module str.
                           Ty.path "core::str::IsNotEmpty"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -8213,6 +8541,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -8299,7 +8628,9 @@ Module str.
                           Ty.path "core::str::UnsafeBytesToStr"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -8336,6 +8667,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -8400,7 +8732,9 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -8438,7 +8772,9 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -8467,7 +8803,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::SplitWhitespace",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -8516,7 +8854,9 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -8569,6 +8909,7 @@ Module str.
                   []
                   [ Ty.path "core::str::IsWhitespace" ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -8625,7 +8966,9 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -8669,7 +9012,9 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -8698,7 +9043,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::SplitAsciiWhitespace",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -8753,7 +9100,9 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
@@ -8904,6 +9253,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_inclusive",
+                [],
                 []
               |),
               [
@@ -8947,6 +9297,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -8954,6 +9305,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -8962,6 +9314,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "SplitInclusive" |) ]
@@ -9012,7 +9365,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9055,6 +9410,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back_inclusive",
+                [],
                 []
               |),
               [
@@ -9109,6 +9465,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
@@ -9153,7 +9510,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -9166,7 +9525,15 @@ Module str.
                   |));
                 ("extra",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u16",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -9205,6 +9572,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
@@ -9213,6 +9581,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "EncodeUtf16" |) ]
@@ -9328,6 +9697,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                         "map",
+                        [],
                         [ Ty.path "u16"; Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "u16")
                         ]
                       |),
@@ -9337,7 +9707,9 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             Ty.path "core::str::iter::Chars",
                             [],
+                            [],
                             "next",
+                            [],
                             []
                           |),
                           [
@@ -9367,6 +9739,7 @@ Module str.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9374,6 +9747,7 @@ Module str.
                                                       M.get_associated_function (|
                                                         Ty.path "char",
                                                         "encode_utf16",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| ch |); buf ]
@@ -9471,7 +9845,9 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -9647,7 +10023,9 @@ Module str.
                             ]
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -9684,6 +10062,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -9754,7 +10133,9 @@ Module str.
                           Ty.path "core::str::CharEscapeDefault"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -9791,6 +10172,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -9861,7 +10243,9 @@ Module str.
                           Ty.path "core::str::CharEscapeUnicode"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -9898,6 +10282,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -9943,7 +10328,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeDebug",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -9964,7 +10351,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::EscapeDebug",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -9987,7 +10376,9 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| f |); M.read (| c |) ]
@@ -10047,7 +10438,9 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -10093,7 +10486,9 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -10147,7 +10542,9 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
@@ -10203,7 +10600,9 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [
@@ -10266,7 +10665,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeDefault",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -10287,7 +10688,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::EscapeDefault",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -10310,7 +10713,9 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| f |); M.read (| c |) ]
@@ -10356,7 +10761,9 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -10388,7 +10795,9 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -10428,7 +10837,9 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
@@ -10470,7 +10881,9 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [
@@ -10533,7 +10946,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeUnicode",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -10554,7 +10969,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::EscapeUnicode",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -10577,7 +10994,9 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| f |); M.read (| c |) ]
@@ -10623,7 +11042,9 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
@@ -10655,7 +11076,9 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -10695,7 +11118,9 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
@@ -10737,7 +11162,9 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [

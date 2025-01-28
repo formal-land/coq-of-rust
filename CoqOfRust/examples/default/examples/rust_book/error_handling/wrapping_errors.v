@@ -45,6 +45,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_str",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
@@ -65,6 +66,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Parse" |); __self_0 ]
@@ -120,6 +122,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -128,6 +131,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
@@ -152,6 +156,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -160,6 +165,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
@@ -302,7 +308,9 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                             Ty.path "wrapping_errors::DoubleError"
                           ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -318,6 +326,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               ],
                             "ok_or",
+                            [],
                             [ Ty.path "wrapping_errors::DoubleError" ]
                           |),
                           [
@@ -328,6 +337,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   []
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "first",
+                                [],
                                 []
                               |),
                               [
@@ -342,7 +352,9 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ vec ]
@@ -376,6 +388,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -386,6 +399,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -419,12 +433,19 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                          M.get_associated_function (|
+                            Ty.path "str",
+                            "parse",
+                            [],
+                            [ Ty.path "i32" ]
+                          |),
                           [ M.read (| M.read (| first |) |) ]
                         |)
                       ]
@@ -451,6 +472,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -461,6 +483,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -530,6 +553,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -548,6 +572,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "i32" ]
                                     |),
                                     [ n ]
@@ -575,6 +600,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -593,6 +619,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "wrapping_errors::DoubleError" ]
                                       |),
                                       [ e ]
@@ -617,7 +644,9 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::error::Error",
                                 Ty.path "wrapping_errors::DoubleError",
                                 [],
+                                [],
                                 "source",
+                                [],
                                 []
                               |),
                               [ e ]
@@ -640,6 +669,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
@@ -658,6 +688,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -709,6 +740,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -726,6 +758,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -752,6 +785,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -763,6 +797,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -780,6 +815,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [

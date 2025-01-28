@@ -16,7 +16,15 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
         let~ text :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
+              M.get_trait_method (|
+                "alloc::borrow::ToOwned",
+                Ty.path "str",
+                [],
+                [],
+                "to_owned",
+                [],
+                []
+              |),
               [ M.read (| Value.String "Fn" |) ]
             |)
           |) in
@@ -42,6 +50,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -60,6 +69,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [ text ]
@@ -104,7 +114,15 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         let~ text :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
+              M.get_trait_method (|
+                "alloc::borrow::ToOwned",
+                Ty.path "str",
+                [],
+                [],
+                "to_owned",
+                [],
+                []
+              |),
               [ M.read (| Value.String "FnMut" |) ]
             |)
           |) in
@@ -130,6 +148,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -148,6 +167,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [ text ]
@@ -192,7 +212,15 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
         let~ text :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
+              M.get_trait_method (|
+                "alloc::borrow::ToOwned",
+                Ty.path "str",
+                [],
+                [],
+                "to_owned",
+                [],
+                []
+              |),
               [ M.read (| Value.String "FnOnce" |) ]
             |)
           |) in
@@ -218,6 +246,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -236,6 +265,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [ text ]
@@ -308,8 +338,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.associated,
+                [],
                 [ Ty.tuple [] ],
                 "call",
+                [],
                 []
               |),
               [ fn_plain; Value.Tuple [] ]
@@ -321,8 +353,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.associated,
+                [],
                 [ Ty.tuple [] ],
                 "call_mut",
+                [],
                 []
               |),
               [ fn_mut; Value.Tuple [] ]
@@ -334,8 +368,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 Ty.associated,
+                [],
                 [ Ty.tuple [] ],
                 "call_once",
+                [],
                 []
               |),
               [ M.read (| fn_once |); Value.Tuple [] ]

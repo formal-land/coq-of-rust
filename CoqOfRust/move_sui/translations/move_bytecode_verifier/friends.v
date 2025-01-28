@@ -19,6 +19,7 @@ Module friends.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -47,6 +48,7 @@ Module friends.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -58,6 +60,7 @@ Module friends.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -125,6 +128,7 @@ Module friends.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle",
+                      [],
                       []
                     |),
                     [ M.read (| module |) ]
@@ -146,6 +150,7 @@ Module friends.
                                     []
                                     [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
@@ -153,6 +158,7 @@ Module friends.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "friend_decls",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| module |) ]
@@ -174,6 +180,7 @@ Module friends.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -196,6 +203,7 @@ Module friends.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "address_identifier_at",
+                      [],
                       []
                     |),
                     [
@@ -206,6 +214,7 @@ Module friends.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "module_handle_at",
+                              [],
                               []
                             |),
                             [
@@ -214,6 +223,7 @@ Module friends.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "self_handle_idx",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -237,7 +247,9 @@ Module friends.
                         []
                         [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                       [],
+                      [],
                       "any",
+                      [],
                       [
                         Ty.function
                           [
@@ -261,6 +273,7 @@ Module friends.
                               []
                               [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -268,6 +281,7 @@ Module friends.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "friend_decls",
+                                [],
                                 []
                               |),
                               [ M.read (| module |) ]
@@ -297,6 +311,7 @@ Module friends.
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -307,6 +322,7 @@ Module friends.
                                                 ]
                                             ],
                                             "ne",
+                                            [],
                                             []
                                           |),
                                           [
@@ -316,6 +332,7 @@ Module friends.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "address_identifier_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -360,6 +377,7 @@ Module friends.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [

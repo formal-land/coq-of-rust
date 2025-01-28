@@ -28,6 +28,7 @@ Module errmap.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -78,7 +79,9 @@ Module errmap.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -95,7 +98,9 @@ Module errmap.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -141,7 +146,9 @@ Module errmap.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -199,7 +206,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -254,7 +263,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -307,7 +318,9 @@ Module errmap.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -339,7 +352,9 @@ Module errmap.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::errmap::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -388,7 +403,9 @@ Module errmap.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -446,7 +463,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -510,7 +529,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -579,7 +600,9 @@ Module errmap.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -611,7 +634,9 @@ Module errmap.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::errmap::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -690,6 +715,7 @@ Module errmap.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -747,7 +773,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -778,7 +806,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -827,7 +857,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -852,7 +884,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -916,6 +950,7 @@ Module errmap.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [
@@ -969,6 +1004,7 @@ Module errmap.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -993,6 +1029,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_display",
+                                                                            [],
                                                                             [ Ty.path "u64" ]
                                                                           |),
                                                                           [ category_id ]
@@ -1002,6 +1039,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_debug",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_core_types::errmap::ErrorDescription"
@@ -1019,6 +1057,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1045,6 +1084,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1073,6 +1113,7 @@ Module errmap.
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -1096,6 +1137,7 @@ Module errmap.
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -1107,7 +1149,9 @@ Module errmap.
                                                                 []
                                                                 [ Ty.path "alloc::string::String" ],
                                                               [],
+                                                              [],
                                                               "anyhow_kind",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.alloc (| error |) ]
@@ -1186,6 +1230,7 @@ Module errmap.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "or_default",
+                        [],
                         []
                       |),
                       [
@@ -1207,6 +1252,7 @@ Module errmap.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "entry",
+                            [],
                             []
                           |),
                           [
@@ -1220,7 +1266,9 @@ Module errmap.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::language_storage::ModuleId",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ module_id ]
@@ -1249,6 +1297,7 @@ Module errmap.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1298,6 +1347,7 @@ Module errmap.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1325,6 +1375,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_display",
+                                                                            [],
                                                                             [ Ty.path "u64" ]
                                                                           |),
                                                                           [ abort_code ]
@@ -1334,6 +1385,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_display",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_core_types::language_storage::ModuleId"
@@ -1346,6 +1398,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
                                                                             "new_debug",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_core_types::errmap::ErrorDescription"
@@ -1363,6 +1416,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1389,6 +1443,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1415,6 +1470,7 @@ Module errmap.
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
                                                                             "new",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1443,6 +1499,7 @@ Module errmap.
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -1466,6 +1523,7 @@ Module errmap.
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -1477,7 +1535,9 @@ Module errmap.
                                                                 []
                                                                 [ Ty.path "alloc::string::String" ],
                                                               [],
+                                                              [],
                                                               "anyhow_kind",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.alloc (| error |) ]
@@ -1530,6 +1590,7 @@ Module errmap.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -1544,6 +1605,7 @@ Module errmap.
                       []
                       [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1552,7 +1614,9 @@ Module errmap.
                         "std::io::Read",
                         Ty.path "std::fs::File",
                         [],
+                        [],
                         "read_to_end",
+                        [],
                         []
                       |),
                       [
@@ -1564,6 +1628,7 @@ Module errmap.
                                 []
                                 [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -1571,6 +1636,7 @@ Module errmap.
                                 M.get_associated_function (|
                                   Ty.path "std::fs::File",
                                   "open",
+                                  [],
                                   [ P ]
                                 |),
                                 [ M.read (| path |) ]
@@ -1593,6 +1659,7 @@ Module errmap.
                     [ Ty.path "move_core_types::errmap::ErrorMapping"; Ty.path "bcs::error::Error"
                     ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -1611,7 +1678,9 @@ Module errmap.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ bytes ]
@@ -1656,6 +1725,7 @@ Module errmap.
                         Ty.path "bcs::error::Error"
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1679,11 +1749,12 @@ Module errmap.
                       []
                       [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "std::fs::File", "create", [ P ] |),
+                      M.get_associated_function (| Ty.path "std::fs::File", "create", [], [ P ] |),
                       [ M.read (| path |) ]
                     |)
                   ]
@@ -1698,6 +1769,7 @@ Module errmap.
                       []
                       [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1706,7 +1778,9 @@ Module errmap.
                         "std::io::Write",
                         Ty.path "std::fs::File",
                         [],
+                        [],
                         "write_all",
+                        [],
                         []
                       |),
                       [
@@ -1719,7 +1793,9 @@ Module errmap.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [ bytes ]
@@ -1771,6 +1847,7 @@ Module errmap.
                     ]
                 ],
               "and_then",
+              [],
               [
                 Ty.path "move_core_types::errmap::ErrorDescription";
                 Ty.function
@@ -1817,6 +1894,7 @@ Module errmap.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "get",
+                  [],
                   [ Ty.path "move_core_types::language_storage::ModuleId" ]
                 |),
                 [
@@ -1852,6 +1930,7 @@ Module errmap.
                                           [ Ty.path "move_core_types::errmap::ErrorDescription" ]
                                       ],
                                     "cloned",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1866,6 +1945,7 @@ Module errmap.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "get",
+                                        [],
                                         [ Ty.path "u64" ]
                                       |),
                                       [ M.read (| module_map |); output_code ]

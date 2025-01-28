@@ -33,7 +33,9 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
             "core::clone::Clone",
             Ty.path "alloc::string::String",
             [],
+            [],
             "clone",
+            [],
             []
           |),
           [
@@ -120,7 +122,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "alloc::borrow::ToOwned",
                       Ty.path "str",
                       [],
+                      [],
                       "to_owned",
+                      [],
                       []
                     |),
                     [ M.read (| Value.String "rustacean" |) ]
@@ -135,7 +139,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "disambiguating_overlapping_traits::UsernameWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
                 [],
+                [],
                 "get",
+                [],
                 []
               |),
               [ form ]
@@ -152,7 +158,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "alloc::string::ToString",
                         Ty.path "str",
                         [],
+                        [],
                         "to_string",
+                        [],
                         []
                       |),
                       [ M.read (| Value.String "rustacean" |) ]
@@ -181,8 +189,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "alloc::string::String",
+                                      [],
                                       [ Ty.path "alloc::string::String" ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
@@ -231,7 +241,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "disambiguating_overlapping_traits::AgeWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
                 [],
+                [],
                 "get",
+                [],
                 []
               |),
               [ form ]

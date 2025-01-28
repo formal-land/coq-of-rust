@@ -23,8 +23,10 @@ Module str.
             M.get_trait_method (|
               "alloc::slice::Join",
               Ty.apply (Ty.path "slice") [] [ S ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "join",
+              [],
               []
             |),
             [ M.read (| slice |); M.read (| Value.String "" |) ]
@@ -64,6 +66,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "alloc::string::String",
               "from_utf8_unchecked",
+              [],
               []
             |),
             [
@@ -76,7 +79,7 @@ Module str.
                 [
                   M.read (| slice |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| sep |) ]
                   |)
                 ]
@@ -168,14 +171,24 @@ Module str.
               let~ sep_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
                     [ M.read (| sep |) ]
                   |)
                 |) in
               let~ iter :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ S ], "iter", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ S ],
+                      "iter",
+                      [],
+                      []
+                    |),
                     [ M.read (| slice |) ]
                   |)
                 |) in
@@ -188,7 +201,9 @@ Module str.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                           [],
+                          [],
                           "next",
+                          [],
                           []
                         |),
                         [ iter ]
@@ -219,6 +234,7 @@ Module str.
                                         []
                                         [ T; Ty.path "alloc::alloc::Global" ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -236,6 +252,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "expect",
+                      [],
                       []
                     |),
                     [
@@ -243,6 +260,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "and_then",
+                          [],
                           [
                             Ty.path "usize";
                             Ty.function
@@ -252,7 +270,7 @@ Module str.
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_mul", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                             [
                               M.read (| sep_len |);
                               M.call_closure (|
@@ -260,7 +278,9 @@ Module str.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -296,7 +316,9 @@ Module str.
                                                       (Ty.path "usize")
                                                   ],
                                                 [],
+                                                [],
                                                 "try_fold",
+                                                [],
                                                 [
                                                   Ty.path "usize";
                                                   Ty.function
@@ -321,7 +343,9 @@ Module str.
                                                         []
                                                         [ S ],
                                                       [],
+                                                      [],
                                                       "map",
+                                                      [],
                                                       [
                                                         Ty.path "usize";
                                                         Ty.function
@@ -337,6 +361,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ S ],
                                                           "iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| slice |) ]
@@ -360,6 +385,7 @@ Module str.
                                                                               []
                                                                               [ T ],
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -367,6 +393,7 @@ Module str.
                                                                               M.get_trait_method (|
                                                                                 "core::convert::AsRef",
                                                                                 B,
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -375,6 +402,7 @@ Module str.
                                                                                     [ T ]
                                                                                 ],
                                                                                 "as_ref",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -382,8 +410,10 @@ Module str.
                                                                                   M.get_trait_method (|
                                                                                     "core::borrow::Borrow",
                                                                                     S,
+                                                                                    [],
                                                                                     [ B ],
                                                                                     "borrow",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ M.read (| s |) ]
@@ -405,6 +435,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |)
                                               ]
@@ -427,6 +458,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ M.read (| reserved_len |) ]
@@ -459,6 +491,7 @@ Module str.
                                                   []
                                                   [ T; Ty.path "alloc::alloc::Global" ],
                                                 "capacity",
+                                                [],
                                                 []
                                               |),
                                               [ result ]
@@ -498,6 +531,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "extend_from_slice",
+                      [],
                       []
                     |),
                     [
@@ -506,13 +540,23 @@ Module str.
                         M.get_trait_method (|
                           "core::convert::AsRef",
                           B,
+                          [],
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "as_ref",
+                          [],
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::borrow::Borrow", S, [ B ], "borrow", [] |),
+                            M.get_trait_method (|
+                              "core::borrow::Borrow",
+                              S,
+                              [],
+                              [ B ],
+                              "borrow",
+                              [],
+                              []
+                            |),
                             [ M.read (| first |) ]
                           |)
                         ]
@@ -530,6 +574,7 @@ Module str.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "len",
+                        [],
                         []
                       |),
                       [ result ]
@@ -544,6 +589,7 @@ Module str.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                       |),
                       [
@@ -554,6 +600,7 @@ Module str.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "spare_capacity_mut",
+                            [],
                             []
                           |),
                           [ result ]
@@ -580,6 +627,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ T ],
                             "cast",
+                            [],
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           |),
                           [
@@ -587,6 +635,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| sep |) ]
@@ -597,6 +646,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| sep |) ]
@@ -611,7 +661,9 @@ Module str.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "&")
@@ -662,8 +714,10 @@ Module str.
                                                   M.get_trait_method (|
                                                     "core::convert::AsRef",
                                                     B,
+                                                    [],
                                                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                                     "as_ref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -671,8 +725,10 @@ Module str.
                                                       M.get_trait_method (|
                                                         "core::borrow::Borrow",
                                                         S,
+                                                        [],
                                                         [ B ],
                                                         "borrow",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| it |) ]
@@ -698,6 +754,7 @@ Module str.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "*const") [] [ T ],
                                                       "cast",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path
@@ -711,6 +768,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "as_ptr",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| it |) ]
@@ -721,6 +779,7 @@ Module str.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [] [ T ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| it |) ]
@@ -757,6 +816,7 @@ Module str.
                                       [ T ]
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| sep_uninit |) ]
@@ -800,7 +860,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -849,7 +911,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -892,6 +956,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -912,6 +977,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -950,6 +1016,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -978,6 +1045,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -991,6 +1059,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1007,6 +1076,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -1020,6 +1090,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -1042,6 +1113,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -1062,6 +1134,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1102,6 +1175,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1167,7 +1241,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -1216,7 +1292,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -1259,6 +1337,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -1279,6 +1358,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1317,6 +1397,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1345,6 +1426,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -1358,6 +1440,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1374,6 +1457,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -1387,6 +1471,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -1409,6 +1494,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -1429,6 +1515,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1469,6 +1556,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1534,7 +1622,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -1583,7 +1673,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -1626,6 +1718,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -1646,6 +1739,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1684,6 +1778,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1712,6 +1807,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -1725,6 +1821,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1741,6 +1838,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -1754,6 +1852,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -1776,6 +1875,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -1796,6 +1896,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1836,6 +1937,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1901,7 +2003,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -1950,7 +2054,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -1993,6 +2099,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -2013,6 +2120,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2051,6 +2159,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2079,6 +2188,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -2092,6 +2202,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2108,6 +2219,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -2121,6 +2233,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -2143,6 +2256,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -2163,6 +2277,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2203,6 +2318,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2268,7 +2384,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -2317,7 +2435,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -2360,6 +2480,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -2380,6 +2501,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2418,6 +2540,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2446,6 +2569,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -2459,6 +2583,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2475,6 +2600,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -2488,6 +2614,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -2510,6 +2637,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -2530,6 +2658,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2570,6 +2699,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2630,7 +2760,9 @@ Module str.
                                                   ])
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iter |) ]
@@ -2679,7 +2811,9 @@ Module str.
                                                                 ])
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -2722,6 +2856,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| sep_bytes |) ]
@@ -2742,6 +2877,7 @@ Module str.
                                                                       [ T ]
                                                                   ],
                                                                 "split_at_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2780,6 +2916,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "copy_from_slice",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2808,6 +2945,7 @@ Module str.
                                                                               []
                                                                               [ T ]
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -2821,6 +2959,7 @@ Module str.
                                                                             ]
                                                                         ],
                                                                         "as_ref",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2837,6 +2976,7 @@ Module str.
                                                                                   []
                                                                                   [ T ]
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -2850,6 +2990,7 @@ Module str.
                                                                                 ]
                                                                             ],
                                                                             "borrow",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| s |) ]
@@ -2872,6 +3013,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| content_bytes |) ]
@@ -2892,6 +3034,7 @@ Module str.
                                                                               [ T ]
                                                                           ],
                                                                         "split_at_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2932,6 +3075,7 @@ Module str.
                                                                                       [ T ]
                                                                                   ],
                                                                                 "copy_from_slice",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2976,6 +3120,7 @@ Module str.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| remain |) ]
@@ -2991,6 +3136,7 @@ Module str.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "set_len",
+                        [],
                         []
                       |),
                       [ result; M.read (| result_len |) ]
@@ -3022,8 +3168,10 @@ Module str.
             M.get_trait_method (|
               "core::ops::index::Index",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.path "core::ops::range::RangeFull" ],
               "index",
+              [],
               []
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -3056,8 +3204,10 @@ Module str.
             M.get_trait_method (|
               "core::ops::index::IndexMut",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.path "core::ops::range::RangeFull" ],
               "index_mut",
+              [],
               []
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -3093,6 +3243,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "alloc::string::String",
               "from_utf8_unchecked",
+              [],
               []
             |),
             [
@@ -3101,12 +3252,14 @@ Module str.
                   "alloc::borrow::ToOwned",
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   [],
+                  [],
                   "to_owned",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 ]
@@ -3132,14 +3285,19 @@ Module str.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "clear", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "clear", [], [] |),
                   [ M.read (| target |) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
                   [ M.read (| target |); M.read (| self |) ]
                 |)
               |) in
@@ -3181,6 +3339,7 @@ Module str.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -3188,6 +3347,7 @@ Module str.
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ]
               ],
               "into",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -3222,7 +3382,7 @@ Module str.
             let~ result :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -3236,12 +3396,14 @@ Module str.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
+                          M.get_associated_function (| Ty.path "str", "match_indices", [], [ P ] |),
                           [ M.read (| self |); M.read (| from |) ]
                         |)
                       ]
@@ -3261,7 +3423,9 @@ Module str.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -3293,6 +3457,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3301,6 +3466,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "get_unchecked",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
@@ -3327,6 +3493,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [ result; M.read (| to |) ]
@@ -3341,6 +3508,7 @@ Module str.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| part |) ]
@@ -3357,13 +3525,19 @@ Module str.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
                   [
                     result;
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "str",
                         "get_unchecked",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
@@ -3374,7 +3548,7 @@ Module str.
                             ("start", M.read (| last_end |));
                             ("end_",
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| self |) ]
                               |))
                           ]
@@ -3419,6 +3593,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.Usize 32 ]
@@ -3437,7 +3612,9 @@ Module str.
                           []
                           [ Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ] ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -3446,12 +3623,19 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
                             [],
+                            [],
                             "take",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "match_indices", [ P ] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "match_indices",
+                                [],
+                                [ P ]
+                              |),
                               [ M.read (| self |); M.read (| pat |) ]
                             |);
                             M.read (| count |)
@@ -3482,7 +3666,9 @@ Module str.
                                             [ P ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -3514,6 +3700,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3522,6 +3709,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "get_unchecked",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
@@ -3548,6 +3736,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [ result; M.read (| to |) ]
@@ -3562,6 +3751,7 @@ Module str.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| part |) ]
@@ -3578,13 +3768,19 @@ Module str.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
                   [
                     result;
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "str",
                         "get_unchecked",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
@@ -3595,7 +3791,7 @@ Module str.
                             ("start", M.read (| last_end |));
                             ("end_",
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| self |) ]
                               |))
                           ]
@@ -3678,7 +3874,12 @@ Module str.
                           M.read (| self |);
                           (* ReifyFnPointer *)
                           M.pointer_coercion
-                            (M.get_associated_function (| Ty.path "u8", "to_ascii_lowercase", [] |))
+                            (M.get_associated_function (|
+                              Ty.path "u8",
+                              "to_ascii_lowercase",
+                              [],
+                              []
+                            |))
                         ]
                       |)
                     |),
@@ -3695,6 +3896,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "alloc::string::String",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ s ]
@@ -3709,7 +3911,9 @@ Module str.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.path "core::str::iter::CharIndices",
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3717,6 +3921,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "char_indices",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| rest |) ]
@@ -3738,7 +3943,9 @@ Module str.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.path "core::str::iter::CharIndices",
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -3793,6 +4000,7 @@ Module str.
                                                                   M.get_associated_function (|
                                                                     Self,
                                                                     "map_uppercase_sigma.to_lowercase",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3810,6 +4018,7 @@ Module str.
                                                                   M.get_associated_function (|
                                                                     Ty.path "alloc::string::String",
                                                                     "push",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ s; M.read (| sigma_lowercase |)
@@ -3860,6 +4069,7 @@ Module str.
                                                                           Ty.path
                                                                             "alloc::string::String",
                                                                           "push",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ s; M.read (| a |) ]
@@ -3896,6 +4106,7 @@ Module str.
                                                                             Ty.path
                                                                               "alloc::string::String",
                                                                             "push",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ s; M.read (| a |) ]
@@ -3908,6 +4119,7 @@ Module str.
                                                                             Ty.path
                                                                               "alloc::string::String",
                                                                             "push",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ s; M.read (| b |) ]
@@ -3941,6 +4153,7 @@ Module str.
                                                                             Ty.path
                                                                               "alloc::string::String",
                                                                             "push",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ s; M.read (| a |) ]
@@ -3953,6 +4166,7 @@ Module str.
                                                                             Ty.path
                                                                               "alloc::string::String",
                                                                             "push",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ s; M.read (| b |) ]
@@ -3965,6 +4179,7 @@ Module str.
                                                                             Ty.path
                                                                               "alloc::string::String",
                                                                             "push",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ s; M.read (| c |) ]
@@ -4027,7 +4242,7 @@ Module str.
                     M.read (| self |);
                     (* ReifyFnPointer *)
                     M.pointer_coercion
-                      (M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [] |))
+                      (M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [], [] |))
                   ]
                 |)
               |),
@@ -4047,12 +4262,14 @@ Module str.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.path "core::str::iter::Chars",
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                                   [ M.read (| rest |) ]
                                 |)
                               ]
@@ -4072,7 +4289,9 @@ Module str.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.path "core::str::iter::Chars",
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -4129,6 +4348,7 @@ Module str.
                                                           M.get_associated_function (|
                                                             Ty.path "alloc::string::String",
                                                             "push",
+                                                            [],
                                                             []
                                                           |),
                                                           [ s; M.read (| a |) ]
@@ -4155,6 +4375,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s; M.read (| a |) ]
@@ -4166,6 +4387,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s; M.read (| b |) ]
@@ -4189,6 +4411,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s; M.read (| a |) ]
@@ -4200,6 +4423,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s; M.read (| b |) ]
@@ -4211,6 +4435,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
+                                                              [],
                                                               []
                                                             |),
                                                             [ s; M.read (| c |) ]
@@ -4258,6 +4483,7 @@ Module str.
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -4265,6 +4491,7 @@ Module str.
                         [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4275,6 +4502,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.path "alloc::string::String",
                   "from_utf8_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -4282,6 +4510,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "into_vec",
+                      [],
                       [ Ty.path "alloc::alloc::Global" ]
                     |),
                     [ M.read (| slice |) ]
@@ -4310,6 +4539,7 @@ Module str.
             M.get_associated_function (|
               Ty.path "alloc::string::String",
               "from_utf8_unchecked",
+              [],
               []
             |),
             [
@@ -4317,11 +4547,12 @@ Module str.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "repeat",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |);
                   M.read (| n |)
@@ -4354,7 +4585,9 @@ Module str.
                     "alloc::borrow::ToOwned",
                     Ty.path "str",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4363,14 +4596,16 @@ Module str.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "make_ascii_uppercase", [] |),
+                  M.get_associated_function (| Ty.path "str", "make_ascii_uppercase", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::DerefMut",
                         Ty.path "alloc::string::String",
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ s ]
@@ -4406,7 +4641,9 @@ Module str.
                     "alloc::borrow::ToOwned",
                     Ty.path "str",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4415,14 +4652,16 @@ Module str.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "make_ascii_lowercase", [] |),
+                  M.get_associated_function (| Ty.path "str", "make_ascii_lowercase", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::DerefMut",
                         Ty.path "alloc::string::String",
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ s ]
@@ -4456,6 +4695,7 @@ Module str.
               []
               [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
             "from_raw",
+            [],
             []
           |),
           [
@@ -4468,6 +4708,7 @@ Module str.
                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                     ],
                   "into_raw",
+                  [],
                   []
                 |),
                 [ M.read (| v |) ]
@@ -4562,7 +4803,7 @@ Module str.
           let~ slice :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| s |) ]
               |)
             |) in
@@ -4575,6 +4816,7 @@ Module str.
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "with_capacity",
+                  [],
                   []
                 |),
                 [
@@ -4582,6 +4824,7 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| slice |) ]
@@ -4598,6 +4841,7 @@ Module str.
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "spare_capacity_mut",
+                  [],
                   []
                 |),
                 [ out ]
@@ -4622,6 +4866,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -4639,6 +4884,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "get_unchecked",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeTo")
@@ -4673,6 +4919,7 @@ Module str.
                                       [ Ty.path "u8" ]
                                   ],
                                 "get_unchecked_mut",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeTo")
@@ -4705,7 +4952,9 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4740,7 +4989,9 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -4824,7 +5075,9 @@ Module str.
                                                       (Ty.path "u8")
                                                   ],
                                                 [],
+                                                [],
                                                 "sum",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [
@@ -4836,7 +5089,9 @@ Module str.
                                                       []
                                                       [ Ty.path "bool" ],
                                                     [],
+                                                    [],
                                                     "map",
+                                                    [],
                                                     [
                                                       Ty.path "u8";
                                                       Ty.function
@@ -4860,6 +5115,7 @@ Module str.
                                                           []
                                                           [ Ty.path "bool" ],
                                                         "iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ is_ascii ]
@@ -4917,7 +5173,9 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4952,7 +5210,9 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -4992,6 +5252,7 @@ Module str.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -5030,6 +5291,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "get_unchecked",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -5065,6 +5327,7 @@ Module str.
                                       [ Ty.path "u8" ]
                                   ],
                                 "get_unchecked_mut",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -5116,6 +5379,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -5170,6 +5434,7 @@ Module str.
                                         [ Ty.path "u8" ]
                                     ],
                                   "get_unchecked_mut",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [ M.read (| out_slice |); Value.Integer IntegerKind.Usize 0 ]
@@ -5181,6 +5446,7 @@ Module str.
                                     []
                                     [ Ty.path "u8" ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.call_closure (| M.read (| convert |), [ byte ] |) ]
@@ -5200,6 +5466,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "get_unchecked",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -5230,6 +5497,7 @@ Module str.
                                       [ Ty.path "u8" ]
                                   ],
                                 "get_unchecked_mut",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
@@ -5269,6 +5537,7 @@ Module str.
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "set_len",
+                  [],
                   []
                 |),
                 [ out; M.read (| ascii_prefix_len |) ]
@@ -5280,6 +5549,7 @@ Module str.
                 M.get_associated_function (|
                   Ty.path "alloc::string::String",
                   "from_utf8_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| out |) ]

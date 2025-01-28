@@ -216,7 +216,9 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::account_address::AccountAddress",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -227,7 +229,9 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_1 |) ]
@@ -238,7 +242,9 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_2 |) ]
@@ -255,7 +261,9 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_3 |) ]
@@ -287,7 +295,9 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -313,7 +323,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -345,7 +357,9 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -377,7 +391,9 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -446,6 +462,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |) ]
@@ -461,6 +478,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |) ]
@@ -476,6 +494,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |) ]
@@ -491,6 +510,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |) ]
@@ -506,6 +526,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |) ]
@@ -521,6 +542,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |) ]
@@ -562,6 +584,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field4_finish",
+                          [],
                           []
                         |),
                         [
@@ -593,6 +616,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -613,6 +637,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "TypeParameter" |); __self_0 ]
@@ -633,6 +658,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Reference" |); __self_0 ]
@@ -653,6 +679,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MutableReference" |); __self_0 ]
@@ -668,6 +695,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |) ]
@@ -683,6 +711,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |) ]
@@ -698,6 +727,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |) ]
@@ -753,7 +783,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -833,7 +863,9 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_core_types::account_address::AccountAddress",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -851,7 +883,9 @@ Module normalized.
                                             "core::cmp::Ord",
                                             Ty.path "move_core_types::identifier::Identifier",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -873,7 +907,9 @@ Module normalized.
                                                     Ty.path
                                                       "move_core_types::identifier::Identifier",
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
@@ -900,7 +936,9 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -959,7 +997,9 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -991,7 +1031,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1029,7 +1071,9 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1067,7 +1111,9 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1200,8 +1246,10 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_core_types::account_address::AccountAddress",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1223,8 +1271,10 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_core_types::identifier::Identifier",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -1247,8 +1297,10 @@ Module normalized.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "move_core_types::identifier::Identifier",
+                                            [],
                                             [ Ty.path "move_core_types::identifier::Identifier" ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
@@ -1280,6 +1332,7 @@ Module normalized.
                                                         "move_binary_format::normalized::Type";
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -1291,6 +1344,7 @@ Module normalized.
                                                       ]
                                                   ],
                                                   "partial_cmp",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| __self_3 |); M.read (| __arg1_3 |) ]
@@ -1345,6 +1399,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1355,6 +1410,7 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1385,8 +1441,10 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
+                          [],
                           [ Ty.path "u16" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1423,6 +1481,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1433,6 +1492,7 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1469,6 +1529,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1479,6 +1540,7 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -1491,8 +1553,10 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ __self_discr; __arg1_discr ]
@@ -1717,6 +1781,7 @@ Module normalized.
                                             Ty.path
                                               "move_core_types::account_address::AccountAddress"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -1727,6 +1792,7 @@ Module normalized.
                                             ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ __self_0; __arg1_0 ]
@@ -1739,6 +1805,7 @@ Module normalized.
                                             (Ty.path "&")
                                             []
                                             [ Ty.path "move_core_types::identifier::Identifier" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1746,6 +1813,7 @@ Module normalized.
                                               [ Ty.path "move_core_types::identifier::Identifier" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ __self_1; __arg1_1 ]
@@ -1759,6 +1827,7 @@ Module normalized.
                                           (Ty.path "&")
                                           []
                                           [ Ty.path "move_core_types::identifier::Identifier" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -1766,6 +1835,7 @@ Module normalized.
                                             [ Ty.path "move_core_types::identifier::Identifier" ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ __self_2; __arg1_2 ]
@@ -1787,6 +1857,7 @@ Module normalized.
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1802,6 +1873,7 @@ Module normalized.
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ __self_3; __arg1_3 ]
@@ -1844,6 +1916,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1859,6 +1932,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1889,8 +1963,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1932,6 +2008,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1947,6 +2024,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1988,6 +2066,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2003,6 +2082,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -2056,7 +2136,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2077,7 +2159,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2101,7 +2185,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2125,7 +2211,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2149,7 +2237,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2173,7 +2263,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2223,7 +2315,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_struct_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2289,7 +2383,9 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   |),
                                   [
@@ -2340,7 +2436,9 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ]
                                   |),
                                   [
@@ -2391,7 +2489,9 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ]
                                   |),
                                   [
@@ -2442,7 +2542,9 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2499,7 +2601,9 @@ Module normalized.
                                 "serde::ser::SerializeStructVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -2520,7 +2624,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2555,7 +2661,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -2582,7 +2690,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2617,7 +2727,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2650,7 +2762,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2674,7 +2788,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2698,7 +2814,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2737,7 +2855,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -2786,7 +2906,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -2844,7 +2966,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -2899,7 +3023,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::normalized::Type" ]
                           |),
                           [
@@ -2952,7 +3078,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -2984,7 +3112,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -3033,7 +3163,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3091,7 +3223,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::normalized::Type" ]
                           |),
                           [
@@ -3146,7 +3280,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3204,7 +3340,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -3236,7 +3374,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'5::deserialize::__Visitor" ]
               |),
               [
@@ -3285,7 +3425,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3346,7 +3488,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                           |),
                           [
@@ -3401,7 +3545,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3464,7 +3610,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3525,7 +3673,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -3557,7 +3707,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'7::deserialize::__Visitor" ]
               |),
               [
@@ -3606,7 +3758,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3676,7 +3830,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::file_format::Visibility" ]
                           |),
                           [
@@ -3731,7 +3887,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "bool" ]
                           |),
                           [
@@ -3786,7 +3944,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3849,7 +4009,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3912,7 +4074,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3975,7 +4139,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -4036,7 +4202,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4068,7 +4236,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'9::deserialize::__Visitor" ]
               |),
               [
@@ -4117,7 +4287,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -4175,7 +4347,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -4230,7 +4404,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "u16" ]
                           |),
                           [
@@ -4283,7 +4459,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4315,7 +4493,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'11::deserialize::__Visitor" ]
               |),
               [
@@ -4364,7 +4544,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -4422,7 +4604,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
@@ -4477,7 +4661,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -4530,7 +4716,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4562,7 +4750,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'13::deserialize::__Visitor" ]
               |),
               [
@@ -4618,7 +4808,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4642,7 +4834,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4668,7 +4862,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4695,7 +4891,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4722,7 +4920,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4749,7 +4949,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -4776,7 +4978,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u64" ]
                               |),
                               [
@@ -4803,7 +5007,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u128" ]
                               |),
                               [
@@ -4828,7 +5034,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4852,7 +5060,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4876,7 +5086,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4902,7 +5114,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Constant" ]
                               |),
                               [
@@ -4927,7 +5141,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4951,7 +5167,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4977,7 +5195,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5004,7 +5224,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5031,7 +5253,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5058,7 +5282,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FunctionRef" ]
                               |),
                               [
@@ -5085,7 +5311,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5124,7 +5352,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -5151,7 +5381,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5190,7 +5422,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -5217,7 +5451,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5254,7 +5490,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5278,7 +5516,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5302,7 +5542,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5328,7 +5570,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5355,7 +5599,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5382,7 +5628,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FieldRef" ]
                               |),
                               [
@@ -5409,7 +5657,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5448,7 +5698,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FieldRef" ]
                               |),
                               [
@@ -5475,7 +5727,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5512,7 +5766,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5536,7 +5792,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5560,7 +5818,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5584,7 +5844,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5608,7 +5870,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5632,7 +5896,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5656,7 +5922,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5680,7 +5948,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5704,7 +5974,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5728,7 +6000,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5752,7 +6026,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5776,7 +6052,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5800,7 +6078,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5824,7 +6104,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5848,7 +6130,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5872,7 +6156,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5896,7 +6182,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5920,7 +6208,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5944,7 +6234,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5968,7 +6260,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5992,7 +6286,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6028,7 +6324,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_tuple_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6088,7 +6386,9 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ]
                                   |),
                                   [ __serde_state; M.read (| __field0 |) ]
@@ -6135,7 +6435,9 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "u64" ]
                                   |),
                                   [ __serde_state; M.read (| __field1 |) ]
@@ -6180,7 +6482,9 @@ Module normalized.
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -6201,7 +6505,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6228,7 +6534,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6255,7 +6563,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6282,7 +6592,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6309,7 +6621,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6346,7 +6660,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_tuple_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6406,7 +6722,9 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ]
                                   |),
                                   [ __serde_state; M.read (| __field0 |) ]
@@ -6453,7 +6771,9 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "u64" ]
                                   |),
                                   [ __serde_state; M.read (| __field1 |) ]
@@ -6498,7 +6818,9 @@ Module normalized.
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -6519,7 +6841,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6546,7 +6870,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -6573,7 +6899,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [
@@ -6600,7 +6928,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::u256::U256" ]
                               |),
                               [
@@ -6625,7 +6955,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6649,7 +6981,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6673,7 +7007,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6699,7 +7035,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6726,7 +7064,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6765,7 +7105,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6792,7 +7134,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6831,7 +7175,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6858,7 +7204,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6897,7 +7245,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6924,7 +7274,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6963,7 +7315,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6990,7 +7344,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -7042,7 +7398,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'15::deserialize::__Visitor" ]
               |),
               [
@@ -7091,7 +7449,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -7167,7 +7527,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "u32" ]
                           |),
                           [
@@ -7222,7 +7584,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
@@ -7277,7 +7641,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -7332,7 +7698,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7395,7 +7763,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7458,7 +7828,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -7522,7 +7894,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -7586,7 +7960,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7647,7 +8023,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -7679,7 +8057,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'17::deserialize::__Visitor" ]
               |),
               [
@@ -7739,7 +8119,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7756,7 +8138,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -7793,6 +8177,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -7889,8 +8274,10 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
+                [],
                 [ Ty.path "move_core_types::identifier::Identifier" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -7911,8 +8298,10 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::normalized::Type",
+                  [],
                   [ Ty.path "move_binary_format::normalized::Type" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -7960,7 +8349,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -7987,7 +8378,9 @@ Module normalized.
                           "core::cmp::Ord",
                           Ty.path "move_binary_format::normalized::Type",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -8039,8 +8432,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
+                    [],
                     [ Ty.path "move_core_types::identifier::Identifier" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -8072,8 +8467,10 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_binary_format::normalized::Type",
+                          [],
                           [ Ty.path "move_binary_format::normalized::Type" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -8142,7 +8539,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -8162,7 +8561,9 @@ Module normalized.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -8199,6 +8600,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -8295,8 +8697,10 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_binary_format::normalized::Type",
+                [],
                 [ Ty.path "move_binary_format::normalized::Type" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -8320,6 +8724,7 @@ Module normalized.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -8327,6 +8732,7 @@ Module normalized.
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -8374,7 +8780,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -8404,7 +8812,9 @@ Module normalized.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -8456,8 +8866,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::normalized::Type",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -8492,6 +8904,7 @@ Module normalized.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -8499,6 +8912,7 @@ Module normalized.
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -8575,7 +8989,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::AbilitySet",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -8598,7 +9014,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -8621,7 +9039,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -8658,6 +9078,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
@@ -8768,8 +9189,10 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::file_format::AbilitySet",
+                  [],
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -8796,6 +9219,7 @@ Module normalized.
                         Ty.path "move_binary_format::file_format::StructTypeParameter";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -8806,6 +9230,7 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -8833,6 +9258,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Field";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -8843,6 +9269,7 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -8890,7 +9317,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::AbilitySet",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -8924,7 +9353,9 @@ Module normalized.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
@@ -8957,7 +9388,9 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9015,8 +9448,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::AbilitySet",
+                    [],
                     [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -9055,6 +9490,7 @@ Module normalized.
                                 Ty.path "move_binary_format::file_format::StructTypeParameter";
                                 Ty.path "alloc::alloc::Global"
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -9065,6 +9501,7 @@ Module normalized.
                                 ]
                             ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -9102,6 +9539,7 @@ Module normalized.
                                       Ty.path "move_binary_format::normalized::Field";
                                       Ty.path "alloc::alloc::Global"
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -9112,6 +9550,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9206,7 +9645,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::Visibility",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9219,7 +9660,15 @@ Module normalized.
                 |));
               ("is_entry",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -9240,7 +9689,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9263,7 +9714,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9286,7 +9739,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9309,7 +9764,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -9402,6 +9859,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -9442,7 +9900,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::Visibility",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -9466,7 +9926,15 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "cmp", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::Ord",
+                            Ty.path "bool",
+                            [],
+                            [],
+                            "cmp",
+                            [],
+                            []
+                          |),
                           [
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -9498,7 +9966,9 @@ Module normalized.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9533,7 +10003,9 @@ Module normalized.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9572,7 +10044,9 @@ Module normalized.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9610,7 +10084,9 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9686,8 +10162,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::Visibility",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -9720,8 +10198,10 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "bool",
+                            [],
                             [ Ty.path "bool" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -9760,6 +10240,7 @@ Module normalized.
                                         Ty.path "move_binary_format::file_format::AbilitySet";
                                         Ty.path "alloc::alloc::Global"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -9770,6 +10251,7 @@ Module normalized.
                                         ]
                                     ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -9809,6 +10291,7 @@ Module normalized.
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.path "alloc::alloc::Global"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -9819,6 +10302,7 @@ Module normalized.
                                                 ]
                                             ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9862,6 +10346,7 @@ Module normalized.
                                                           "move_binary_format::normalized::Type";
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
@@ -9873,6 +10358,7 @@ Module normalized.
                                                         ]
                                                     ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9915,6 +10401,7 @@ Module normalized.
                                                                 "move_binary_format::normalized::Bytecode";
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
@@ -9926,6 +10413,7 @@ Module normalized.
                                                               ]
                                                           ],
                                                           "partial_cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -10084,8 +10572,10 @@ Module normalized.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_binary_format::file_format::Visibility",
+                        [],
                         [ Ty.path "move_binary_format::file_format::Visibility" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -10130,6 +10620,7 @@ Module normalized.
                             Ty.path "move_binary_format::file_format::AbilitySet";
                             Ty.path "alloc::alloc::Global"
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -10140,6 +10631,7 @@ Module normalized.
                             ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -10167,6 +10659,7 @@ Module normalized.
                           Ty.path "move_binary_format::normalized::Type";
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -10177,6 +10670,7 @@ Module normalized.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -10204,6 +10698,7 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Type";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -10214,6 +10709,7 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -10241,6 +10737,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Bytecode";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -10251,6 +10748,7 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -10310,7 +10808,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -10323,7 +10823,15 @@ Module normalized.
                 |));
               ("field_index",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -10358,6 +10866,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -10408,7 +10917,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -10431,7 +10942,15 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::Ord",
+                          Ty.path "u16",
+                          [],
+                          [],
+                          "cmp",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -10481,8 +11000,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
+                    [],
                     [ Ty.path "move_core_types::identifier::Identifier" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -10514,8 +11035,10 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
+                          [],
                           [ Ty.path "u16" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -10614,8 +11137,10 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
+                [],
                 [ Ty.path "move_core_types::identifier::Identifier" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -10692,7 +11217,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -10709,7 +11236,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -10746,6 +11275,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -10796,7 +11326,9 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -10823,7 +11355,9 @@ Module normalized.
                           "core::cmp::Ord",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -10875,8 +11409,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::language_storage::ModuleId",
+                    [],
                     [ Ty.path "move_core_types::language_storage::ModuleId" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -10908,8 +11444,10 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::identifier::Identifier",
+                          [],
                           [ Ty.path "move_core_types::identifier::Identifier" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -11008,8 +11546,10 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::language_storage::ModuleId",
+                [],
                 [ Ty.path "move_core_types::language_storage::ModuleId" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -11030,8 +11570,10 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::identifier::Identifier",
+                  [],
                   [ Ty.path "move_core_types::identifier::Identifier" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -11645,7 +12187,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11671,7 +12215,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11697,7 +12243,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11723,7 +12271,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11749,7 +12299,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11775,7 +12327,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11834,7 +12388,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Constant",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11882,7 +12438,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11908,7 +12466,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11934,7 +12494,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11960,7 +12522,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FunctionRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -11996,7 +12560,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12022,7 +12588,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12058,7 +12626,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12084,7 +12654,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12120,7 +12692,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12179,7 +12753,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12205,7 +12781,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12231,7 +12809,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12267,7 +12847,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12293,7 +12875,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12329,7 +12913,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12539,7 +13125,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12549,7 +13137,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_1 |) ]
@@ -12575,7 +13165,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12601,7 +13193,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12627,7 +13221,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12653,7 +13249,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12679,7 +13277,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12712,7 +13312,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12722,7 +13324,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_1 |) ]
@@ -12748,7 +13352,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12774,7 +13380,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12800,7 +13408,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12826,7 +13436,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12885,7 +13497,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12921,7 +13535,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12947,7 +13563,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -12983,7 +13601,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13009,7 +13629,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13045,7 +13667,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13071,7 +13695,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13107,7 +13733,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13133,7 +13761,9 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13169,7 +13799,9 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -13214,6 +13846,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Pop" |) ]
@@ -13229,6 +13862,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Ret" |) ]
@@ -13249,6 +13883,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BrTrue" |); __self_0 ]
@@ -13269,6 +13904,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BrFalse" |); __self_0 ]
@@ -13289,6 +13925,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Branch" |); __self_0 ]
@@ -13309,6 +13946,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU8" |); __self_0 ]
@@ -13329,6 +13967,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU64" |); __self_0 ]
@@ -13349,6 +13988,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU128" |); __self_0 ]
@@ -13367,6 +14007,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU8" |) ]
@@ -13385,6 +14026,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU64" |) ]
@@ -13403,6 +14045,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU128" |) ]
@@ -13423,6 +14066,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdConst" |); __self_0 ]
@@ -13441,6 +14085,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdTrue" |) ]
@@ -13459,6 +14104,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdFalse" |) ]
@@ -13479,6 +14125,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CopyLoc" |); __self_0 ]
@@ -13499,6 +14146,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MoveLoc" |); __self_0 ]
@@ -13519,6 +14167,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "StLoc" |); __self_0 ]
@@ -13539,6 +14188,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
@@ -13559,6 +14209,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CallGeneric" |); __self_0 ]
@@ -13579,6 +14230,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Pack" |); __self_0 ]
@@ -13599,6 +14251,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "PackGeneric" |); __self_0 ]
@@ -13619,6 +14272,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Unpack" |); __self_0 ]
@@ -13639,6 +14293,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "UnpackGeneric" |); __self_0 ]
@@ -13657,6 +14312,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ReadRef" |) ]
@@ -13675,6 +14331,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "WriteRef" |) ]
@@ -13693,6 +14350,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "FreezeRef" |) ]
@@ -13713,6 +14371,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MutBorrowLoc" |); __self_0 ]
@@ -13733,6 +14392,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ImmBorrowLoc" |); __self_0 ]
@@ -13753,6 +14413,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MutBorrowField" |); __self_0 ]
@@ -13773,6 +14434,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -13797,6 +14459,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ImmBorrowField" |); __self_0 ]
@@ -13817,6 +14480,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -13836,6 +14500,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Add" |) ]
@@ -13851,6 +14516,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Sub" |) ]
@@ -13866,6 +14532,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Mul" |) ]
@@ -13881,6 +14548,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Mod" |) ]
@@ -13896,6 +14564,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Div" |) ]
@@ -13914,6 +14583,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BitOr" |) ]
@@ -13932,6 +14602,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "BitAnd" |) ]
@@ -13947,6 +14618,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Xor" |) ]
@@ -13962,6 +14634,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Or" |) ]
@@ -13977,6 +14650,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "And" |) ]
@@ -13992,6 +14666,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Not" |) ]
@@ -14007,6 +14682,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Eq" |) ]
@@ -14022,6 +14698,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Neq" |) ]
@@ -14037,6 +14714,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Lt" |) ]
@@ -14052,6 +14730,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Gt" |) ]
@@ -14067,6 +14746,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Le" |) ]
@@ -14082,6 +14762,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Ge" |) ]
@@ -14100,6 +14781,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Abort" |) ]
@@ -14115,6 +14797,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Nop" |) ]
@@ -14130,6 +14813,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Shl" |) ]
@@ -14145,6 +14829,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Shr" |) ]
@@ -14172,6 +14857,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
+                          [],
                           []
                         |),
                         [
@@ -14197,6 +14883,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecLen" |); __self_0 ]
@@ -14217,6 +14904,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecImmBorrow" |); __self_0 ]
@@ -14237,6 +14925,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecMutBorrow" |); __self_0 ]
@@ -14257,6 +14946,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecPushBack" |); __self_0 ]
@@ -14277,6 +14967,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecPopBack" |); __self_0 ]
@@ -14304,6 +14995,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
+                          [],
                           []
                         |),
                         [
@@ -14329,6 +15021,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "VecSwap" |); __self_0 ]
@@ -14349,6 +15042,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU16" |); __self_0 ]
@@ -14369,6 +15063,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU32" |); __self_0 ]
@@ -14389,6 +15084,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "LdU256" |); __self_0 ]
@@ -14407,6 +15103,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU16" |) ]
@@ -14425,6 +15122,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU32" |) ]
@@ -14443,6 +15141,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "CastU256" |) ]
@@ -14463,6 +15162,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14487,6 +15187,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14511,6 +15212,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14535,6 +15237,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14559,6 +15262,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ExistsDeprecated" |); __self_0 ]
@@ -14579,6 +15283,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14603,6 +15308,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MoveFromDeprecated" |); __self_0 ]
@@ -14623,6 +15329,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14647,6 +15354,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "MoveToDeprecated" |); __self_0 ]
@@ -14667,6 +15375,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
@@ -14726,7 +15435,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -14763,7 +15472,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14795,7 +15506,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14827,7 +15540,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14859,7 +15574,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14891,7 +15608,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14923,7 +15642,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u128",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14955,7 +15676,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Constant",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -14987,7 +15710,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15019,7 +15744,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15051,7 +15778,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15083,7 +15812,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15125,7 +15856,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15157,7 +15890,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15199,7 +15934,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15231,7 +15968,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15273,7 +16012,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15305,7 +16046,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15337,7 +16080,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15369,7 +16114,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15411,7 +16158,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15443,7 +16192,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15485,7 +16236,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15532,7 +16285,9 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15549,7 +16304,9 @@ Module normalized.
                                           "core::cmp::Ord",
                                           Ty.path "u64",
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -15587,7 +16344,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15619,7 +16378,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15651,7 +16412,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15683,7 +16446,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15715,7 +16480,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15762,7 +16529,9 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15779,7 +16548,9 @@ Module normalized.
                                           "core::cmp::Ord",
                                           Ty.path "u64",
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -15817,7 +16588,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15849,7 +16622,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15881,7 +16656,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15913,7 +16690,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::u256::U256",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15945,7 +16724,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -15987,7 +16768,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16019,7 +16802,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16061,7 +16846,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16093,7 +16880,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16135,7 +16924,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16167,7 +16958,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16209,7 +17002,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16241,7 +17036,9 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16283,7 +17080,9 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16351,8 +17150,10 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "isize",
+                    [],
                     [ Ty.path "isize" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ __self_discr; __arg1_discr ]
@@ -16396,8 +17197,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16428,8 +17231,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16460,8 +17265,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16492,8 +17299,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16524,8 +17333,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u64",
+                                  [],
                                   [ Ty.path "u64" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16556,8 +17367,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u128",
+                                  [],
                                   [ Ty.path "u128" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16588,8 +17401,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Constant",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Constant" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16620,8 +17435,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16652,8 +17469,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16684,8 +17503,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16716,8 +17537,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FunctionRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16758,6 +17581,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16772,6 +17596,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16802,8 +17627,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16844,6 +17671,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16858,6 +17686,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16888,8 +17717,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16930,6 +17761,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16944,6 +17776,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -16974,8 +17807,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17006,8 +17841,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17038,8 +17875,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FieldRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17080,6 +17919,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17094,6 +17934,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17124,8 +17965,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FieldRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17166,6 +18009,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17180,6 +18024,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17225,8 +18070,10 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17248,8 +18095,10 @@ Module normalized.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u64" ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -17286,8 +18135,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17318,8 +18169,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17350,8 +18203,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17382,8 +18237,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17414,8 +18271,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17461,8 +18320,10 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17484,8 +18345,10 @@ Module normalized.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u64" ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
@@ -17522,8 +18385,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17554,8 +18419,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17586,8 +18453,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u32",
+                                  [],
                                   [ Ty.path "u32" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17618,8 +18487,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
+                                  [],
                                   [ Ty.path "move_core_types::u256::U256" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17650,8 +18521,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17692,6 +18565,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17706,6 +18580,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17736,8 +18611,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17778,6 +18655,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17792,6 +18670,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17822,8 +18701,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17864,6 +18745,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17878,6 +18760,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17908,8 +18791,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17950,6 +18835,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17964,6 +18850,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -17994,8 +18881,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -18036,6 +18925,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -18050,6 +18940,7 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -18364,8 +19255,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18396,8 +19289,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18428,8 +19323,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18460,8 +19357,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18492,8 +19391,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18524,8 +19425,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18559,6 +19462,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Constant" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18566,6 +19470,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Constant" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18596,8 +19501,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18628,8 +19535,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18660,8 +19569,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18695,6 +19606,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FunctionRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18702,6 +19614,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FunctionRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18747,6 +19660,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18766,6 +19680,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18799,6 +19714,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18806,6 +19722,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18851,6 +19768,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18870,6 +19788,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18903,6 +19822,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18910,6 +19830,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -18955,6 +19876,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18974,6 +19896,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19004,8 +19927,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19036,8 +19961,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19071,6 +19998,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19078,6 +20006,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FieldRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19123,6 +20052,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19142,6 +20072,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19175,6 +20106,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19182,6 +20114,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FieldRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19227,6 +20160,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19246,6 +20180,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19294,6 +20229,7 @@ Module normalized.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -19301,6 +20237,7 @@ Module normalized.
                                         [ Ty.path "move_binary_format::normalized::Type" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -19310,8 +20247,10 @@ Module normalized.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ __self_1; __arg1_1 ]
@@ -19346,6 +20285,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19353,6 +20293,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19386,6 +20327,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19393,6 +20335,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19426,6 +20369,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19433,6 +20377,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19466,6 +20411,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19473,6 +20419,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19506,6 +20453,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19513,6 +20461,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19561,6 +20510,7 @@ Module normalized.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -19568,6 +20518,7 @@ Module normalized.
                                         [ Ty.path "move_binary_format::normalized::Type" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -19577,8 +20528,10 @@ Module normalized.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ __self_1; __arg1_1 ]
@@ -19613,6 +20566,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19620,6 +20574,7 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19650,8 +20605,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19682,8 +20639,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19717,6 +20676,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19724,6 +20684,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19757,6 +20718,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19764,6 +20726,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19809,6 +20772,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19828,6 +20792,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19861,6 +20826,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19868,6 +20834,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19913,6 +20880,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19932,6 +20900,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -19965,6 +20934,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19972,6 +20942,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20017,6 +20988,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20036,6 +21008,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20069,6 +21042,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20076,6 +21050,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20121,6 +21096,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20140,6 +21116,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20173,6 +21150,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20180,6 +21158,7 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20225,6 +21204,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20244,6 +21224,7 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -20294,6 +21275,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -20314,7 +21296,9 @@ Module normalized.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20399,7 +21383,15 @@ Module normalized.
             [
               ("file_format_version",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -20414,7 +21406,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20431,7 +21425,9 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20454,7 +21450,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20477,7 +21475,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20501,7 +21501,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20525,7 +21527,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20548,7 +21552,9 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -20653,6 +21659,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -20810,8 +21817,10 @@ Module normalized.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "move_core_types::account_address::AccountAddress",
+                              [],
                               [ Ty.path "move_core_types::account_address::AccountAddress" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
@@ -20833,8 +21842,10 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.path "move_core_types::identifier::Identifier",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ],
                             "eq",
+                            [],
                             []
                           |),
                           [
@@ -20862,6 +21873,7 @@ Module normalized.
                               Ty.path "move_core_types::language_storage::ModuleId";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -20872,6 +21884,7 @@ Module normalized.
                               ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -20899,6 +21912,7 @@ Module normalized.
                             Ty.path "move_core_types::language_storage::ModuleId";
                             Ty.path "alloc::alloc::Global"
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -20909,6 +21923,7 @@ Module normalized.
                             ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -20937,6 +21952,7 @@ Module normalized.
                           Ty.path "move_binary_format::normalized::Struct";
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -20948,6 +21964,7 @@ Module normalized.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -20976,6 +21993,7 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Function";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -20987,6 +22005,7 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -21014,6 +22033,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Constant";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -21024,6 +22044,7 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -21095,6 +22116,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_friends",
+                    [],
                     []
                   |),
                   [ M.read (| m |) ]
@@ -21130,7 +22152,9 @@ Module normalized.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -21151,7 +22175,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -21183,6 +22209,7 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -21190,6 +22217,7 @@ Module normalized.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_defs",
+                                [],
                                 []
                               |),
                               [ M.read (| m |) ]
@@ -21212,6 +22240,7 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Struct",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| m |); M.read (| d |) ]
@@ -21231,6 +22260,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_dependencies",
+                    [],
                     []
                   |),
                   [ M.read (| m |) ]
@@ -21262,7 +22292,9 @@ Module normalized.
                           (Ty.path "move_binary_format::normalized::Constant")
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -21282,7 +22314,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::Constant" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.path "move_binary_format::normalized::Constant";
                           Ty.function
@@ -21306,6 +22340,7 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::Constant" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -21313,6 +22348,7 @@ Module normalized.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "constant_pool",
+                                [],
                                 []
                               |),
                               [ M.read (| m |) ]
@@ -21335,6 +22371,7 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Constant",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| m |); M.read (| constant |) ]
@@ -21378,7 +22415,9 @@ Module normalized.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -21399,7 +22438,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -21432,6 +22473,7 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -21439,6 +22481,7 @@ Module normalized.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_defs",
+                                [],
                                 []
                               |),
                               [ M.read (| m |) ]
@@ -21461,6 +22504,7 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Function",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| m |); M.read (| func_def |) ]
@@ -21483,6 +22527,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "version",
+                        [],
                         []
                       |),
                       [ M.read (| m |) ]
@@ -21493,6 +22538,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::CompiledModule",
                           "address",
+                          [],
                           []
                         |),
                         [ M.read (| m |) ]
@@ -21504,7 +22550,9 @@ Module normalized.
                         "alloc::borrow::ToOwned",
                         Ty.path "move_core_types::identifier::IdentStr",
                         [],
+                        [],
                         "to_owned",
+                        [],
                         []
                       |),
                       [
@@ -21512,6 +22560,7 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "name",
+                            [],
                             []
                           |),
                           [ M.read (| m |) ]
@@ -21545,6 +22594,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::ModuleId",
               "new",
+              [],
               []
             |),
             [
@@ -21560,7 +22610,9 @@ Module normalized.
                   "core::clone::Clone",
                   Ty.path "move_core_types::identifier::Identifier",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -21650,6 +22702,7 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "struct_handle_at",
+                            [],
                             []
                           |),
                           [ M.read (| m |); M.read (| M.read (| shi |) |) ]
@@ -21676,6 +22729,7 @@ Module normalized.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "is_empty",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21702,6 +22756,7 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21729,6 +22784,7 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "module_handle_at",
+                            [],
                             []
                           |),
                           [
@@ -21753,6 +22809,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "address_identifier_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21773,7 +22830,9 @@ Module normalized.
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
                                 [],
+                                [],
                                 "to_owned",
+                                [],
                                 []
                               |),
                               [
@@ -21781,6 +22840,7 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "identifier_at",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21802,7 +22862,9 @@ Module normalized.
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
                                 [],
+                                [],
                                 "to_owned",
+                                [],
                                 []
                               |),
                               [
@@ -21810,6 +22872,7 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "identifier_at",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21836,6 +22899,7 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
+                                [],
                                 []
                               |),
                               []
@@ -21868,6 +22932,7 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_handle_at",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| m |); M.read (| M.read (| shi |) |) ]
@@ -21879,6 +22944,7 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "module_handle_at",
+                                    [],
                                     []
                                   |),
                                   [
@@ -21903,6 +22969,7 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "address_identifier_at",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21923,7 +22990,9 @@ Module normalized.
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
                                         [],
+                                        [],
                                         "to_owned",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21932,6 +23001,7 @@ Module normalized.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "identifier_at",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21953,7 +23023,9 @@ Module normalized.
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
                                         [],
+                                        [],
                                         "to_owned",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21962,6 +23034,7 @@ Module normalized.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "identifier_at",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22008,7 +23081,9 @@ Module normalized.
                                               (Ty.path "move_binary_format::normalized::Type")
                                           ],
                                         [],
+                                        [],
                                         "collect",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -22031,7 +23106,9 @@ Module normalized.
                                                   "move_binary_format::file_format::SignatureToken"
                                               ],
                                             [],
+                                            [],
                                             "map",
+                                            [],
                                             [
                                               Ty.path "move_binary_format::normalized::Type";
                                               Ty.function
@@ -22061,6 +23138,7 @@ Module normalized.
                                                       "move_binary_format::file_format::SignatureToken"
                                                   ],
                                                 "iter",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -22076,7 +23154,9 @@ Module normalized.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| type_actuals |) ]
@@ -22100,6 +23180,7 @@ Module normalized.
                                                                   Ty.path
                                                                     "move_binary_format::normalized::Type",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| m |); M.read (| t |) ]
@@ -22237,6 +23318,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22244,6 +23326,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| t |) |) ]
@@ -22291,6 +23374,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22298,6 +23382,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| t |) |) ]
@@ -22330,6 +23415,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22337,6 +23423,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| t |) |) ]
@@ -22464,7 +23551,9 @@ Module normalized.
                             []
                             [ Ty.path "move_binary_format::normalized::Type" ],
                           [],
+                          [],
                           "all",
+                          [],
                           [
                             Ty.function
                               [
@@ -22488,6 +23577,7 @@ Module normalized.
                                   []
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -22502,7 +23592,9 @@ Module normalized.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| type_arguments |) ]
@@ -22526,6 +23618,7 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "move_binary_format::normalized::Type",
                                                 "is_closed",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| t |) ]
@@ -22576,24 +23669,24 @@ Module normalized.
                             let t := M.alloc (| γ1_0 |) in
                             Value.Tuple [ t ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ t ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::normalized::Type",
-                                      "is_closed",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| t |) |) ]
-                                  |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ t ] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::normalized::Type",
+                                    "is_closed",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| M.read (| t |) |) ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)))
               ]
             |)
@@ -22670,6 +23763,7 @@ Module normalized.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::normalized::Type",
                                       "is_closed",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -22704,25 +23798,24 @@ Module normalized.
                                               |) in
                                             Value.Tuple []))
                                       ],
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [] =>
-                                              ltac:(M.monadic
-                                                (M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
-                                                      |)
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [] =>
+                                            ltac:(M.monadic
+                                              (M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    M.return_ (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
                                                     |)
                                                   |)
-                                                |)))
-                                            | _ => M.impossible "wrong number of arguments"
-                                            end))
+                                                |)
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -22856,6 +23949,7 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22869,6 +23963,7 @@ Module normalized.
                                                         "move_core_types::language_storage::TypeTag"
                                                     ],
                                                   "expect",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -22877,6 +23972,7 @@ Module normalized.
                                                       Ty.path
                                                         "move_binary_format::normalized::Type",
                                                       "into_type_tag",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| M.read (| t |) |) ]
@@ -22936,6 +24032,7 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22974,7 +24071,9 @@ Module normalized.
                                                                 "move_core_types::language_storage::TypeTag")
                                                           ],
                                                         [],
+                                                        [],
                                                         "collect",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
@@ -23000,7 +24099,9 @@ Module normalized.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "map",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_core_types::language_storage::TypeTag";
@@ -23029,7 +24130,9 @@ Module normalized.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "into_iter",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| type_arguments |) ]
@@ -23058,6 +24161,7 @@ Module normalized.
                                                                                         "move_core_types::language_storage::TypeTag"
                                                                                     ],
                                                                                   "expect",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -23066,6 +24170,7 @@ Module normalized.
                                                                                       Ty.path
                                                                                         "move_binary_format::normalized::Type",
                                                                                       "into_type_tag",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ M.read (| t |)
@@ -23162,7 +24267,9 @@ Module normalized.
                             []
                             [ Ty.path "move_core_types::language_storage::TypeTag" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23170,6 +24277,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Type",
                               "into_type_tag",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -23198,6 +24306,7 @@ Module normalized.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "move_core_types::language_storage::StructTag" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -23205,6 +24314,7 @@ Module normalized.
                                           [ Ty.path "core::convert::Infallible" ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23379,26 +24489,27 @@ Module normalized.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "move_binary_format::normalized::Type",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
-                                  |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.path "move_binary_format::normalized::Type",
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -23424,6 +24535,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23431,6 +24543,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| ty |) |); M.read (| type_args |) ]
@@ -23463,6 +24576,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23470,6 +24584,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| ty |) |); M.read (| type_args |) ]
@@ -23502,6 +24617,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23509,6 +24625,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| t |) |); M.read (| type_args |) ]
@@ -23559,7 +24676,9 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| module |) ]
@@ -23570,7 +24689,9 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| name |) ]
@@ -23600,7 +24721,9 @@ Module normalized.
                                       (Ty.path "move_binary_format::normalized::Type")
                                   ],
                                 [],
+                                [],
                                 "collect",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -23620,7 +24743,9 @@ Module normalized.
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
@@ -23644,6 +24769,7 @@ Module normalized.
                                           []
                                           [ Ty.path "move_binary_format::normalized::Type" ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -23658,7 +24784,9 @@ Module normalized.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| type_arguments |) ]
@@ -23682,6 +24810,7 @@ Module normalized.
                                                           Ty.path
                                                             "move_binary_format::normalized::Type",
                                                           "subst",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| t |); M.read (| type_args |) ]
@@ -23712,7 +24841,9 @@ Module normalized.
                           "core::clone::Clone",
                           Ty.path "move_binary_format::normalized::Type",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -23728,6 +24859,7 @@ Module normalized.
                                     [ Ty.path "move_binary_format::normalized::Type" ]
                                 ],
                               "expect",
+                              [],
                               []
                             |),
                             [
@@ -23738,6 +24870,7 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
                                   "get",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [ M.read (| type_args |); M.rust_cast (M.read (| M.read (| i |) |))
@@ -23784,7 +24917,9 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
@@ -23792,6 +24927,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "identifier_at",
+                        [],
                         []
                       |),
                       [
@@ -23812,6 +24948,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -23871,6 +25008,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "struct_handle_at",
+                    [],
                     []
                   |),
                   [
@@ -23915,6 +25053,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -23958,7 +25097,9 @@ Module normalized.
                                     (Ty.path "move_binary_format::normalized::Field")
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -23978,7 +25119,9 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                   [],
+                                  [],
                                   "map",
+                                  [],
                                   [
                                     Ty.path "move_binary_format::normalized::Field";
                                     Ty.function
@@ -24006,6 +25149,7 @@ Module normalized.
                                         [ Ty.path "move_binary_format::file_format::FieldDefinition"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24021,7 +25165,9 @@ Module normalized.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fields |) ]
@@ -24045,6 +25191,7 @@ Module normalized.
                                                         Ty.path
                                                           "move_binary_format::normalized::Field",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| m |); M.read (| f |) ]
@@ -24068,7 +25215,9 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
@@ -24076,6 +25225,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "identifier_at",
+                        [],
                         []
                       |),
                       [
@@ -24117,7 +25267,9 @@ Module normalized.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -24153,6 +25305,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::Struct",
               "new",
+              [],
               []
             |),
             [
@@ -24161,6 +25314,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_def_at",
+                  [],
                   []
                 |),
                 [ M.read (| m |); M.read (| M.read (| idx |) |) ]
@@ -24190,7 +25344,9 @@ Module normalized.
                 []
                 [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
               [],
+              [],
               "map",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::AbilitySet" ];
                 Ty.function
@@ -24217,6 +25373,7 @@ Module normalized.
                     []
                     [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                   "iter",
+                  [],
                   []
                 |),
                 [
@@ -24231,7 +25388,9 @@ Module normalized.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "deref",
+                      [],
                       []
                     |),
                     [
@@ -24326,6 +25485,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "function_handle_at",
+                    [],
                     []
                   |),
                   [
@@ -24347,7 +25507,9 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
@@ -24355,6 +25517,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "identifier_at",
+                        [],
                         []
                       |),
                       [
@@ -24388,6 +25551,7 @@ Module normalized.
                           ]
                       ],
                     "unwrap_or_default",
+                    [],
                     []
                   |),
                   [
@@ -24403,6 +25567,7 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -24438,6 +25603,7 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::CodeUnit" ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
@@ -24491,7 +25657,9 @@ Module normalized.
                                                       "move_binary_format::normalized::Bytecode")
                                                 ],
                                               [],
+                                              [],
                                               "collect",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -24515,7 +25683,9 @@ Module normalized.
                                                         "move_binary_format::file_format::Bytecode"
                                                     ],
                                                   [],
+                                                  [],
                                                   "map",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_binary_format::normalized::Bytecode";
@@ -24547,6 +25717,7 @@ Module normalized.
                                                             "move_binary_format::file_format::Bytecode"
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -24562,7 +25733,9 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24593,6 +25766,7 @@ Module normalized.
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Bytecode",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -24651,7 +25825,9 @@ Module normalized.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -24688,7 +25864,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -24708,7 +25886,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -24735,6 +25915,7 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24749,7 +25930,9 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24759,6 +25942,7 @@ Module normalized.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "signature_at",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24795,6 +25979,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| m |); M.read (| s |) ]
@@ -24833,7 +26018,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -24853,7 +26040,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -24880,6 +26069,7 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24894,7 +26084,9 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24904,6 +26096,7 @@ Module normalized.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "signature_at",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24940,6 +26133,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| m |); M.read (| s |) ]
@@ -25001,7 +26195,9 @@ Module normalized.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -25033,7 +26229,9 @@ Module normalized.
                                                 "move_binary_format::file_format::FunctionDefinition"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -25077,6 +26275,7 @@ Module normalized.
                                                                 Ty.path
                                                                   "move_core_types::identifier::IdentStr"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -25087,6 +26286,7 @@ Module normalized.
                                                                 ]
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -25096,6 +26296,7 @@ Module normalized.
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
                                                                   "identifier_at",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -25107,6 +26308,7 @@ Module normalized.
                                                                           Ty.path
                                                                             "move_binary_format::file_format::CompiledModule",
                                                                           "function_handle_at",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -25153,6 +26355,7 @@ Module normalized.
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Function",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -25332,6 +26535,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -25339,8 +26543,10 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::convert::From",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_core_types::language_storage::TypeTag" ],
                                   "from",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| ty |) |) ]
@@ -25409,7 +26615,9 @@ Module normalized.
                                       (Ty.path "move_binary_format::normalized::Type")
                                   ],
                                 [],
+                                [],
                                 "collect",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -25432,7 +26640,9 @@ Module normalized.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
@@ -25455,7 +26665,9 @@ Module normalized.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -25485,11 +26697,13 @@ Module normalized.
                                                           "core::convert::Into",
                                                           Ty.path
                                                             "move_core_types::language_storage::TypeTag",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::normalized::Type"
                                                           ],
                                                           "into",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| ty |) ]
@@ -25545,7 +26759,9 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
@@ -25553,6 +26769,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_name",
+                        [],
                         []
                       |),
                       [
@@ -25597,6 +26814,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FieldRef",
               "new",
+              [],
               []
             |),
             [
@@ -25605,6 +26823,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "field_handle_at",
+                  [],
                   []
                 |),
                 [ M.read (| m |); M.read (| M.read (| field_handle_idx |) |) ]
@@ -25642,6 +26861,7 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "module_id_for_handle",
+                    [],
                     []
                   |),
                   [
@@ -25650,6 +26870,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "module_handle_at",
+                        [],
                         []
                       |),
                       [
@@ -25671,7 +26892,9 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
@@ -25679,6 +26902,7 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "identifier_at",
+                        [],
                         []
                       |),
                       [
@@ -25715,6 +26939,7 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FunctionRef",
               "new",
+              [],
               []
             |),
             [
@@ -25723,6 +26948,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "function_handle_at",
+                  [],
                   []
                 |),
                 [ M.read (| m |); M.read (| M.read (| function_handle_idx |) |) ]
@@ -26375,6 +27601,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Constant",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -26383,6 +27610,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "constant_at",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| const_idx |) |) ]
@@ -26409,6 +27637,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FunctionRef",
                               "from_idx",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| fh_idx |) ]
@@ -26431,6 +27660,7 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "function_instantiation_at",
+                            [],
                             []
                           |),
                           [ M.read (| m |); M.read (| M.read (| fhi_idx |) |) ]
@@ -26460,6 +27690,7 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "signature_at",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| m |); M.read (| M.read (| type_parameters |) |) ]
@@ -26475,6 +27706,7 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::normalized::FunctionRef",
                                           "from_idx",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| m |); M.read (| handle |) ]
@@ -26509,7 +27741,9 @@ Module normalized.
                                                 (Ty.path "move_binary_format::normalized::Type")
                                             ],
                                           [],
+                                          [],
                                           "collect",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
@@ -26532,7 +27766,9 @@ Module normalized.
                                                     "move_binary_format::file_format::SignatureToken"
                                                 ],
                                               [],
+                                              [],
                                               "map",
+                                              [],
                                               [
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.function
@@ -26562,6 +27798,7 @@ Module normalized.
                                                         "move_binary_format::file_format::SignatureToken"
                                                     ],
                                                   "iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -26577,7 +27814,9 @@ Module normalized.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
+                                                      [],
                                                       "deref",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -26607,6 +27846,7 @@ Module normalized.
                                                                     Ty.path
                                                                       "move_binary_format::normalized::Type",
                                                                     "new",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| m |); M.read (| tok |)
@@ -26644,7 +27884,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -26652,6 +27894,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -26703,7 +27946,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -26711,6 +27956,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -26791,6 +28037,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| fh_ixd |) ]
@@ -26839,6 +28086,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| fh_idx |) ]
@@ -26888,7 +28136,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -26896,6 +28146,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -26947,7 +28198,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -26955,6 +28208,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -27006,7 +28260,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -27014,6 +28270,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -27065,7 +28322,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -27073,6 +28332,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -27124,7 +28384,9 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
@@ -27132,6 +28394,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_name",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
@@ -27480,7 +28743,9 @@ Module normalized.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -27488,6 +28753,7 @@ Module normalized.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "write_fmt",
+                                      [],
                                       []
                                     |),
                                     [
@@ -27496,6 +28762,7 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
@@ -27514,6 +28781,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
@@ -27523,6 +28791,7 @@ Module normalized.
                                                           Ty.path
                                                             "move_core_types::account_address::AccountAddress",
                                                           "short_str_lossless",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| address |) ]
@@ -27534,6 +28803,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -27550,6 +28820,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_display",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -27592,6 +28863,7 @@ Module normalized.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -27602,6 +28874,7 @@ Module normalized.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -27637,6 +28910,7 @@ Module normalized.
                                             []
                                             [ Ty.path "move_binary_format::normalized::Type" ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [
@@ -27651,7 +28925,9 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "deref",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| type_arguments |) ]
@@ -27677,7 +28953,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27685,6 +28963,7 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -27693,6 +28972,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -27728,6 +29008,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -27738,6 +29019,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -27769,7 +29051,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27777,6 +29061,7 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -27785,6 +29070,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -27798,6 +29084,7 @@ Module normalized.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -27841,6 +29128,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -27851,6 +29139,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -27889,7 +29178,9 @@ Module normalized.
                                                     ]
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
                                             [
@@ -27902,7 +29193,9 @@ Module normalized.
                                                     [ Ty.path "move_binary_format::normalized::Type"
                                                     ],
                                                   [],
+                                                  [],
                                                   "skip",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -27916,6 +29209,7 @@ Module normalized.
                                                             "move_binary_format::normalized::Type"
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -27931,7 +29225,9 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| type_arguments |) ]
@@ -27971,7 +29267,9 @@ Module normalized.
                                                                   ]
                                                               ],
                                                             [],
+                                                            [],
                                                             "next",
+                                                            [],
                                                             []
                                                           |),
                                                           [ iter ]
@@ -28014,7 +29312,9 @@ Module normalized.
                                                                           Ty.path "core::fmt::Error"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "branch",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -28023,6 +29323,7 @@ Module normalized.
                                                                           Ty.path
                                                                             "core::fmt::Formatter",
                                                                           "write_fmt",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -28032,6 +29333,7 @@ Module normalized.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -28052,6 +29354,7 @@ Module normalized.
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
                                                                                         "new_display",
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -28101,6 +29404,7 @@ Module normalized.
                                                                                       Ty.path
                                                                                         "core::fmt::Error"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -28114,6 +29418,7 @@ Module normalized.
                                                                                       ]
                                                                                   ],
                                                                                   "from_residual",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -28157,7 +29462,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -28165,6 +29472,7 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -28173,6 +29481,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -28208,6 +29517,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -28218,6 +29528,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -28260,6 +29571,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28268,6 +29580,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28285,6 +29598,7 @@ Module normalized.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -28320,6 +29634,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28328,6 +29643,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
@@ -28345,6 +29661,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28353,6 +29670,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
@@ -28370,6 +29688,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28378,6 +29697,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
@@ -28395,6 +29715,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28403,6 +29724,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
@@ -28420,6 +29742,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28428,6 +29751,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
@@ -28445,6 +29769,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28453,6 +29778,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
@@ -28473,6 +29799,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28481,6 +29808,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |)
@@ -28502,6 +29830,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28510,6 +29839,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
@@ -28527,6 +29857,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28535,6 +29866,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
@@ -28557,6 +29889,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28565,6 +29898,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28576,6 +29910,7 @@ Module normalized.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -28616,6 +29951,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28624,6 +29960,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28635,6 +29972,7 @@ Module normalized.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -28675,6 +30013,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -28683,6 +30022,7 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28694,6 +30034,7 @@ Module normalized.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           |),
                                           [ i ]
@@ -28752,6 +30093,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_instantiation_at",
+                  [],
                   []
                 |),
                 [ M.read (| m |); M.read (| M.read (| si_idx |) |) ]
@@ -28781,6 +30123,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::Struct",
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -28789,6 +30132,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "struct_def_at",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| M.read (| def |) |) ]
@@ -28832,7 +30176,9 @@ Module normalized.
                                         (Ty.path "move_binary_format::normalized::Type")
                                     ],
                                   [],
+                                  [],
                                   "collect",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -28853,7 +30199,9 @@ Module normalized.
                                         [ Ty.path "move_binary_format::file_format::SignatureToken"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path "move_binary_format::normalized::Type";
                                         Ty.function
@@ -28883,6 +30231,7 @@ Module normalized.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -28898,7 +30247,9 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "deref",
+                                              [],
                                               []
                                             |),
                                             [
@@ -28908,6 +30259,7 @@ Module normalized.
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
                                                     "signature_at",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -28939,6 +30291,7 @@ Module normalized.
                                                             Ty.path
                                                               "move_binary_format::normalized::Type",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| m |); M.read (| tok |) ]
@@ -28993,6 +30346,7 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "field_instantiation_at",
+                  [],
                   []
                 |),
                 [ M.read (| m |); M.read (| M.read (| idx |) |) ]
@@ -29022,6 +30376,7 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::FieldRef",
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -29030,6 +30385,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "field_handle_at",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| M.read (| handle |) |) ]
@@ -29064,7 +30420,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -29084,7 +30442,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -29111,6 +30471,7 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -29125,7 +30486,9 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -29135,6 +30498,7 @@ Module normalized.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "signature_at",
+                                            [],
                                             []
                                           |),
                                           [
@@ -29165,6 +30529,7 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| m |); M.read (| tok |) ]
@@ -29200,7 +30565,12 @@ Module normalized.
         (let m := M.alloc (| m |) in
         let sig_idx := M.alloc (| sig_idx |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "move_binary_format::normalized::Type", "new", [] |),
+          M.get_associated_function (|
+            Ty.path "move_binary_format::normalized::Type",
+            "new",
+            [],
+            []
+          |),
           [
             M.read (| m |);
             M.call_closure (|
@@ -29213,8 +30583,10 @@ Module normalized.
                     Ty.path "move_binary_format::file_format::SignatureToken";
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [ Ty.path "usize" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -29223,6 +30595,7 @@ Module normalized.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "signature_at",
+                      [],
                       []
                     |),
                     [ M.read (| m |); M.read (| M.read (| sig_idx |) |) ]

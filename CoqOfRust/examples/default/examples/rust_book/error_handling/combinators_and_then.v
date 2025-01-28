@@ -38,7 +38,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -114,7 +114,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -303,6 +303,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
         M.get_associated_function (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
           "and_then",
+          [],
           [
             Ty.path "combinators_and_then::Food";
             Ty.function
@@ -363,6 +364,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -382,6 +384,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [ Ty.path "combinators_and_then::Day" ]
                                     |),
                                     [ day ]
@@ -390,6 +393,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [ Ty.path "combinators_and_then::Food" ]
                                     |),
                                     [ food ]
@@ -414,6 +418,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -432,6 +437,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [ Ty.path "combinators_and_then::Day" ]
                                     |),
                                     [ day ]

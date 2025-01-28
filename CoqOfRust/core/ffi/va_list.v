@@ -41,6 +41,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
@@ -121,6 +122,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -224,7 +226,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.path "core::ffi::va_list::VaListImpl",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -236,8 +240,10 @@ Module ffi.
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       F,
+                      [],
                       [ Ty.tuple [ Ty.path "core::ffi::va_list::VaList" ] ],
                       "call_once",
+                      [],
                       []
                     |),
                     [
@@ -248,6 +254,7 @@ Module ffi.
                             M.get_associated_function (|
                               Ty.path "core::ffi::va_list::VaListImpl",
                               "as_va_list",
+                              [],
                               []
                             |),
                             [ ap ]
@@ -518,6 +525,7 @@ Module ffi.
                         []
                         [ Ty.path "core::ffi::va_list::VaListImpl" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -535,6 +543,7 @@ Module ffi.
                             []
                             [ Ty.path "core::ffi::va_list::VaListImpl" ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ dest ]
@@ -551,6 +560,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::va_list::VaListImpl" ],
                     "assume_init",
+                    [],
                     []
                   |),
                   [ M.read (| dest |) ]

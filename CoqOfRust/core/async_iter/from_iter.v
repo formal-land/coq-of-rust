@@ -27,7 +27,7 @@ Module async_iter.
               [
                 ("iter",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -65,6 +65,7 @@ Module async_iter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -124,7 +125,9 @@ Module async_iter.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -162,7 +165,9 @@ Module async_iter.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |),
                   [
@@ -185,7 +190,9 @@ Module async_iter.
                                 ]
                             ],
                           [],
+                          [],
                           "deref_mut",
+                          [],
                           []
                         |),
                         [ self ]
@@ -215,7 +222,9 @@ Module async_iter.
                 "core::iter::traits::iterator::Iterator",
                 I,
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [

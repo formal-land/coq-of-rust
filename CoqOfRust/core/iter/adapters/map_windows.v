@@ -121,6 +121,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -182,6 +183,7 @@ Module iter.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 "is_some",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -190,6 +192,7 @@ Module iter.
                                                     M.get_associated_function (|
                                                       Ty.path "usize",
                                                       "checked_mul",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -220,6 +223,7 @@ Module iter.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -257,6 +261,7 @@ Module iter.
                               [ N ]
                               [ I ],
                             "new",
+                            [ N ],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -356,7 +361,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ I ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -364,6 +371,7 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     "as_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -408,6 +416,7 @@ Module iter.
                                                       [ Ty.associated ]
                                                   ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -415,6 +424,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -460,6 +470,7 @@ Module iter.
                                       [ N ]
                                       [ Ty.associated ],
                                     "try_from_iter",
+                                    [ N ],
                                     [ I ]
                                   |),
                                   [ M.read (| iter |) ]
@@ -481,7 +492,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| iter |) ]
@@ -498,6 +511,7 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                               "take",
+                                              [],
                                               []
                                             |),
                                             [
@@ -524,6 +538,7 @@ Module iter.
                                                     [ Ty.associated ]
                                                 ],
                                               "take",
+                                              [],
                                               []
                                             |),
                                             [
@@ -553,6 +568,7 @@ Module iter.
                                               [ N ]
                                               [ Ty.associated ],
                                             "push",
+                                            [ N ],
                                             []
                                           |),
                                           [ M.read (| buffer |); M.read (| item |) ]
@@ -580,6 +596,7 @@ Module iter.
                                 ]
                             ],
                           "map",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "&")
@@ -616,6 +633,7 @@ Module iter.
                                     [ Ty.associated ]
                                 ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [
@@ -632,6 +650,7 @@ Module iter.
                               [ N ]
                               [ Ty.associated ],
                             "as_array_ref",
+                            [ N ],
                             []
                           |)
                         ]
@@ -698,7 +717,9 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "size_hint",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |) ]
@@ -732,6 +753,7 @@ Module iter.
                                                         [ Ty.associated ]
                                                     ],
                                                   "is_some",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -760,6 +782,7 @@ Module iter.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "saturating_sub",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -781,6 +804,7 @@ Module iter.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   "map",
+                                                  [],
                                                   [
                                                     Ty.path "usize";
                                                     Ty.function
@@ -806,6 +830,7 @@ Module iter.
                                                                       M.get_associated_function (|
                                                                         Ty.path "usize",
                                                                         "saturating_sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -885,7 +910,9 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -899,6 +926,7 @@ Module iter.
                                         Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ]
                                       ],
                                     "ok",
+                                    [],
                                     []
                                   |),
                                   [
@@ -942,6 +970,7 @@ Module iter.
                                                   [ N ]
                                                   [ T ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -949,6 +978,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -981,6 +1011,7 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 "transpose",
+                                [ N ],
                                 []
                               |),
                               [
@@ -991,6 +1022,7 @@ Module iter.
                                       []
                                       [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| first_half |) ]
@@ -1057,6 +1089,7 @@ Module iter.
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [
@@ -1072,6 +1105,7 @@ Module iter.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [
@@ -1120,6 +1154,7 @@ Module iter.
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [
@@ -1135,6 +1170,7 @@ Module iter.
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [
@@ -1253,6 +1289,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "cast",
+                      [],
                       [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     |),
                     [
@@ -1263,6 +1300,7 @@ Module iter.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1273,6 +1311,7 @@ Module iter.
                                 [ N ]
                                 [ T ],
                               "buffer_ptr",
+                              [ N ],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1396,6 +1435,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "cast",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1411,6 +1451,7 @@ Module iter.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1421,6 +1462,7 @@ Module iter.
                                 [ N ]
                                 [ T ],
                               "buffer_mut_ptr",
+                              [ N ],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -1522,6 +1564,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ],
                         "buffer_mut_ptr",
+                        [ N ],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1652,6 +1695,7 @@ Module iter.
                                                     [ T ]
                                                 ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1689,6 +1733,7 @@ Module iter.
                                           []
                                           [ T ],
                                         "write",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1704,6 +1749,7 @@ Module iter.
                                                   [ T ]
                                               ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1735,6 +1781,7 @@ Module iter.
                                             [ T ]
                                         ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1773,6 +1820,7 @@ Module iter.
                                           []
                                           [ T ],
                                         "write",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1788,6 +1836,7 @@ Module iter.
                                                   [ T ]
                                               ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1825,6 +1874,7 @@ Module iter.
                                             [ T ]
                                         ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1871,6 +1921,7 @@ Module iter.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "cast",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| to_drop |) ]
@@ -1959,6 +2010,7 @@ Module iter.
                           []
                           [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                         "write",
+                        [],
                         []
                       |),
                       [
@@ -1969,6 +2021,7 @@ Module iter.
                               [ N ]
                               [ T ],
                             "as_uninit_array_mut",
+                            [ N ],
                             []
                           |),
                           [ buffer ]
@@ -1978,7 +2031,9 @@ Module iter.
                             "core::clone::Clone",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [
@@ -1989,6 +2044,7 @@ Module iter.
                                   [ N ]
                                   [ T ],
                                 "as_array_ref",
+                                [ N ],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -2042,7 +2098,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ I ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -2067,7 +2125,9 @@ Module iter.
                               [ Ty.associated ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -2134,6 +2194,7 @@ Module iter.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "cast",
+                            [],
                             [ T ]
                           |),
                           [
@@ -2149,6 +2210,7 @@ Module iter.
                                       [ T ]
                                   ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -2159,6 +2221,7 @@ Module iter.
                                       [ N ]
                                       [ T ],
                                     "buffer_mut_ptr",
+                                    [ N ],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -2249,7 +2312,9 @@ Module iter.
                                       [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -2260,6 +2325,7 @@ Module iter.
                                       [ N ]
                                       [ I ],
                                     "next_window",
+                                    [ N ],
                                     []
                                   |),
                                   [
@@ -2291,6 +2357,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ R ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2298,6 +2365,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2325,6 +2393,7 @@ Module iter.
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
+                            [],
                             [
                               Ty.tuple
                                 [
@@ -2335,6 +2404,7 @@ Module iter.
                                 ]
                             ],
                             "call_mut",
+                            [],
                             []
                           |),
                           [
@@ -2379,6 +2449,7 @@ Module iter.
                     [ N ]
                     [ I ],
                   "size_hint",
+                  [ N ],
                   []
                 |),
                 [
@@ -2458,6 +2529,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -2465,6 +2537,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -2473,6 +2546,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "MapWindows" |) ]
@@ -2530,7 +2604,7 @@ Module iter.
                 [
                   ("f",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -2548,7 +2622,9 @@ Module iter.
                           [ N ]
                           [ I ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [

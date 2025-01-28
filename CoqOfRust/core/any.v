@@ -20,7 +20,7 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
+            M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
             []
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -53,6 +53,7 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -61,6 +62,7 @@ Module any.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "Any" |) ]
@@ -98,6 +100,7 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -106,6 +109,7 @@ Module any.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "Any" |) ]
@@ -148,6 +152,7 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -156,6 +161,7 @@ Module any.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "Any" |) ]
@@ -198,7 +204,7 @@ Module any.
             let~ t :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
+                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
                   []
                 |)
               |) in
@@ -209,7 +215,9 @@ Module any.
                     "core::any::Any",
                     Ty.dyn [ ("core::any::Any::Trait", []) ],
                     [],
+                    [],
                     "type_id",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -220,8 +228,10 @@ Module any.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::any::TypeId",
+                  [],
                   [ Ty.path "core::any::TypeId" ],
                   "eq",
+                  [],
                   []
                 |),
                 [ t; concrete ]
@@ -263,6 +273,7 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -277,6 +288,7 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "downcast_ref_unchecked",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -323,6 +335,7 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -337,6 +350,7 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "downcast_mut_unchecked",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -388,6 +402,7 @@ Module any.
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
@@ -458,6 +473,7 @@ Module any.
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
@@ -509,7 +525,12 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "is",
+              [],
+              [ T ]
+            |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -531,6 +552,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -554,6 +576,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -578,6 +601,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref_unchecked",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -603,6 +627,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut_unchecked",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -634,7 +659,12 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "is",
+              [],
+              [ T ]
+            |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -656,6 +686,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -679,6 +710,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -703,6 +735,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref_unchecked",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -728,6 +761,7 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut_unchecked",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -829,8 +863,10 @@ Module any.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [],
               [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -872,7 +908,9 @@ Module any.
               "core::cmp::Ord",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -917,8 +955,10 @@ Module any.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [],
               [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               "eq",
+              [],
               []
             |),
             [
@@ -998,8 +1038,10 @@ Module any.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "u128",
+                  [],
                   [ Ty.path "u64" ],
                   "from",
+                  [],
                   []
                 |),
                 [
@@ -1017,8 +1059,10 @@ Module any.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "u128",
+                [],
                 [ Ty.path "u64" ],
                 "from",
+                [],
                 []
               |),
               [
@@ -1066,7 +1110,15 @@ Module any.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ H ]
+                  |),
                   [
                     M.SubPointer.get_tuple_field (|
                       M.SubPointer.get_struct_record_field (|
@@ -1108,13 +1160,14 @@ Module any.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::fmt::Arguments",
                   "new_v1_formatted",
+                  [],
                   []
                 |),
                 [
@@ -1129,6 +1182,7 @@ Module any.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_lower_hex",
+                            [],
                             [ Ty.path "u128" ]
                           |),
                           [
@@ -1137,6 +1191,7 @@ Module any.
                                 M.get_associated_function (|
                                   Ty.path "core::any::TypeId",
                                   "as_u128",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| self |) |) ]
@@ -1153,6 +1208,7 @@ Module any.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Placeholder",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -1169,7 +1225,12 @@ Module any.
                       ]
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::rt::UnsafeArg",
+                      "new",
+                      [],
+                      []
+                    |),
                     []
                   |)
                 ]

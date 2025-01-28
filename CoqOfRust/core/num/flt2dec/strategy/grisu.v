@@ -552,6 +552,7 @@ Module num.
                               []
                               [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -1578,6 +1579,7 @@ Module num.
                                               []
                                               [ Ty.path "u64" ],
                                             "is_some",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1586,6 +1588,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1648,6 +1651,7 @@ Module num.
                                               []
                                               [ Ty.path "u64" ],
                                             "is_some",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1656,6 +1660,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_sub",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1724,6 +1729,7 @@ Module num.
                                                     [ Ty.path "u8" ]
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -1818,6 +1824,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::num::diy_float::Fp",
                               "normalize",
+                              [],
                               []
                             |),
                             [
@@ -1861,6 +1868,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::num::diy_float::Fp",
                               "normalize_to",
+                              [],
                               []
                             |),
                             [
@@ -1911,6 +1919,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::num::diy_float::Fp",
                               "normalize_to",
+                              [],
                               []
                             |),
                             [
@@ -2005,6 +2014,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::diy_float::Fp",
                                       "mul",
+                                      [],
                                       []
                                     |),
                                     [ plus; cached ]
@@ -2016,6 +2026,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::diy_float::Fp",
                                       "mul",
+                                      [],
                                       []
                                     |),
                                     [ minus; cached ]
@@ -2027,6 +2038,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::diy_float::Fp",
                                       "mul",
+                                      [],
                                       []
                                     |),
                                     [ v; cached ]
@@ -2438,6 +2450,7 @@ Module num.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2513,6 +2526,7 @@ Module num.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "slice_assume_init_mut",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2529,6 +2543,7 @@ Module num.
                                                                                 []
                                                                                 [ Ty.path "u8" ]
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -2537,6 +2552,7 @@ Module num.
                                                                               [ Ty.path "usize" ]
                                                                           ],
                                                                           "index_mut",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -2898,6 +2914,7 @@ Module num.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2964,6 +2981,7 @@ Module num.
                                                                               []
                                                                               [ Ty.path "u8" ],
                                                                             "slice_assume_init_mut",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2981,6 +2999,7 @@ Module num.
                                                                                       [ Ty.path "u8"
                                                                                       ]
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -2992,6 +3011,7 @@ Module num.
                                                                                     ]
                                                                                 ],
                                                                                 "index_mut",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3184,6 +3204,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -3226,6 +3247,7 @@ Module num.
                                   []
                                   [ Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ] ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
@@ -3233,6 +3255,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "last_mut",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -3982,6 +4005,7 @@ Module num.
                                                     [ Ty.path "u8" ]
                                                 ],
                                               "is_empty",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -4015,6 +4039,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.path "core::num::diy_float::Fp",
                               "normalize",
+                              [],
                               []
                             |),
                             [
@@ -4102,6 +4127,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::diy_float::Fp",
                                       "mul",
+                                      [],
                                       []
                                     |),
                                     [ v; cached ]
@@ -4166,6 +4192,7 @@ Module num.
                                             [ Ty.path "u8" ]
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf |) ]
@@ -4349,6 +4376,7 @@ Module num.
                                                                             [ Ty.path "u8" ]
                                                                         ],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| buf |) ]
@@ -4383,6 +4411,7 @@ Module num.
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| buf |) ]
@@ -4552,6 +4581,7 @@ Module num.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5124,6 +5154,7 @@ Module num.
                                                               []
                                                               [ Ty.path "u8" ],
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5553,6 +5584,7 @@ Module num.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "slice_assume_init_ref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5569,6 +5601,7 @@ Module num.
                                                               []
                                                               [ Ty.path "u8" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeTo")
@@ -5576,6 +5609,7 @@ Module num.
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -5655,6 +5689,7 @@ Module num.
                                                               []
                                                               [ Ty.path "u8" ],
                                                             "slice_assume_init_mut",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5671,6 +5706,7 @@ Module num.
                                                                       []
                                                                       [ Ty.path "u8" ]
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
@@ -5679,6 +5715,7 @@ Module num.
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5738,6 +5775,7 @@ Module num.
                                                                               [ Ty.path "u8" ]
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| buf |) ]
@@ -5764,6 +5802,7 @@ Module num.
                                                                   []
                                                                   [ Ty.path "u8" ],
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| c |) ]
@@ -5801,6 +5840,7 @@ Module num.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "slice_assume_init_ref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5817,6 +5857,7 @@ Module num.
                                                               []
                                                               [ Ty.path "u8" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::RangeTo")
@@ -5824,6 +5865,7 @@ Module num.
                                                             [ Ty.path "usize" ]
                                                         ],
                                                         "index",
+                                                        [],
                                                         []
                                                       |),
                                                       [

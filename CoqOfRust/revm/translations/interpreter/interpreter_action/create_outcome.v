@@ -34,6 +34,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -85,7 +86,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter::InterpreterResult",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -105,7 +108,9 @@ Module interpreter_action.
                         []
                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -156,8 +161,10 @@ Module interpreter_action.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::interpreter::InterpreterResult",
+                  [],
                   [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -181,6 +188,7 @@ Module interpreter_action.
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -188,6 +196,7 @@ Module interpreter_action.
                         [ Ty.path "alloy_primitives::bits::address::Address" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [

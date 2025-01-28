@@ -81,6 +81,7 @@ Module gas.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field4_finish",
+              [],
               []
             |),
             [
@@ -142,7 +143,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -153,7 +156,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -164,7 +169,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "i64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -175,7 +182,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -273,8 +282,10 @@ Module gas.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::gas::MemoryGas",
+                  [],
                   [ Ty.path "revm_interpreter::gas::MemoryGas" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -361,7 +372,15 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -375,7 +394,15 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -389,7 +416,15 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "i64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "i64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -406,7 +441,9 @@ Module gas.
                   "core::hash::Hash",
                   Ty.path "revm_interpreter::gas::MemoryGas",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -460,6 +497,7 @@ Module gas.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -496,6 +534,7 @@ Module gas.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -773,13 +812,14 @@ Module gas.
                 |),
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "min", [] |),
+                    M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "min", [], [] |),
                     [
                       M.rust_cast
                         (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "refunded",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -789,6 +829,7 @@ Module gas.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -854,7 +895,7 @@ Module gas.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -937,6 +978,7 @@ Module gas.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::gas::MemoryGas",
                         "record_new_len",
+                        [],
                         []
                       |),
                       [
@@ -973,6 +1015,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_interpreter::gas::Gas",
                                               "record_cost",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |); M.read (| additional_cost |) ]
@@ -1109,7 +1152,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "usize",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -1120,7 +1165,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -1151,6 +1198,7 @@ Module gas.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -1302,7 +1350,15 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1315,7 +1371,15 @@ Module gas.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),

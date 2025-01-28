@@ -35,6 +35,7 @@ Module num.
                                       []
                                       [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ result ]
@@ -53,7 +54,12 @@ Module num.
                                   (BinOp.Wrap.sub (|
                                     M.read (| n |),
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "usize", "pow", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "pow",
+                                        [],
+                                        []
+                                      |),
                                       [ M.read (| isqrt_n |); Value.Integer IntegerKind.U32 2 ]
                                     |)
                                   |))
@@ -79,6 +85,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "pow",
+                                            [],
                                             []
                                           |),
                                           [
@@ -199,6 +206,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -286,6 +294,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -373,6 +382,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -460,6 +470,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -547,6 +558,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -636,6 +648,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -743,6 +756,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -821,7 +835,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "overflowing_mul", [] |),
+                          M.get_associated_function (| Ty.path "u16", "overflowing_mul", [], [] |),
                           [ M.read (| s |); M.read (| s |) ]
                         |)
                       |),
@@ -974,6 +988,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1082,6 +1097,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1176,7 +1192,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -1224,6 +1245,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1315,6 +1337,7 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_const",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1405,6 +1428,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "u32",
                                     "overflowing_mul",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |); M.read (| s |) ]
@@ -1618,6 +1642,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1726,6 +1751,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1820,7 +1846,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -1868,6 +1899,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1960,6 +1992,7 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -2070,6 +2103,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u32",
                                       "overflowing_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2119,6 +2153,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u32",
                                                         "wrapping_add",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2218,6 +2253,7 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2310,6 +2346,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| s |); M.read (| s |) ]
@@ -2585,6 +2622,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2693,6 +2731,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2791,7 +2830,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -2839,6 +2883,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2931,6 +2976,7 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3041,6 +3087,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u32",
                                       "overflowing_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3090,6 +3137,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u32",
                                                         "wrapping_add",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3191,6 +3239,7 @@ Module num.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -3302,6 +3351,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u64",
                                               "overflowing_sub",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3352,6 +3402,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "wrapping_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3459,6 +3510,7 @@ Module num.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3552,6 +3604,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u128",
                                                     "overflowing_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| s |); M.read (| s |) ]
@@ -3917,7 +3970,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4039,7 +4092,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4161,7 +4214,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4283,7 +4336,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4343,7 +4396,7 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array

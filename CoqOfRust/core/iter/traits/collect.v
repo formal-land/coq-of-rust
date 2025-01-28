@@ -37,7 +37,9 @@ Module iter.
                         "core::default::Default",
                         Ty.tuple [ A; B ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -49,8 +51,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Ty.tuple [ A; B ],
+                        [],
                         [ Ty.tuple [ AE; BE ] ],
                         "extend",
+                        [],
                         [ I ]
                       |),
                       [ res; M.read (| iter |) ]
@@ -131,8 +135,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
+                        [],
                         [ A ],
                         "extend",
+                        [],
                         [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
                       |),
                       [
@@ -193,8 +199,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
+                        [],
                         [ A ],
                         "extend_one",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| item |) ]
@@ -232,7 +240,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
                   [],
+                  [],
                   "for_each",
+                  [],
                   [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
                 |),
                 [
@@ -241,7 +251,9 @@ Module iter.
                       "core::iter::traits::collect::IntoIterator",
                       T,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| iter |) ]
@@ -315,7 +327,9 @@ Module iter.
                                 "core::iter::traits::collect::IntoIterator",
                                 T,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| into_iter |) ]
@@ -327,8 +341,10 @@ Module iter.
                               M.get_trait_method (|
                                 "core::iter::traits::collect::SpecTupleExtend",
                                 Ty.associated,
+                                [],
                                 [ ExtendA; ExtendB ],
                                 "extend",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |); M.read (| a |); M.read (| b |) ]
@@ -366,8 +382,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_one",
+                        [],
                         []
                       |),
                       [
@@ -382,8 +400,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_one",
+                        [],
                         []
                       |),
                       [
@@ -422,8 +442,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_reserve",
+                        [],
                         []
                       |),
                       [
@@ -438,8 +460,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_reserve",
+                        [],
                         []
                       |),
                       [
@@ -481,8 +505,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_one_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -497,8 +523,10 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_one_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -571,7 +599,9 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       impl_Iterator_Item____A__B__,
                       [],
+                      [],
                       "size_hint",
+                      [],
                       []
                     |),
                     [ iter ]
@@ -608,8 +638,10 @@ Module iter.
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendA,
+                                        [],
                                         [ A ],
                                         "extend_reserve",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| a |); M.read (| lower_bound |) ]
@@ -621,8 +653,10 @@ Module iter.
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendB,
+                                        [],
                                         [ B ],
                                         "extend_reserve",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| b |); M.read (| lower_bound |) ]
@@ -639,7 +673,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               impl_Iterator_Item____A__B__,
                               [],
+                              [],
                               "fold",
+                              [],
                               [ Ty.tuple []; Ty.associated ]
                             |),
                             [
@@ -711,8 +747,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_A_,
+                                                  [],
                                                   [ A ],
                                                   "extend_one",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| a |); M.read (| t |) ]
@@ -724,8 +762,10 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_B_,
+                                                  [],
                                                   [ B ],
                                                   "extend_one",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| b |); M.read (| u |) ]
@@ -856,7 +896,9 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             Iter,
                             [],
+                            [],
                             "size_hint",
+                            [],
                             []
                           |),
                           [ self ]
@@ -885,6 +927,7 @@ Module iter.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 "is_none",
+                                                [],
                                                 []
                                               |),
                                               [ upper_bound ]
@@ -945,8 +988,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendA,
+                                              [],
                                               [ A ],
                                               "extend_reserve",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| a |); M.read (| lower_bound |) ]
@@ -958,8 +1003,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendB,
+                                              [],
                                               [ B ],
                                               "extend_reserve",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| b |); M.read (| lower_bound |) ]
@@ -976,14 +1023,16 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     Iter,
                                     [],
+                                    [],
                                     "fold",
+                                    [],
                                     [ Ty.tuple []; Ty.associated ]
                                   |),
                                   [
                                     M.read (| self |);
                                     Value.Tuple [];
                                     M.call_closure (|
-                                      M.get_associated_function (| Self, "extend.extend", [] |),
+                                      M.get_associated_function (| Self, "extend.extend", [], [] |),
                                       [ M.read (| a |); M.read (| b |) ]
                                     |)
                                   ]

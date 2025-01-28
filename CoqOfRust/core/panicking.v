@@ -57,6 +57,7 @@ Module panicking.
                 M.get_associated_function (|
                   Ty.path "core::panic::panic_info::PanicInfo",
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -65,6 +66,7 @@ Module panicking.
                     M.get_associated_function (|
                       Ty.path "core::panic::location::Location",
                       "caller",
+                      [],
                       []
                     |),
                     []
@@ -217,6 +219,7 @@ Module panicking.
                   M.get_associated_function (|
                     Ty.path "core::panic::panic_info::PanicInfo",
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -225,6 +228,7 @@ Module panicking.
                       M.get_associated_function (|
                         Ty.path "core::panic::location::Location",
                         "caller",
+                        [],
                         []
                       |),
                       []
@@ -304,7 +308,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |)
           ]
@@ -334,7 +338,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to add with overflow" |) ]
@@ -370,7 +374,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to subtract with overflow" |) ]
@@ -406,7 +410,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to multiply with overflow" |) ]
@@ -442,7 +446,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to divide with overflow" |) ]
@@ -478,7 +482,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -516,7 +520,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to negate with overflow" |) ]
@@ -552,7 +556,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to shift right with overflow" |) ]
@@ -588,7 +592,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to shift left with overflow" |) ]
@@ -624,7 +628,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "attempt to divide by zero" |) ]
@@ -658,7 +662,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -701,7 +705,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "coroutine resumed after completion" |) ]
@@ -741,7 +745,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "`async fn` resumed after completion" |) ]
@@ -781,7 +785,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -818,7 +822,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -861,7 +865,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "coroutine resumed after panicking" |) ]
@@ -901,7 +905,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "`async fn` resumed after panicking" |) ]
@@ -941,7 +945,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -982,7 +986,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -1019,7 +1023,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |);
             Value.Bool false
@@ -1044,7 +1048,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |);
             Value.Bool true
@@ -1092,7 +1096,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.alloc (|
                   Value.Array
@@ -1105,6 +1109,7 @@ Module panicking.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_display",
+                          [],
                           [ T ]
                         |),
                         [ M.read (| x |) ]
@@ -1158,7 +1163,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                 M.alloc (|
@@ -1168,6 +1173,7 @@ Module panicking.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_display",
+                          [],
                           [ T ]
                         |),
                         [ M.read (| x |) ]
@@ -1223,7 +1229,7 @@ Module panicking.
               M.get_function (| "core::panicking::panic_fmt", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array
@@ -1239,6 +1245,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ len ]
@@ -1247,6 +1254,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ index ]
@@ -1317,6 +1325,7 @@ Module panicking.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_v1_formatted",
+                    [],
                     []
                   |),
                   [
@@ -1337,6 +1346,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_lower_hex",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ required ]
@@ -1345,6 +1355,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_lower_hex",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ found ]
@@ -1358,6 +1369,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Placeholder",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1373,6 +1385,7 @@ Module panicking.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Placeholder",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1387,7 +1400,12 @@ Module panicking.
                         ]
                     |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::rt::UnsafeArg",
+                        "new",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   ]
@@ -1475,6 +1493,7 @@ Module panicking.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "as_str",
+                          [],
                           []
                         |),
                         [ fmt ]
@@ -1550,7 +1569,7 @@ Module panicking.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -1685,7 +1704,7 @@ Module panicking.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -1781,6 +1800,7 @@ Module panicking.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -1802,6 +1822,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
                                     [ op ]
@@ -1810,6 +1831,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "core::fmt::Arguments" ]
                                     |),
                                     [ args ]
@@ -1818,6 +1840,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1831,6 +1854,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1858,6 +1882,7 @@ Module panicking.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -1878,6 +1903,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
                                     [ op ]
@@ -1886,6 +1912,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1899,6 +1926,7 @@ Module panicking.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")

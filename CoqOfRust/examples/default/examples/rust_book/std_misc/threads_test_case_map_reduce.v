@@ -117,6 +117,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ],
                 "new",
+                [],
                 []
               |),
               []
@@ -125,7 +126,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ chunked_data :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
+              M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
               [ M.read (| data |) ]
             |)
           |) in
@@ -141,7 +142,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "core::str::iter::SplitWhitespace" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -150,7 +153,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::SplitWhitespace",
                         [],
+                        [],
                         "enumerate",
+                        [],
                         []
                       |),
                       [ M.read (| chunked_data |) ]
@@ -175,7 +180,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "core::str::iter::SplitWhitespace" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -209,6 +216,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -228,6 +236,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [ Ty.path "usize" ]
                                                         |),
                                                         [ i ]
@@ -236,6 +245,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -268,6 +278,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "push",
+                                          [],
                                           []
                                         |),
                                         [
@@ -315,7 +326,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 (Ty.path "u32")
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "sum",
+                                                                          [],
                                                                           [ Ty.path "u32" ]
                                                                         |),
                                                                         [
@@ -325,7 +338,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                               Ty.path
                                                                                 "core::str::iter::Chars",
                                                                               [],
+                                                                              [],
                                                                               "map",
+                                                                              [],
                                                                               [
                                                                                 Ty.path "u32";
                                                                                 Ty.function
@@ -344,6 +359,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 M.get_associated_function (|
                                                                                   Ty.path "str",
                                                                                   "chars",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -381,6 +397,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                           "u32"
                                                                                                       ],
                                                                                                     "expect",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -389,6 +406,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                         Ty.path
                                                                                                           "char",
                                                                                                         "to_digit",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -432,6 +450,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -461,6 +480,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "usize"
@@ -473,6 +493,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_display",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "u32"
@@ -530,7 +551,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "u32")
                   ],
                 [],
+                [],
                 "sum",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -545,7 +568,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "map",
+                    [],
                     [
                       Ty.path "u32";
                       Ty.function
@@ -568,7 +593,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| children |) ]
@@ -605,6 +632,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 ]
                                             ],
                                           "unwrap",
+                                          [],
                                           []
                                         |),
                                         [
@@ -615,6 +643,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                                 [ Ty.path "u32" ],
                                               "join",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| c |) ]
@@ -637,7 +666,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -654,6 +688,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [ final_result ]

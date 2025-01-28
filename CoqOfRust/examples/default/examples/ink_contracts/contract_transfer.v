@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
           "contract_transfer::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -164,7 +172,7 @@ Module Impl_contract_transfer_GiveMe.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [] |),
+          M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -215,7 +223,12 @@ Module Impl_contract_transfer_GiveMe.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -232,6 +245,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "u128" ]
                                 |),
                                 [ value ]
@@ -251,7 +265,12 @@ Module Impl_contract_transfer_GiveMe.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -268,6 +287,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "u128" ]
                                 |),
                                 [
@@ -276,6 +296,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::Env",
                                         "balance",
+                                        [],
                                         []
                                       |),
                                       [
@@ -284,6 +305,7 @@ Module Impl_contract_transfer_GiveMe.
                                             M.get_associated_function (|
                                               Ty.path "contract_transfer::GiveMe",
                                               "env",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -318,6 +340,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "balance",
+                                  [],
                                   []
                                 |),
                                 [
@@ -326,6 +349,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::GiveMe",
                                         "env",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -367,6 +391,7 @@ Module Impl_contract_transfer_GiveMe.
                               []
                               [ Ty.tuple []; Ty.tuple [] ],
                             "is_err",
+                            [],
                             []
                           |),
                           [
@@ -375,6 +400,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "transfer",
+                                  [],
                                   []
                                 |),
                                 [
@@ -383,6 +409,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::GiveMe",
                                         "env",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -392,6 +419,7 @@ Module Impl_contract_transfer_GiveMe.
                                     M.get_associated_function (|
                                       Ty.path "contract_transfer::Env",
                                       "caller",
+                                      [],
                                       []
                                     |),
                                     [
@@ -400,6 +428,7 @@ Module Impl_contract_transfer_GiveMe.
                                           M.get_associated_function (|
                                             Ty.path "contract_transfer::GiveMe",
                                             "env",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -460,7 +489,12 @@ Module Impl_contract_transfer_GiveMe.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -477,6 +511,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "u128" ]
                                 |),
                                 [
@@ -485,6 +520,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::Env",
                                         "transferred_value",
+                                        [],
                                         []
                                       |),
                                       [
@@ -493,6 +529,7 @@ Module Impl_contract_transfer_GiveMe.
                                             M.get_associated_function (|
                                               Ty.path "contract_transfer::GiveMe",
                                               "env",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -526,6 +563,7 @@ Module Impl_contract_transfer_GiveMe.
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "transferred_value",
+                                  [],
                                   []
                                 |),
                                 [
@@ -534,6 +572,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::GiveMe",
                                         "env",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]

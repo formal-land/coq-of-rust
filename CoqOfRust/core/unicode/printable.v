@@ -73,7 +73,9 @@ Module unicode.
                                   [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| singletonuppers |) ]
@@ -96,7 +98,9 @@ Module unicode.
                                             []
                                             [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -168,7 +172,9 @@ Module unicode.
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [],
+                                                              [],
                                                               "into_iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -179,6 +185,7 @@ Module unicode.
                                                                     (Ty.path "slice")
                                                                     []
                                                                     [ Ty.path "u8" ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -187,6 +194,7 @@ Module unicode.
                                                                       [ Ty.path "usize" ]
                                                                   ],
                                                                   "index",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -222,7 +230,9 @@ Module unicode.
                                                                               []
                                                                               [ Ty.path "u8" ],
                                                                             [],
+                                                                            [],
                                                                             "next",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ iter ]
@@ -355,7 +365,9 @@ Module unicode.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                         [],
+                        [],
                         "cloned",
+                        [],
                         [ Ty.path "u8" ]
                       |),
                       [
@@ -363,6 +375,7 @@ Module unicode.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "iter",
+                            [],
                             []
                           |),
                           [ M.read (| normal |) ]
@@ -394,7 +407,9 @@ Module unicode.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ normal ]
@@ -446,6 +461,7 @@ Module unicode.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -463,7 +479,9 @@ Module unicode.
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ normal ]

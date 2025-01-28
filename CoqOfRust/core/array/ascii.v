@@ -35,6 +35,7 @@ Module array.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "is_ascii",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -49,6 +50,7 @@ Module array.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
                                 "as_ascii_unchecked",
+                                [ N ],
                                 []
                               |),
                               [ M.read (| self |) ]

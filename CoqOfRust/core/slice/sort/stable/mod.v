@@ -92,6 +92,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -254,7 +255,12 @@ Module slice.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
                     [ M.read (| v |) ]
                   |)
                 |) in
@@ -290,6 +296,7 @@ Module slice.
                         [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "new",
+                      [ Value.Integer IntegerKind.Usize 4096 ],
                       []
                     |),
                     []
@@ -304,6 +311,7 @@ Module slice.
                         [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "as_uninit_slice_mut",
+                      [ Value.Integer IntegerKind.Usize 4096 ],
                       []
                     |),
                     [ stack_buf ]
@@ -333,6 +341,7 @@ Module slice.
                                             [ T ]
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| stack_scratch |) ]
@@ -354,8 +363,10 @@ Module slice.
                                     M.get_trait_method (|
                                       "core::slice::sort::stable::BufGuard",
                                       BufT,
+                                      [],
                                       [ T ],
                                       "with_capacity",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| alloc_len |) ]
@@ -366,8 +377,10 @@ Module slice.
                                   M.get_trait_method (|
                                     "core::slice::sort::stable::BufGuard",
                                     BufT,
+                                    [],
                                     [ T ],
                                     "as_uninit_slice_mut",
+                                    [],
                                     []
                                   |),
                                   [ heap_buf ]
@@ -388,7 +401,9 @@ Module slice.
                           "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
                           T,
                           [],
+                          [],
                           "small_sort_threshold",
+                          [],
                           []
                         |),
                         []
@@ -528,6 +543,7 @@ Module slice.
                                 [ Ty.path "u8" ]
                             ],
                           "cast",
+                          [],
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         |),
                         [
@@ -543,6 +559,7 @@ Module slice.
                                     [ Ty.path "u8" ]
                                 ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
                             [

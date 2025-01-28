@@ -26,7 +26,7 @@ Module error.
               fun γ =>
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ Self ] |),
+                    M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ Self ] |),
                     []
                   |)))
             ]
@@ -57,7 +57,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", Self, [], "source", [] |),
+            M.get_trait_method (| "core::error::Error", Self, [], [], "source", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -97,7 +97,7 @@ Module error.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| Value.String "Internal" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -147,7 +147,7 @@ Module error.
             let~ t :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
+                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
                   []
                 |)
               |) in
@@ -158,7 +158,9 @@ Module error.
                     "core::error::Error",
                     Ty.dyn [ ("core::error::Error::Trait", []) ],
                     [],
+                    [],
                     "type_id",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::error::private::Internal" [] ]
@@ -169,8 +171,10 @@ Module error.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::any::TypeId",
+                  [],
                   [ Ty.path "core::any::TypeId" ],
                   "eq",
+                  [],
                   []
                 |),
                 [ t; concrete ]
@@ -210,6 +214,7 @@ Module error.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::error::Error::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -259,6 +264,7 @@ Module error.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::error::Error::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| self |) ]
@@ -327,6 +333,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "is",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -350,6 +357,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -373,6 +381,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -406,6 +415,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "is",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -429,6 +439,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -452,6 +463,7 @@ Module error.
             M.get_associated_function (|
               Ty.dyn [ ("core::error::Error::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
             [ M.read (| self |) ]
@@ -544,7 +556,7 @@ Module error.
                 [
                   ("tag_id",
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ I ] |),
+                      M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ I ] |),
                       []
                     |));
                   ("value",
@@ -560,7 +572,9 @@ Module error.
                   "core::error::Error",
                   impl_Error__plus___Sized,
                   [],
+                  [],
                   "provide",
+                  [],
                   []
                 |),
                 [
@@ -572,6 +586,7 @@ Module error.
                         []
                         [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
                       "as_request",
+                      [],
                       []
                     |),
                     [ tagged ]
@@ -626,6 +641,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide",
+              [],
               [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
             |),
             [ M.read (| self |); M.read (| value |) ]
@@ -654,6 +670,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide_with",
+              [],
               [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_FnOnce___arrow_T ]
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
@@ -679,6 +696,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
@@ -711,6 +729,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide_with",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
@@ -760,6 +779,7 @@ Module error.
                                 []
                                 [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "downcast_mut",
+                              [],
                               [ I ]
                             |),
                             [
@@ -839,6 +859,7 @@ Module error.
                                 []
                                 [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "downcast_mut",
+                              [],
                               [ I ]
                             |),
                             [
@@ -879,8 +900,10 @@ Module error.
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   impl_FnOnce___arrow_I_Reified,
+                                  [],
                                   [ Ty.tuple [] ],
                                   "call_once",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| fulfil |); Value.Tuple [] ]
@@ -919,6 +942,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "would_be_satisfied_by",
+              [],
               [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
             |),
             [ M.read (| self |) ]
@@ -950,6 +974,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "would_be_satisfied_by",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
@@ -988,6 +1013,7 @@ Module error.
                       []
                       [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                     "downcast",
+                    [],
                     [ I ]
                   |),
                   [
@@ -1046,6 +1072,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -1054,6 +1081,7 @@ Module error.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "Request" |) ]
@@ -1117,6 +1145,7 @@ Module error.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1182,6 +1211,7 @@ Module error.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1247,6 +1277,7 @@ Module error.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -1388,8 +1419,10 @@ Module error.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "core::any::TypeId",
+                              [],
                               [ Ty.path "core::any::TypeId" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
@@ -1403,6 +1436,7 @@ Module error.
                                   M.get_associated_function (|
                                     Ty.path "core::any::TypeId",
                                     "of",
+                                    [],
                                     [ I ]
                                   |),
                                   []
@@ -1429,6 +1463,7 @@ Module error.
                                       [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
                                   ],
                                 "cast",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::error::Tagged")
@@ -1487,8 +1522,10 @@ Module error.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "core::any::TypeId",
+                              [],
                               [ Ty.path "core::any::TypeId" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
@@ -1502,6 +1539,7 @@ Module error.
                                   M.get_associated_function (|
                                     Ty.path "core::any::TypeId",
                                     "of",
+                                    [],
                                     [ I ]
                                   |),
                                   []
@@ -1528,6 +1566,7 @@ Module error.
                                       [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
                                   ],
                                 "cast",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::error::Tagged")
@@ -1590,7 +1629,9 @@ Module error.
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1627,6 +1668,7 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -1696,6 +1738,7 @@ Module error.
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                       ],
                     "and_then",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ];
                       Ty.function
@@ -1724,7 +1767,9 @@ Module error.
                       "core::error::Error",
                       Ty.dyn [ ("core::error::Error::Trait", []) ],
                       [],
+                      [],
                       "source",
+                      [],
                       []
                     |)
                   ]
@@ -1766,6 +1811,7 @@ Module error.
                                     [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                                 ],
                               "is_some",
+                              [],
                               []
                             |),
                             [
@@ -1841,7 +1887,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "description", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1859,7 +1905,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "cause", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1877,7 +1923,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
+            M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1899,7 +1945,7 @@ Module error.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::error::Error", T, [], "provide", [] |),
+                  M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
                   [ M.read (| M.read (| self |) |); M.read (| request |) ]
                 |)
               |) in

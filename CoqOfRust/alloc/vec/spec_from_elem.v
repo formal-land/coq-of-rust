@@ -31,6 +31,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [ M.read (| n |); M.read (| alloc |) ]
@@ -42,6 +43,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "extend_with",
+                      [],
                       []
                     |),
                     [ v; M.read (| n |); M.read (| elem |) ]
@@ -99,7 +101,9 @@ Module vec.
                                       "alloc::vec::is_zero::IsZero",
                                       T,
                                       [],
+                                      [],
                                       "is_zero",
+                                      [],
                                       []
                                     |),
                                     [ elem ]
@@ -122,6 +126,7 @@ Module vec.
                                                 []
                                                 [ T; A ],
                                               "with_capacity_zeroed_in",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| n |); M.read (| alloc |) ]
@@ -141,6 +146,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "with_capacity_in",
+                          [],
                           []
                         |),
                         [ M.read (| n |); M.read (| alloc |) ]
@@ -152,6 +158,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "extend_with",
+                          [],
                           []
                         |),
                         [ v; M.read (| n |); M.read (| elem |) ]
@@ -226,6 +233,7 @@ Module vec.
                                                 []
                                                 [ Ty.path "i8"; A ],
                                               "with_capacity_zeroed_in",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| n |); M.read (| alloc |) ]
@@ -245,6 +253,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                           "with_capacity_in",
+                          [],
                           []
                         |),
                         [ M.read (| n |); M.read (| alloc |) ]
@@ -264,6 +273,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [ v ]
@@ -279,6 +289,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "i8"; A ],
                             "set_len",
+                            [],
                             []
                           |),
                           [ v; M.read (| n |) ]
@@ -353,6 +364,7 @@ Module vec.
                                                 []
                                                 [ Ty.path "u8"; A ],
                                               "with_capacity_zeroed_in",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| n |); M.read (| alloc |) ]
@@ -372,6 +384,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                           "with_capacity_in",
+                          [],
                           []
                         |),
                         [ M.read (| n |); M.read (| alloc |) ]
@@ -391,6 +404,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [ v ]
@@ -406,6 +420,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; A ],
                             "set_len",
+                            [],
                             []
                           |),
                           [ v; M.read (| n |) ]
@@ -454,6 +469,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.tuple []; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [ M.read (| n |); M.read (| alloc |) ]
@@ -466,6 +482,7 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.tuple []; A ],
                         "set_len",
+                        [],
                         []
                       |),
                       [ v; M.read (| n |) ]

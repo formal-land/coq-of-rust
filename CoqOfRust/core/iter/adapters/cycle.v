@@ -28,7 +28,7 @@ Module iter.
                 [
                   ("orig",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -39,7 +39,7 @@ Module iter.
                     |));
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -77,6 +77,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
@@ -130,7 +131,7 @@ Module iter.
                 [
                   ("orig",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [ iter ]
                     |));
                   ("iter", M.read (| iter |))
@@ -175,7 +176,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
@@ -199,7 +202,15 @@ Module iter.
                               "iter"
                             |),
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                I,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -215,7 +226,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
@@ -261,7 +274,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [
@@ -379,7 +394,9 @@ Module iter.
                                   "core::ops::try_trait::Try",
                                   R,
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -388,7 +405,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "try_fold",
+                                      [],
                                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                     |),
                                     [
@@ -422,8 +441,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               R,
+                                              [],
                                               [ Ty.associated ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -454,7 +475,7 @@ Module iter.
                           "iter"
                         |),
                         M.call_closure (|
-                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                           [
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -476,7 +497,9 @@ Module iter.
                                   "core::ops::try_trait::Try",
                                   R,
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -485,7 +508,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "try_fold",
+                                      [],
                                       [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.associated ] ] R; R ]
                                     |),
                                     [
@@ -524,11 +549,13 @@ Module iter.
                                                                       M.get_trait_method (|
                                                                         "core::ops::function::FnMut",
                                                                         F,
+                                                                        [],
                                                                         [
                                                                           Ty.tuple
                                                                             [ Acc; Ty.associated ]
                                                                         ],
                                                                         "call_mut",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -571,8 +598,10 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               R,
+                                              [],
                                               [ Ty.associated ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -616,7 +645,9 @@ Module iter.
                                           "core::ops::try_trait::Try",
                                           R,
                                           [],
+                                          [],
                                           "from_output",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| acc |) ]
@@ -645,7 +676,9 @@ Module iter.
                                       "core::clone::Clone",
                                       I,
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [
@@ -668,7 +701,9 @@ Module iter.
                                             "core::ops::try_trait::Try",
                                             R,
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -677,7 +712,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "try_fold",
+                                                [],
                                                 [ Acc; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                               |),
                                               [
@@ -711,8 +748,10 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
+                                                        [],
                                                         [ Ty.associated ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -788,7 +827,9 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "advance_by",
+                                [],
                                 []
                               |),
                               [
@@ -838,6 +879,7 @@ Module iter.
                                         []
                                         [ Ty.path "usize" ],
                                       "get",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| rem |) ]
@@ -879,7 +921,9 @@ Module iter.
                                           "core::clone::Clone",
                                           I,
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [
@@ -902,7 +946,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "advance_by",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -955,6 +1001,7 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           "get",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| rem |) ]
@@ -989,6 +1036,7 @@ Module iter.
                                                         []
                                                         [ Ty.path "usize" ],
                                                       "get",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| rem |) ]
@@ -1028,6 +1076,7 @@ Module iter.
                                 [ Ty.path "usize" ]
                             ],
                           "map_or",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -1066,6 +1115,7 @@ Module iter.
                                 []
                                 [ Ty.path "usize" ],
                               "new",
+                              [],
                               []
                             |),
                             [ M.read (| n |) ]

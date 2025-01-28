@@ -146,7 +146,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
                           []
                           [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -162,7 +164,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                       []
                                       [ Ty.path "unpacking_options_via_question_mark::Job" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -197,6 +201,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -204,6 +209,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -249,6 +255,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -256,6 +263,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                         [ Ty.path "core::convert::Infallible" ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -347,6 +355,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "unpacking_options_via_question_mark::Person",
                         "work_phone_area_code",
+                        [],
                         []
                       |),
                       [ p ]
@@ -379,6 +388,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -386,6 +396,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "u8" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]

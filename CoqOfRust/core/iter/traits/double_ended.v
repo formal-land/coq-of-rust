@@ -29,7 +29,9 @@ Module iter.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -59,7 +61,9 @@ Module iter.
                                                 []
                                                 [ Ty.path "usize" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -100,6 +104,7 @@ Module iter.
                                                                   []
                                                                   [ Ty.associated ],
                                                                 "is_none",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -109,7 +114,9 @@ Module iter.
                                                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                       Self,
                                                                       [],
+                                                                      [],
                                                                       "next_back",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| self |) ]
@@ -138,6 +145,7 @@ Module iter.
                                                                         []
                                                                         [ Ty.path "usize" ],
                                                                       "new_unchecked",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -209,6 +217,7 @@ Module iter.
                                               [ Ty.path "usize" ]
                                           ],
                                         "is_err",
+                                        [],
                                         []
                                       |),
                                       [
@@ -218,7 +227,9 @@ Module iter.
                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                               Self,
                                               [],
+                                              [],
                                               "advance_back_by",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |); M.read (| n |) ]
@@ -250,7 +261,9 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Self,
                           [],
+                          [],
                           "next_back",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -297,7 +310,9 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Self,
                                           [],
+                                          [],
                                           "next_back",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -321,7 +336,9 @@ Module iter.
                                                 "core::ops::try_trait::Try",
                                                 R,
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -329,8 +346,10 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ B; Ty.associated ] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -360,8 +379,10 @@ Module iter.
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
+                                                            [],
                                                             [ Ty.associated ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -407,7 +428,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| accum |) ]
@@ -447,7 +470,9 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Self,
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -467,8 +492,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ B; Ty.associated ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
                                     [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
@@ -511,6 +538,7 @@ Module iter.
                     []
                     [ Ty.associated; Ty.tuple [] ],
                   "break_value",
+                  [],
                   []
                 |),
                 [
@@ -519,7 +547,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Self,
                       [],
+                      [],
                       "try_rfold",
+                      [],
                       [
                         Ty.tuple [];
                         Ty.associated;
@@ -533,7 +563,7 @@ Module iter.
                       M.read (| self |);
                       Value.Tuple [];
                       M.call_closure (|
-                        M.get_associated_function (| Self, "check.rfind", [] |),
+                        M.get_associated_function (| Self, "check.rfind", [], [] |),
                         [ M.read (| predicate |) ]
                       |)
                     ]
@@ -566,7 +596,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
@@ -596,7 +628,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
@@ -621,7 +655,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "nth_back",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
@@ -650,7 +686,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                   Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
+                  [],
                   "spec_rfold",
+                  [],
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -680,7 +718,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                   Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
+                  [],
                   "spec_try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -752,7 +792,9 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -772,8 +814,10 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ B; Ty.associated ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
                                     [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
@@ -846,7 +890,9 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply (Ty.path "&mut") [] [ I ],
                                           [],
+                                          [],
                                           "next_back",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -870,7 +916,9 @@ Module iter.
                                                 "core::ops::try_trait::Try",
                                                 R,
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -878,8 +926,10 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ B; Ty.associated ] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -909,8 +959,10 @@ Module iter.
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
+                                                            [],
                                                             [ Ty.associated ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -956,7 +1008,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| accum |) ]
@@ -1014,7 +1068,9 @@ Module iter.
                         "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                         Ty.apply (Ty.path "&mut") [] [ I ],
                         [],
+                        [],
                         "spec_try_rfold",
+                        [],
                         [
                           AAA;
                           Ty.associated;
@@ -1028,6 +1084,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
+                            [],
                             [ AAA; Ty.associated; FFF ]
                           |),
                           [ M.read (| fold |) ]
@@ -1069,7 +1126,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]

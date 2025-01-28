@@ -119,8 +119,10 @@ Module compatibility.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "move_binary_format::file_format::AbilitySet",
+                    [],
                     [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -274,6 +276,7 @@ Module compatibility.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -398,7 +401,9 @@ Module compatibility.
               "core::default::Default",
               Ty.path "move_binary_format::compatibility::Compatibility",
               [],
+              [],
               "default",
+              [],
               []
             |),
             []
@@ -457,6 +462,7 @@ Module compatibility.
                 (Ty.path "&")
                 []
                 [ Ty.path "move_binary_format::compatibility::Compatibility" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "&")
@@ -464,6 +470,7 @@ Module compatibility.
                   [ Ty.path "move_binary_format::compatibility::Compatibility" ]
               ],
               "ne",
+              [],
               []
             |),
             [
@@ -474,6 +481,7 @@ Module compatibility.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::compatibility::Compatibility",
                       "no_check",
+                      [],
                       []
                     |),
                     []
@@ -664,9 +672,11 @@ Module compatibility.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "move_core_types::account_address::AccountAddress",
+                                      [],
                                       [ Ty.path "move_core_types::account_address::AccountAddress"
                                       ],
                                       "ne",
+                                      [],
                                       []
                                     |),
                                     [
@@ -687,8 +697,10 @@ Module compatibility.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_core_types::identifier::Identifier",
+                                        [],
                                         [ Ty.path "move_core_types::identifier::Identifier" ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
@@ -734,7 +746,9 @@ Module compatibility.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -766,7 +780,9 @@ Module compatibility.
                                               Ty.path "move_binary_format::normalized::Struct"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -811,6 +827,7 @@ Module compatibility.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "get",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_core_types::identifier::Identifier"
@@ -912,7 +929,9 @@ Module compatibility.
                                                                                       "alloc::alloc::Global"
                                                                                   ],
                                                                                 [],
+                                                                                [],
                                                                                 "deref",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -939,7 +958,9 @@ Module compatibility.
                                                                                       "alloc::alloc::Global"
                                                                                   ],
                                                                                 [],
+                                                                                [],
                                                                                 "deref",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -993,6 +1014,7 @@ Module compatibility.
                                                                         Ty.path
                                                                           "alloc::alloc::Global"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
@@ -1005,6 +1027,7 @@ Module compatibility.
                                                                         ]
                                                                     ],
                                                                     "ne",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1064,7 +1087,9 @@ Module compatibility.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1096,7 +1121,9 @@ Module compatibility.
                                               Ty.path "move_binary_format::normalized::Function"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1141,6 +1168,7 @@ Module compatibility.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "get",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_core_types::identifier::Identifier"
@@ -1225,20 +1253,19 @@ Module compatibility.
                                                                       |) in
                                                                     Value.Tuple []))
                                                               ],
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [] =>
-                                                                      ltac:(M.monadic
-                                                                        (M.write (|
-                                                                          struct_and_function_linking,
-                                                                          Value.Bool false
-                                                                        |)))
-                                                                    | _ =>
-                                                                      M.impossible
-                                                                        "wrong number of arguments"
-                                                                    end))
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  match γ with
+                                                                  | [] =>
+                                                                    ltac:(M.monadic
+                                                                      (M.write (|
+                                                                        struct_and_function_linking,
+                                                                        Value.Bool false
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
+                                                                  end)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1323,11 +1350,13 @@ Module compatibility.
                                                                             "core::cmp::PartialEq",
                                                                             Ty.path
                                                                               "move_binary_format::file_format::Visibility",
+                                                                            [],
                                                                             [
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::Visibility"
                                                                             ],
                                                                             "ne",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1447,6 +1476,7 @@ Module compatibility.
                                                                             Ty.path
                                                                               "alloc::alloc::Global"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1460,6 +1490,7 @@ Module compatibility.
                                                                             ]
                                                                         ],
                                                                         "ne",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1489,6 +1520,7 @@ Module compatibility.
                                                                               Ty.path
                                                                                 "alloc::alloc::Global"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1502,6 +1534,7 @@ Module compatibility.
                                                                               ]
                                                                           ],
                                                                           "ne",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1541,7 +1574,9 @@ Module compatibility.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "deref",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1568,7 +1603,9 @@ Module compatibility.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "deref",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1687,7 +1724,9 @@ Module compatibility.
                               [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -1707,7 +1746,9 @@ Module compatibility.
                               []
                               [ Ty.path "move_core_types::language_storage::ModuleId" ],
                             [],
+                            [],
                             "cloned",
+                            [],
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
@@ -1718,6 +1759,7 @@ Module compatibility.
                                   []
                                   [ Ty.path "move_core_types::language_storage::ModuleId" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -1732,7 +1774,9 @@ Module compatibility.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1765,7 +1809,9 @@ Module compatibility.
                               [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -1785,7 +1831,9 @@ Module compatibility.
                               []
                               [ Ty.path "move_core_types::language_storage::ModuleId" ],
                             [],
+                            [],
                             "cloned",
+                            [],
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
@@ -1796,6 +1844,7 @@ Module compatibility.
                                   []
                                   [ Ty.path "move_core_types::language_storage::ModuleId" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -1810,7 +1859,9 @@ Module compatibility.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1848,6 +1899,7 @@ Module compatibility.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "is_subset",
+                                      [],
                                       []
                                     |),
                                     [ old_friend_module_ids; new_friend_module_ids ]
@@ -1895,6 +1947,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1944,6 +1997,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1993,6 +2047,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2042,6 +2097,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2096,6 +2152,7 @@ Module compatibility.
             M.get_associated_function (|
               Ty.path "move_binary_format::file_format::AbilitySet",
               "is_subset",
+              [],
               []
             |),
             [ M.read (| old_abilities |); M.read (| new_abilities |) ]
@@ -2106,7 +2163,9 @@ Module compatibility.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "move_binary_format::file_format::AbilitySetIterator",
                 [],
+                [],
                 "all",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "move_binary_format::file_format::Ability" ] ]
@@ -2120,7 +2179,9 @@ Module compatibility.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.path "move_binary_format::file_format::AbilitySet",
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| disallowed_new_abilities |) ]
@@ -2144,6 +2205,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::AbilitySet",
                                           "has_ability",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| new_abilities |); M.read (| ability |) ]
@@ -2154,6 +2216,7 @@ Module compatibility.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::AbilitySet",
                                           "has_ability",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| old_abilities |); M.read (| ability |) ]
@@ -2210,6 +2273,7 @@ Module compatibility.
                   []
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| old_type_parameters |) ]
@@ -2221,6 +2285,7 @@ Module compatibility.
                   []
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| new_type_parameters |) ]
@@ -2244,7 +2309,9 @@ Module compatibility.
                       [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                   ],
                 [],
+                [],
                 "all",
+                [],
                 [
                   Ty.function
                     [
@@ -2276,7 +2343,9 @@ Module compatibility.
                         []
                         [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&")
@@ -2297,6 +2366,7 @@ Module compatibility.
                             []
                             [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| old_type_parameters |) ]
@@ -2390,6 +2460,7 @@ Module compatibility.
                   []
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| old_type_parameters |) ]
@@ -2401,6 +2472,7 @@ Module compatibility.
                   []
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                 "len",
+                [],
                 []
               |),
               [ M.read (| new_type_parameters |) ]
@@ -2424,7 +2496,9 @@ Module compatibility.
                       [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ],
                 [],
+                [],
                 "all",
+                [],
                 [
                   Ty.function
                     [
@@ -2456,7 +2530,9 @@ Module compatibility.
                         []
                         [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&")
@@ -2477,6 +2553,7 @@ Module compatibility.
                             []
                             [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| old_type_parameters |) ]
@@ -2592,8 +2669,10 @@ Module compatibility.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_binary_format::file_format::AbilitySet",
+                        [],
                         [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                         "eq",
+                        [],
                         []
                       |),
                       [ old_type_constraints; new_type_constraints ]
@@ -2606,6 +2685,7 @@ Module compatibility.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::AbilitySet",
                         "is_subset",
+                        [],
                         []
                       |),
                       [ M.read (| new_type_constraints |); M.read (| old_type_constraints |) ]
@@ -2794,7 +2874,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -2870,7 +2950,7 @@ Module compatibility.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                 [ __self_discr; __arg1_discr ]
               |)
             |)
@@ -2924,8 +3004,10 @@ Module compatibility.
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "isize",
+                  [],
                   [ Ty.path "isize" ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [ __self_discr; __arg1_discr ]
@@ -3099,6 +3181,7 @@ Module compatibility.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -3124,9 +3207,11 @@ Module compatibility.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_core_types::account_address::AccountAddress",
+                                        [],
                                         [ Ty.path "move_core_types::account_address::AccountAddress"
                                         ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3147,8 +3232,10 @@ Module compatibility.
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_core_types::identifier::Identifier",
+                                          [],
                                           [ Ty.path "move_core_types::identifier::Identifier" ],
                                           "ne",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3212,6 +3299,7 @@ Module compatibility.
                                           Ty.path
                                             "move_binary_format::compatibility::InclusionCheck"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -3222,6 +3310,7 @@ Module compatibility.
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3250,6 +3339,7 @@ Module compatibility.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3271,6 +3361,7 @@ Module compatibility.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3298,6 +3389,7 @@ Module compatibility.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3322,6 +3414,7 @@ Module compatibility.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3347,6 +3440,7 @@ Module compatibility.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3368,6 +3462,7 @@ Module compatibility.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3411,7 +3506,9 @@ Module compatibility.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3443,7 +3540,9 @@ Module compatibility.
                                               Ty.path "move_binary_format::normalized::Struct"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3489,6 +3588,7 @@ Module compatibility.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_core_types::identifier::Identifier"
@@ -3526,6 +3626,7 @@ Module compatibility.
                                                                 Ty.path
                                                                   "move_binary_format::normalized::Struct"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -3536,6 +3637,7 @@ Module compatibility.
                                                                 ]
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [ old_struct; new_struct ]
@@ -3586,7 +3688,9 @@ Module compatibility.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3618,7 +3722,9 @@ Module compatibility.
                                               Ty.path "move_binary_format::normalized::Function"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3664,6 +3770,7 @@ Module compatibility.
                                                         ]
                                                     ],
                                                   "or_else",
+                                                  [],
                                                   [
                                                     Ty.function
                                                       [ Ty.tuple [] ]
@@ -3696,6 +3803,7 @@ Module compatibility.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       "get",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_core_types::identifier::Identifier"
@@ -3736,6 +3844,7 @@ Module compatibility.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "get",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_core_types::identifier::Identifier"
@@ -3780,6 +3889,7 @@ Module compatibility.
                                                               Ty.path
                                                                 "move_binary_format::normalized::Function"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -3790,6 +3900,7 @@ Module compatibility.
                                                               ]
                                                           ],
                                                           "eq",
+                                                          [],
                                                           []
                                                         |),
                                                         [ old_func; new_func ]

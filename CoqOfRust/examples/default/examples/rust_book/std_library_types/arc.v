@@ -36,6 +36,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ M.read (| Value.String "the same apple" |) ]
@@ -50,7 +51,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -77,7 +80,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -110,7 +115,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [ apple ]
@@ -152,6 +159,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_v1",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -175,6 +183,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
                                                                                       "new_debug",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -226,7 +235,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (| "std::thread::sleep", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "from_secs",
+                    [],
+                    []
+                  |),
                   [ Value.Integer IntegerKind.U64 1 ]
                 |)
               ]

@@ -24,7 +24,12 @@ Module Animal.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -42,6 +47,7 @@ Module Animal.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
@@ -51,7 +57,9 @@ Module Animal.
                                         "traits::Animal",
                                         Self,
                                         [],
+                                        [],
                                         "name",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -63,6 +71,7 @@ Module Animal.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
@@ -72,7 +81,9 @@ Module Animal.
                                         "traits::Animal",
                                         Self,
                                         [],
+                                        [],
                                         "noise",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -143,7 +154,12 @@ Module Impl_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [] |),
+                          M.get_associated_function (|
+                            Ty.path "traits::Sheep",
+                            "is_naked",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)) in
@@ -158,6 +174,7 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -176,6 +193,7 @@ Module Impl_traits_Sheep.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
@@ -185,7 +203,9 @@ Module Impl_traits_Sheep.
                                                 "traits::Animal",
                                                 Ty.path "traits::Sheep",
                                                 [],
+                                                [],
                                                 "name",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| self |) ]
@@ -214,6 +234,7 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -232,6 +253,7 @@ Module Impl_traits_Sheep.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
@@ -331,7 +353,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [] |),
+                          M.get_associated_function (|
+                            Ty.path "traits::Sheep",
+                            "is_naked",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)) in
@@ -363,7 +390,12 @@ Module Impl_traits_Animal_for_traits_Sheep.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -381,6 +413,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
@@ -395,6 +428,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
@@ -404,7 +438,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                         "traits::Animal",
                                         Ty.path "traits::Sheep",
                                         [],
+                                        [],
                                         "noise",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -459,28 +495,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ dolly :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "new", [] |),
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "new",
+                [],
+                []
+              |),
               [ M.read (| Value.String "Dolly" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "talk",
+                [],
+                []
+              |),
               [ dolly ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "traits::Sheep", "shear", [] |),
+              M.get_associated_function (| Ty.path "traits::Sheep", "shear", [], [] |),
               [ dolly ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "talk",
+                [],
+                []
+              |),
               [ dolly ]
             |)
           |) in

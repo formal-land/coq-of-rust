@@ -43,6 +43,7 @@ Module instruction_consistency.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -55,6 +56,7 @@ Module instruction_consistency.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| module |) ]
@@ -75,6 +77,7 @@ Module instruction_consistency.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -87,6 +90,7 @@ Module instruction_consistency.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -148,7 +152,9 @@ Module instruction_consistency.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -160,7 +166,9 @@ Module instruction_consistency.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -174,6 +182,7 @@ Module instruction_consistency.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -181,6 +190,7 @@ Module instruction_consistency.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_defs",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| module |) ]
@@ -217,7 +227,9 @@ Module instruction_consistency.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -304,7 +316,9 @@ Module instruction_consistency.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -313,6 +327,7 @@ Module instruction_consistency.
                                                               Ty.path
                                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                               "check_instructions",
+                                                              [],
                                                               []
                                                             |),
                                                             [ checker; M.read (| code |) ]
@@ -346,6 +361,7 @@ Module instruction_consistency.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -359,6 +375,7 @@ Module instruction_consistency.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -520,7 +537,9 @@ Module instruction_consistency.
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -532,7 +551,9 @@ Module instruction_consistency.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -543,6 +564,7 @@ Module instruction_consistency.
                                       []
                                       [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -557,7 +579,9 @@ Module instruction_consistency.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -600,7 +624,9 @@ Module instruction_consistency.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -657,7 +683,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -666,6 +694,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_field_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -706,6 +735,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -719,6 +749,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -757,6 +788,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "field_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -786,7 +818,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -795,6 +829,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_field_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -839,6 +874,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -852,6 +888,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -898,7 +935,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -907,6 +946,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_field_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -947,6 +987,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -960,6 +1001,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -998,6 +1040,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "field_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1027,7 +1070,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1036,6 +1081,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_field_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1080,6 +1126,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1093,6 +1140,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1139,7 +1187,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1148,6 +1198,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_function_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1186,6 +1237,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1199,6 +1251,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1237,6 +1290,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "function_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1266,7 +1320,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1275,6 +1331,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_function_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1319,6 +1376,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1332,6 +1390,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1378,7 +1437,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1387,6 +1448,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1425,6 +1487,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1438,6 +1501,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1476,6 +1540,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1505,7 +1570,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1514,6 +1581,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1558,6 +1626,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1571,6 +1640,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1617,7 +1687,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1626,6 +1698,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1664,6 +1737,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1677,6 +1751,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1715,6 +1790,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1744,7 +1820,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1753,6 +1831,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1797,6 +1876,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1810,6 +1890,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1856,7 +1937,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1865,6 +1948,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1903,6 +1987,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1916,6 +2001,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -1954,6 +2040,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1983,7 +2070,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1992,6 +2081,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2036,6 +2126,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2049,6 +2140,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2095,7 +2187,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2104,6 +2198,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2142,6 +2237,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2155,6 +2251,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2193,6 +2290,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2222,7 +2320,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2231,6 +2331,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2275,6 +2376,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2288,6 +2390,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2334,7 +2437,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2343,6 +2448,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2381,6 +2487,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2394,6 +2501,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2432,6 +2540,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2461,7 +2570,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2470,6 +2581,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2514,6 +2626,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2527,6 +2640,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2573,7 +2687,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2582,6 +2698,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2620,6 +2737,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2633,6 +2751,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2671,6 +2790,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2700,7 +2820,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2709,6 +2831,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2753,6 +2876,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2766,6 +2890,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2812,7 +2937,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2821,6 +2948,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2859,6 +2987,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2872,6 +3001,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2910,6 +3040,7 @@ Module instruction_consistency.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_instantiation_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2939,7 +3070,9 @@ Module instruction_consistency.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2948,6 +3081,7 @@ Module instruction_consistency.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                                                 "check_type_op",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2992,6 +3126,7 @@ Module instruction_consistency.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -3005,6 +3140,7 @@ Module instruction_consistency.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -3066,125 +3202,128 @@ Module instruction_consistency.
                                                           let num := M.alloc (| γ1_1 |) in
                                                           Value.Tuple [ num ]))
                                                     ],
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [ num ] =>
-                                                            ltac:(M.monadic
-                                                              (M.match_operator (|
-                                                                M.alloc (| Value.Tuple [] |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ :=
-                                                                        M.use
-                                                                          (M.alloc (|
-                                                                            BinOp.gt (|
-                                                                              M.read (|
-                                                                                M.read (| num |)
-                                                                              |),
-                                                                              M.rust_cast
-                                                                                (M.read (|
-                                                                                  M.get_constant (|
-                                                                                    "core::num::MAX"
-                                                                                  |)
-                                                                                |))
-                                                                            |)
-                                                                          |)) in
-                                                                      let _ :=
-                                                                        M.is_constant_or_break_match (|
-                                                                          M.read (| γ |),
-                                                                          Value.Bool true
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            M.return_ (|
-                                                                              Value.StructTuple
-                                                                                "core::result::Result::Err"
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "move_binary_format::errors::PartialVMError",
-                                                                                      "with_message",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "move_binary_format::errors::PartialVMError",
-                                                                                          "at_code_offset",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError",
-                                                                                              "new",
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        match γ with
+                                                        | [ num ] =>
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| Value.Tuple [] |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ :=
+                                                                      M.use
+                                                                        (M.alloc (|
+                                                                          BinOp.gt (|
+                                                                            M.read (|
+                                                                              M.read (| num |)
+                                                                            |),
+                                                                            M.rust_cast
+                                                                              (M.read (|
+                                                                                M.get_constant (|
+                                                                                  "core::num::MAX"
+                                                                                |)
+                                                                              |))
+                                                                          |)
+                                                                        |)) in
+                                                                    let _ :=
+                                                                      M.is_constant_or_break_match (|
+                                                                        M.read (| γ |),
+                                                                        Value.Bool true
+                                                                      |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            Value.StructTuple
+                                                                              "core::result::Result::Err"
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    "with_message",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
+                                                                                        "at_code_offset",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
+                                                                                            "new",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            Value.StructTuple
+                                                                                              "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
                                                                                               []
-                                                                                            |),
-                                                                                            [
-                                                                                              Value.StructTuple
-                                                                                                "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
-                                                                                                []
-                                                                                            ]
-                                                                                          |);
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                                                              "current_function",
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                self
-                                                                                              |)
-                                                                                            ]
-                                                                                          |);
-                                                                                          M.rust_cast
-                                                                                            (M.read (|
-                                                                                              offset
-                                                                                            |))
-                                                                                        ]
-                                                                                      |);
-                                                                                      M.call_closure (|
-                                                                                        M.get_trait_method (|
-                                                                                          "alloc::string::ToString",
-                                                                                          Ty.path
-                                                                                            "str",
-                                                                                          [],
-                                                                                          "to_string",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "VecPack/VecUnpack argument out of range"
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                            |)
+                                                                                          ]
+                                                                                        |);
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                                            "current_function",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          ]
+                                                                                        |);
+                                                                                        M.rust_cast
+                                                                                          (M.read (|
+                                                                                            offset
+                                                                                          |))
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "alloc::string::ToString",
+                                                                                        Ty.path
+                                                                                          "str",
+                                                                                        [],
+                                                                                        [],
+                                                                                        "to_string",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "VecPack/VecUnpack argument out of range"
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
                                                                           |)
                                                                         |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)))
-                                                                ]
-                                                              |)))
-                                                          | _ =>
-                                                            M.impossible "wrong number of arguments"
-                                                          end))
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
+                                                        end)
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -3708,16 +3847,15 @@ Module instruction_consistency.
                                                             |) in
                                                           Value.Tuple []))
                                                     ],
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [] =>
-                                                            ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
-                                                          | _ =>
-                                                            M.impossible "wrong number of arguments"
-                                                          end))
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        match γ with
+                                                        | [] =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (| Value.Tuple [] |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
+                                                        end)
                                                   |)))
                                             ]
                                           |)))
@@ -3762,6 +3900,7 @@ Module instruction_consistency.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "field_handle_at",
+                    [],
                     []
                   |),
                   [
@@ -3781,6 +3920,7 @@ Module instruction_consistency.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                   "check_type_op",
+                  [],
                   []
                 |),
                 [
@@ -3821,6 +3961,7 @@ Module instruction_consistency.
                 []
                 [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
               "unwrap_or",
+              [],
               []
             |),
             [
@@ -3877,6 +4018,7 @@ Module instruction_consistency.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_def_at",
+                        [],
                         []
                       |),
                       [
@@ -3897,6 +4039,7 @@ Module instruction_consistency.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_handle_at",
+                        [],
                         []
                       |),
                       [
@@ -3938,6 +4081,7 @@ Module instruction_consistency.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3964,6 +4108,7 @@ Module instruction_consistency.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "at_code_offset",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3971,6 +4116,7 @@ Module instruction_consistency.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3984,6 +4130,7 @@ Module instruction_consistency.
                                               Ty.path
                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                               "current_function",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -4042,6 +4189,7 @@ Module instruction_consistency.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_handle_at",
+                        [],
                         []
                       |),
                       [
@@ -4076,6 +4224,7 @@ Module instruction_consistency.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
@@ -4102,6 +4251,7 @@ Module instruction_consistency.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "at_code_offset",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4109,6 +4259,7 @@ Module instruction_consistency.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4122,6 +4273,7 @@ Module instruction_consistency.
                                               Ty.path
                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                                               "current_function",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]

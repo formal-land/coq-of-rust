@@ -31,7 +31,9 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -39,6 +41,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::fs::File",
                             "open",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
                           |),
                           [ M.read (| path |) ]
@@ -70,6 +73,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         Ty.path "alloc::string::String";
                                         Ty.path "std::io::error::Error"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -80,6 +84,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -104,7 +109,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let~ s :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -115,7 +120,9 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "std::io::Read",
                     Ty.path "std::fs::File",
                     [],
+                    [],
                     "read_to_string",
+                    [],
                     []
                   |),
                   [ f; s ]
@@ -170,7 +177,9 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -178,6 +187,7 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::fs::File",
                             "create",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
                           |),
                           [ M.read (| path |) ]
@@ -206,6 +216,7 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -216,6 +227,7 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -243,13 +255,15 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "std::io::Write",
                   Ty.path "std::fs::File",
                   [],
+                  [],
                   "write_all",
+                  [],
                   []
                 |),
                 [
                   f;
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| s |) ]
                   |)
                 ]
@@ -282,20 +296,27 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::fs::OpenOptions",
                 "open",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::fs::OpenOptions", "write", [] |),
+                  M.get_associated_function (| Ty.path "std::fs::OpenOptions", "write", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "std::fs::OpenOptions", "create", [] |),
+                      M.get_associated_function (|
+                        Ty.path "std::fs::OpenOptions",
+                        "create",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -407,7 +428,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
 " |) ] |) ]
                   |)
@@ -442,6 +468,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -457,6 +484,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [ Ty.path "std::io::error::ErrorKind" ]
                                       |),
                                       [
@@ -465,6 +493,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "std::io::error::Error",
                                               "kind",
+                                              [],
                                               []
                                             |),
                                             [ why ]
@@ -494,7 +523,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
@@ -515,6 +549,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
               |),
               [
@@ -526,6 +561,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "std::path::Path",
                         "new",
+                        [],
                         [ Ty.path "str" ]
                       |),
                       [ M.read (| Value.String "a/b.txt" |) ]
@@ -555,6 +591,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -573,6 +610,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
                                                           [
@@ -581,6 +619,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "std::io::error::Error",
                                                                   "kind",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ why ]
@@ -612,7 +651,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
 " |) ] |) ]
                   |)
@@ -629,6 +673,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
               |),
               [
@@ -663,6 +708,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -681,6 +727,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
                                                           [
@@ -689,6 +736,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "std::io::error::Error",
                                                                   "kind",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ why ]
@@ -720,7 +768,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
 " |) ] |) ]
                   |)
@@ -737,6 +790,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
               |),
               [
@@ -747,6 +801,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "std::path::Path",
                         "new",
+                        [],
                         [ Ty.path "str" ]
                       |),
                       [ M.read (| Value.String "a/c/e.txt" |) ]
@@ -776,6 +831,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -794,6 +850,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
                                                           [
@@ -802,6 +859,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "std::io::error::Error",
                                                                   "kind",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ why ]
@@ -833,7 +891,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
@@ -862,6 +925,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                           "unwrap_or_else",
+                          [],
                           [
                             Ty.function
                               [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
@@ -910,6 +974,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -929,6 +994,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_debug",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "std::io::error::ErrorKind"
@@ -941,6 +1007,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             Ty.path
                                                                               "std::io::error::Error",
                                                                             "kind",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ why ]
@@ -976,7 +1043,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
 " |) ] |) ]
                   |)
@@ -994,6 +1066,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "std::path::Path",
                       "new",
+                      [],
                       [ Ty.path "str" ]
                     |),
                     [ M.read (| Value.String "a/c/b.txt" |) ]
@@ -1016,6 +1089,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1031,6 +1105,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [ Ty.path "std::io::error::ErrorKind" ]
                                       |),
                                       [
@@ -1039,6 +1114,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "std::io::error::Error",
                                               "kind",
+                                              [],
                                               []
                                             |),
                                             [ why ]
@@ -1068,6 +1144,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1083,6 +1160,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [ s ]
@@ -1104,7 +1182,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
 " |) ] |) ]
                   |)
@@ -1139,6 +1222,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1154,6 +1238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [ Ty.path "std::io::error::ErrorKind" ]
                                       |),
                                       [
@@ -1162,6 +1247,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "std::io::error::Error",
                                               "kind",
+                                              [],
                                               []
                                             |),
                                             [ why ]
@@ -1190,7 +1276,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::iter::traits::collect::IntoIterator",
                             Ty.path "std::fs::ReadDir",
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| paths |) ]
@@ -1210,7 +1298,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.path "std::fs::ReadDir",
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1250,6 +1340,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1268,6 +1359,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
+                                                                  [],
                                                                   [ Ty.path "std::path::PathBuf" ]
                                                                 |),
                                                                 [
@@ -1276,6 +1368,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       M.get_associated_function (|
                                                                         Ty.path "std::fs::DirEntry",
                                                                         "path",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1293,6 +1386,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                     "std::io::error::Error"
                                                                                 ],
                                                                               "unwrap",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| path |) ]
@@ -1327,7 +1421,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
 " |) ] |) ]
                   |)
@@ -1344,6 +1443,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
               |),
               [
@@ -1378,6 +1478,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1396,6 +1497,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
                                                           [
@@ -1404,6 +1506,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "std::io::error::Error",
                                                                   "kind",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ why ]
@@ -1435,7 +1538,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
 " |) ] |) ]
                   |)
@@ -1452,6 +1560,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
               |),
               [
@@ -1486,6 +1595,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1504,6 +1614,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
+                                                            [],
                                                             [ Ty.path "std::io::error::ErrorKind" ]
                                                           |),
                                                           [
@@ -1512,6 +1623,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.get_associated_function (|
                                                                   Ty.path "std::io::error::Error",
                                                                   "kind",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ why ]

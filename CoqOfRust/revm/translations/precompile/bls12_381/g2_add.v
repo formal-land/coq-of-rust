@@ -106,9 +106,11 @@ Module bls12_381.
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "revm_precompile::interface::PrecompileError",
+                                          [],
                                           [ Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ],
                                           "into",
+                                          [],
                                           []
                                         |),
                                         [
@@ -139,6 +141,7 @@ Module bls12_381.
                                     M.get_associated_function (|
                                       Ty.path "bytes::bytes::Bytes",
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -147,7 +150,9 @@ Module bls12_381.
                                           "core::ops::deref::Deref",
                                           Ty.path "alloy_primitives::bytes_::Bytes",
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| input |) ]
@@ -174,9 +179,11 @@ Module bls12_381.
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "revm_precompile::interface::PrecompileError",
+                                          [],
                                           [ Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ],
                                           "into",
+                                          [],
                                           []
                                         |),
                                         [
@@ -204,6 +211,7 @@ Module bls12_381.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -229,6 +237,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "bytes::bytes::Bytes",
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -238,7 +247,9 @@ Module bls12_381.
                                                                                   Ty.path
                                                                                     "alloy_primitives::bytes_::Bytes",
                                                                                   [],
+                                                                                  [],
                                                                                   "deref",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [ M.read (| input |)
@@ -265,6 +276,7 @@ Module bls12_381.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_display",
+                                                                                  [],
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                                 |),
@@ -282,6 +294,7 @@ Module bls12_381.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_display",
+                                                                                  [],
                                                                                   [ Ty.path "usize"
                                                                                   ]
                                                                                 |),
@@ -333,7 +346,9 @@ Module bls12_381.
                                 Ty.path "revm_precompile::interface::PrecompileError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -348,6 +363,7 @@ Module bls12_381.
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -355,6 +371,7 @@ Module bls12_381.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [
@@ -363,7 +380,9 @@ Module bls12_381.
                                         "core::ops::deref::Deref",
                                         Ty.path "bytes::bytes::Bytes",
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -372,7 +391,9 @@ Module bls12_381.
                                             "core::ops::deref::Deref",
                                             Ty.path "alloy_primitives::bytes_::Bytes",
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| input |) ]
@@ -421,6 +442,7 @@ Module bls12_381.
                                             Ty.path "revm_precompile::interface::PrecompileOutput";
                                             Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -431,6 +453,7 @@ Module bls12_381.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -467,7 +490,9 @@ Module bls12_381.
                                 Ty.path "revm_precompile::interface::PrecompileError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -482,6 +507,7 @@ Module bls12_381.
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeFrom")
@@ -489,6 +515,7 @@ Module bls12_381.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [
@@ -497,7 +524,9 @@ Module bls12_381.
                                         "core::ops::deref::Deref",
                                         Ty.path "bytes::bytes::Bytes",
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -506,7 +535,9 @@ Module bls12_381.
                                             "core::ops::deref::Deref",
                                             Ty.path "alloy_primitives::bytes_::Bytes",
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| input |) ]
@@ -555,6 +586,7 @@ Module bls12_381.
                                             Ty.path "revm_precompile::interface::PrecompileOutput";
                                             Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -565,6 +597,7 @@ Module bls12_381.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -593,7 +626,9 @@ Module bls12_381.
                         "core::default::Default",
                         Ty.path "blst::blst_p2",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -613,7 +648,9 @@ Module bls12_381.
                         "core::default::Default",
                         Ty.path "blst::blst_p2",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -633,7 +670,9 @@ Module bls12_381.
                         "core::default::Default",
                         Ty.path "blst::blst_p2_affine",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -665,6 +704,7 @@ Module bls12_381.
                         M.get_associated_function (|
                           Ty.path "revm_precompile::interface::PrecompileOutput",
                           "new",
+                          [],
                           []
                         |),
                         [

@@ -12,7 +12,7 @@ Module cmp.
           let other := M.alloc (| other |) in
           UnOp.not (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", Self, [ Rhs ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", Self, [], [ Rhs ], "eq", [], [] |),
               [ M.read (| self |); M.read (| other |) ]
             |)
           |)))
@@ -231,8 +231,10 @@ Module cmp.
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "i8",
+                  [],
                   [ Ty.path "i8" ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [ __self_discr; __arg1_discr ]
@@ -285,7 +287,7 @@ Module cmp.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
                 [ __self_discr; __arg1_discr ]
               |)
             |)
@@ -312,7 +314,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -374,7 +376,15 @@ Module cmp.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "i8", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "i8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -656,8 +666,10 @@ Module cmp.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
+                          [],
                           [ Ty.tuple [] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| f |); Value.Tuple [] ]
@@ -705,7 +717,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
@@ -772,6 +784,7 @@ Module cmp.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -819,7 +832,7 @@ Module cmp.
             "core::cmp::Reverse"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                 []
               |)
             ]))
@@ -847,7 +860,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+            M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
               M.read (| state |)
@@ -881,7 +894,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -903,7 +916,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -925,7 +938,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -947,7 +960,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "gt", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -969,7 +982,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -1010,7 +1023,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
@@ -1046,7 +1059,7 @@ Module cmp.
             "core::cmp::Reverse"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
@@ -1072,7 +1085,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
+            M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |);
               M.SubPointer.get_struct_tuple_field (| M.read (| source |), "core::cmp::Reverse", 0 |)
@@ -1116,7 +1129,7 @@ Module cmp.
             [
               M.read (| self |);
               M.read (| other |);
-              M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
+              M.get_trait_method (| "core::cmp::Ord", Self, [], [], "cmp", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1143,7 +1156,7 @@ Module cmp.
             [
               M.read (| self |);
               M.read (| other |);
-              M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
+              M.get_trait_method (| "core::cmp::Ord", Self, [], [], "cmp", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1172,8 +1185,10 @@ Module cmp.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Self,
+                                  [],
                                   [ Self ],
                                   "le",
+                                  [],
                                   []
                                 |),
                                 [ min; max ]
@@ -1204,8 +1219,10 @@ Module cmp.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Self,
+                              [],
                               [ Self ],
                               "lt",
+                              [],
                               []
                             |),
                             [ self; min ]
@@ -1227,8 +1244,10 @@ Module cmp.
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Self,
+                                      [],
                                       [ Self ],
                                       "gt",
+                                      [],
                                       []
                                     |),
                                     [ self; max ]
@@ -1264,8 +1283,10 @@ Module cmp.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
+                    [],
                     [ Rhs ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -1305,8 +1326,10 @@ Module cmp.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
+                    [],
                     [ Rhs ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -1333,13 +1356,12 @@ Module cmp.
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1364,8 +1386,10 @@ Module cmp.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
+                    [],
                     [ Rhs ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -1405,8 +1429,10 @@ Module cmp.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
+                    [],
                     [ Rhs ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -1433,13 +1459,12 @@ Module cmp.
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1465,7 +1490,7 @@ Module cmp.
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
         M.call_closure (|
-          M.get_trait_method (| "core::cmp::Ord", T, [], "min", [] |),
+          M.get_trait_method (| "core::cmp::Ord", T, [], [], "min", [], [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1495,8 +1520,10 @@ Module cmp.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
@@ -1517,13 +1544,12 @@ Module cmp.
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] => ltac:(M.monadic v1)
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] => ltac:(M.monadic v1)
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -1582,15 +1608,25 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
-                                        M.get_trait_method (| "core::cmp::Ord", K, [], "cmp", [] |),
+                                        M.get_trait_method (|
+                                          "core::cmp::Ord",
+                                          K,
+                                          [],
+                                          [],
+                                          "cmp",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v1 |) ] ]
@@ -1601,8 +1637,10 @@ Module cmp.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v2 |) ] ]
@@ -1635,7 +1673,7 @@ Module cmp.
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
         M.call_closure (|
-          M.get_trait_method (| "core::cmp::Ord", T, [], "max", [] |),
+          M.get_trait_method (| "core::cmp::Ord", T, [], [], "max", [], [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1665,8 +1703,10 @@ Module cmp.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
@@ -1687,13 +1727,12 @@ Module cmp.
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] => ltac:(M.monadic v2)
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] => ltac:(M.monadic v2)
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -1752,15 +1791,25 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
-                                        M.get_trait_method (| "core::cmp::Ord", K, [], "cmp", [] |),
+                                        M.get_trait_method (|
+                                          "core::cmp::Ord",
+                                          K,
+                                          [],
+                                          [],
+                                          "cmp",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v1 |) ] ]
@@ -1771,8 +1820,10 @@ Module cmp.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v2 |) ] ]
@@ -1817,7 +1868,15 @@ Module cmp.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "le", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::PartialOrd",
+                            T,
+                            [],
+                            [ T ],
+                            "le",
+                            [],
+                            []
+                          |),
                           [ v1; v2 ]
                         |)
                       |)) in
@@ -1861,6 +1920,7 @@ Module cmp.
                           M.get_associated_function (|
                             Ty.path "core::cmp::Ordering",
                             "is_le",
+                            [],
                             []
                           |),
                           [
@@ -1868,6 +1928,7 @@ Module cmp.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -1876,6 +1937,7 @@ Module cmp.
                                     ]
                                 ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| compare |); Value.Tuple [ v1; v2 ] ]
@@ -1944,15 +2006,25 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
-                                        M.get_trait_method (| "core::cmp::Ord", K, [], "cmp", [] |),
+                                        M.get_trait_method (|
+                                          "core::cmp::Ord",
+                                          K,
+                                          [],
+                                          [],
+                                          "cmp",
+                                          [],
+                                          []
+                                        |),
                                         [
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v1 |) ] ]
@@ -1963,8 +2035,10 @@ Module cmp.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| v2 |) ] ]
@@ -2779,7 +2853,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "cmp", [], [] |),
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
@@ -3542,10 +3616,18 @@ Module cmp.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "min", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "min", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "max", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "bool",
+                        [],
+                        [],
+                        "max",
+                        [],
+                        []
+                      |),
                       [ M.read (| self |); M.read (| min |) ]
                     |);
                     M.read (| max |)
@@ -5169,7 +5251,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5188,7 +5270,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5225,7 +5307,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5244,7 +5326,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5263,7 +5345,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5282,7 +5364,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5301,7 +5383,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5339,7 +5421,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5382,7 +5464,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5401,7 +5483,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5438,7 +5520,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5457,7 +5539,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5476,7 +5558,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5495,7 +5577,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5514,7 +5596,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
+              M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5552,7 +5634,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5595,7 +5677,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5614,7 +5696,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5646,7 +5728,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -5665,7 +5747,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

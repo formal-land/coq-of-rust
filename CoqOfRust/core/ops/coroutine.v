@@ -54,7 +54,15 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", Y, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Y,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -74,7 +82,15 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", R, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                R,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -188,8 +204,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Y ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Y ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -220,8 +238,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ R ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ R ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -323,8 +343,10 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -355,8 +377,10 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             R,
+                            [],
                             [ R ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -369,8 +393,10 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ __self_discr; __arg1_discr ]
@@ -472,7 +498,15 @@ Module ops.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
                     [ __self_discr; __arg1_discr ]
                   |)
                 |),
@@ -505,7 +539,15 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    Y,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |)
                               |)));
@@ -531,7 +573,15 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", R, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    R,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |)
                               |)));
@@ -597,6 +647,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Yielded" |); __self_0 ]
@@ -617,6 +668,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Complete" |); __self_0 ]
@@ -668,7 +720,9 @@ Module ops.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -689,7 +743,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", Y, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            Y,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
@@ -705,7 +767,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", R, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            R,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)))
@@ -750,12 +820,21 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
-              M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+              M.get_trait_method (|
+                "core::ops::coroutine::Coroutine",
+                G,
+                [],
+                [ R ],
+                "resume",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "as_mut",
+                    [],
                     []
                   |),
                   [
@@ -777,7 +856,9 @@ Module ops.
                               ]
                           ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [ self ]
@@ -826,12 +907,21 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
-              M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+              M.get_trait_method (|
+                "core::ops::coroutine::Coroutine",
+                G,
+                [],
+                [ R ],
+                "resume",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -844,7 +934,9 @@ Module ops.
                             []
                             [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ] ],
                           [],
+                          [],
                           "deref_mut",
+                          [],
                           []
                         |),
                         [ self ]

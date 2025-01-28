@@ -34,6 +34,7 @@ Module eip7702.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -85,7 +86,9 @@ Module eip7702.
                       "core::clone::Clone",
                       Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -105,7 +108,9 @@ Module eip7702.
                         []
                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -147,7 +152,9 @@ Module eip7702.
                       "core::hash::Hash",
                       Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -169,7 +176,9 @@ Module eip7702.
                       []
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -261,8 +270,10 @@ Module eip7702.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
+                  [],
                   [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -286,6 +297,7 @@ Module eip7702.
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -293,6 +305,7 @@ Module eip7702.
                         [ Ty.path "alloy_primitives::bits::address::Address" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -447,6 +460,7 @@ Module eip7702.
                           Ty.path "alloy_primitives::signature::error::SignatureError"
                         ],
                       "ok",
+                      [],
                       []
                     |),
                     [
@@ -454,6 +468,7 @@ Module eip7702.
                         M.get_associated_function (|
                           Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                           "recover_authority",
+                          [],
                           []
                         |),
                         [ signed_auth ]
@@ -467,6 +482,7 @@ Module eip7702.
                     Ty.path
                       "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| signed_auth |); M.read (| authority |) ]
@@ -507,7 +523,9 @@ Module eip7702.
                 "core::ops::deref::Deref",
                 Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [

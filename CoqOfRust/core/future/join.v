@@ -168,6 +168,7 @@ Module future.
                                 [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                             ],
                           "get_unchecked_mut",
+                          [],
                           []
                         |),
                         [
@@ -183,6 +184,7 @@ Module future.
                                     [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                                 ],
                               "as_mut",
+                              [],
                               []
                             |),
                             [ self ]
@@ -208,7 +210,9 @@ Module future.
                                         "core::future::future::Future",
                                         F,
                                         [],
+                                        [],
                                         "poll",
+                                        [],
                                         []
                                       |),
                                       [
@@ -219,6 +223,7 @@ Module future.
                                               []
                                               [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                                             "new_unchecked",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| f |) ]
@@ -278,6 +283,7 @@ Module future.
                                           ]
                                       ],
                                     "set",
+                                    [],
                                     []
                                   |),
                                   [

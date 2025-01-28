@@ -19,6 +19,7 @@ Module ability_field_requirements.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -51,6 +52,7 @@ Module ability_field_requirements.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -62,6 +64,7 @@ Module ability_field_requirements.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -141,7 +144,9 @@ Module ability_field_requirements.
                                 [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -153,7 +158,9 @@ Module ability_field_requirements.
                                 []
                                 [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -164,6 +171,7 @@ Module ability_field_requirements.
                                     []
                                     [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -171,6 +179,7 @@ Module ability_field_requirements.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_defs",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| module |) ]
@@ -207,7 +216,9 @@ Module ability_field_requirements.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -240,6 +251,7 @@ Module ability_field_requirements.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "struct_handle_at",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -315,7 +327,9 @@ Module ability_field_requirements.
                                                         "move_binary_format::file_format::Ability")
                                                   ],
                                                 [],
+                                                [],
                                                 "fold",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_binary_format::file_format::AbilitySet";
@@ -340,7 +354,9 @@ Module ability_field_requirements.
                                                     Ty.path
                                                       "move_binary_format::file_format::AbilitySetIterator",
                                                     [],
+                                                    [],
                                                     "map",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::Ability";
@@ -363,7 +379,9 @@ Module ability_field_requirements.
                                                         Ty.path
                                                           "move_binary_format::file_format::AbilitySet",
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -393,6 +411,7 @@ Module ability_field_requirements.
                                                                           Ty.path
                                                                             "move_binary_format::file_format::Ability",
                                                                           "requires",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| a |) ]
@@ -433,11 +452,13 @@ Module ability_field_requirements.
                                                                               "core::ops::bit::BitOr",
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::AbilitySet",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::Ability"
                                                                               ],
                                                                               "bitor",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -488,7 +509,9 @@ Module ability_field_requirements.
                                                         "move_binary_format::file_format::AbilitySet")
                                                   ],
                                                 [],
+                                                [],
                                                 "collect",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -512,7 +535,9 @@ Module ability_field_requirements.
                                                           "move_binary_format::file_format::StructTypeParameter"
                                                       ],
                                                     [],
+                                                    [],
                                                     "map",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::AbilitySet";
@@ -544,6 +569,7 @@ Module ability_field_requirements.
                                                               "move_binary_format::file_format::StructTypeParameter"
                                                           ],
                                                         "iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -559,7 +585,9 @@ Module ability_field_requirements.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "deref",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -618,7 +646,9 @@ Module ability_field_requirements.
                                                         ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| fields |) ]
@@ -645,7 +675,9 @@ Module ability_field_requirements.
                                                                       "move_binary_format::file_format::FieldDefinition"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ iter ]
@@ -691,7 +723,9 @@ Module ability_field_requirements.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -700,6 +734,7 @@ Module ability_field_requirements.
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::CompiledModule",
                                                                                 "abilities",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -729,7 +764,9 @@ Module ability_field_requirements.
                                                                                           "alloc::alloc::Global"
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "deref",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -769,6 +806,7 @@ Module ability_field_requirements.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -782,6 +820,7 @@ Module ability_field_requirements.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -822,6 +861,7 @@ Module ability_field_requirements.
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::AbilitySet",
                                                                                     "is_subset",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [

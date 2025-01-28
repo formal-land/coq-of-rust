@@ -19,6 +19,7 @@ Module constants.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -47,6 +48,7 @@ Module constants.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -58,6 +60,7 @@ Module constants.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -110,7 +113,9 @@ Module constants.
                                 [ Ty.path "move_binary_format::file_format::Constant" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -122,7 +127,9 @@ Module constants.
                                 []
                                 [ Ty.path "move_binary_format::file_format::Constant" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -133,6 +140,7 @@ Module constants.
                                     []
                                     [ Ty.path "move_binary_format::file_format::Constant" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -140,6 +148,7 @@ Module constants.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "constant_pool",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| module |) ]
@@ -174,7 +183,9 @@ Module constants.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -214,7 +225,9 @@ Module constants.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -254,6 +267,7 @@ Module constants.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -266,6 +280,7 @@ Module constants.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -327,7 +342,9 @@ Module constants.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -373,6 +390,7 @@ Module constants.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -383,6 +401,7 @@ Module constants.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -453,6 +472,7 @@ Module constants.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::SignatureToken",
                             "is_valid_for_constant",
+                            [],
                             []
                           |),
                           [ M.read (| type_ |) ]
@@ -516,6 +536,7 @@ Module constants.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::Constant",
                   "deserialize_constant",
+                  [],
                   []
                 |),
                 [ M.read (| constant |) ]

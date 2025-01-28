@@ -38,7 +38,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -98,6 +98,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -145,6 +146,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -192,6 +194,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -311,6 +314,7 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
+          [],
           [
             Ty.path "combinators_map::Cooked";
             Ty.function
@@ -366,6 +370,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
         M.get_associated_function (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
+          [],
           [
             Ty.path "combinators_map::Cooked";
             Ty.function
@@ -378,6 +383,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Peeled" ],
               "map",
+              [],
               [
                 Ty.path "combinators_map::Chopped";
                 Ty.function
@@ -390,6 +396,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ],
                   "map",
+                  [],
                   [
                     Ty.path "combinators_map::Peeled";
                     Ty.function
@@ -504,6 +511,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -522,6 +530,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
+                                      [],
                                       [ Ty.path "combinators_map::Cooked" ]
                                     |),
                                     [ food ]
@@ -546,6 +555,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [

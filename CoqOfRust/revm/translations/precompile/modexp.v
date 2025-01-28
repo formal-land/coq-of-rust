@@ -82,7 +82,9 @@ Module modexp.
                 "core::ops::deref::Deref",
                 Ty.path "bytes::bytes::Bytes",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [
@@ -91,7 +93,9 @@ Module modexp.
                     "core::ops::deref::Deref",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| input |) ]
@@ -207,7 +211,9 @@ Module modexp.
                 "core::ops::deref::Deref",
                 Ty.path "bytes::bytes::Bytes",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [
@@ -216,7 +222,9 @@ Module modexp.
                     "core::ops::deref::Deref",
                     Ty.path "alloy_primitives::bytes_::Bytes",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| input |) ]
@@ -334,6 +342,10 @@ Module modexp.
                                     ]
                                     [],
                                   "is_zero",
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ],
                                   []
                                 |),
                                 [ M.read (| exp_highp |) ]
@@ -375,6 +387,10 @@ Module modexp.
                                           ]
                                           [],
                                         "bit_len",
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ],
                                         []
                                       |),
                                       [ M.read (| exp_highp |) ]
@@ -410,6 +426,7 @@ Module modexp.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "saturating_add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -417,6 +434,7 @@ Module modexp.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "saturating_mul",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -447,6 +465,10 @@ Module modexp.
                                                           ]
                                                           [],
                                                         "bit_len",
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ],
                                                         []
                                                       |),
                                                       [ M.read (| exp_highp |) ]
@@ -590,8 +612,10 @@ Module modexp.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -617,6 +641,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       []
                     |),
                     [
@@ -632,6 +657,7 @@ Module modexp.
                                 [ Ty.path "u8" ]
                             ],
                           "into_owned",
+                          [],
                           []
                         |),
                         [
@@ -657,6 +683,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       []
                     |),
                     [
@@ -672,6 +699,7 @@ Module modexp.
                                 [ Ty.path "u8" ]
                             ],
                           "into_owned",
+                          [],
                           []
                         |),
                         [
@@ -697,6 +725,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       []
                     |),
                     [
@@ -712,6 +741,7 @@ Module modexp.
                                 [ Ty.path "u8" ]
                             ],
                           "into_owned",
+                          [],
                           []
                         |),
                         [
@@ -734,6 +764,7 @@ Module modexp.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "ruint::Uint")
@@ -741,6 +772,7 @@ Module modexp.
                           []
                       ],
                       "try_from",
+                      [],
                       []
                     |),
                     [ M.read (| base_len |) ]
@@ -762,6 +794,7 @@ Module modexp.
                             M.get_trait_method (|
                               "core::convert::TryFrom",
                               Ty.path "usize",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
@@ -772,6 +805,7 @@ Module modexp.
                                   []
                               ],
                               "try_from",
+                              [],
                               []
                             |),
                             [ M.read (| mod_len |) ]
@@ -825,6 +859,7 @@ Module modexp.
                                                         Ty.path
                                                           "revm_precompile::interface::PrecompileOutput",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -834,6 +869,7 @@ Module modexp.
                                                             Ty.path
                                                               "alloy_primitives::bytes_::Bytes",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           []
@@ -854,6 +890,7 @@ Module modexp.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -864,6 +901,7 @@ Module modexp.
                                           []
                                       ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| exp_len |) ]
@@ -908,6 +946,7 @@ Module modexp.
                                                     ]
                                                 ],
                                               "unwrap_or_default",
+                                              [],
                                               []
                                             |),
                                             [
@@ -915,6 +954,7 @@ Module modexp.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "get",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::RangeFrom")
@@ -968,6 +1008,7 @@ Module modexp.
                                                         (Ty.path "array")
                                                         [ Value.Integer IntegerKind.Usize 32 ]
                                                         [ Ty.path "u8" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::RangeTo")
@@ -975,6 +1016,7 @@ Module modexp.
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "index",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -992,7 +1034,9 @@ Module modexp.
                                                                 [ Ty.path "u8" ]
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [ right_padded_highp ]
@@ -1016,6 +1060,10 @@ Module modexp.
                                                   ]
                                                   [],
                                                 "from_be_bytes",
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ],
                                                 []
                                               |),
                                               [
@@ -1031,6 +1079,7 @@ Module modexp.
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     "into_owned",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| out |) ]
@@ -1045,6 +1094,7 @@ Module modexp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnOnce",
                                               F,
+                                              [],
                                               [
                                                 Ty.tuple
                                                   [
@@ -1066,6 +1116,7 @@ Module modexp.
                                                   ]
                                               ],
                                               "call_once",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1111,11 +1162,13 @@ Module modexp.
                                                                 "core::convert::Into",
                                                                 Ty.path
                                                                   "revm_precompile::interface::PrecompileError",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "revm_precompile::interface::PrecompileErrors"
                                                                 ],
                                                                 "into",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1138,6 +1191,7 @@ Module modexp.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "saturating_add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1145,6 +1199,7 @@ Module modexp.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "saturating_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| base_len |); M.read (| exp_len |) ]
@@ -1170,6 +1225,7 @@ Module modexp.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "split_at",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1182,7 +1238,9 @@ Module modexp.
                                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [ input ]
@@ -1208,6 +1266,7 @@ Module modexp.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "split_at",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| input |); M.read (| exp_len |) ]
@@ -1251,6 +1310,7 @@ Module modexp.
                                                                                   []
                                                                                   [ Ty.path "u8" ],
                                                                                 "len",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| modulus |)
@@ -1389,6 +1449,7 @@ Module modexp.
                                                                 Ty.path
                                                                   "revm_precompile::interface::PrecompileOutput",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1404,11 +1465,13 @@ Module modexp.
                                                                         Ty.path
                                                                           "alloc::alloc::Global"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.path
                                                                         "alloy_primitives::bytes_::Bytes"
                                                                     ],
                                                                     "into",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1425,6 +1488,7 @@ Module modexp.
                                                                               [ Ty.path "u8" ]
                                                                           ],
                                                                         "into_owned",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1448,7 +1512,9 @@ Module modexp.
                                                                                       "alloc::alloc::Global"
                                                                                   ],
                                                                                 [],
+                                                                                [],
                                                                                 "deref",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ output ]
@@ -1543,6 +1609,7 @@ Module modexp.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "from",
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                   [ Ty.path "u64" ]
                 |),
                 [
@@ -1566,6 +1633,7 @@ Module modexp.
                     (Ty.path "ruint::Uint")
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "ruint::Uint")
@@ -1573,6 +1641,7 @@ Module modexp.
                       []
                   ],
                   "div",
+                  [],
                   []
                 |),
                 [
@@ -1583,6 +1652,7 @@ Module modexp.
                         (Ty.path "ruint::Uint")
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "ruint::Uint")
@@ -1590,6 +1660,7 @@ Module modexp.
                           []
                       ],
                       "mul",
+                      [],
                       []
                     |),
                     [ M.read (| mul |); M.read (| iter_count |) ]
@@ -1601,6 +1672,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       [ Ty.path "i32" ]
                     |),
                     [ Value.Integer IntegerKind.I32 20 ]
@@ -1616,6 +1688,7 @@ Module modexp.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "saturating_to",
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                 [ Ty.path "u64" ]
               |),
               [ gas ]
@@ -1669,6 +1742,8 @@ Module modexp.
                             ]
                             [],
                           "from",
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                          ],
                           [ Ty.path "u64" ]
                         |),
                         [ BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) ]
@@ -1699,6 +1774,10 @@ Module modexp.
                                     ]
                                     [],
                                   "from",
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ],
                                   [ Ty.path "u64" ]
                                 |),
                                 [
@@ -1732,6 +1811,10 @@ Module modexp.
                                       ]
                                       [],
                                     "from",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     [ Ty.path "u64" ]
                                   |),
                                   [ M.read (| x |) ]
@@ -1749,6 +1832,7 @@ Module modexp.
                                         Value.Integer IntegerKind.Usize 4
                                       ]
                                       [],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
@@ -1759,6 +1843,7 @@ Module modexp.
                                         []
                                     ],
                                     "mul",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| x |); M.read (| x |) ]
@@ -1775,6 +1860,7 @@ Module modexp.
                                       Value.Integer IntegerKind.Usize 4
                                     ]
                                     [],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
@@ -1785,6 +1871,7 @@ Module modexp.
                                       []
                                   ],
                                   "sub",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1798,6 +1885,7 @@ Module modexp.
                                           Value.Integer IntegerKind.Usize 4
                                         ]
                                         [],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -1808,6 +1896,7 @@ Module modexp.
                                           []
                                       ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1821,6 +1910,7 @@ Module modexp.
                                               Value.Integer IntegerKind.Usize 4
                                             ]
                                             [],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
@@ -1831,6 +1921,7 @@ Module modexp.
                                               []
                                           ],
                                           "div",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1845,6 +1936,10 @@ Module modexp.
                                                 ]
                                                 [],
                                               "from",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               [ Ty.path "i32" ]
                                             |),
                                             [ Value.Integer IntegerKind.I32 16 ]
@@ -1861,6 +1956,7 @@ Module modexp.
                                               Value.Integer IntegerKind.Usize 4
                                             ]
                                             [],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
@@ -1871,6 +1967,7 @@ Module modexp.
                                               []
                                           ],
                                           "mul",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1884,6 +1981,10 @@ Module modexp.
                                                 ]
                                                 [],
                                               "from",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               [ Ty.path "i32" ]
                                             |),
                                             [ Value.Integer IntegerKind.I32 480 ]
@@ -1903,6 +2004,10 @@ Module modexp.
                                         ]
                                         [],
                                       "from",
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ],
                                       [ Ty.path "i32" ]
                                     |),
                                     [ Value.Integer IntegerKind.I32 199680 ]
@@ -1981,6 +2086,7 @@ Module modexp.
                     (Ty.path "ruint::Uint")
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "ruint::Uint")
@@ -1988,6 +2094,7 @@ Module modexp.
                       []
                   ],
                   "div",
+                  [],
                   []
                 |),
                 [
@@ -1998,6 +2105,7 @@ Module modexp.
                         (Ty.path "ruint::Uint")
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "ruint::Uint")
@@ -2005,6 +2113,7 @@ Module modexp.
                           []
                       ],
                       "mul",
+                      [],
                       []
                     |),
                     [
@@ -2017,6 +2126,8 @@ Module modexp.
                             ]
                             [],
                           "from",
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                          ],
                           [ Ty.path "u64" ]
                         |),
                         [ M.read (| iteration_count |) ]
@@ -2030,6 +2141,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       [ Ty.path "i32" ]
                     |),
                     [ Value.Integer IntegerKind.I32 3 ]
@@ -2049,6 +2161,7 @@ Module modexp.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "saturating_to",
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                     [ Ty.path "u64" ]
                   |),
                   [ gas ]
@@ -2134,6 +2247,7 @@ Module modexp.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "from",
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                     [ Ty.path "u64" ]
                   |),
                   [ M.read (| words |) ]
@@ -2147,6 +2261,7 @@ Module modexp.
                     (Ty.path "ruint::Uint")
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "ruint::Uint")
@@ -2154,6 +2269,7 @@ Module modexp.
                       []
                   ],
                   "mul",
+                  [],
                   []
                 |),
                 [ M.read (| words |); M.read (| words |) ]

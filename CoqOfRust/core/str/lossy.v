@@ -54,7 +54,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -71,7 +73,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -108,6 +112,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -166,8 +171,10 @@ Module str.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -188,9 +195,11 @@ Module str.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -368,7 +377,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -377,7 +388,9 @@ Module str.
                                 "core::fmt::Write",
                                 Ty.path "core::fmt::Formatter",
                                 [],
+                                [],
                                 "write_char",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.UnicodeChar 34 ]
@@ -406,6 +419,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -416,6 +430,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -445,7 +460,9 @@ Module str.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.path "core::str::lossy::Utf8Chunks",
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -453,6 +470,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "utf8_chunks",
+                                  [],
                                   []
                                 |),
                                 [
@@ -482,7 +500,9 @@ Module str.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.path "core::str::lossy::Utf8Chunks",
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -515,6 +535,7 @@ Module str.
                                                     M.get_associated_function (|
                                                       Ty.path "core::str::lossy::Utf8Chunk",
                                                       "valid",
+                                                      [],
                                                       []
                                                     |),
                                                     [ chunk ]
@@ -531,7 +552,9 @@ Module str.
                                                           "core::iter::traits::collect::IntoIterator",
                                                           Ty.path "core::str::iter::CharIndices",
                                                           [],
+                                                          [],
                                                           "into_iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -539,6 +562,7 @@ Module str.
                                                             M.get_associated_function (|
                                                               Ty.path "str",
                                                               "char_indices",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| valid |) ]
@@ -561,7 +585,9 @@ Module str.
                                                                         Ty.path
                                                                           "core::str::iter::CharIndices",
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ iter ]
@@ -610,6 +636,7 @@ Module str.
                                                                               M.get_associated_function (|
                                                                                 Ty.path "char",
                                                                                 "escape_debug",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| c |) ]
@@ -632,7 +659,9 @@ Module str.
                                                                                             Ty.path
                                                                                               "core::char::EscapeDebug",
                                                                                             [],
+                                                                                            [],
                                                                                             "len",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [ esc ]
@@ -664,7 +693,9 @@ Module str.
                                                                                                 "core::fmt::Error"
                                                                                             ],
                                                                                           [],
+                                                                                          [],
                                                                                           "branch",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -673,6 +704,7 @@ Module str.
                                                                                               Ty.path
                                                                                                 "core::fmt::Formatter",
                                                                                               "write_str",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -684,6 +716,7 @@ Module str.
                                                                                                   "core::ops::index::Index",
                                                                                                   Ty.path
                                                                                                     "str",
+                                                                                                  [],
                                                                                                   [
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -695,6 +728,7 @@ Module str.
                                                                                                       ]
                                                                                                   ],
                                                                                                   "index",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -752,6 +786,7 @@ Module str.
                                                                                                           Ty.path
                                                                                                             "core::fmt::Error"
                                                                                                         ],
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -765,6 +800,7 @@ Module str.
                                                                                                           ]
                                                                                                       ],
                                                                                                       "from_residual",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -803,7 +839,9 @@ Module str.
                                                                                             Ty.path
                                                                                               "core::char::EscapeDebug",
                                                                                             [],
+                                                                                            [],
                                                                                             "into_iter",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -833,7 +871,9 @@ Module str.
                                                                                                           Ty.path
                                                                                                             "core::char::EscapeDebug",
                                                                                                           [],
+                                                                                                          [],
                                                                                                           "next",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -891,7 +931,9 @@ Module str.
                                                                                                                           "core::fmt::Error"
                                                                                                                       ],
                                                                                                                     [],
+                                                                                                                    [],
                                                                                                                     "branch",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -901,7 +943,9 @@ Module str.
                                                                                                                         Ty.path
                                                                                                                           "core::fmt::Formatter",
                                                                                                                         [],
+                                                                                                                        [],
                                                                                                                         "write_char",
+                                                                                                                        [],
                                                                                                                         []
                                                                                                                       |),
                                                                                                                       [
@@ -949,6 +993,7 @@ Module str.
                                                                                                                                     Ty.path
                                                                                                                                       "core::fmt::Error"
                                                                                                                                   ],
+                                                                                                                                [],
                                                                                                                                 [
                                                                                                                                   Ty.apply
                                                                                                                                     (Ty.path
@@ -962,6 +1007,7 @@ Module str.
                                                                                                                                     ]
                                                                                                                                 ],
                                                                                                                                 "from_residual",
+                                                                                                                                [],
                                                                                                                                 []
                                                                                                                               |),
                                                                                                                               [
@@ -1017,6 +1063,7 @@ Module str.
                                                                                           Ty.path
                                                                                             "char",
                                                                                           "len_utf8",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -1055,7 +1102,9 @@ Module str.
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1063,6 +1112,7 @@ Module str.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Formatter",
                                                             "write_str",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1071,6 +1121,7 @@ Module str.
                                                               M.get_trait_method (|
                                                                 "core::ops::index::Index",
                                                                 Ty.path "str",
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1079,6 +1130,7 @@ Module str.
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1118,6 +1170,7 @@ Module str.
                                                                         Ty.tuple [];
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -1130,6 +1183,7 @@ Module str.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -1167,7 +1221,9 @@ Module str.
                                                             [ Ty.path "u8" ]
                                                         ],
                                                       [],
+                                                      [],
                                                       "into_iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1175,6 +1231,7 @@ Module str.
                                                         M.get_associated_function (|
                                                           Ty.path "core::str::lossy::Utf8Chunk",
                                                           "invalid",
+                                                          [],
                                                           []
                                                         |),
                                                         [ chunk ]
@@ -1200,7 +1257,9 @@ Module str.
                                                                       []
                                                                       [ Ty.path "u8" ],
                                                                     [],
+                                                                    [],
                                                                     "next",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ iter ]
@@ -1245,7 +1304,9 @@ Module str.
                                                                                     "core::fmt::Error"
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "branch",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1254,6 +1315,7 @@ Module str.
                                                                                   Ty.path
                                                                                     "core::fmt::Formatter",
                                                                                   "write_fmt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -1263,6 +1325,7 @@ Module str.
                                                                                       Ty.path
                                                                                         "core::fmt::Arguments",
                                                                                       "new_v1_formatted",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1283,6 +1346,7 @@ Module str.
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Argument",
                                                                                                 "new_upper_hex",
+                                                                                                [],
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "u8"
@@ -1300,6 +1364,7 @@ Module str.
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Placeholder",
                                                                                                 "new",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -1333,6 +1398,7 @@ Module str.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::UnsafeArg",
                                                                                           "new",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         []
@@ -1372,6 +1438,7 @@ Module str.
                                                                                               Ty.path
                                                                                                 "core::fmt::Error"
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -1385,6 +1452,7 @@ Module str.
                                                                                               ]
                                                                                           ],
                                                                                           "from_residual",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -1429,7 +1497,9 @@ Module str.
                         "core::fmt::Write",
                         Ty.path "core::fmt::Formatter",
                         [],
+                        [],
                         "write_char",
+                        [],
                         []
                       |),
                       [ M.read (| f |); Value.UnicodeChar 34 ]
@@ -1476,7 +1546,9 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1651,6 +1723,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1695,6 +1768,7 @@ Module str.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1720,6 +1794,7 @@ Module str.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "get_unchecked",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [
@@ -1801,6 +1876,7 @@ Module str.
                                                                         M.get_associated_function (|
                                                                           Self,
                                                                           "safe_get.next",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1866,6 +1942,7 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "safe_get.next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1977,6 +2054,7 @@ Module str.
                                                                         M.get_associated_function (|
                                                                           Self,
                                                                           "safe_get.next",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -2042,6 +2120,7 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "safe_get.next",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2140,6 +2219,7 @@ Module str.
                                                                         M.get_associated_function (|
                                                                           Self,
                                                                           "safe_get.next",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -2202,6 +2282,7 @@ Module str.
                                                                         M.get_associated_function (|
                                                                           Self,
                                                                           "safe_get.next",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -2283,6 +2364,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "split_at_unchecked",
+                          [],
                           []
                         |),
                         [
@@ -2319,6 +2401,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "split_at_unchecked",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| inspected |); M.read (| valid_up_to |) ]
@@ -2397,6 +2480,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -2404,6 +2488,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -2412,6 +2497,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Utf8Chunks" |) ]
@@ -2423,6 +2509,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.path "core::str::lossy::Utf8Chunks",
                           "debug",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]

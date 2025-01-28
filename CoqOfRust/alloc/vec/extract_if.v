@@ -35,6 +35,7 @@ Module vec.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
@@ -110,6 +111,7 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "allocator",
+                [],
                 []
               |),
               [
@@ -225,6 +227,7 @@ Module vec.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "as_mut_ptr",
+                                            [],
                                             []
                                           |),
                                           [
@@ -253,8 +256,10 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -563,6 +568,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [
@@ -582,6 +588,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -602,6 +609,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [
@@ -641,6 +649,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "copy_to",
+                                [],
                                 []
                               |),
                               [ M.read (| src |); M.read (| dst |); M.read (| tail_len |) ]
@@ -656,6 +665,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
+                      [],
                       []
                     |),
                     [

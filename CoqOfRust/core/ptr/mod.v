@@ -326,6 +326,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -341,6 +342,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [ tmp ]
@@ -369,6 +371,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [ tmp ]
@@ -521,6 +524,7 @@ Module ptr.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "is_power_of_two",
+                                          [],
                                           []
                                         |),
                                         [
@@ -616,6 +620,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [ M.read (| x |) ]
@@ -627,6 +632,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [ M.read (| y |) ]
@@ -734,6 +740,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [ M.read (| x |) ]
@@ -745,6 +752,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [ M.read (| y |) ]
@@ -858,6 +866,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [ M.read (| x |) ]
@@ -869,6 +878,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [ M.read (| y |) ]
@@ -895,6 +905,7 @@ Module ptr.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| x |); M.read (| i |) ]
@@ -910,6 +921,7 @@ Module ptr.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| y |); M.read (| i |) ]
@@ -1183,6 +1195,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -1199,6 +1212,7 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [ tmp ]
@@ -1212,6 +1226,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [ M.read (| tmp |) ]
@@ -2295,11 +2310,11 @@ Module ptr.
         let g := M.alloc (| g |) in
         BinOp.eq (|
           M.call_closure (|
-            M.get_trait_method (| "core::marker::FnPtr", T, [], "addr", [] |),
+            M.get_trait_method (| "core::marker::FnPtr", T, [], [], "addr", [], [] |),
             [ M.read (| f |) ]
           |),
           M.call_closure (|
-            M.get_trait_method (| "core::marker::FnPtr", U, [], "addr", [] |),
+            M.get_trait_method (| "core::marker::FnPtr", U, [], [], "addr", [], [] |),
             [ M.read (| g |) ]
           |)
         |)))
@@ -2328,7 +2343,9 @@ Module ptr.
                   "core::hash::Hash",
                   Ty.apply (Ty.path "*const") [] [ T ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ S ]
                 |),
                 [ hashee; M.read (| into |) ]
@@ -2358,11 +2375,11 @@ Module ptr.
           let other := M.alloc (| other |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+              M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
               [ M.read (| M.read (| self |) |) ]
             |),
             M.call_closure (|
-              M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+              M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
               [ M.read (| M.read (| other |) |) ]
             |)
           |)))
@@ -2405,20 +2422,22 @@ Module ptr.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+              [],
               [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ],
               "partial_cmp",
+              [],
               []
             |),
             [
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| self |) |) ]
                 |)
               |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| other |) |) ]
                 |)
               |)
@@ -2456,19 +2475,21 @@ Module ptr.
               "core::cmp::Ord",
               Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| self |) |) ]
                 |)
               |);
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| other |) |) ]
                 |)
               |)
@@ -2502,12 +2523,12 @@ Module ptr.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", HH, [], "write_usize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", HH, [], [], "write_usize", [], [] |),
             [
               M.read (| state |);
               M.rust_cast
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| self |) |) ]
                 |))
             ]
@@ -2544,7 +2565,7 @@ Module ptr.
             [
               M.rust_cast
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| self |) |) ]
                 |));
               M.read (| f |)
@@ -2582,7 +2603,7 @@ Module ptr.
             [
               M.rust_cast
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
                   [ M.read (| M.read (| self |) |) ]
                 |));
               M.read (| f |)

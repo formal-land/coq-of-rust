@@ -70,8 +70,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "generics_traits::DoubleDrop",
                 Ty.path "generics_traits::Empty",
+                [],
                 [ Ty.path "generics_traits::Null" ],
                 "double_drop",
+                [],
                 []
               |),
               [ M.read (| empty |); M.read (| null |) ]

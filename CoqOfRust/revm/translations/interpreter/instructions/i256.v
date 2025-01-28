@@ -72,7 +72,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -243,8 +243,10 @@ Module instructions.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "i8",
+                    [],
                     [ Ty.path "i8" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [ __self_discr; __arg1_discr ]
@@ -297,7 +299,7 @@ Module instructions.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |)
@@ -337,7 +339,15 @@ Module instructions.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "i8", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "i8",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -364,6 +374,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                 []
               |),
               [
@@ -389,6 +400,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                 []
               |),
               [
@@ -440,6 +452,10 @@ Module instructions.
                                 ]
                                 [],
                               "bit",
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ],
                               []
                             |),
                             [
@@ -476,6 +492,10 @@ Module instructions.
                                   ]
                                   [],
                                 "is_zero",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 []
                               |),
                               [ M.read (| val |) ]
@@ -528,8 +548,10 @@ Module instructions.
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "revm_interpreter::instructions::i256::Sign",
+                                [],
                                 [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
@@ -590,6 +612,7 @@ Module instructions.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "as_limbs_mut",
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                       []
                     |),
                     [ M.read (| val |) ]
@@ -656,6 +679,7 @@ Module instructions.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "wrapping_neg",
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
               []
             |),
             [ M.read (| op |) ]
@@ -706,7 +730,9 @@ Module instructions.
                     "core::cmp::Ord",
                     Ty.path "revm_interpreter::instructions::i256::Sign",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [ first_sign; second_sign ]
@@ -726,7 +752,9 @@ Module instructions.
                             ]
                             [],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [ M.read (| first |); M.read (| second |) ]
@@ -807,8 +835,10 @@ Module instructions.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "revm_interpreter::instructions::i256::Sign",
+                                    [],
                                     [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -864,6 +894,7 @@ Module instructions.
                                           Value.Integer IntegerKind.Usize 4
                                         ]
                                         [],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -874,6 +905,7 @@ Module instructions.
                                           []
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -894,6 +926,7 @@ Module instructions.
                                             Value.Integer IntegerKind.Usize 4
                                           ]
                                           [],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
@@ -904,6 +937,7 @@ Module instructions.
                                             []
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -919,6 +953,10 @@ Module instructions.
                                                 ]
                                                 [],
                                               "from",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               [ Ty.path "i32" ]
                                             |),
                                             [ Value.Integer IntegerKind.I32 1 ]
@@ -964,6 +1002,7 @@ Module instructions.
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -972,6 +1011,7 @@ Module instructions.
                             []
                         ],
                         "div",
+                        [],
                         []
                       |),
                       [ M.read (| first |); M.read (| second |) ]
@@ -1002,8 +1042,10 @@ Module instructions.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "revm_interpreter::instructions::i256::Sign",
+                                      [],
                                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1020,8 +1062,10 @@ Module instructions.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "revm_interpreter::instructions::i256::Sign",
+                                        [],
                                         [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1040,8 +1084,10 @@ Module instructions.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "revm_interpreter::instructions::i256::Sign",
+                                        [],
                                         [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1058,8 +1104,10 @@ Module instructions.
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "revm_interpreter::instructions::i256::Sign",
+                                          [],
                                           [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                           "ne",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1154,8 +1202,10 @@ Module instructions.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "revm_interpreter::instructions::i256::Sign",
+                                    [],
                                     [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1204,8 +1254,10 @@ Module instructions.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "revm_interpreter::instructions::i256::Sign",
+                                    [],
                                     [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1239,6 +1291,7 @@ Module instructions.
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -1247,6 +1300,7 @@ Module instructions.
                             []
                         ],
                         "rem",
+                        [],
                         []
                       |),
                       [ M.read (| first |); M.read (| second |) ]
@@ -1275,8 +1329,10 @@ Module instructions.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "revm_interpreter::instructions::i256::Sign",
+                                  [],
                                   [ Ty.path "revm_interpreter::instructions::i256::Sign" ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [

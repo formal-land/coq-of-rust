@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
           "conditional_compilation::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -205,6 +213,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           M.get_associated_function (|
             Ty.path "conditional_compilation::ConditionalCompilation",
             "init_env",
+            [],
             []
           |),
           []
@@ -234,7 +243,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   "core::default::Default",
                   Ty.path "bool",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -338,6 +349,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -346,6 +358,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -360,6 +373,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "emit_event",
+                  [],
                   []
                 |),
                 [
@@ -368,6 +382,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -425,6 +440,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -433,6 +449,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -447,6 +464,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "block_number",
+                  [],
                   []
                 |),
                 [
@@ -455,6 +473,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -486,6 +505,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "emit_event",
+                  [],
                   []
                 |),
                 [
@@ -494,6 +514,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -608,6 +629,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "caller",
+                  [],
                   []
                 |),
                 [
@@ -616,6 +638,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -630,6 +653,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 M.get_associated_function (|
                   Ty.path "conditional_compilation::Env",
                   "emit_event",
+                  [],
                   []
                 |),
                 [
@@ -638,6 +662,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                       M.get_associated_function (|
                         Ty.path "conditional_compilation::ConditionalCompilation",
                         "init_env",
+                        [],
                         []
                       |),
                       []

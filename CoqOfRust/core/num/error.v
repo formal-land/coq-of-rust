@@ -25,6 +25,7 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -112,8 +113,10 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.tuple [],
+                [],
                 [ Ty.tuple [] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -187,14 +190,16 @@ Module num.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::error::Error",
                     Ty.path "core::num::error::TryFromIntError",
                     [],
+                    [],
                     "description",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -313,6 +318,7 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -357,7 +363,9 @@ Module num.
                       "core::clone::Clone",
                       Ty.path "core::num::error::IntErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -405,8 +413,10 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::num::error::IntErrorKind",
+                [],
                 [ Ty.path "core::num::error::IntErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -511,7 +521,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -757,14 +767,16 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::error::Error",
                     Ty.path "core::num::error::ParseIntError",
                     [],
+                    [],
                     "description",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]

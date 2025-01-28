@@ -30,7 +30,7 @@ Module num.
                     Value.Integer IntegerKind.I64 64,
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                         [ BinOp.Wrap.sub (| M.read (| mant |), Value.Integer IntegerKind.U64 1 |) ]
                       |))
                   |)

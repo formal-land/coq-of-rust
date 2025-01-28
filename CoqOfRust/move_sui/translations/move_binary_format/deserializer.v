@@ -23,6 +23,7 @@ Module deserializer.
             M.get_associated_function (|
               Ty.path "move_binary_format::file_format::CompiledModule",
               "deserialize_with_config",
+              [],
               []
             |),
             [
@@ -32,6 +33,7 @@ Module deserializer.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::BinaryConfig",
                     "with_extraneous_bytes_check",
+                    [],
                     []
                   |),
                   [ Value.Bool false ]
@@ -79,7 +81,9 @@ Module deserializer.
                                 Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -119,6 +123,7 @@ Module deserializer.
                                               "move_binary_format::file_format::CompiledModule";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -129,6 +134,7 @@ Module deserializer.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -161,7 +167,9 @@ Module deserializer.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -169,6 +177,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "verify_module",
+                              [],
                               []
                             |),
                             [ module ]
@@ -200,6 +209,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::file_format::CompiledModule";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -210,6 +220,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -266,6 +277,7 @@ Module deserializer.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::BinaryConfig",
                     "with_extraneous_bytes_check",
+                    [],
                     []
                   |),
                   [ Value.Bool false ]
@@ -311,7 +323,9 @@ Module deserializer.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format_common::TableType",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -324,7 +338,15 @@ Module deserializer.
                 |));
               ("offset",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -335,7 +357,15 @@ Module deserializer.
                 |));
               ("count",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -370,6 +400,7 @@ Module deserializer.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
@@ -472,7 +503,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -483,6 +516,7 @@ Module deserializer.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
@@ -496,7 +530,9 @@ Module deserializer.
                                 "std::io::Read",
                                 Ty.path "move_binary_format::deserializer::VersionedCursor",
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| cursor |); u16_bytes ]
@@ -517,6 +553,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -558,6 +595,7 @@ Module deserializer.
                                         Ty.path "u16";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -568,6 +606,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -593,7 +632,7 @@ Module deserializer.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u16", "from_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u16", "from_le_bytes", [], [] |),
                       [ M.read (| u16_bytes |) ]
                     |)
                   ]
@@ -638,7 +677,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -649,6 +690,7 @@ Module deserializer.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
@@ -662,7 +704,9 @@ Module deserializer.
                                 "std::io::Read",
                                 Ty.path "move_binary_format::deserializer::VersionedCursor",
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| cursor |); u32_bytes ]
@@ -683,6 +727,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -724,6 +769,7 @@ Module deserializer.
                                         Ty.path "u32";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -734,6 +780,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -759,7 +806,7 @@ Module deserializer.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u32", "from_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
                       [ M.read (| u32_bytes |) ]
                     |)
                   ]
@@ -804,7 +851,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -815,6 +864,7 @@ Module deserializer.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
@@ -828,7 +878,9 @@ Module deserializer.
                                 "std::io::Read",
                                 Ty.path "move_binary_format::deserializer::VersionedCursor",
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| cursor |); u64_bytes ]
@@ -849,6 +901,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -890,6 +943,7 @@ Module deserializer.
                                         Ty.path "u64";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -900,6 +954,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -925,7 +980,7 @@ Module deserializer.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                       [ M.read (| u64_bytes |) ]
                     |)
                   ]
@@ -970,7 +1025,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -981,6 +1038,7 @@ Module deserializer.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
@@ -994,7 +1052,9 @@ Module deserializer.
                                 "std::io::Read",
                                 Ty.path "move_binary_format::deserializer::VersionedCursor",
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| cursor |); u128_bytes ]
@@ -1015,6 +1075,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1056,6 +1117,7 @@ Module deserializer.
                                         Ty.path "u128";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1066,6 +1128,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1091,7 +1154,7 @@ Module deserializer.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u128", "from_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u128", "from_le_bytes", [], [] |),
                       [ M.read (| u128_bytes |) ]
                     |)
                   ]
@@ -1138,7 +1201,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1149,6 +1214,7 @@ Module deserializer.
                               []
                               [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
@@ -1162,7 +1228,9 @@ Module deserializer.
                                 "std::io::Read",
                                 Ty.path "move_binary_format::deserializer::VersionedCursor",
                                 [],
+                                [],
                                 "read_exact",
+                                [],
                                 []
                               |),
                               [ M.read (| cursor |); u256_bytes ]
@@ -1183,6 +1251,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1224,6 +1293,7 @@ Module deserializer.
                                         Ty.path "move_core_types::u256::U256";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1234,6 +1304,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1262,6 +1333,7 @@ Module deserializer.
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "from_le_bytes",
+                        [],
                         []
                       |),
                       [ u256_bytes ]
@@ -1317,7 +1389,9 @@ Module deserializer.
                             []
                             [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1328,6 +1402,7 @@ Module deserializer.
                                 []
                                 [ Ty.path "u64"; Ty.path "anyhow::Error" ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "move_binary_format::errors::PartialVMError";
                                 Ty.function
@@ -1340,6 +1415,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::deserializer::VersionedCursor",
                                   "read_uleb128_as_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| cursor |) ]
@@ -1360,6 +1436,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1368,6 +1445,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1381,7 +1459,9 @@ Module deserializer.
                                                         "alloc::string::ToString",
                                                         Ty.path "str",
                                                         [],
+                                                        [],
                                                         "to_string",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| Value.String "Bad Uleb" |) ]
@@ -1418,6 +1498,7 @@ Module deserializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ T; Ty.path "move_binary_format::errors::PartialVMError" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1428,6 +1509,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1470,6 +1552,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "with_message",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1477,6 +1560,7 @@ Module deserializer.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1490,7 +1574,9 @@ Module deserializer.
                                             "alloc::string::ToString",
                                             Ty.path "str",
                                             [],
+                                            [],
                                             "to_string",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1514,6 +1600,7 @@ Module deserializer.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.associated ],
                     "map_err",
+                    [],
                     [
                       Ty.path "move_binary_format::errors::PartialVMError";
                       Ty.function
@@ -1526,8 +1613,10 @@ Module deserializer.
                       M.get_trait_method (|
                         "core::convert::TryInto",
                         Ty.path "u64",
+                        [],
                         [ T ],
                         "try_into",
+                        [],
                         []
                       |),
                       [ M.read (| x |) ]
@@ -1551,7 +1640,9 @@ Module deserializer.
                                                 "alloc::string::ToString",
                                                 Ty.path "str",
                                                 [],
+                                                [],
                                                 "to_string",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1567,6 +1658,7 @@ Module deserializer.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "with_message",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1575,6 +1667,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1638,7 +1731,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -1685,6 +1780,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::SignatureIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -1695,6 +1791,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -1760,7 +1857,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -1807,6 +1906,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::ModuleHandleIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -1817,6 +1917,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -1884,7 +1985,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -1931,6 +2034,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::IdentifierIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -1941,6 +2045,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2006,7 +2111,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2053,6 +2160,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::StructHandleIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2063,6 +2171,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2136,7 +2245,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2183,6 +2294,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::AddressIdentifierIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2193,6 +2305,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2262,7 +2375,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2309,6 +2424,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::StructDefinitionIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2319,6 +2435,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2386,7 +2503,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2433,6 +2552,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::FunctionHandleIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2443,6 +2563,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2510,7 +2631,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2557,6 +2680,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::FieldHandleIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2567,6 +2691,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2636,7 +2761,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2683,6 +2810,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::FieldInstantiationIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2693,6 +2821,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2760,7 +2889,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2807,6 +2938,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::FunctionInstantiationIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2817,6 +2949,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2886,7 +3019,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2933,6 +3068,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::StructDefInstantiationIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2943,6 +3079,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -3010,7 +3147,9 @@ Module deserializer.
                                   Ty.path "move_binary_format::errors::PartialVMError"
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -3057,6 +3196,7 @@ Module deserializer.
                                                 "move_binary_format::file_format::ConstantPoolIndex";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -3067,6 +3207,7 @@ Module deserializer.
                                               ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -3625,7 +3766,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -3633,6 +3776,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::deserializer::VersionedBinary",
                               "initialize",
+                              [],
                               []
                             |),
                             [ M.read (| binary |); M.read (| binary_config |); Value.Bool true ]
@@ -3664,6 +3808,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::file_format::CompiledModule";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -3674,6 +3819,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -3701,6 +3847,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "version",
+                      [],
                       []
                     |),
                     [ versioned_binary ]
@@ -3712,6 +3859,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "module_idx",
+                      [],
                       []
                     |),
                     [ versioned_binary ]
@@ -3725,7 +3873,9 @@ Module deserializer.
                         "core::default::Default",
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -3746,7 +3896,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3770,7 +3922,9 @@ Module deserializer.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -3810,6 +3964,7 @@ Module deserializer.
                                         Ty.path "move_binary_format::file_format::CompiledModule";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3820,6 +3975,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3846,6 +4002,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "binary_end_offset",
+                      [],
                       []
                     |),
                     [ versioned_binary ]
@@ -3859,6 +4016,7 @@ Module deserializer.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| binary |) ]
@@ -3898,6 +4056,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3956,7 +4115,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -3986,7 +4147,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -4022,6 +4185,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4042,7 +4206,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4083,6 +4249,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4096,6 +4263,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -4166,6 +4334,7 @@ Module deserializer.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::deserializer::VersionedCursor",
                           "read_u8",
+                          [],
                           []
                         |),
                         [ M.read (| cursor |) ]
@@ -4201,6 +4370,7 @@ Module deserializer.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4208,6 +4378,7 @@ Module deserializer.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4221,7 +4392,9 @@ Module deserializer.
                                               "alloc::string::ToString",
                                               Ty.path "str",
                                               [],
+                                              [],
                                               "to_string",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| Value.String "Error reading table" |) ]
@@ -4248,7 +4421,9 @@ Module deserializer.
                             []
                             [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -4287,6 +4462,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::deserializer::Table";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -4297,6 +4473,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -4330,7 +4507,9 @@ Module deserializer.
                             []
                             [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -4369,6 +4548,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::deserializer::Table";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -4379,6 +4559,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -4408,6 +4589,7 @@ Module deserializer.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::deserializer::Table",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -4425,7 +4607,9 @@ Module deserializer.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4433,6 +4617,7 @@ Module deserializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::TableType",
                                       "from_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| kind |) ]
@@ -4465,6 +4650,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -4476,6 +4662,7 @@ Module deserializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -4557,6 +4744,7 @@ Module deserializer.
                         []
                         [ Ty.path "move_binary_format::deserializer::Table" ],
                       "sort_by",
+                      [],
                       [
                         Ty.function
                           [
@@ -4587,7 +4775,9 @@ Module deserializer.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref_mut",
+                          [],
                           []
                         |),
                         [ M.read (| tables |) ]
@@ -4615,7 +4805,9 @@ Module deserializer.
                                                     "core::cmp::Ord",
                                                     Ty.path "u32",
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4653,6 +4845,7 @@ Module deserializer.
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -4678,7 +4871,9 @@ Module deserializer.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| tables |) ]
@@ -4701,7 +4896,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "move_binary_format::deserializer::Table" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -4761,6 +4958,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4815,6 +5013,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4839,6 +5038,7 @@ Module deserializer.
                                                 M.get_associated_function (|
                                                   Ty.path "u32",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4886,6 +5086,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4924,6 +5125,7 @@ Module deserializer.
                                                                     "std::hash::random::RandomState"
                                                                 ],
                                                               "insert",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4956,6 +5158,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -5003,6 +5206,7 @@ Module deserializer.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5259,7 +5463,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -5298,6 +5504,7 @@ Module deserializer.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5308,6 +5515,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5339,7 +5547,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -5378,6 +5588,7 @@ Module deserializer.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5388,6 +5599,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5666,7 +5878,9 @@ Module deserializer.
                                         [ Ty.path "move_binary_format::deserializer::Table" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -5692,7 +5906,9 @@ Module deserializer.
                                                       "move_binary_format::deserializer::Table"
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -5739,7 +5955,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_module_handles",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -5760,7 +5978,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -5806,6 +6026,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -5819,6 +6040,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -5863,6 +6085,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -5896,6 +6119,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -5904,6 +6128,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -5937,6 +6162,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -5965,6 +6191,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -5985,6 +6212,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -6001,6 +6229,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -6017,6 +6246,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -6070,7 +6300,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_struct_handles",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -6091,7 +6323,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -6137,6 +6371,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -6150,6 +6385,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -6194,6 +6430,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -6227,6 +6464,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -6235,6 +6473,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -6268,6 +6507,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -6296,6 +6536,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -6316,6 +6557,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -6332,6 +6574,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -6348,6 +6591,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -6401,7 +6645,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_function_handles",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -6422,7 +6668,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -6468,6 +6716,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -6481,6 +6730,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -6525,6 +6775,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -6558,6 +6809,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -6566,6 +6818,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -6599,6 +6852,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -6627,6 +6881,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -6647,6 +6902,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -6663,6 +6919,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -6679,6 +6936,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -6732,7 +6990,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_function_instantiations",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -6753,7 +7013,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -6801,6 +7063,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -6814,6 +7077,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -6858,6 +7122,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -6891,6 +7156,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -6899,6 +7165,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -6932,6 +7199,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -6960,6 +7228,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -6980,6 +7249,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -6996,6 +7266,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -7012,6 +7283,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -7065,7 +7337,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_signatures",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -7086,7 +7360,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -7132,6 +7408,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -7145,6 +7422,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -7189,6 +7467,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -7222,6 +7501,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -7230,6 +7510,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -7263,6 +7544,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -7291,6 +7573,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -7311,6 +7594,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -7327,6 +7611,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -7343,6 +7628,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -7396,7 +7682,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_constant_pool",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -7417,7 +7705,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -7463,6 +7753,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -7476,6 +7767,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -7520,6 +7812,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -7553,6 +7846,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -7561,6 +7855,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -7594,6 +7889,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -7622,6 +7918,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -7642,6 +7939,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -7658,6 +7956,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -7674,6 +7973,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -7735,6 +8035,7 @@ Module deserializer.
                                                                               Ty.path
                                                                                 "move_binary_format::deserializer::VersionedBinary",
                                                                               "check_no_extraneous_bytes",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| binary |) ]
@@ -7746,6 +8047,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::deserializer::VersionedBinary",
                                                                                   "version",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -7779,6 +8081,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -7787,6 +8090,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -7820,6 +8124,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -7840,6 +8145,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u32"
@@ -7852,6 +8158,7 @@ Module deserializer.
                                                                                                                     Ty.path
                                                                                                                       "move_binary_format::deserializer::VersionedBinary",
                                                                                                                     "version",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -7901,7 +8208,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -7919,7 +8228,9 @@ Module deserializer.
                                                                           "move_binary_format::deserializer::CommonTables",
                                                                           impl_CommonTables,
                                                                           [],
+                                                                          [],
                                                                           "get_metadata",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| common |) ]
@@ -7956,6 +8267,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -7969,6 +8281,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -8005,7 +8318,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_identifiers",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -8026,7 +8341,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8072,6 +8389,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -8085,6 +8403,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -8129,6 +8448,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -8162,6 +8482,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -8170,6 +8491,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -8203,6 +8525,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -8231,6 +8554,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -8251,6 +8575,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -8267,6 +8592,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -8283,6 +8609,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -8336,7 +8663,9 @@ Module deserializer.
                                                                 "move_binary_format::deserializer::CommonTables",
                                                                 impl_CommonTables,
                                                                 [],
+                                                                [],
                                                                 "get_address_identifiers",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| common |) ]
@@ -8357,7 +8686,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8405,6 +8736,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -8418,6 +8750,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -8462,6 +8795,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -8495,6 +8829,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -8503,6 +8838,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -8536,6 +8872,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -8564,6 +8901,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -8584,6 +8922,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -8600,6 +8939,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -8616,6 +8956,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -8701,17 +9042,16 @@ Module deserializer.
                                                                   |) in
                                                                 Value.Tuple []))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.alloc (| Value.Tuple [] |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -8734,6 +9074,7 @@ Module deserializer.
                                                                             Ty.path
                                                                               "move_binary_format::deserializer::VersionedBinary",
                                                                             "version",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| binary |) ]
@@ -8762,6 +9103,7 @@ Module deserializer.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "with_message",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -8770,6 +9112,7 @@ Module deserializer.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -8783,7 +9126,9 @@ Module deserializer.
                                                                                     "alloc::string::ToString",
                                                                                     Ty.path "str",
                                                                                     [],
+                                                                                    [],
                                                                                     "to_string",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -9044,7 +9389,9 @@ Module deserializer.
                                         [ Ty.path "move_binary_format::deserializer::Table" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -9070,7 +9417,9 @@ Module deserializer.
                                                       "move_binary_format::deserializer::Table"
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -9125,7 +9474,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9175,6 +9526,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -9188,6 +9540,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -9232,6 +9585,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -9267,6 +9621,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -9275,6 +9630,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -9308,6 +9664,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -9336,6 +9693,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -9356,6 +9714,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -9376,6 +9735,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -9392,6 +9752,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -9453,7 +9814,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9503,6 +9866,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -9516,6 +9880,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -9560,6 +9925,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -9595,6 +9961,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -9603,6 +9970,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -9636,6 +10004,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -9664,6 +10033,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -9684,6 +10054,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -9704,6 +10075,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -9720,6 +10092,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -9781,7 +10154,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9831,6 +10206,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -9844,6 +10220,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -9888,6 +10265,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -9923,6 +10301,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -9931,6 +10310,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -9964,6 +10344,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -9992,6 +10373,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -10012,6 +10394,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -10032,6 +10415,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -10048,6 +10432,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -10109,7 +10494,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10159,6 +10546,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -10172,6 +10560,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -10216,6 +10605,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -10251,6 +10641,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -10259,6 +10650,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -10292,6 +10684,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -10320,6 +10713,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -10340,6 +10734,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -10360,6 +10755,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -10376,6 +10772,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -10437,7 +10834,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10487,6 +10886,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -10500,6 +10900,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -10544,6 +10945,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -10579,6 +10981,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -10587,6 +10990,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -10620,6 +11024,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -10648,6 +11053,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -10668,6 +11074,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -10688,6 +11095,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -10704,6 +11112,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -10765,7 +11174,9 @@ Module deserializer.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -10815,6 +11226,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -10828,6 +11240,7 @@ Module deserializer.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -10872,6 +11285,7 @@ Module deserializer.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -10907,6 +11321,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "with_message",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -10915,6 +11330,7 @@ Module deserializer.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
                                                                                       "new",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -10948,6 +11364,7 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -10976,6 +11393,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "usize"
@@ -10996,6 +11414,7 @@ Module deserializer.
                                                                                                                           "alloc::alloc::Global"
                                                                                                                       ],
                                                                                                                     "len",
+                                                                                                                    [],
                                                                                                                     []
                                                                                                                   |),
                                                                                                                   [
@@ -11016,6 +11435,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_display",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u16"
@@ -11032,6 +11452,7 @@ Module deserializer.
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
                                                                                                               "new_debug",
+                                                                                                              [],
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::file_format_common::TableType"
@@ -11149,17 +11570,16 @@ Module deserializer.
                                                                   |) in
                                                                 Value.Tuple []))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.alloc (| Value.Tuple [] |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)))
                                                   ]
                                                 |)))
@@ -11240,6 +11660,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -11261,6 +11682,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -11293,7 +11715,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11333,6 +11757,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11344,6 +11769,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11381,7 +11807,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11421,6 +11849,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11432,6 +11861,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11465,6 +11895,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11567,6 +11998,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -11588,6 +12020,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -11620,7 +12053,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11660,6 +12095,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11671,6 +12107,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11708,7 +12145,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11748,6 +12187,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11759,6 +12199,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11795,7 +12236,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11840,6 +12283,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11851,6 +12295,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11894,7 +12339,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11934,6 +12381,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -11945,6 +12393,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -11978,6 +12427,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12086,6 +12536,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -12107,6 +12558,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -12139,7 +12591,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12179,6 +12633,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12190,6 +12645,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12227,7 +12683,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12267,6 +12725,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12278,6 +12737,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12315,7 +12775,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12355,6 +12817,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12366,6 +12829,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12403,7 +12867,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12443,6 +12909,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12454,6 +12921,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12497,7 +12965,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12542,6 +13012,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12553,6 +13024,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12586,6 +13058,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12688,6 +13161,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -12709,6 +13183,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -12741,7 +13216,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12781,6 +13258,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12792,6 +13270,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12829,7 +13308,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12869,6 +13350,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -12880,6 +13362,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -12914,6 +13397,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13018,6 +13502,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -13039,6 +13524,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -13071,7 +13557,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13111,6 +13599,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -13122,6 +13611,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -13159,7 +13649,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13199,6 +13691,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -13210,6 +13703,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -13244,6 +13738,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13351,6 +13846,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -13372,6 +13868,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -13380,8 +13877,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13413,7 +13912,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13453,6 +13954,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -13464,6 +13966,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -13509,7 +14012,9 @@ Module deserializer.
                                             Ty.path
                                               "move_binary_format::deserializer::VersionedCursor",
                                             [],
+                                            [],
                                             "read",
+                                            [],
                                             []
                                           |),
                                           [
@@ -13522,7 +14027,9 @@ Module deserializer.
                                                   []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                                 [],
+                                                [],
                                                 "deref_mut",
+                                                [],
                                                 []
                                               |),
                                               [ buffer ]
@@ -13568,6 +14075,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -13576,6 +14084,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -13589,7 +14098,9 @@ Module deserializer.
                                                                   "alloc::string::ToString",
                                                                   Ty.path "str",
                                                                   [],
+                                                                  [],
                                                                   "to_string",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -13626,7 +14137,9 @@ Module deserializer.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -13641,6 +14154,7 @@ Module deserializer.
                                                         Ty.path "anyhow::Error"
                                                       ],
                                                     "map_err",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError";
@@ -13656,6 +14170,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_core_types::identifier::Identifier",
                                                         "from_utf8",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| buffer |) ]
@@ -13676,6 +14191,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
                                                                           "with_message",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13684,6 +14200,7 @@ Module deserializer.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
                                                                               "new",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -13697,7 +14214,9 @@ Module deserializer.
                                                                               "alloc::string::ToString",
                                                                               Ty.path "str",
                                                                               [],
+                                                                              [],
                                                                               "to_string",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -13744,6 +14263,7 @@ Module deserializer.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -13756,6 +14276,7 @@ Module deserializer.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -13789,6 +14310,7 @@ Module deserializer.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "push",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| identifiers |); M.read (| s |) ]
@@ -13906,6 +14428,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "with_message",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13913,6 +14436,7 @@ Module deserializer.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -13926,7 +14450,9 @@ Module deserializer.
                                             "alloc::string::ToString",
                                             Ty.path "str",
                                             [],
+                                            [],
                                             "to_string",
+                                            [],
                                             []
                                           |),
                                           [
@@ -13954,7 +14480,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -13997,7 +14525,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -14041,11 +14571,13 @@ Module deserializer.
                                                   []
                                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
                                                   ],
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress"
                                                 ],
                                                 "try_into",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -14054,6 +14586,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::deserializer::VersionedBinary",
                                                     "slice",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -14086,6 +14619,7 @@ Module deserializer.
                                                                   "move_core_types::account_address::AccountAddressParseError"
                                                               ],
                                                             "is_err",
+                                                            [],
                                                             []
                                                           |),
                                                           [ address ]
@@ -14108,6 +14642,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "with_message",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -14116,6 +14651,7 @@ Module deserializer.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -14129,7 +14665,9 @@ Module deserializer.
                                                                       "alloc::string::ToString",
                                                                       Ty.path "str",
                                                                       [],
+                                                                      [],
                                                                       "to_string",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -14164,6 +14702,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -14180,6 +14719,7 @@ Module deserializer.
                                                           "move_core_types::account_address::AccountAddressParseError"
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| address |) ]
@@ -14261,6 +14801,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -14282,6 +14823,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -14290,8 +14832,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14319,6 +14863,7 @@ Module deserializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "push",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14337,7 +14882,9 @@ Module deserializer.
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -14377,6 +14924,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -14388,6 +14936,7 @@ Module deserializer.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -14465,7 +15014,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -14504,6 +15055,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::file_format::Constant";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -14514,6 +15066,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -14553,7 +15106,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -14615,6 +15170,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::file_format::Constant";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -14625,6 +15181,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -14719,6 +15276,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -14740,6 +15298,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -14748,8 +15307,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14777,6 +15338,7 @@ Module deserializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "push",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14795,7 +15357,9 @@ Module deserializer.
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -14835,6 +15399,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -14846,6 +15411,7 @@ Module deserializer.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -14926,7 +15492,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -14988,6 +15556,7 @@ Module deserializer.
                                           Ty.path "move_core_types::metadata::Metadata";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -14998,6 +15567,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -15037,7 +15607,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -15099,6 +15671,7 @@ Module deserializer.
                                           Ty.path "move_core_types::metadata::Metadata";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -15109,6 +15682,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -15189,7 +15763,9 @@ Module deserializer.
                             [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -15197,6 +15773,7 @@ Module deserializer.
                             M.get_trait_method (|
                               "core::ops::function::Fn",
                               impl_Fn__mut_VersionedCursor__arrow_BinaryLoaderResult_usize_,
+                              [],
                               [
                                 Ty.tuple
                                   [
@@ -15208,6 +15785,7 @@ Module deserializer.
                                   ]
                               ],
                               "call",
+                              [],
                               []
                             |),
                             [ size_loader; Value.Tuple [ M.read (| cursor |) ] ]
@@ -15242,6 +15820,7 @@ Module deserializer.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -15252,6 +15831,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -15293,7 +15873,9 @@ Module deserializer.
                             [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -15304,6 +15886,7 @@ Module deserializer.
                                 []
                                 [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "move_binary_format::errors::PartialVMError";
                                 Ty.function
@@ -15317,7 +15900,9 @@ Module deserializer.
                                   "std::io::Read",
                                   Ty.path "move_binary_format::deserializer::VersionedCursor",
                                   [],
+                                  [],
                                   "read",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15330,7 +15915,9 @@ Module deserializer.
                                         []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                       [],
+                                      [],
                                       "deref_mut",
+                                      [],
                                       []
                                     |),
                                     [ data ]
@@ -15353,6 +15940,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -15361,6 +15949,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -15374,7 +15963,9 @@ Module deserializer.
                                                         "alloc::string::ToString",
                                                         Ty.path "str",
                                                         [],
+                                                        [],
                                                         "to_string",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -15421,6 +16012,7 @@ Module deserializer.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -15431,6 +16023,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -15474,6 +16067,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "with_message",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15481,6 +16075,7 @@ Module deserializer.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -15494,7 +16089,9 @@ Module deserializer.
                                             "alloc::string::ToString",
                                             Ty.path "str",
                                             [],
+                                            [],
                                             "to_string",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| Value.String "Bad byte blob size" |) ]
@@ -15574,6 +16171,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -15595,6 +16193,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -15603,8 +16202,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15633,6 +16234,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15662,7 +16264,9 @@ Module deserializer.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -15702,6 +16306,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -15714,6 +16319,7 @@ Module deserializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -15793,7 +16399,9 @@ Module deserializer.
                             []
                             [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -15839,6 +16447,7 @@ Module deserializer.
                                             ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -15849,6 +16458,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -15882,6 +16492,7 @@ Module deserializer.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -15896,7 +16507,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -15924,7 +16537,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "u64" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -15959,6 +16574,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -15979,7 +16595,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -16029,6 +16647,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -16042,6 +16661,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -16276,6 +16896,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::deserializer::VersionedCursor",
                                                       "read_u8",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| cursor |) ]
@@ -16305,7 +16926,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -16314,6 +16937,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::file_format_common::SerializedType",
                                                               "from_u8",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| byte |) ]
@@ -16348,6 +16972,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -16361,6 +16986,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -16412,155 +17038,159 @@ Module deserializer.
                                                                   |) in
                                                                 Value.Tuple []))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
-                                                                      M.alloc (|
-                                                                        BinOp.lt (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::deserializer::VersionedCursor",
-                                                                              "version",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| cursor |) ]
-                                                                          |),
-                                                                          M.read (|
-                                                                            M.get_constant (|
-                                                                              "move_binary_format::file_format_common::VERSION_6"
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |) in
-                                                                    let _ :=
-                                                                      M.is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
                                                                     M.alloc (|
-                                                                      M.never_to_any (|
+                                                                      BinOp.lt (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::deserializer::VersionedCursor",
+                                                                            "version",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| cursor |) ]
+                                                                        |),
                                                                         M.read (|
-                                                                          M.return_ (|
-                                                                            Value.StructTuple
-                                                                              "core::result::Result::Err"
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError",
-                                                                                    "with_message",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError",
-                                                                                        "new",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        Value.StructTuple
-                                                                                          "move_core_types::vm_status::StatusCode::MALFORMED"
-                                                                                          []
-                                                                                      ]
-                                                                                    |);
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "core::hint::must_use",
-                                                                                        [],
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "alloc::string::String"
-                                                                                        ]
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          let~
-                                                                                                res :=
-                                                                                            M.alloc (|
-                                                                                              M.call_closure (|
-                                                                                                M.get_function (|
-                                                                                                  "alloc::fmt::format",
-                                                                                                  [],
-                                                                                                  []
-                                                                                                |),
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::Arguments",
-                                                                                                      "new_v1",
-                                                                                                      []
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      M.alloc (|
-                                                                                                        Value.Array
-                                                                                                          [
-                                                                                                            M.read (|
-                                                                                                              Value.String
-                                                                                                                "u16, u32, u256 integers not supported in bytecode version "
-                                                                                                            |)
-                                                                                                          ]
-                                                                                                      |);
-                                                                                                      M.alloc (|
-                                                                                                        Value.Array
-                                                                                                          [
-                                                                                                            M.call_closure (|
-                                                                                                              M.get_associated_function (|
-                                                                                                                Ty.path
-                                                                                                                  "core::fmt::rt::Argument",
-                                                                                                                "new_display",
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "u32"
-                                                                                                                ]
-                                                                                                              |),
-                                                                                                              [
-                                                                                                                M.alloc (|
-                                                                                                                  M.call_closure (|
-                                                                                                                    M.get_associated_function (|
-                                                                                                                      Ty.path
-                                                                                                                        "move_binary_format::deserializer::VersionedCursor",
-                                                                                                                      "version",
-                                                                                                                      []
-                                                                                                                    |),
-                                                                                                                    [
-                                                                                                                      M.read (|
-                                                                                                                        cursor
-                                                                                                                      |)
-                                                                                                                    ]
-                                                                                                                  |)
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                            |)
-                                                                                                          ]
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                              |)
-                                                                                            |) in
-                                                                                          res
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                          M.get_constant (|
+                                                                            "move_binary_format::file_format_common::VERSION_6"
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                    |) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          Value.StructTuple
+                                                                            "core::result::Result::Err"
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
+                                                                                  "with_message",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError",
+                                                                                      "new",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.StructTuple
+                                                                                        "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                                        []
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "core::hint::must_use",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "alloc::string::String"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        let~ res :=
+                                                                                          M.alloc (|
+                                                                                            M.call_closure (|
+                                                                                              M.get_function (|
+                                                                                                "alloc::fmt::format",
+                                                                                                [],
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::Arguments",
+                                                                                                    "new_v1",
+                                                                                                    [],
+                                                                                                    []
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    M.alloc (|
+                                                                                                      Value.Array
+                                                                                                        [
+                                                                                                          M.read (|
+                                                                                                            Value.String
+                                                                                                              "u16, u32, u256 integers not supported in bytecode version "
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                    |);
+                                                                                                    M.alloc (|
+                                                                                                      Value.Array
+                                                                                                        [
+                                                                                                          M.call_closure (|
+                                                                                                            M.get_associated_function (|
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::rt::Argument",
+                                                                                                              "new_display",
+                                                                                                              [],
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "u32"
+                                                                                                              ]
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.alloc (|
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_associated_function (|
+                                                                                                                    Ty.path
+                                                                                                                      "move_binary_format::deserializer::VersionedCursor",
+                                                                                                                    "version",
+                                                                                                                    [],
+                                                                                                                    []
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.read (|
+                                                                                                                      cursor
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                    |)
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                            |)
+                                                                                          |) in
+                                                                                        res
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -16588,7 +17218,9 @@ Module deserializer.
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -16597,6 +17229,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::file_format_common::SerializedType",
                                                                     "from_u8",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| byte |) ]
@@ -16631,6 +17264,7 @@ Module deserializer.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -16644,6 +17278,7 @@ Module deserializer.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -16870,7 +17505,9 @@ Module deserializer.
                                                                                 "move_binary_format::errors::PartialVMError"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -16913,6 +17550,7 @@ Module deserializer.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -16926,6 +17564,7 @@ Module deserializer.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -16986,7 +17625,9 @@ Module deserializer.
                                                                                 "move_binary_format::errors::PartialVMError"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -17029,6 +17670,7 @@ Module deserializer.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -17042,6 +17684,7 @@ Module deserializer.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -17085,7 +17728,9 @@ Module deserializer.
                                                                                 "move_binary_format::errors::PartialVMError"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -17128,6 +17773,7 @@ Module deserializer.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -17141,6 +17787,7 @@ Module deserializer.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -17200,6 +17847,7 @@ Module deserializer.
                                                                                         Ty.path
                                                                                           "move_binary_format::errors::PartialVMError",
                                                                                         "with_message",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -17208,6 +17856,7 @@ Module deserializer.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError",
                                                                                             "new",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -17222,7 +17871,9 @@ Module deserializer.
                                                                                             Ty.path
                                                                                               "str",
                                                                                             [],
+                                                                                            [],
                                                                                             "to_string",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -17266,6 +17917,7 @@ Module deserializer.
                                                                                 "alloc::alloc::Global"
                                                                             ],
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -17296,7 +17948,9 @@ Module deserializer.
                                                                                 "move_binary_format::errors::PartialVMError"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -17339,6 +17993,7 @@ Module deserializer.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -17352,6 +18007,7 @@ Module deserializer.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -17403,6 +18059,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "with_message",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -17411,6 +18068,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -17424,7 +18082,9 @@ Module deserializer.
                                                             "alloc::string::ToString",
                                                             Ty.path "str",
                                                             [],
+                                                            [],
                                                             "to_string",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -17462,7 +18122,9 @@ Module deserializer.
                                 Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -17479,8 +18141,10 @@ Module deserializer.
                                         "move_binary_format::deserializer::load_signature_token::TypeBuilder";
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ]),
+                                [],
                                 [ Ty.tuple [] ],
                                 "call_mut",
+                                [],
                                 []
                               |),
                               [ read_next; Value.Tuple [] ]
@@ -17513,6 +18177,7 @@ Module deserializer.
                                               "move_binary_format::file_format::SignatureToken";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -17523,6 +18188,7 @@ Module deserializer.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -17576,6 +18242,7 @@ Module deserializer.
                                       "move_binary_format::deserializer::load_signature_token::TypeBuilder"
                                   ],
                                 "into_vec",
+                                [],
                                 [ Ty.path "alloc::alloc::Global" ]
                               |),
                               [
@@ -17596,6 +18263,7 @@ Module deserializer.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.alloc (| Value.Array [ M.read (| t |) ] |) ]
@@ -17633,6 +18301,7 @@ Module deserializer.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ stack ]
@@ -17661,6 +18330,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "with_message",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -17669,6 +18339,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -17682,7 +18353,9 @@ Module deserializer.
                                                       "alloc::string::ToString",
                                                       Ty.path "str",
                                                       [],
+                                                      [],
                                                       "to_string",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -17715,6 +18388,7 @@ Module deserializer.
                                           Ty.path
                                             "move_binary_format::deserializer::load_signature_token::TypeBuilder",
                                           "is_saturated",
+                                          [],
                                           []
                                         |),
                                         [
@@ -17733,6 +18407,7 @@ Module deserializer.
                                                     ]
                                                 ],
                                               "unwrap",
+                                              [],
                                               []
                                             |),
                                             [
@@ -17746,6 +18421,7 @@ Module deserializer.
                                                         "move_binary_format::deserializer::load_signature_token::TypeBuilder"
                                                     ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -17761,7 +18437,9 @@ Module deserializer.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
+                                                      [],
                                                       "deref",
+                                                      [],
                                                       []
                                                     |),
                                                     [ stack ]
@@ -17785,6 +18463,7 @@ Module deserializer.
                                         Ty.path
                                           "move_binary_format::deserializer::load_signature_token::TypeBuilder",
                                         "unwrap_saturated",
+                                        [],
                                         []
                                       |),
                                       [
@@ -17798,6 +18477,7 @@ Module deserializer.
                                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder"
                                               ],
                                             "unwrap",
+                                            [],
                                             []
                                           |),
                                           [
@@ -17812,6 +18492,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "pop",
+                                                [],
                                                 []
                                               |),
                                               [ stack ]
@@ -17834,6 +18515,7 @@ Module deserializer.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "pop",
+                                        [],
                                         []
                                       |),
                                       [ stack ]
@@ -17861,6 +18543,7 @@ Module deserializer.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "push",
+                                              [],
                                               []
                                             |),
                                             [
@@ -17870,6 +18553,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::deserializer::load_signature_token::TypeBuilder",
                                                   "apply",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| t |); M.read (| tok |) ]
@@ -17908,6 +18592,7 @@ Module deserializer.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17928,7 +18613,9 @@ Module deserializer.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -17946,8 +18633,10 @@ Module deserializer.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ]),
+                                                    [],
                                                     [ Ty.tuple [] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [ read_next; Value.Tuple [] ]
@@ -17981,6 +18670,7 @@ Module deserializer.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -17993,6 +18683,7 @@ Module deserializer.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -18149,6 +18840,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| tok |) ]
@@ -18180,6 +18872,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| tok |) ]
@@ -18211,6 +18904,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| tok |) ]
@@ -18253,6 +18947,7 @@ Module deserializer.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "push",
+                              [],
                               []
                             |),
                             [ ty_args; M.read (| tok |) ]
@@ -18278,6 +18973,7 @@ Module deserializer.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ ty_args ]
@@ -18319,6 +19015,7 @@ Module deserializer.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -18353,6 +19050,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18370,6 +19068,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "none",
+                                        [],
                                         []
                                       |),
                                       []
@@ -18461,6 +19160,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18478,6 +19178,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "none",
+                                        [],
                                         []
                                       |),
                                       []
@@ -18645,6 +19346,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::deserializer::VersionedCursor",
                                   "version",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| cursor |) ]
@@ -18661,6 +19363,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::deserializer::VersionedCursor",
                                   "read_u8",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| cursor |) ]
@@ -18697,6 +19400,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "with_message",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -18705,6 +19409,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "new",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -18718,7 +19423,9 @@ Module deserializer.
                                                       "alloc::string::ToString",
                                                       Ty.path "str",
                                                       [],
+                                                      [],
                                                       "to_string",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| Value.String "Unexpected EOF" |) ]
@@ -18764,7 +19471,9 @@ Module deserializer.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -18773,6 +19482,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::deserializer::DeprecatedNominalResourceFlag",
                                                     "from_u8",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| byte |) ]
@@ -18806,6 +19516,7 @@ Module deserializer.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -18818,6 +19529,7 @@ Module deserializer.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -18852,11 +19564,13 @@ Module deserializer.
                                                     "core::ops::bit::BitOr",
                                                     Ty.path
                                                       "move_binary_format::file_format::AbilitySet",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::Ability"
                                                     ],
                                                     "bitor",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -18865,11 +19579,13 @@ Module deserializer.
                                                         "core::ops::bit::BitOr",
                                                         Ty.path
                                                           "move_binary_format::file_format::AbilitySet",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::Ability"
                                                         ],
                                                         "bitor",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -18902,11 +19618,13 @@ Module deserializer.
                                                     "core::ops::bit::BitOr",
                                                     Ty.path
                                                       "move_binary_format::file_format::AbilitySet",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::Ability"
                                                     ],
                                                     "bitor",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -18915,11 +19633,13 @@ Module deserializer.
                                                         "core::ops::bit::BitOr",
                                                         Ty.path
                                                           "move_binary_format::file_format::AbilitySet",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::Ability"
                                                         ],
                                                         "bitor",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -18928,11 +19648,13 @@ Module deserializer.
                                                             "core::ops::bit::BitOr",
                                                             Ty.path
                                                               "move_binary_format::file_format::AbilitySet",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_binary_format::file_format::Ability"
                                                             ],
                                                             "bitor",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -18984,277 +19706,288 @@ Module deserializer.
                                         |) in
                                       Value.Tuple []))
                                 ],
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [] =>
-                                        ltac:(M.monadic
-                                          (let~ set :=
-                                            M.copy (|
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    match γ with
+                                    | [] =>
+                                      ltac:(M.monadic
+                                        (let~ set :=
+                                          M.copy (|
+                                            M.match_operator (|
                                               M.match_operator (|
-                                                M.match_operator (|
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::Try",
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::deserializer::DeprecatedKind";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ],
-                                                        [],
-                                                        "branch",
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::Try",
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
                                                         []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::deserializer::DeprecatedKind",
-                                                            "from_u8",
-                                                            []
-                                                          |),
-                                                          [ M.read (| byte |) ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                            0
-                                                          |) in
-                                                        let residual := M.copy (| γ0_0 |) in
-                                                        M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::FromResidual",
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::DeprecatedKind";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "branch",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::DeprecatedKind",
+                                                          "from_u8",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| byte |) ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                          0
+                                                        |) in
+                                                      let residual := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::FromResidual",
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
+                                                                  [],
+                                                                  [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
                                                                         Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet";
+                                                                          "core::convert::Infallible";
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
-                                                                      ],
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::convert::Infallible";
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
-                                                                    ],
-                                                                    "from_residual",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| residual |) ]
-                                                                |)
+                                                                      ]
+                                                                  ],
+                                                                  "from_residual",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [ M.read (| residual |) ]
                                                               |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                          0
+                                                        |) in
+                                                      let val := M.copy (| γ0_0 |) in
+                                                      val))
+                                                ]
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "move_binary_format::deserializer::DeprecatedKind::ALL"
+                                                      |) in
+                                                    M.get_constant (|
+                                                      "move_binary_format::file_format::EMPTY"
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "move_binary_format::deserializer::DeprecatedKind::COPYABLE"
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::bit::BitOr",
+                                                          Ty.path
+                                                            "move_binary_format::file_format::AbilitySet",
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::Ability"
+                                                          ],
+                                                          "bitor",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::bit::BitOr",
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              [],
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Ability"
+                                                              ],
+                                                              "bitor",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "move_binary_format::file_format::EMPTY"
+                                                                |)
+                                                              |);
+                                                              Value.StructTuple
+                                                                "move_binary_format::file_format::Ability::Copy"
+                                                                []
+                                                            ]
+                                                          |);
+                                                          Value.StructTuple
+                                                            "move_binary_format::file_format::Ability::Drop"
+                                                            []
+                                                        ]
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "move_binary_format::deserializer::DeprecatedKind::RESOURCE"
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::bit::BitOr",
+                                                          Ty.path
+                                                            "move_binary_format::file_format::AbilitySet",
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::Ability"
+                                                          ],
+                                                          "bitor",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.get_constant (|
+                                                              "move_binary_format::file_format::EMPTY"
+                                                            |)
+                                                          |);
+                                                          Value.StructTuple
+                                                            "move_binary_format::file_format::Ability::Key"
+                                                            []
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (|
+                                          Value.StructTuple
+                                            "core::result::Result::Ok"
+                                            [
+                                              M.read (|
+                                                M.match_operator (|
+                                                  pos,
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
+                                                            γ,
+                                                            "move_binary_format::deserializer::AbilitySetPosition::StructHandle"
+                                                          |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::panicking::panic",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "internal error: entered unreachable code"
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
                                                             γ,
-                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                            0
+                                                            "move_binary_format::deserializer::AbilitySetPosition::FunctionTypeParameters"
                                                           |) in
-                                                        let val := M.copy (| γ0_0 |) in
-                                                        val))
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::bit::BitOr",
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              [],
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Ability"
+                                                              ],
+                                                              "bitor",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (| set |);
+                                                              Value.StructTuple
+                                                                "move_binary_format::file_format::Ability::Store"
+                                                                []
+                                                            ]
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let _ :=
+                                                          M.is_struct_tuple (|
+                                                            γ,
+                                                            "move_binary_format::deserializer::AbilitySetPosition::StructTypeParameters"
+                                                          |) in
+                                                        set))
                                                   ]
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "move_binary_format::deserializer::DeprecatedKind::ALL"
-                                                        |) in
-                                                      M.get_constant (|
-                                                        "move_binary_format::file_format::EMPTY"
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "move_binary_format::deserializer::DeprecatedKind::COPYABLE"
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::bit::BitOr",
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet",
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Ability"
-                                                            ],
-                                                            "bitor",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::bit::BitOr",
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::AbilitySet",
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::Ability"
-                                                                ],
-                                                                "bitor",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.get_constant (|
-                                                                    "move_binary_format::file_format::EMPTY"
-                                                                  |)
-                                                                |);
-                                                                Value.StructTuple
-                                                                  "move_binary_format::file_format::Ability::Copy"
-                                                                  []
-                                                              ]
-                                                            |);
-                                                            Value.StructTuple
-                                                              "move_binary_format::file_format::Ability::Drop"
-                                                              []
-                                                          ]
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "move_binary_format::deserializer::DeprecatedKind::RESOURCE"
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::bit::BitOr",
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet",
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Ability"
-                                                            ],
-                                                            "bitor",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.get_constant (|
-                                                                "move_binary_format::file_format::EMPTY"
-                                                              |)
-                                                            |);
-                                                            Value.StructTuple
-                                                              "move_binary_format::file_format::Ability::Key"
-                                                              []
-                                                          ]
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            |) in
-                                          M.alloc (|
-                                            Value.StructTuple
-                                              "core::result::Result::Ok"
-                                              [
-                                                M.read (|
-                                                  M.match_operator (|
-                                                    pos,
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let _ :=
-                                                            M.is_struct_tuple (|
-                                                              γ,
-                                                              "move_binary_format::deserializer::AbilitySetPosition::StructHandle"
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::panicking::panic",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "internal error: entered unreachable code"
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let _ :=
-                                                            M.is_struct_tuple (|
-                                                              γ,
-                                                              "move_binary_format::deserializer::AbilitySetPosition::FunctionTypeParameters"
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::bit::BitOr",
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::AbilitySet",
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::Ability"
-                                                                ],
-                                                                "bitor",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (| set |);
-                                                                Value.StructTuple
-                                                                  "move_binary_format::file_format::Ability::Store"
-                                                                  []
-                                                              ]
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let _ :=
-                                                            M.is_struct_tuple (|
-                                                              γ,
-                                                              "move_binary_format::deserializer::AbilitySetPosition::StructTypeParameters"
-                                                            |) in
-                                                          set))
-                                                    ]
-                                                  |)
                                                 |)
-                                              ]
-                                          |)))
-                                      | _ => M.impossible "wrong number of arguments"
-                                      end))
+                                              |)
+                                            ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end)
                               |)))
                         ]
                       |)));
@@ -19275,7 +20008,9 @@ Module deserializer.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19292,6 +20027,7 @@ Module deserializer.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::file_format::AbilitySet",
                                             "into_u8",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19333,6 +20069,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19344,6 +20081,7 @@ Module deserializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19371,6 +20109,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::AbilitySet",
                               "from_u8",
+                              [],
                               []
                             |),
                             [ M.read (| u |) ]
@@ -19402,6 +20141,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19459,7 +20199,9 @@ Module deserializer.
                             [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19504,6 +20246,7 @@ Module deserializer.
                                             ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19514,6 +20257,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19547,6 +20291,7 @@ Module deserializer.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -19561,7 +20306,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -19591,7 +20338,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -19626,6 +20375,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -19646,7 +20396,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -19697,6 +20449,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -19710,6 +20463,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -19787,7 +20541,9 @@ Module deserializer.
                             [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19833,6 +20589,7 @@ Module deserializer.
                                             ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19843,6 +20600,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19876,6 +20634,7 @@ Module deserializer.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ M.read (| len |) ]
@@ -19890,7 +20649,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -19920,7 +20681,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -19955,6 +20718,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -19975,7 +20739,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -20025,6 +20791,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -20038,6 +20805,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -20122,7 +20890,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -20167,6 +20937,7 @@ Module deserializer.
                                             "move_binary_format::file_format::StructTypeParameter";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -20177,6 +20948,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -20213,6 +20985,7 @@ Module deserializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::deserializer::VersionedCursor",
                                       "version",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| cursor |) ]
@@ -20244,7 +21017,9 @@ Module deserializer.
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20285,6 +21060,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -20296,6 +21072,7 @@ Module deserializer.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -20419,6 +21196,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -20440,6 +21218,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -20448,8 +21227,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20482,7 +21263,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20522,6 +21305,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -20533,6 +21317,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20562,6 +21347,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "read_u8",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -20592,7 +21378,9 @@ Module deserializer.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -20601,6 +21389,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::file_format_common::SerializedNativeStructFlag",
                                                     "from_u8",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| byte |) ]
@@ -20633,6 +21422,7 @@ Module deserializer.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -20645,6 +21435,7 @@ Module deserializer.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -20685,6 +21476,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "with_message",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -20693,6 +21485,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20706,7 +21499,9 @@ Module deserializer.
                                                             "alloc::string::ToString",
                                                             Ty.path "str",
                                                             [],
+                                                            [],
                                                             "to_string",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -20773,7 +21568,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -20813,6 +21610,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -20825,6 +21623,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -20866,6 +21665,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -20933,6 +21733,7 @@ Module deserializer.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -20950,7 +21751,9 @@ Module deserializer.
                             []
                             [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -20996,6 +21799,7 @@ Module deserializer.
                                             ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -21006,6 +21810,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -21036,7 +21841,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -21066,7 +21873,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "u64" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -21101,6 +21910,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -21121,7 +21931,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -21171,6 +21983,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -21184,6 +21997,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -21257,7 +22071,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -21297,6 +22113,7 @@ Module deserializer.
                                             "move_binary_format::file_format::FieldDefinition";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -21307,6 +22124,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -21343,7 +22161,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -21383,6 +22203,7 @@ Module deserializer.
                                             "move_binary_format::file_format::FieldDefinition";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -21393,6 +22214,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -21494,6 +22316,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -21515,6 +22338,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ cursor ]
@@ -21523,8 +22347,10 @@ Module deserializer.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "u64",
+                                        [],
                                         [ Ty.path "u32" ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21557,7 +22383,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21597,6 +22425,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21608,6 +22437,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21642,6 +22472,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| func_defs |); M.read (| func_def |) ]
@@ -21735,6 +22566,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -21758,6 +22590,7 @@ Module deserializer.
                                           Ty.path
                                             "move_binary_format::deserializer::VersionedCursor",
                                           "position",
+                                          [],
                                           []
                                         |),
                                         [ cursor ]
@@ -21766,8 +22599,10 @@ Module deserializer.
                                         M.get_trait_method (|
                                           "core::convert::From",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u32" ],
                                           "from",
+                                          [],
                                           []
                                         |),
                                         [
@@ -21807,7 +22642,9 @@ Module deserializer.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -21846,6 +22683,7 @@ Module deserializer.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -21857,6 +22695,7 @@ Module deserializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -21893,7 +22732,9 @@ Module deserializer.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -21932,6 +22773,7 @@ Module deserializer.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -21943,6 +22785,7 @@ Module deserializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -21976,6 +22819,7 @@ Module deserializer.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "push",
+                            [],
                             []
                           |),
                           [
@@ -22061,6 +22905,7 @@ Module deserializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::deserializer::VersionedBinary",
                       "new_cursor",
+                      [],
                       []
                     |),
                     [ M.read (| binary |); M.read (| start |); M.read (| end_ |) ]
@@ -22084,6 +22929,7 @@ Module deserializer.
                                           Ty.path
                                             "move_binary_format::deserializer::VersionedCursor",
                                           "position",
+                                          [],
                                           []
                                         |),
                                         [ cursor ]
@@ -22092,8 +22938,10 @@ Module deserializer.
                                         M.get_trait_method (|
                                           "core::convert::From",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u32" ],
                                           "from",
+                                          [],
                                           []
                                         |),
                                         [
@@ -22132,7 +22980,9 @@ Module deserializer.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -22171,6 +23021,7 @@ Module deserializer.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -22182,6 +23033,7 @@ Module deserializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -22218,7 +23070,9 @@ Module deserializer.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -22257,6 +23111,7 @@ Module deserializer.
                                                 Ty.tuple [];
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -22268,6 +23123,7 @@ Module deserializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -22301,6 +23157,7 @@ Module deserializer.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "push",
+                            [],
                             []
                           |),
                           [
@@ -22425,7 +23282,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -22465,6 +23324,7 @@ Module deserializer.
                                             "move_binary_format::file_format::FunctionDefinition";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -22475,6 +23335,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -22508,7 +23369,9 @@ Module deserializer.
                             []
                             [ Ty.path "u8"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -22519,6 +23382,7 @@ Module deserializer.
                                 []
                                 [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "move_binary_format::errors::PartialVMError";
                                 Ty.function
@@ -22531,6 +23395,7 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::deserializer::VersionedCursor",
                                   "read_u8",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| cursor |) ]
@@ -22551,6 +23416,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "with_message",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -22559,6 +23425,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -22572,7 +23439,9 @@ Module deserializer.
                                                         "alloc::string::ToString",
                                                         Ty.path "str",
                                                         [],
+                                                        [],
                                                         "to_string",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| Value.String "Unexpected EOF" |) ]
@@ -22613,6 +23482,7 @@ Module deserializer.
                                             "move_binary_format::file_format::FunctionDefinition";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -22623,6 +23493,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -22658,6 +23529,7 @@ Module deserializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::deserializer::VersionedCursor",
                                     "version",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| cursor |) ]
@@ -22743,6 +23615,7 @@ Module deserializer.
                                             Ty.path
                                               "move_binary_format::deserializer::VersionedCursor",
                                             "version",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| cursor |) ]
@@ -22810,7 +23683,9 @@ Module deserializer.
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -22825,6 +23700,7 @@ Module deserializer.
                                                               Ty.tuple []
                                                             ],
                                                           "map_err",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError";
@@ -22839,11 +23715,13 @@ Module deserializer.
                                                             M.get_trait_method (|
                                                               "core::convert::TryInto",
                                                               Ty.path "u8",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::Visibility"
                                                               ],
                                                               "try_into",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| flags |) ]
@@ -22864,6 +23742,7 @@ Module deserializer.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "with_message",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -22872,6 +23751,7 @@ Module deserializer.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
                                                                                     "new",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -22885,7 +23765,9 @@ Module deserializer.
                                                                                     "alloc::string::ToString",
                                                                                     Ty.path "str",
                                                                                     [],
+                                                                                    [],
                                                                                     "to_string",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -22934,6 +23816,7 @@ Module deserializer.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -22947,6 +23830,7 @@ Module deserializer.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -22996,7 +23880,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -23007,6 +23893,7 @@ Module deserializer.
                                                           []
                                                           [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                                         "map_err",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError";
@@ -23022,6 +23909,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::deserializer::VersionedCursor",
                                                             "read_u8",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -23042,6 +23930,7 @@ Module deserializer.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
                                                                               "with_message",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -23050,6 +23939,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "new",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -23063,7 +23953,9 @@ Module deserializer.
                                                                                   "alloc::string::ToString",
                                                                                   Ty.path "str",
                                                                                   [],
+                                                                                  [],
                                                                                   "to_string",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -23112,6 +24004,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -23124,6 +24017,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -23173,7 +24067,9 @@ Module deserializer.
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -23188,6 +24084,7 @@ Module deserializer.
                                                     Ty.tuple []
                                                   ],
                                                 "map_err",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError";
@@ -23202,11 +24099,13 @@ Module deserializer.
                                                   M.get_trait_method (|
                                                     "core::convert::TryInto",
                                                     Ty.path "u8",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::Visibility"
                                                     ],
                                                     "try_into",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| flags |) ]
@@ -23227,6 +24126,7 @@ Module deserializer.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
                                                                       "with_message",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -23235,6 +24135,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23248,7 +24149,9 @@ Module deserializer.
                                                                           "alloc::string::ToString",
                                                                           Ty.path "str",
                                                                           [],
+                                                                          [],
                                                                           "to_string",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23296,6 +24199,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -23307,6 +24211,7 @@ Module deserializer.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -23343,7 +24248,9 @@ Module deserializer.
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -23354,6 +24261,7 @@ Module deserializer.
                                                   []
                                                   [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                                 "map_err",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError";
@@ -23369,6 +24277,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::deserializer::VersionedCursor",
                                                     "read_u8",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| cursor |) ]
@@ -23389,6 +24298,7 @@ Module deserializer.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
                                                                       "with_message",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -23397,6 +24307,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
                                                                           "new",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23410,7 +24321,9 @@ Module deserializer.
                                                                           "alloc::string::ToString",
                                                                           Ty.path "str",
                                                                           [],
+                                                                          [],
                                                                           "to_string",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -23458,6 +24371,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -23469,6 +24383,7 @@ Module deserializer.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -23574,7 +24489,9 @@ Module deserializer.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23615,6 +24532,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23626,6 +24544,7 @@ Module deserializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23708,7 +24627,9 @@ Module deserializer.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -23749,6 +24670,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -23761,6 +24683,7 @@ Module deserializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -23818,6 +24741,7 @@ Module deserializer.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -23896,7 +24820,9 @@ Module deserializer.
                             []
                             [ Ty.path "u64"; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23942,6 +24868,7 @@ Module deserializer.
                                             ];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -23952,6 +24879,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23985,6 +24913,7 @@ Module deserializer.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -23999,7 +24928,9 @@ Module deserializer.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u64" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -24027,7 +24958,9 @@ Module deserializer.
                                           []
                                           [ Ty.path "u64" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -24062,6 +24995,7 @@ Module deserializer.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -24082,7 +25016,9 @@ Module deserializer.
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24132,6 +25068,7 @@ Module deserializer.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -24145,6 +25082,7 @@ Module deserializer.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -24223,7 +25161,9 @@ Module deserializer.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24262,6 +25202,7 @@ Module deserializer.
                                           Ty.path "move_binary_format::file_format::CodeUnit";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24272,6 +25213,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24310,6 +25252,7 @@ Module deserializer.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -24327,7 +25270,9 @@ Module deserializer.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -24373,6 +25318,7 @@ Module deserializer.
                                         Ty.path "move_binary_format::file_format::CodeUnit";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -24383,6 +25329,7 @@ Module deserializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -24619,7 +25566,9 @@ Module deserializer.
                             [ Ty.path "usize"; Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24658,6 +25607,7 @@ Module deserializer.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24668,6 +25618,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24711,6 +25662,7 @@ Module deserializer.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| code |) ]
@@ -24735,7 +25687,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -24746,6 +25700,7 @@ Module deserializer.
                                               []
                                               [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                             "map_err",
+                                            [],
                                             [
                                               Ty.path "move_binary_format::errors::PartialVMError";
                                               Ty.function
@@ -24760,6 +25715,7 @@ Module deserializer.
                                                 Ty.path
                                                   "move_binary_format::deserializer::VersionedCursor",
                                                 "read_u8",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| cursor |) ]
@@ -24780,6 +25736,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "with_message",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -24788,6 +25745,7 @@ Module deserializer.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -24801,7 +25759,9 @@ Module deserializer.
                                                                       "alloc::string::ToString",
                                                                       Ty.path "str",
                                                                       [],
+                                                                      [],
                                                                       "to_string",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -24847,6 +25807,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -24858,6 +25819,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -24895,7 +25857,9 @@ Module deserializer.
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -24904,6 +25868,7 @@ Module deserializer.
                                             Ty.path
                                               "move_binary_format::file_format_common::Opcodes",
                                             "from_u8",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| byte |) ]
@@ -24936,6 +25901,7 @@ Module deserializer.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -24947,6 +25913,7 @@ Module deserializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -25042,151 +26009,155 @@ Module deserializer.
                                                 |) in
                                               Value.Tuple []))
                                         ],
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [] =>
-                                                ltac:(M.monadic
-                                                  (M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                BinOp.lt (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_binary_format::deserializer::VersionedCursor",
-                                                                      "version",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| cursor |) ]
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.use
+                                                            (M.alloc (|
+                                                              BinOp.lt (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::deserializer::VersionedCursor",
+                                                                    "version",
+                                                                    [],
+                                                                    []
                                                                   |),
-                                                                  M.read (|
-                                                                    M.get_constant (|
-                                                                      "move_binary_format::file_format_common::VERSION_4"
-                                                                    |)
+                                                                  [ M.read (| cursor |) ]
+                                                                |),
+                                                                M.read (|
+                                                                  M.get_constant (|
+                                                                    "move_binary_format::file_format_common::VERSION_4"
                                                                   |)
                                                                 |)
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  Value.StructTuple
-                                                                    "core::result::Result::Err"
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError",
-                                                                          "with_message",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "new",
+                                                              |)
+                                                            |)) in
+                                                        let _ :=
+                                                          M.is_constant_or_break_match (|
+                                                            M.read (| γ |),
+                                                            Value.Bool true
+                                                          |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Err"
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
+                                                                        "with_message",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            "new",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "move_core_types::vm_status::StatusCode::MALFORMED"
                                                                               []
-                                                                            |),
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::hint::must_use",
+                                                                            [],
                                                                             [
-                                                                              Value.StructTuple
-                                                                                "move_core_types::vm_status::StatusCode::MALFORMED"
-                                                                                []
+                                                                              Ty.path
+                                                                                "alloc::string::String"
                                                                             ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "core::hint::must_use",
-                                                                              [],
-                                                                              [
-                                                                                Ty.path
-                                                                                  "alloc::string::String"
-                                                                              ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ res :=
-                                                                                  M.alloc (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "alloc::fmt::format",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_v1",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "Vector operations not available before bytecode version "
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |);
-                                                                                            M.alloc (|
-                                                                                              Value.Array
-                                                                                                [
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_associated_function (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::rt::Argument",
-                                                                                                      "new_display",
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "u32"
-                                                                                                      ]
-                                                                                                    |),
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              let~ res :=
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "alloc::fmt::format",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
+                                                                                          "new_v1",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  Value.String
+                                                                                                    "Vector operations not available before bytecode version "
+                                                                                                |)
+                                                                                              ]
+                                                                                          |);
+                                                                                          M.alloc (|
+                                                                                            Value.Array
+                                                                                              [
+                                                                                                M.call_closure (|
+                                                                                                  M.get_associated_function (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
+                                                                                                    "new_display",
+                                                                                                    [],
                                                                                                     [
-                                                                                                      M.get_constant (|
-                                                                                                        "move_binary_format::file_format_common::VERSION_4"
-                                                                                                      |)
+                                                                                                      Ty.path
+                                                                                                        "u32"
                                                                                                     ]
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |) in
-                                                                                res
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                |)
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    M.get_constant (|
+                                                                                                      "move_binary_format::file_format_common::VERSION_4"
+                                                                                                    |)
+                                                                                                  ]
+                                                                                                |)
+                                                                                              ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |) in
+                                                                              res
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                               |)
                                                             |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end)
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -25249,152 +26220,157 @@ Module deserializer.
                                                 |) in
                                               Value.Tuple []))
                                         ],
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [] =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.alloc (|
-                                                      BinOp.lt (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::deserializer::VersionedCursor",
-                                                            "version",
-                                                            []
-                                                          |),
-                                                          [ M.read (| cursor |) ]
-                                                        |),
-                                                        M.read (|
-                                                          M.get_constant (|
-                                                            "move_binary_format::file_format_common::VERSION_6"
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [] =>
+                                              ltac:(M.monadic
+                                                (let γ :=
                                                   M.alloc (|
-                                                    M.never_to_any (|
+                                                    BinOp.lt (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::deserializer::VersionedCursor",
+                                                          "version",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| cursor |) ]
+                                                      |),
                                                       M.read (|
-                                                        M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::result::Result::Err"
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::errors::PartialVMError",
-                                                                  "with_message",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_binary_format::errors::PartialVMError",
-                                                                      "new",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      Value.StructTuple
-                                                                        "move_core_types::vm_status::StatusCode::MALFORMED"
-                                                                        []
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "core::hint::must_use",
-                                                                      [],
-                                                                      [
-                                                                        Ty.path
-                                                                          "alloc::string::String"
-                                                                      ]
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        let~ res :=
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_function (|
-                                                                                "alloc::fmt::format",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::Arguments",
-                                                                                    "new_v1",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "Loading or casting u16, u32, u256 integers not supported in bytecode version "
-                                                                                          |)
-                                                                                        ]
-                                                                                    |);
-                                                                                    M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::rt::Argument",
-                                                                                              "new_display",
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "u32"
-                                                                                              ]
-                                                                                            |),
-                                                                                            [
-                                                                                              M.alloc (|
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "move_binary_format::deserializer::VersionedCursor",
-                                                                                                    "version",
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      cursor
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              |)
-                                                                                            ]
-                                                                                          |)
-                                                                                        ]
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |) in
-                                                                        res
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
+                                                        M.get_constant (|
+                                                          "move_binary_format::file_format_common::VERSION_6"
                                                         |)
                                                       |)
                                                     |)
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
+                                                  |) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        Value.StructTuple
+                                                          "core::result::Result::Err"
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
+                                                                "with_message",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError",
+                                                                    "new",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    Value.StructTuple
+                                                                      "move_core_types::vm_status::StatusCode::MALFORMED"
+                                                                      []
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "core::hint::must_use",
+                                                                    [],
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloc::string::String"
+                                                                    ]
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      let~ res :=
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_function (|
+                                                                              "alloc::fmt::format",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_v1",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                                        |)
+                                                                                      ]
+                                                                                  |);
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
+                                                                                            "new_display",
+                                                                                            [],
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u32"
+                                                                                            ]
+                                                                                          |),
+                                                                                          [
+                                                                                            M.alloc (|
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::deserializer::VersionedCursor",
+                                                                                                  "version",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    cursor
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |) in
+                                                                      res
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end)
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -25454,7 +26430,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -25495,6 +26473,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -25508,6 +26487,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -25557,7 +26537,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -25598,6 +26580,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -25611,6 +26594,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -25660,7 +26644,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -25701,6 +26687,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -25714,6 +26701,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -25760,7 +26748,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -25771,6 +26761,7 @@ Module deserializer.
                                                           []
                                                           [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                                         "map_err",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError";
@@ -25786,6 +26777,7 @@ Module deserializer.
                                                             Ty.path
                                                               "move_binary_format::deserializer::VersionedCursor",
                                                             "read_u8",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -25806,6 +26798,7 @@ Module deserializer.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
                                                                               "with_message",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -25814,6 +26807,7 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "new",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -25827,7 +26821,9 @@ Module deserializer.
                                                                                   "alloc::string::ToString",
                                                                                   Ty.path "str",
                                                                                   [],
+                                                                                  [],
                                                                                   "to_string",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -25875,6 +26871,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -25887,6 +26884,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -25936,7 +26934,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -25976,6 +26976,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -25988,6 +26989,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -26037,7 +27039,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26077,6 +27081,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -26089,6 +27094,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -26122,6 +27128,7 @@ Module deserializer.
                                                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| value |) ]
@@ -26191,7 +27198,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26232,6 +27241,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26245,6 +27255,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26318,7 +27329,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26359,6 +27372,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26372,6 +27386,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26421,7 +27436,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26462,6 +27479,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26475,6 +27493,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26524,7 +27543,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26565,6 +27586,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26578,6 +27600,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26627,7 +27650,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26668,6 +27693,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26681,6 +27707,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26730,7 +27757,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26771,6 +27800,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26784,6 +27814,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26834,7 +27865,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26875,6 +27908,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26888,6 +27922,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -26938,7 +27973,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -26979,6 +28016,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -26992,6 +28030,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27042,7 +28081,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27083,6 +28124,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27096,6 +28138,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27146,7 +28189,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27187,6 +28232,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27200,6 +28246,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27250,7 +28297,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27291,6 +28340,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27304,6 +28354,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27354,7 +28405,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27395,6 +28448,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27408,6 +28462,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27458,7 +28513,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27499,6 +28556,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27512,6 +28570,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27562,7 +28621,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27603,6 +28664,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27616,6 +28678,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27666,7 +28729,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27707,6 +28772,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27720,6 +28786,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -27770,7 +28837,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -27811,6 +28880,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -27824,6 +28894,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28162,7 +29233,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28203,6 +29276,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28216,6 +29290,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28252,7 +29327,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28293,6 +29370,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28306,6 +29384,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28356,7 +29435,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28397,6 +29478,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28410,6 +29492,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28460,7 +29543,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28501,6 +29586,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28514,6 +29600,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28564,7 +29651,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28605,6 +29694,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28618,6 +29708,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28668,7 +29759,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28709,6 +29802,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28722,6 +29816,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28772,7 +29867,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28813,6 +29910,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28826,6 +29924,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28876,7 +29975,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -28917,6 +30018,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -28930,6 +30032,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -28966,7 +30069,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29007,6 +30112,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29020,6 +30126,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29070,7 +30177,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29111,6 +30220,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29124,6 +30234,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29170,7 +30281,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -29210,6 +30323,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -29222,6 +30336,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -29271,7 +30386,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -29311,6 +30428,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -29323,6 +30441,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -29372,7 +30491,9 @@ Module deserializer.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -29412,6 +30533,7 @@ Module deserializer.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -29424,6 +30546,7 @@ Module deserializer.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -29459,6 +30582,7 @@ Module deserializer.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| value |) ]
@@ -29528,7 +30652,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29569,6 +30695,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29582,6 +30709,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29632,7 +30760,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29673,6 +30803,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29686,6 +30817,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29736,7 +30868,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29777,6 +30911,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29790,6 +30925,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29840,7 +30976,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29881,6 +31019,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29894,6 +31033,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -29944,7 +31084,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -29985,6 +31127,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -29998,6 +31141,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30048,7 +31192,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -30089,6 +31235,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -30102,6 +31249,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30152,7 +31300,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -30193,6 +31343,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -30206,6 +31357,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30256,7 +31408,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -30297,6 +31451,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -30310,6 +31465,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30360,7 +31516,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -30401,6 +31559,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -30414,6 +31573,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30464,7 +31624,9 @@ Module deserializer.
                                                               "move_binary_format::errors::PartialVMError"
                                                           ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -30505,6 +31667,7 @@ Module deserializer.
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -30518,6 +31681,7 @@ Module deserializer.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -30556,6 +31720,7 @@ Module deserializer.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| code |); M.read (| bytecode |) ]
@@ -30868,6 +32033,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -31171,6 +32337,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -31257,7 +32424,7 @@ Module deserializer.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -31362,6 +32529,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -31487,6 +32655,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -31570,6 +32739,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -32909,6 +34079,7 @@ Module deserializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -33030,6 +34201,7 @@ Module deserializer.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -33082,6 +34254,7 @@ Module deserializer.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -33198,6 +34371,7 @@ Module deserializer.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| binary |) ]
@@ -33217,6 +34391,7 @@ Module deserializer.
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| binary |) ]
@@ -33247,7 +34422,9 @@ Module deserializer.
                                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                     ],
                                   [],
+                                  [],
                                   "read",
+                                  [],
                                   []
                                 |),
                                 [ cursor; magic ]
@@ -33285,6 +34462,7 @@ Module deserializer.
                                                   (Ty.path "array")
                                                   [ Value.Integer IntegerKind.Usize 4 ]
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "array")
@@ -33292,6 +34470,7 @@ Module deserializer.
                                                     [ Ty.path "u8" ]
                                                 ],
                                                 "ne",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -33320,6 +34499,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -33349,6 +34529,7 @@ Module deserializer.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -33356,6 +34537,7 @@ Module deserializer.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -33369,7 +34551,9 @@ Module deserializer.
                                               "alloc::string::ToString",
                                               Ty.path "str",
                                               [],
+                                              [],
                                               "to_string",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| Value.String "Bad binary header" |) ]
@@ -33426,6 +34610,7 @@ Module deserializer.
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
+                                            [],
                                             []
                                           |),
                                           [
@@ -33434,6 +34619,7 @@ Module deserializer.
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -33447,7 +34633,9 @@ Module deserializer.
                                                 "alloc::string::ToString",
                                                 Ty.path "str",
                                                 [],
+                                                [],
                                                 "to_string",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| Value.String "Bad binary header" |) ]
@@ -33484,7 +34672,9 @@ Module deserializer.
                                           "core::cmp::Ord",
                                           Ty.path "u32",
                                           [],
+                                          [],
                                           "min",
+                                          [],
                                           []
                                         |),
                                         [
@@ -33518,6 +34708,7 @@ Module deserializer.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [
@@ -33553,7 +34744,9 @@ Module deserializer.
                               [ Ty.path "u8"; Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -33593,6 +34786,7 @@ Module deserializer.
                                               "move_binary_format::deserializer::VersionedBinary";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -33603,6 +34797,7 @@ Module deserializer.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -33636,6 +34831,7 @@ Module deserializer.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -33652,7 +34848,9 @@ Module deserializer.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -33692,6 +34890,7 @@ Module deserializer.
                                             "move_binary_format::deserializer::VersionedBinary";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -33702,6 +34901,7 @@ Module deserializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -33735,7 +34935,9 @@ Module deserializer.
                               [ Ty.path "u32"; Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -33775,6 +34977,7 @@ Module deserializer.
                                               "move_binary_format::deserializer::VersionedBinary";
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -33785,6 +34988,7 @@ Module deserializer.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -33822,6 +35026,7 @@ Module deserializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::deserializer::VersionedCursor",
                                         "position",
+                                        [],
                                         []
                                       |),
                                       [ versioned_cursor ]
@@ -33843,6 +35048,7 @@ Module deserializer.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
+                                          [],
                                           []
                                         |),
                                         [
@@ -33850,6 +35056,7 @@ Module deserializer.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -33863,7 +35070,9 @@ Module deserializer.
                                               "alloc::string::ToString",
                                               Ty.path "str",
                                               [],
+                                              [],
                                               "to_string",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| Value.String "Table size too big" |) ]
@@ -33885,6 +35094,7 @@ Module deserializer.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::deserializer::VersionedCursor",
                           "position",
+                          [],
                           []
                         |),
                         [ versioned_cursor ]
@@ -33906,6 +35116,7 @@ Module deserializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::deserializer::VersionedCursor",
                                     "set_position",
+                                    [],
                                     []
                                   |),
                                   [
@@ -33932,7 +35143,9 @@ Module deserializer.
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -33973,6 +35186,7 @@ Module deserializer.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -33984,6 +35198,7 @@ Module deserializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -34021,6 +35236,7 @@ Module deserializer.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::deserializer::VersionedCursor",
                           "position",
+                          [],
                           []
                         |),
                         [ versioned_cursor ]
@@ -34144,6 +35360,7 @@ Module deserializer.
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -34151,8 +35368,10 @@ Module deserializer.
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                         "index",
+                        [],
                         []
                       |),
                       [
@@ -34198,6 +35417,7 @@ Module deserializer.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::deserializer::VersionedBinary",
                     "version",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -34224,8 +35444,10 @@ Module deserializer.
             M.get_trait_method (|
               "core::ops::index::Index",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+              [],
               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
               "index",
+              [],
               []
             |),
             [
@@ -34345,6 +35567,7 @@ Module deserializer.
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
               "position",
+              [],
               []
             |),
             [
@@ -34407,6 +35630,7 @@ Module deserializer.
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                     "set_position",
+                    [],
                     []
                   |),
                   [
@@ -34504,7 +35728,9 @@ Module deserializer.
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
               [],
+              [],
               "read",
+              [],
               []
             |),
             [

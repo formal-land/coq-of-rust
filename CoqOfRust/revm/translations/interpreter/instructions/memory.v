@@ -38,6 +38,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -46,7 +47,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -78,7 +81,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -107,7 +112,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn_top",
+                        [],
                         []
                       |),
                       [
@@ -145,6 +152,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ M.read (| top |) ]
@@ -231,7 +242,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -278,6 +291,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| offset |); Value.Integer IntegerKind.Usize 32 ]
@@ -292,6 +306,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.path "revm_interpreter::gas::Gas",
                                   "record_memory_expansion",
+                                  [],
                                   []
                                 |),
                                 [
@@ -300,7 +315,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "gas",
+                                      [],
                                       []
                                     |),
                                     [
@@ -330,7 +347,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::MemoryTrait",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "resize",
+                                          [],
                                           []
                                         |),
                                         [
@@ -364,7 +383,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -410,6 +431,7 @@ Module instructions.
                                     []
                                 ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -423,6 +445,10 @@ Module instructions.
                                     ]
                                     [],
                                   "try_from_be_slice",
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ],
                                   []
                                 |),
                                 [
@@ -430,8 +456,10 @@ Module instructions.
                                     M.get_trait_method (|
                                       "core::convert::AsRef",
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      [],
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                       "as_ref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -440,7 +468,9 @@ Module instructions.
                                           "core::ops::deref::Deref",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -450,7 +480,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::MemoryTrait",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "slice_len",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -517,6 +549,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -525,7 +558,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -557,7 +592,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -586,7 +623,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
@@ -625,6 +664,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ offset ]
@@ -711,7 +754,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -758,6 +803,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| offset |); Value.Integer IntegerKind.Usize 32 ]
@@ -772,6 +818,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.path "revm_interpreter::gas::Gas",
                                   "record_memory_expansion",
+                                  [],
                                   []
                                 |),
                                 [
@@ -780,7 +827,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "gas",
+                                      [],
                                       []
                                     |),
                                     [
@@ -810,7 +859,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::MemoryTrait",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "resize",
+                                          [],
                                           []
                                         |),
                                         [
@@ -844,7 +895,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -880,7 +933,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::MemoryTrait",
                                 Ty.associated,
                                 [],
+                                [],
                                 "set",
+                                [],
                                 []
                               |),
                               [
@@ -901,6 +956,10 @@ Module instructions.
                                         ]
                                         [],
                                       "to_be_bytes",
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ],
                                       []
                                     |),
                                     [ value ]
@@ -954,6 +1013,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -962,7 +1022,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -994,7 +1056,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1023,7 +1087,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
@@ -1062,6 +1128,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ offset ]
@@ -1148,7 +1218,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1195,6 +1267,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| offset |); Value.Integer IntegerKind.Usize 1 ]
@@ -1209,6 +1282,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.path "revm_interpreter::gas::Gas",
                                   "record_memory_expansion",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1217,7 +1291,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "gas",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1247,7 +1323,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::MemoryTrait",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "resize",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1281,7 +1359,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1317,7 +1397,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::MemoryTrait",
                                 Ty.associated,
                                 [],
+                                [],
                                 "set",
+                                [],
                                 []
                               |),
                               [
@@ -1340,6 +1422,10 @@ Module instructions.
                                             ]
                                             [],
                                           "byte",
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ],
                                           []
                                         |),
                                         [ value; Value.Integer IntegerKind.Usize 0 ]
@@ -1391,6 +1477,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1399,7 +1486,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::LoopControl",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "gas",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1431,7 +1520,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1468,7 +1559,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1487,6 +1580,10 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -1495,7 +1592,9 @@ Module instructions.
                                               "revm_interpreter::interpreter_types::MemoryTrait",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "size",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1524,7 +1623,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1601,6 +1702,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1609,7 +1711,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "spec_id",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1639,7 +1743,9 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1668,7 +1774,9 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
@@ -1709,6 +1817,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ len ]
@@ -1795,7 +1907,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1864,6 +1978,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.path "revm_interpreter::gas::Gas",
                                                       "record_cost",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1872,7 +1987,9 @@ Module instructions.
                                                           "revm_interpreter::interpreter_types::LoopControl",
                                                           Ty.associated,
                                                           [],
+                                                          [],
                                                           "gas",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1903,7 +2020,9 @@ Module instructions.
                                                         "revm_interpreter::interpreter_types::LoopControl",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "set_instruction_result",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1939,7 +2058,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1999,6 +2120,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ dst ]
@@ -2085,7 +2210,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2133,6 +2260,10 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
                                   [ src ]
@@ -2219,7 +2350,9 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2266,6 +2399,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2290,6 +2424,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.path "revm_interpreter::gas::Gas",
                                   "record_memory_expansion",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2298,7 +2433,9 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "gas",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2328,7 +2465,9 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::MemoryTrait",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "resize",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2362,7 +2501,9 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2398,7 +2539,9 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::MemoryTrait",
                                 Ty.associated,
                                 [],
+                                [],
                                 "copy",
+                                [],
                                 []
                               |),
                               [

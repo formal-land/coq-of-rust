@@ -65,7 +65,15 @@ Module task.
                           "core::task::poll::Poll::Ready"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -120,6 +128,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Ready" |); __self_0 ]
@@ -134,6 +143,7 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Pending" |) ]
@@ -267,8 +277,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -330,7 +342,15 @@ Module task.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
                     [ __self_discr; __arg1_discr ]
                   |)
                 |),
@@ -363,7 +383,15 @@ Module task.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    T,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |)
                               |)));
@@ -453,8 +481,10 @@ Module task.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             T,
+                            [],
                             [ T ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -467,8 +497,10 @@ Module task.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [ __self_discr; __arg1_discr ]
@@ -519,7 +551,9 @@ Module task.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -540,7 +574,15 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            T,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
@@ -602,8 +644,10 @@ Module task.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ T ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -675,6 +719,7 @@ Module task.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                   "is_ready",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -744,8 +789,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
+                                    [],
                                     [ Ty.tuple [ T ] ],
                                     "call_once",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -856,8 +903,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
+                                    [],
                                     [ Ty.tuple [ E ] ],
                                     "call_once",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -951,8 +1000,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
+                                        [],
                                         [ Ty.tuple [ T ] ],
                                         "call_once",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -1108,8 +1159,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
+                                        [],
                                         [ Ty.tuple [ E ] ],
                                         "call_once",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -1209,6 +1262,7 @@ Module task.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
                   Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
@@ -1356,8 +1410,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     F,
+                                    [],
                                     [ E ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| e |) ]
@@ -1430,6 +1486,7 @@ Module task.
                   []
                   [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -1461,6 +1518,7 @@ Module task.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                       "map",
+                                      [],
                                       [
                                         Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
                                         Ty.function
@@ -1662,8 +1720,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         F,
+                                        [],
                                         [ E ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| e |) ]

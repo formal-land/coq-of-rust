@@ -20,7 +20,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [ M.read (| f |); M.read (| Value.String "Unit" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -94,7 +94,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
+                [],
                 "clone",
+                [],
                 []
               |),
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 0 |) ]
@@ -107,7 +109,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
+                [],
                 "clone",
+                [],
                 []
               |),
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 1 |) ]
@@ -138,6 +142,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field2_finish",
+            [],
             []
           |),
           [
@@ -210,7 +215,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -224,6 +234,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "clone::Unit" ]
                               |),
                               [ unit_ ]
@@ -243,7 +254,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -257,6 +273,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "clone::Unit" ]
                               |),
                               [ copied_unit ]
@@ -281,6 +298,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 1 ]
@@ -292,6 +310,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 2 ]
@@ -305,7 +324,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -319,6 +343,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "clone::Pair" ]
                               |),
                               [ pair_ ]
@@ -339,7 +364,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -353,6 +383,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "clone::Pair" ]
                               |),
                               [ moved_pair ]
@@ -368,7 +399,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ cloned_pair :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::clone::Clone", Ty.path "clone::Pair", [], "clone", [] |),
+              M.get_trait_method (|
+                "core::clone::Clone",
+                Ty.path "clone::Pair",
+                [],
+                [],
+                "clone",
+                [],
+                []
+              |),
               [ moved_pair ]
             |)
           |) in
@@ -386,7 +425,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -400,6 +444,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "clone::Pair" ]
                               |),
                               [ cloned_pair ]

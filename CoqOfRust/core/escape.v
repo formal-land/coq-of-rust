@@ -22,6 +22,7 @@ Module escape.
                   ]
               ],
             "unwrap",
+            [],
             []
           |),
           [
@@ -29,6 +30,7 @@ Module escape.
               M.get_associated_function (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 "as_ascii",
+                [ Value.Integer IntegerKind.Usize 16 ],
                 []
               |),
               [ M.read (| UnsupportedLiteral |) ]
@@ -234,7 +236,7 @@ Module escape.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "as_ascii", [] |),
+                                M.get_associated_function (| Ty.path "u8", "as_ascii", [], [] |),
                                 [ byte ]
                               |)
                             |) in
@@ -253,6 +255,7 @@ Module escape.
                                     M.get_associated_function (|
                                       Ty.path "u8",
                                       "is_ascii_control",
+                                      [],
                                       []
                                     |),
                                     [ byte ]
@@ -403,7 +406,7 @@ Module escape.
                 BinOp.Wrap.div (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
+                      M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
                       [ BinOp.bit_or (M.read (| c |)) (Value.Integer IntegerKind.U32 1) ]
                     |)),
                   Value.Integer IntegerKind.Usize 4
@@ -617,7 +620,9 @@ Module escape.
                       [ N ]
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -634,7 +639,9 @@ Module escape.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -674,6 +681,7 @@ Module escape.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -885,6 +893,7 @@ Module escape.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
               "get_unchecked",
+              [],
               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
             |),
             [
@@ -901,8 +910,10 @@ Module escape.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "u8" ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -924,8 +935,10 @@ Module escape.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "u8" ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -967,6 +980,7 @@ Module escape.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
               "as_str",
+              [],
               []
             |),
             [
@@ -974,6 +988,7 @@ Module escape.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
                   "as_ascii",
+                  [ N ],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1002,8 +1017,10 @@ Module escape.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "usize",
+              [],
               [ Ty.path "u8" ],
               "from",
+              [],
               []
             |),
             [
@@ -1066,7 +1083,9 @@ Module escape.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1075,7 +1094,9 @@ Module escape.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [
@@ -1110,6 +1131,7 @@ Module escape.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1117,6 +1139,7 @@ Module escape.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1146,6 +1169,7 @@ Module escape.
                         M.get_associated_function (|
                           Ty.path "core::ascii::ascii_char::AsciiChar",
                           "to_u8",
+                          [],
                           []
                         |),
                         [
@@ -1157,6 +1181,7 @@ Module escape.
                                   []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "get_unchecked",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -1169,8 +1194,10 @@ Module escape.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| i |) ]
@@ -1217,7 +1244,9 @@ Module escape.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1226,7 +1255,9 @@ Module escape.
                                 "core::iter::traits::double_ended::DoubleEndedIterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "next_back",
+                                [],
                                 []
                               |),
                               [
@@ -1261,6 +1292,7 @@ Module escape.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1268,6 +1300,7 @@ Module escape.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1297,6 +1330,7 @@ Module escape.
                         M.get_associated_function (|
                           Ty.path "core::ascii::ascii_char::AsciiChar",
                           "to_u8",
+                          [],
                           []
                         |),
                         [
@@ -1308,6 +1342,7 @@ Module escape.
                                   []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "get_unchecked",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -1320,8 +1355,10 @@ Module escape.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| i |) ]
@@ -1359,7 +1396,9 @@ Module escape.
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
               [],
+              [],
               "advance_by",
+              [],
               []
             |),
             [
@@ -1400,7 +1439,9 @@ Module escape.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
               [],
+              [],
               "advance_back_by",
+              [],
               []
             |),
             [

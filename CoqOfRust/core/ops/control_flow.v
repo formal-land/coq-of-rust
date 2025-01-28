@@ -55,6 +55,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Continue" |); __self_0 ]
@@ -75,6 +76,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Break" |); __self_0 ]
@@ -125,7 +127,15 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", C, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                C,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -145,7 +155,15 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", B, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                B,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -259,8 +277,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ C ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ C ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -291,8 +311,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ B ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ B ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -400,7 +422,9 @@ Module ops.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -421,7 +445,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            C,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
@@ -437,7 +469,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            B,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)))
@@ -830,8 +870,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ B ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
@@ -942,8 +984,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ C ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
@@ -997,7 +1041,15 @@ Module ops.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::ops::try_trait::Try", R, [], "branch", [] |),
+                    M.get_trait_method (|
+                      "core::ops::try_trait::Try",
+                      R,
+                      [],
+                      [],
+                      "branch",
+                      [],
+                      []
+                    |),
                     [ M.read (| r |) ]
                   |)
                 |),
@@ -1033,8 +1085,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::ops::try_trait::FromResidual",
                                 R,
+                                [],
                                 [ Ty.associated ],
                                 "from_residual",
+                                [],
                                 []
                               |),
                               [ M.read (| v |) ]
@@ -1084,7 +1138,9 @@ Module ops.
                             "core::ops::try_trait::Try",
                             R,
                             [],
+                            [],
                             "from_output",
+                            [],
                             []
                           |),
                           [ M.read (| v |) ]

@@ -27,6 +27,7 @@ Module mem.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
                             "new",
+                            [],
                             []
                           |),
                           [ M.read (| src |) ]
@@ -46,6 +47,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ],
                     "into_inner",
+                    [],
                     []
                   |),
                   [ M.read (| dst |) ]
@@ -264,6 +266,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -635,6 +638,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.path "core::mem::transmutability::Assume",
                 "and",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
@@ -672,6 +676,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.path "core::mem::transmutability::Assume",
                 "but_not",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]

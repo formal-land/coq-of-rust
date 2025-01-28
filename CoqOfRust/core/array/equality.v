@@ -28,8 +28,10 @@ Module array.
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
                 T,
+                [ N ],
                 [ U ],
                 "spec_eq",
+                [ N ],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
@@ -59,8 +61,10 @@ Module array.
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
                 T,
+                [ N ],
                 [ U ],
                 "spec_ne",
+                [ N ],
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
@@ -110,8 +114,10 @@ Module array.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
                       "try_into",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -134,8 +140,10 @@ Module array.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [],
                             [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "eq",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| b |) ]
@@ -185,8 +193,10 @@ Module array.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
                       "try_into",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -209,8 +219,10 @@ Module array.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [],
                             [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "ne",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| b |) ]
@@ -273,8 +285,10 @@ Module array.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
                       "try_into",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -297,8 +311,10 @@ Module array.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [],
                             [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "eq",
+                            [],
                             []
                           |),
                           [ M.read (| b |); M.read (| other |) ]
@@ -348,8 +364,10 @@ Module array.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
                       "try_into",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -372,8 +390,10 @@ Module array.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [],
                             [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "ne",
+                            [],
                             []
                           |),
                           [ M.read (| b |); M.read (| other |) ]
@@ -429,8 +449,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
@@ -460,8 +482,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
@@ -506,8 +530,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
@@ -537,8 +563,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
@@ -581,8 +609,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
@@ -612,8 +642,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
@@ -658,8 +690,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
@@ -689,8 +723,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
@@ -748,8 +784,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -757,8 +795,10 @@ Module array.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -767,8 +807,10 @@ Module array.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ Other ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -800,8 +842,10 @@ Module array.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -809,8 +853,10 @@ Module array.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| a |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -819,8 +865,10 @@ Module array.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ Other ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| b |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -914,8 +962,10 @@ Module array.
                 M.get_trait_method (|
                   "core::array::equality::SpecArrayEq",
                   T,
+                  [ N ],
                   [ U ],
                   "spec_eq",
+                  [ N ],
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]

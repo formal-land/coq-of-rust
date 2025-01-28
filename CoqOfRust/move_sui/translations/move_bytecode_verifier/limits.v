@@ -36,6 +36,7 @@ Module limits.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -48,6 +49,7 @@ Module limits.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| config |); M.read (| module |) ]
@@ -68,6 +70,7 @@ Module limits.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -80,6 +83,7 @@ Module limits.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -139,7 +143,9 @@ Module limits.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -147,6 +153,7 @@ Module limits.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_constants",
+                              [],
                               []
                             |),
                             [ limit_check; M.read (| config |) ]
@@ -178,6 +185,7 @@ Module limits.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -188,6 +196,7 @@ Module limits.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -219,7 +228,9 @@ Module limits.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -227,6 +238,7 @@ Module limits.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_function_handles",
+                              [],
                               []
                             |),
                             [ limit_check; M.read (| config |) ]
@@ -258,6 +270,7 @@ Module limits.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -268,6 +281,7 @@ Module limits.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -299,7 +313,9 @@ Module limits.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -307,6 +323,7 @@ Module limits.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_struct_handles",
+                              [],
                               []
                             |),
                             [ limit_check; M.read (| config |) ]
@@ -338,6 +355,7 @@ Module limits.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -348,6 +366,7 @@ Module limits.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -379,7 +398,9 @@ Module limits.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -387,6 +408,7 @@ Module limits.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_type_nodes",
+                              [],
                               []
                             |),
                             [ limit_check; M.read (| config |) ]
@@ -418,6 +440,7 @@ Module limits.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -428,6 +451,7 @@ Module limits.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -459,7 +483,9 @@ Module limits.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -467,6 +493,7 @@ Module limits.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_identifiers",
+                              [],
                               []
                             |),
                             [ limit_check; M.read (| config |) ]
@@ -498,6 +525,7 @@ Module limits.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -508,6 +536,7 @@ Module limits.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -533,6 +562,7 @@ Module limits.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                       "verify_definitions",
+                      [],
                       []
                     |),
                     [ limit_check; M.read (| config |) ]
@@ -604,7 +634,9 @@ Module limits.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -617,7 +649,9 @@ Module limits.
                                           [ Ty.path "move_binary_format::file_format::StructHandle"
                                           ],
                                         [],
+                                        [],
                                         "enumerate",
+                                        [],
                                         []
                                       |),
                                       [
@@ -631,6 +665,7 @@ Module limits.
                                                   "move_binary_format::file_format::StructHandle"
                                               ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -639,6 +674,7 @@ Module limits.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "struct_handles",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -684,7 +720,9 @@ Module limits.
                                                         ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -736,6 +774,7 @@ Module limits.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -766,6 +805,7 @@ Module limits.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
                                                                           "at_index",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -774,6 +814,7 @@ Module limits.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
                                                                               "new",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -862,7 +903,9 @@ Module limits.
                                   [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -874,7 +917,9 @@ Module limits.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -885,6 +930,7 @@ Module limits.
                                       []
                                       [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -892,6 +938,7 @@ Module limits.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_handles",
+                                        [],
                                         []
                                       |),
                                       [
@@ -936,7 +983,9 @@ Module limits.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1006,6 +1055,7 @@ Module limits.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1038,6 +1088,7 @@ Module limits.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1046,6 +1097,7 @@ Module limits.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1116,6 +1168,7 @@ Module limits.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "len",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1125,6 +1178,7 @@ Module limits.
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::CompiledModule",
                                                                               "signature_at",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1171,6 +1225,7 @@ Module limits.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1179,6 +1234,7 @@ Module limits.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1273,7 +1329,9 @@ Module limits.
                                   [ Ty.path "move_binary_format::file_format::Signature" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1281,6 +1339,7 @@ Module limits.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signatures",
+                                [],
                                 []
                               |),
                               [
@@ -1314,7 +1373,9 @@ Module limits.
                                             [ Ty.path "move_binary_format::file_format::Signature"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1360,7 +1421,9 @@ Module limits.
                                                           ]
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1393,7 +1456,9 @@ Module limits.
                                                                         "move_binary_format::file_format::SignatureToken"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ iter ]
@@ -1436,7 +1501,9 @@ Module limits.
                                                                                 "move_binary_format::errors::PartialVMError"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1445,6 +1512,7 @@ Module limits.
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::limits::LimitsVerifier",
                                                                               "verify_type_node",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1484,6 +1552,7 @@ Module limits.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -1497,6 +1566,7 @@ Module limits.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1551,7 +1621,9 @@ Module limits.
                                   [ Ty.path "move_binary_format::file_format::Constant" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1559,6 +1631,7 @@ Module limits.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "constant_pool",
+                                [],
                                 []
                               |),
                               [
@@ -1591,7 +1664,9 @@ Module limits.
                                             []
                                             [ Ty.path "move_binary_format::file_format::Constant" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1631,7 +1706,9 @@ Module limits.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1640,6 +1717,7 @@ Module limits.
                                                       Ty.path
                                                         "move_bytecode_verifier::limits::LimitsVerifier",
                                                       "verify_type_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1680,6 +1758,7 @@ Module limits.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -1692,6 +1771,7 @@ Module limits.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1724,6 +1804,7 @@ Module limits.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_defs",
+                        [],
                         []
                       |),
                       [
@@ -1754,7 +1835,9 @@ Module limits.
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| sdefs |) ]
@@ -1780,7 +1863,9 @@ Module limits.
                                                 "move_binary_format::file_format::StructDefinition"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1847,7 +1932,9 @@ Module limits.
                                                                   ]
                                                               ],
                                                             [],
+                                                            [],
                                                             "into_iter",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| fdefs |) ]
@@ -1874,7 +1961,9 @@ Module limits.
                                                                                 "move_binary_format::file_format::FieldDefinition"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "next",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ iter ]
@@ -1920,7 +2009,9 @@ Module limits.
                                                                                         "move_binary_format::errors::PartialVMError"
                                                                                     ],
                                                                                   [],
+                                                                                  [],
                                                                                   "branch",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -1929,6 +2020,7 @@ Module limits.
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::limits::LimitsVerifier",
                                                                                       "verify_type_node",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -1984,6 +2076,7 @@ Module limits.
                                                                                                   Ty.path
                                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                                 ],
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -1997,6 +2090,7 @@ Module limits.
                                                                                                   ]
                                                                                               ],
                                                                                               "from_residual",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -2122,7 +2216,9 @@ Module limits.
                                       Ty.path
                                         "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2130,6 +2226,7 @@ Module limits.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::SignatureToken",
                                           "preorder_traversal",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| ty |) ]
@@ -2152,7 +2249,9 @@ Module limits.
                                                     Ty.path
                                                       "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -2205,28 +2304,27 @@ Module limits.
                                                                       |) in
                                                                     Value.Tuple []))
                                                               ],
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [] =>
-                                                                      ltac:(M.monadic
-                                                                        (let β := size in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Wrap.add (|
-                                                                            M.read (| β |),
-                                                                            M.read (|
-                                                                              M.get_constant (|
-                                                                                "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
-                                                                              |)
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  match γ with
+                                                                  | [] =>
+                                                                    ltac:(M.monadic
+                                                                      (let β := size in
+                                                                      M.write (|
+                                                                        β,
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          M.read (|
+                                                                            M.get_constant (|
+                                                                              "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
                                                                             |)
                                                                           |)
-                                                                        |)))
-                                                                    | _ =>
-                                                                      M.impossible
-                                                                        "wrong number of arguments"
-                                                                    end))
+                                                                        |)
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
+                                                                  end)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -2296,6 +2394,7 @@ Module limits.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2375,6 +2474,7 @@ Module limits.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_defs",
+                        [],
                         []
                       |),
                       [
@@ -2426,6 +2526,7 @@ Module limits.
                                                     "move_binary_format::file_format::FunctionDefinition"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| defs |) ]
@@ -2450,6 +2551,7 @@ Module limits.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2475,6 +2577,7 @@ Module limits.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_defs",
+                        [],
                         []
                       |),
                       [
@@ -2526,6 +2629,7 @@ Module limits.
                                                     "move_binary_format::file_format::StructDefinition"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| defs |) ]
@@ -2550,6 +2654,7 @@ Module limits.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2607,7 +2712,9 @@ Module limits.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| defs |) ]
@@ -2633,7 +2740,9 @@ Module limits.
                                                         "move_binary_format::file_format::StructDefinition"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -2709,6 +2818,7 @@ Module limits.
                                                                                     "alloc::alloc::Global"
                                                                                 ],
                                                                               "len",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| fields |) ]
@@ -2735,6 +2845,7 @@ Module limits.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
                                                                                   "new",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -2830,7 +2941,9 @@ Module limits.
                                   [ Ty.path "move_binary_format::file_format::Constant" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2842,7 +2955,9 @@ Module limits.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Constant" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -2853,6 +2968,7 @@ Module limits.
                                       []
                                       [ Ty.path "move_binary_format::file_format::Constant" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2860,6 +2976,7 @@ Module limits.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "constant_pool",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2904,7 +3021,9 @@ Module limits.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2972,7 +3091,9 @@ Module limits.
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2987,6 +3108,7 @@ Module limits.
                                                                               "move_core_types::runtime_value::MoveValue"
                                                                           ],
                                                                         "ok_or_else",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError";
@@ -3002,6 +3124,7 @@ Module limits.
                                                                             Ty.path
                                                                               "move_binary_format::file_format::Constant",
                                                                             "deserialize_constant",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| constant |) ]
@@ -3076,6 +3199,7 @@ Module limits.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -3089,6 +3213,7 @@ Module limits.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3160,6 +3285,7 @@ Module limits.
                                                                                             "alloc::alloc::Global"
                                                                                         ],
                                                                                       "len",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ cons ]
@@ -3187,6 +3313,7 @@ Module limits.
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError",
                                                                                           "with_message",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -3195,6 +3322,7 @@ Module limits.
                                                                                               Ty.path
                                                                                                 "move_binary_format::errors::PartialVMError",
                                                                                               "new",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -3229,6 +3357,7 @@ Module limits.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -3249,6 +3378,7 @@ Module limits.
                                                                                                                       Ty.path
                                                                                                                         "core::fmt::rt::Argument",
                                                                                                                       "new_display",
+                                                                                                                      [],
                                                                                                                       [
                                                                                                                         Ty.path
                                                                                                                           "u64"
@@ -3400,7 +3530,9 @@ Module limits.
                                           [ Ty.path "move_core_types::identifier::Identifier" ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3412,7 +3544,9 @@ Module limits.
                                           []
                                           [ Ty.path "move_core_types::identifier::Identifier" ],
                                         [],
+                                        [],
                                         "enumerate",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3423,6 +3557,7 @@ Module limits.
                                               []
                                               [ Ty.path "move_core_types::identifier::Identifier" ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3431,6 +3566,7 @@ Module limits.
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
                                                 "identifiers",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3476,7 +3612,9 @@ Module limits.
                                                         ]
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -3521,6 +3659,7 @@ Module limits.
                                                                       Ty.path
                                                                         "move_core_types::identifier::IdentStr",
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -3530,7 +3669,9 @@ Module limits.
                                                                           Ty.path
                                                                             "move_core_types::identifier::Identifier",
                                                                           [],
+                                                                          [],
                                                                           "deref",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| identifier |) ]

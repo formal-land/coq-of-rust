@@ -31,7 +31,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -100,6 +100,7 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -167,6 +168,7 @@ Module vec.
                           []
                           [ Src; Ty.path "alloc::alloc::Global" ],
                         "from_nonnull_in",
+                        [],
                         []
                       |),
                       [
@@ -174,6 +176,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                             "cast",
+                            [],
                             [ Src ]
                           |),
                           [
@@ -213,6 +216,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [

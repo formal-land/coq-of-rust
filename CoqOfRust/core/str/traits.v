@@ -22,16 +22,18 @@ Module str.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                   [ M.read (| other |) ]
                 |)
               ]
@@ -65,20 +67,22 @@ Module str.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
                 "eq",
+                [],
                 []
               |),
               [
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 |);
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| other |) ]
                   |)
                 |)
@@ -120,7 +124,7 @@ Module str.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], [], "cmp", [], [] |),
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
@@ -157,8 +161,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
+                [],
                 [ Ty.path "str" ],
                 "index",
+                [],
                 []
               |),
               [ M.read (| index |); M.read (| self |) ]
@@ -195,8 +201,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
+                [],
                 [ Ty.path "str" ],
                 "index_mut",
+                [],
                 []
               |),
               [ M.read (| index |); M.read (| self |) ]
@@ -226,7 +234,7 @@ Module str.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -414,6 +422,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -433,6 +442,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -457,8 +467,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -526,6 +538,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -545,6 +558,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -569,8 +583,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -644,6 +660,7 @@ Module str.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -668,6 +685,7 @@ Module str.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -710,6 +728,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -720,6 +739,7 @@ Module str.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| slice |) ]
@@ -792,6 +812,7 @@ Module str.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [
@@ -816,6 +837,7 @@ Module str.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -862,6 +884,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -872,6 +895,7 @@ Module str.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| slice |) ]
@@ -942,8 +966,10 @@ Module str.
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              [],
                               [ Ty.path "str" ],
                               "get",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| slice |) ]
@@ -1033,6 +1059,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1052,6 +1079,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1073,8 +1101,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| slice |) ]
@@ -1188,6 +1218,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1207,6 +1238,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1231,8 +1263,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -1300,6 +1334,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1319,6 +1354,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1343,8 +1379,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -1418,6 +1456,7 @@ Module str.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -1442,6 +1481,7 @@ Module str.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1480,6 +1520,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1490,6 +1531,7 @@ Module str.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| slice |) ]
@@ -1562,6 +1604,7 @@ Module str.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [
@@ -1586,6 +1629,7 @@ Module str.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -1628,6 +1672,7 @@ Module str.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1638,6 +1683,7 @@ Module str.
                                 []
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| slice |) ]
@@ -1704,8 +1750,10 @@ Module str.
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
                               Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                              [],
                               [ Ty.path "str" ],
                               "get",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| slice |) ]
@@ -1795,6 +1843,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "is_char_boundary",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1814,6 +1863,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "is_char_boundary",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1835,8 +1885,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| slice |) ]
@@ -1919,8 +1971,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -1940,7 +1994,9 @@ Module str.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -1948,7 +2004,7 @@ Module str.
                                 M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                     [ M.read (| slice |) ]
                                   |);
                                   M.read (| self |)
@@ -1978,6 +2034,7 @@ Module str.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -1985,6 +2042,7 @@ Module str.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2030,8 +2088,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_mut",
+                    [],
                     []
                   |),
                   [
@@ -2051,7 +2111,9 @@ Module str.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -2059,7 +2121,7 @@ Module str.
                                 M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                     [ M.read (| slice |) ]
                                   |);
                                   M.read (| self |)
@@ -2089,6 +2151,7 @@ Module str.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -2096,6 +2159,7 @@ Module str.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -2147,6 +2211,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -2157,8 +2222,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -2197,6 +2264,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -2207,8 +2275,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked_mut",
+                    [],
                     []
                   |),
                   [
@@ -2239,8 +2309,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -2248,7 +2320,7 @@ Module str.
                   M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                       [ M.read (| slice |) ]
                     |);
                     M.read (| self |)
@@ -2275,8 +2347,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -2284,7 +2358,7 @@ Module str.
                   M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                       [ M.read (| slice |) ]
                     |);
                     M.read (| self |)
@@ -2347,7 +2421,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -2372,8 +2451,10 @@ Module str.
                                   (Ty.path "core::ops::range::RangeTo")
                                   []
                                   [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -2416,7 +2497,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -2441,8 +2527,10 @@ Module str.
                                   (Ty.path "core::ops::range::RangeTo")
                                   []
                                   [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -2474,8 +2562,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -2514,8 +2604,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -2568,8 +2660,10 @@ Module str.
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                      [],
                       [ Ty.path "str" ],
                       "get",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| slice |) ]
@@ -2634,7 +2728,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -2653,8 +2752,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| slice |) ]
@@ -2737,7 +2838,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -2762,8 +2868,10 @@ Module str.
                                   (Ty.path "core::ops::range::RangeFrom")
                                   []
                                   [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -2806,7 +2914,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -2831,8 +2944,10 @@ Module str.
                                   (Ty.path "core::ops::range::RangeFrom")
                                   []
                                   [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -2871,6 +2986,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -2881,8 +2997,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -2930,6 +3048,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -2940,8 +3059,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked_mut",
+                    [],
                     []
                   |),
                   [
@@ -2994,7 +3115,7 @@ Module str.
                         |)
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.read (| slice |) ]
                       |)
                     ]
@@ -3015,8 +3136,10 @@ Module str.
                                 (Ty.path "core::ops::range::RangeFrom")
                                 []
                                 [ Ty.path "usize" ],
+                              [],
                               [ Ty.path "str" ],
                               "get",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| slice |) ]
@@ -3079,7 +3202,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -3098,8 +3226,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| slice |) ]
@@ -3121,7 +3251,7 @@ Module str.
                                 |)
                               |);
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| slice |) ]
                               |)
                             ]
@@ -3184,7 +3314,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -3206,8 +3341,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -3250,7 +3387,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -3272,8 +3414,10 @@ Module str.
                               M.get_trait_method (|
                                 "core::slice::index::SliceIndex",
                                 Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                                [],
                                 [ Ty.path "str" ],
                                 "get_unchecked_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| slice |) ]
@@ -3312,6 +3456,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -3322,8 +3467,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -3371,6 +3518,7 @@ Module str.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.rust_cast (M.read (| slice |)) ]
@@ -3381,8 +3529,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "get_unchecked_mut",
+                    [],
                     []
                   |),
                   [
@@ -3435,7 +3585,7 @@ Module str.
                         |)
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.read (| slice |) ]
                       |)
                     ]
@@ -3453,8 +3603,10 @@ Module str.
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
                               Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                              [],
                               [ Ty.path "str" ],
                               "get",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| slice |) ]
@@ -3517,7 +3669,12 @@ Module str.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "is_char_boundary", [] |),
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "is_char_boundary",
+                                [],
+                                []
+                              |),
                               [
                                 M.read (| slice |);
                                 M.read (|
@@ -3536,8 +3693,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| slice |) ]
@@ -3559,7 +3718,7 @@ Module str.
                                 |)
                               |);
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "str", "len", [] |),
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                 [ M.read (| slice |) ]
                               |)
                             ]
@@ -3625,6 +3784,7 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -3642,8 +3802,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get",
+                            [],
                             []
                           |),
                           [
@@ -3654,6 +3816,7 @@ Module str.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3697,6 +3860,7 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     "end",
+                                    [],
                                     []
                                   |),
                                   [ self ]
@@ -3714,8 +3878,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_mut",
+                            [],
                             []
                           |),
                           [
@@ -3726,6 +3892,7 @@ Module str.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3756,8 +3923,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -3765,6 +3934,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3791,8 +3961,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -3800,6 +3972,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -3843,6 +4016,7 @@ Module str.
                                         []
                                         [ Ty.path "usize" ],
                                       "end",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -3873,8 +4047,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -3885,6 +4061,7 @@ Module str.
                           []
                           [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -3930,6 +4107,7 @@ Module str.
                                         []
                                         [ Ty.path "usize" ],
                                       "end",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -3960,8 +4138,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -3972,6 +4152,7 @@ Module str.
                           []
                           [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4048,8 +4229,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get",
+                            [],
                             []
                           |),
                           [
@@ -4060,6 +4243,7 @@ Module str.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4114,8 +4298,10 @@ Module str.
                           M.get_trait_method (|
                             "core::slice::index::SliceIndex",
                             Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                            [],
                             [ Ty.path "str" ],
                             "get_mut",
+                            [],
                             []
                           |),
                           [
@@ -4126,6 +4312,7 @@ Module str.
                                   []
                                   [ Ty.path "usize" ],
                                 "into_slice_range",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4156,8 +4343,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -4165,6 +4354,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4191,8 +4381,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -4200,6 +4392,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "into_slice_range",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4267,8 +4460,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -4276,6 +4471,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4345,8 +4541,10 @@ Module str.
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ],
+                    [],
                     [ Ty.path "str" ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -4354,6 +4552,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
                         "into_slice_range",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4405,8 +4604,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -4414,6 +4615,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4448,8 +4650,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_mut",
+                [],
                 []
               |),
               [
@@ -4457,6 +4661,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4492,8 +4697,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked",
+                [],
                 []
               |),
               [
@@ -4501,6 +4708,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4536,8 +4744,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "get_unchecked_mut",
+                [],
                 []
               |),
               [
@@ -4545,6 +4755,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4579,8 +4790,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -4588,6 +4801,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -4622,8 +4836,10 @@ Module str.
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [],
                 [ Ty.path "str" ],
                 "index_mut",
+                [],
                 []
               |),
               [
@@ -4631,6 +4847,7 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [

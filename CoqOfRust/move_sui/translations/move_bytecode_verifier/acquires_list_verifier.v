@@ -125,7 +125,9 @@ Module acquires_list_verifier.
                               [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -145,7 +147,9 @@ Module acquires_list_verifier.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                             [],
+                            [],
                             "cloned",
+                            [],
                             [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                           |),
                           [
@@ -157,6 +161,7 @@ Module acquires_list_verifier.
                                   [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
                                   ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -172,7 +177,9 @@ Module acquires_list_verifier.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [
@@ -206,6 +213,7 @@ Module acquires_list_verifier.
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -228,7 +236,9 @@ Module acquires_list_verifier.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -236,6 +246,7 @@ Module acquires_list_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_defs",
+                                [],
                                 []
                               |),
                               [ M.read (| module |) ]
@@ -263,7 +274,9 @@ Module acquires_list_verifier.
                                                 "move_binary_format::file_format::FunctionDefinition"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -309,6 +322,7 @@ Module acquires_list_verifier.
                                                       Ty.path "std::hash::random::RandomState"
                                                     ],
                                                   "insert",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -350,6 +364,7 @@ Module acquires_list_verifier.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -374,7 +389,9 @@ Module acquires_list_verifier.
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -386,7 +403,9 @@ Module acquires_list_verifier.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -397,6 +416,7 @@ Module acquires_list_verifier.
                                       []
                                       [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -411,7 +431,9 @@ Module acquires_list_verifier.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -429,6 +451,7 @@ Module acquires_list_verifier.
                                                           "move_binary_format::file_format::CodeUnit"
                                                       ],
                                                     "as_ref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -465,6 +488,7 @@ Module acquires_list_verifier.
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
                                                             "with_message",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -473,6 +497,7 @@ Module acquires_list_verifier.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -503,6 +528,7 @@ Module acquires_list_verifier.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -521,6 +547,7 @@ Module acquires_list_verifier.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "none",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   []
@@ -565,6 +592,7 @@ Module acquires_list_verifier.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -584,6 +612,7 @@ Module acquires_list_verifier.
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
                                                                                   "new_debug",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
@@ -654,7 +683,9 @@ Module acquires_list_verifier.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -697,7 +728,9 @@ Module acquires_list_verifier.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -706,6 +739,7 @@ Module acquires_list_verifier.
                                                       Ty.path
                                                         "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                                                       "verify_instruction",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -742,6 +776,7 @@ Module acquires_list_verifier.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -754,6 +789,7 @@ Module acquires_list_verifier.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -795,7 +831,9 @@ Module acquires_list_verifier.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -830,7 +868,9 @@ Module acquires_list_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -878,6 +918,7 @@ Module acquires_list_verifier.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "contains",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::file_format::StructDefinitionIndex"
@@ -911,6 +952,7 @@ Module acquires_list_verifier.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
                                                                     "new",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -942,6 +984,7 @@ Module acquires_list_verifier.
                                                             "move_binary_format::file_format::StructDefinition"
                                                         ],
                                                       "get",
+                                                      [],
                                                       [ Ty.path "usize" ]
                                                     |),
                                                     [
@@ -950,6 +993,7 @@ Module acquires_list_verifier.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "struct_defs",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| module |) ]
@@ -990,6 +1034,7 @@ Module acquires_list_verifier.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
                                                               "with_message",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -998,6 +1043,7 @@ Module acquires_list_verifier.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1029,6 +1075,7 @@ Module acquires_list_verifier.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -1047,6 +1094,7 @@ Module acquires_list_verifier.
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
                                                                                       "none",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     []
@@ -1091,6 +1139,7 @@ Module acquires_list_verifier.
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
                                                                           "new_v1",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1110,6 +1159,7 @@ Module acquires_list_verifier.
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
                                                                                     "new_debug",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
@@ -1150,6 +1200,7 @@ Module acquires_list_verifier.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "struct_handle_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1178,6 +1229,7 @@ Module acquires_list_verifier.
                                                               Ty.path
                                                                 "move_binary_format::file_format::AbilitySet",
                                                               "has_key",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1209,6 +1261,7 @@ Module acquires_list_verifier.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1361,6 +1414,7 @@ Module acquires_list_verifier.
                           Ty.path
                             "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                           "call_acquire",
+                          [],
                           []
                         |),
                         [ M.read (| self |); M.read (| M.read (| idx |) |); M.read (| offset |) ]
@@ -1382,6 +1436,7 @@ Module acquires_list_verifier.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "function_instantiation_at",
+                            [],
                             []
                           |),
                           [
@@ -1402,6 +1457,7 @@ Module acquires_list_verifier.
                           Ty.path
                             "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                           "call_acquire",
+                          [],
                           []
                         |),
                         [
@@ -1456,29 +1512,29 @@ Module acquires_list_verifier.
                             let idx := M.alloc (| γ1_0 |) in
                             Value.Tuple [ idx ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ idx ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path
-                                        "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                      "struct_acquire",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| self |);
-                                      M.read (| M.read (| idx |) |);
-                                      M.read (| offset |)
-                                    ]
-                                  |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ idx ] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path
+                                      "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                    "struct_acquire",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (| self |);
+                                    M.read (| M.read (| idx |) |);
+                                    M.read (| offset |)
+                                  ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1519,55 +1575,56 @@ Module acquires_list_verifier.
                             let idx := M.alloc (| γ1_0 |) in
                             Value.Tuple [ idx ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ idx ] =>
-                              ltac:(M.monadic
-                                (let~ si :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "struct_instantiation_at",
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                            "module"
-                                          |)
-                                        |);
-                                        M.read (| M.read (| idx |) |)
-                                      ]
-                                    |)
-                                  |) in
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ idx ] =>
+                            ltac:(M.monadic
+                              (let~ si :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path
-                                        "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                      "struct_acquire",
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_instantiation_at",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| self |);
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| si |),
-                                          "move_binary_format::file_format::StructDefInstantiation",
-                                          "def"
+                                          M.read (| self |),
+                                          "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                          "module"
                                         |)
                                       |);
-                                      M.read (| offset |)
+                                      M.read (| M.read (| idx |) |)
                                     ]
                                   |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                |) in
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path
+                                      "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                    "struct_acquire",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (| self |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| si |),
+                                        "move_binary_format::file_format::StructDefInstantiation",
+                                        "def"
+                                      |)
+                                    |);
+                                    M.read (| offset |)
+                                  ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2229,17 +2286,16 @@ Module acquires_list_verifier.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)))
               ]
             |)
@@ -2285,6 +2341,7 @@ Module acquires_list_verifier.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_handle_at",
+                        [],
                         []
                       |),
                       [
@@ -2305,6 +2362,7 @@ Module acquires_list_verifier.
                       M.get_associated_function (|
                         Ty.path "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                         "function_acquired_resources",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| function_handle |); M.read (| fh_idx |) ]
@@ -2331,7 +2389,9 @@ Module acquires_list_verifier.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ function_acquired_resources ]
@@ -2357,7 +2417,9 @@ Module acquires_list_verifier.
                                                 "move_binary_format::file_format::StructDefinitionIndex"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2404,6 +2466,7 @@ Module acquires_list_verifier.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "contains",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::StructDefinitionIndex"
@@ -2437,6 +2500,7 @@ Module acquires_list_verifier.
                                                                   Ty.path
                                                                     "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                                                                   "error",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2474,6 +2538,7 @@ Module acquires_list_verifier.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "append",
+                        [],
                         []
                       |),
                       [
@@ -2534,6 +2599,7 @@ Module acquires_list_verifier.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "contains",
+                              [],
                               [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                             |),
                             [
@@ -2559,6 +2625,7 @@ Module acquires_list_verifier.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "insert",
+                            [],
                             []
                           |),
                           [
@@ -2583,6 +2650,7 @@ Module acquires_list_verifier.
                               Ty.path
                                 "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                               "error",
+                              [],
                               []
                             |),
                             [
@@ -2646,9 +2714,11 @@ Module acquires_list_verifier.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "move_binary_format::file_format::ModuleHandleIndex",
+                                    [],
                                     [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
                                     ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2662,6 +2732,7 @@ Module acquires_list_verifier.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_handle_idx",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2695,6 +2766,7 @@ Module acquires_list_verifier.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -2722,6 +2794,7 @@ Module acquires_list_verifier.
                             Ty.path "std::hash::random::RandomState"
                           ],
                         "get",
+                        [],
                         [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ]
                       |),
                       [
@@ -2761,7 +2834,9 @@ Module acquires_list_verifier.
                                     ]
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2785,7 +2860,9 @@ Module acquires_list_verifier.
                                         "move_binary_format::file_format::StructDefinitionIndex"
                                     ],
                                   [],
+                                  [],
                                   "cloned",
+                                  [],
                                   [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
                                   ]
                                 |),
@@ -2800,6 +2877,7 @@ Module acquires_list_verifier.
                                             "move_binary_format::file_format::StructDefinitionIndex"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2815,7 +2893,9 @@ Module acquires_list_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2847,6 +2927,7 @@ Module acquires_list_verifier.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -2878,6 +2959,7 @@ Module acquires_list_verifier.
             M.get_associated_function (|
               Ty.path "move_binary_format::errors::PartialVMError",
               "at_code_offset",
+              [],
               []
             |),
             [
@@ -2885,6 +2967,7 @@ Module acquires_list_verifier.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::errors::PartialVMError",
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| status |) ]

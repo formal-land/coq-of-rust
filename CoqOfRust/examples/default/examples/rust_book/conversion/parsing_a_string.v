@@ -16,21 +16,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
               [ M.read (| Value.String "12" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "bool" ] |),
               [ M.read (| Value.String "true" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
               [ M.read (| Value.String "unparsable" |) ]
             |)
           |) in

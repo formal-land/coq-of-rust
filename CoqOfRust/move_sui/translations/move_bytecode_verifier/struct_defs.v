@@ -35,6 +35,7 @@ Module struct_defs.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -47,6 +48,7 @@ Module struct_defs.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| module |) ]
@@ -67,6 +69,7 @@ Module struct_defs.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -79,6 +82,7 @@ Module struct_defs.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -152,7 +156,9 @@ Module struct_defs.
                                 Ty.path "move_binary_format::errors::PartialVMError"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -161,6 +167,7 @@ Module struct_defs.
                                 Ty.path
                                   "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                 "build",
+                                [],
                                 []
                               |),
                               [
@@ -169,6 +176,7 @@ Module struct_defs.
                                     Ty.path
                                       "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -210,6 +218,7 @@ Module struct_defs.
                                             Ty.tuple [];
                                             Ty.path "move_binary_format::errors::PartialVMError"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -220,6 +229,7 @@ Module struct_defs.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -311,7 +321,9 @@ Module struct_defs.
                                         Ty.path
                                           "move_binary_format::file_format::StructDefinitionIndex",
                                         [],
+                                        [],
                                         "into_index",
+                                        [],
                                         []
                                       |),
                                       [
@@ -325,6 +337,7 @@ Module struct_defs.
                                                   "move_binary_format::file_format::StructDefinitionIndex"
                                               ],
                                             "node_id",
+                                            [],
                                             []
                                           |),
                                           [ cycle ]
@@ -408,6 +421,7 @@ Module struct_defs.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -430,7 +444,9 @@ Module struct_defs.
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -442,7 +458,9 @@ Module struct_defs.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                             [],
+                            [],
                             "enumerate",
+                            [],
                             []
                           |),
                           [
@@ -453,6 +471,7 @@ Module struct_defs.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -460,6 +479,7 @@ Module struct_defs.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_defs",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| module |) ]
@@ -496,7 +516,9 @@ Module struct_defs.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -545,6 +567,7 @@ Module struct_defs.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "insert",
+                                              [],
                                               []
                                             |),
                                             [
@@ -615,6 +638,7 @@ Module struct_defs.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -629,7 +653,9 @@ Module struct_defs.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -648,6 +674,7 @@ Module struct_defs.
                                             "move_binary_format::file_format::StructDefinition"
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
@@ -655,6 +682,7 @@ Module struct_defs.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "struct_defs",
+                                          [],
                                           []
                                         |),
                                         [
@@ -690,7 +718,9 @@ Module struct_defs.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -723,6 +753,7 @@ Module struct_defs.
                                                   Ty.path
                                                     "move_binary_format::file_format::StructDefinitionIndex",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.rust_cast (M.read (| idx |)) ]
@@ -742,7 +773,9 @@ Module struct_defs.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -751,6 +784,7 @@ Module struct_defs.
                                                       Ty.path
                                                         "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                                       "add_struct_defs",
+                                                      [],
                                                       []
                                                     |),
                                                     [ self; neighbors; M.read (| sd_idx |) ]
@@ -792,6 +826,7 @@ Module struct_defs.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -804,6 +839,7 @@ Module struct_defs.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -850,7 +886,9 @@ Module struct_defs.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "flat_map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::map::Map")
@@ -947,7 +985,9 @@ Module struct_defs.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| neighbors |) ]
@@ -979,7 +1019,9 @@ Module struct_defs.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               [],
+                                              [],
                                               "map",
+                                              [],
                                               [
                                                 Ty.tuple
                                                   [
@@ -1019,7 +1061,9 @@ Module struct_defs.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| children |) ]
@@ -1069,6 +1113,7 @@ Module struct_defs.
                               Ty.path "petgraph::Directed"
                             ],
                           "from_edges",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -1210,6 +1255,7 @@ Module struct_defs.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_def_at",
+                        [],
                         []
                       |),
                       [
@@ -1254,7 +1300,9 @@ Module struct_defs.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1279,7 +1327,9 @@ Module struct_defs.
                                       ]
                                   ],
                                 [],
+                                [],
                                 "flatten",
+                                [],
                                 []
                               |),
                               [
@@ -1304,7 +1354,9 @@ Module struct_defs.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1312,6 +1364,7 @@ Module struct_defs.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::StructDefinition",
                                         "fields",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| struct_def |) ]
@@ -1358,7 +1411,9 @@ Module struct_defs.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1398,7 +1453,9 @@ Module struct_defs.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1407,6 +1464,7 @@ Module struct_defs.
                                                       Ty.path
                                                         "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                                       "add_signature_token",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1452,6 +1510,7 @@ Module struct_defs.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -1464,6 +1523,7 @@ Module struct_defs.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1661,13 +1721,12 @@ Module struct_defs.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1695,64 +1754,67 @@ Module struct_defs.
                                     |) in
                                   Value.Tuple []))
                             ],
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [] =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::errors::PartialVMError",
-                                                      "with_message",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::errors::PartialVMError",
-                                                          "new",
+                            fun γ =>
+                              ltac:(M.monadic
+                                match γ with
+                                | [] =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
+                                                    "with_message",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        "new",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                                                           []
-                                                        |),
-                                                        [
-                                                          Value.StructTuple
-                                                            "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
-                                                            []
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "alloc::borrow::ToOwned",
-                                                          Ty.path "str",
-                                                          [],
-                                                          "to_owned",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "Reference field when checking recursive structs"
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                            |)
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "alloc::borrow::ToOwned",
+                                                        Ty.path "str",
+                                                        [],
+                                                        [],
+                                                        "to_owned",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Reference field when checking recursive structs"
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                           |)
                                         |)
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
+                                end)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1777,7 +1839,9 @@ Module struct_defs.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1786,6 +1850,7 @@ Module struct_defs.
                                       Ty.path
                                         "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                       "add_signature_token",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1823,6 +1888,7 @@ Module struct_defs.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1834,6 +1900,7 @@ Module struct_defs.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1884,6 +1951,7 @@ Module struct_defs.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "get",
+                                          [],
                                           [
                                             Ty.path
                                               "move_binary_format::file_format::StructHandleIndex"
@@ -1919,6 +1987,7 @@ Module struct_defs.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "insert",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1943,6 +2012,7 @@ Module struct_defs.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "or_default",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1967,6 +2037,7 @@ Module struct_defs.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| neighbors |); M.read (| cur_idx |) ]
@@ -2023,6 +2094,7 @@ Module struct_defs.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "get",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_binary_format::file_format::StructHandleIndex"
@@ -2059,6 +2131,7 @@ Module struct_defs.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     "insert",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2083,6 +2156,7 @@ Module struct_defs.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "or_default",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2107,6 +2181,7 @@ Module struct_defs.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "entry",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2144,7 +2219,9 @@ Module struct_defs.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| inners |) ]
@@ -2170,7 +2247,9 @@ Module struct_defs.
                                                                 "move_binary_format::file_format::SignatureToken"
                                                             ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -2212,7 +2291,9 @@ Module struct_defs.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2221,6 +2302,7 @@ Module struct_defs.
                                                                       Ty.path
                                                                         "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
                                                                       "add_signature_token",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2260,6 +2342,7 @@ Module struct_defs.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -2273,6 +2356,7 @@ Module struct_defs.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)

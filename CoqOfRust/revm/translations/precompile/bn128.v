@@ -56,7 +56,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -65,7 +67,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -132,7 +136,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -141,7 +147,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -220,7 +228,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -229,7 +239,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -296,7 +308,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -305,7 +319,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -387,7 +403,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -396,7 +414,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -471,7 +491,9 @@ Module bn128.
                                                     "core::ops::deref::Deref",
                                                     Ty.path "bytes::bytes::Bytes",
                                                     [],
+                                                    [],
                                                     "deref",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -480,7 +502,9 @@ Module bn128.
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| input |) ]
@@ -557,6 +581,7 @@ Module bn128.
               []
               [ Ty.path "substrate_bn::Fq"; Ty.path "substrate_bn::FieldError" ],
             "map_err",
+            [],
             [
               Ty.path "revm_precompile::interface::PrecompileError";
               Ty.function
@@ -566,14 +591,16 @@ Module bn128.
           |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "substrate_bn::Fq", "from_slice", [] |),
+              M.get_associated_function (| Ty.path "substrate_bn::Fq", "from_slice", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -640,7 +667,9 @@ Module bn128.
                               Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -651,6 +680,7 @@ Module bn128.
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -658,6 +688,7 @@ Module bn128.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -699,6 +730,7 @@ Module bn128.
                                           Ty.path "substrate_bn::G1";
                                           Ty.path "revm_precompile::interface::PrecompileError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -709,6 +741,7 @@ Module bn128.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -745,7 +778,9 @@ Module bn128.
                               Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -756,6 +791,7 @@ Module bn128.
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -763,6 +799,7 @@ Module bn128.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -804,6 +841,7 @@ Module bn128.
                                           Ty.path "substrate_bn::G1";
                                           Ty.path "revm_precompile::interface::PrecompileError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -814,6 +852,7 @@ Module bn128.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -879,8 +918,10 @@ Module bn128.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "substrate_bn::Fq",
+                              [],
                               [ Ty.path "substrate_bn::Fq" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
@@ -890,6 +931,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "zero",
+                                    [],
                                     []
                                   |),
                                   []
@@ -902,8 +944,10 @@ Module bn128.
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "substrate_bn::Fq",
+                                [],
                                 [ Ty.path "substrate_bn::Fq" ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
@@ -913,6 +957,7 @@ Module bn128.
                                     M.get_associated_function (|
                                       Ty.path "substrate_bn::Fq",
                                       "zero",
+                                      [],
                                       []
                                     |),
                                     []
@@ -932,7 +977,9 @@ Module bn128.
                             "substrate_bn::Group",
                             Ty.path "substrate_bn::G1",
                             [],
+                            [],
                             "zero",
+                            [],
                             []
                           |),
                           []
@@ -949,6 +996,7 @@ Module bn128.
                           []
                           [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::groups::Error" ],
                         "map_err",
+                        [],
                         [
                           Ty.path "revm_precompile::interface::PrecompileError";
                           Ty.function
@@ -967,6 +1015,7 @@ Module bn128.
                                 Ty.path "substrate_bn::groups::Error"
                               ],
                             "map",
+                            [],
                             [
                               Ty.path "substrate_bn::G1";
                               Ty.function
@@ -979,6 +1028,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "new",
+                                [],
                                 []
                               |),
                               [ M.read (| px |); M.read (| py |) ]
@@ -986,8 +1036,10 @@ Module bn128.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "substrate_bn::AffineG1",
+                              [],
                               [ Ty.path "substrate_bn::G1" ],
                               "into",
+                              [],
                               []
                             |)
                           ]
@@ -1074,8 +1126,10 @@ Module bn128.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1118,7 +1172,9 @@ Module bn128.
                               Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1132,6 +1188,7 @@ Module bn128.
                                     (Ty.path "array")
                                     [ Value.Integer IntegerKind.Usize 128 ]
                                     [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
@@ -1139,6 +1196,7 @@ Module bn128.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1155,7 +1213,9 @@ Module bn128.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ input ]
@@ -1194,6 +1254,7 @@ Module bn128.
                                           Ty.path "revm_precompile::interface::PrecompileOutput";
                                           Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1204,6 +1265,7 @@ Module bn128.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1240,7 +1302,9 @@ Module bn128.
                               Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1254,6 +1318,7 @@ Module bn128.
                                     (Ty.path "array")
                                     [ Value.Integer IntegerKind.Usize 128 ]
                                     [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
@@ -1261,6 +1326,7 @@ Module bn128.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1277,7 +1343,9 @@ Module bn128.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ input ]
@@ -1316,6 +1384,7 @@ Module bn128.
                                           Ty.path "revm_precompile::interface::PrecompileOutput";
                                           Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1326,6 +1395,7 @@ Module bn128.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1363,6 +1433,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "from_jacobian",
+                                [],
                                 []
                               |),
                               [
@@ -1370,8 +1441,10 @@ Module bn128.
                                   M.get_trait_method (|
                                     "core::ops::arith::Add",
                                     Ty.path "substrate_bn::G1",
+                                    [],
                                     [ Ty.path "substrate_bn::G1" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| p1 |); M.read (| p2 |) ]
@@ -1395,6 +1468,7 @@ Module bn128.
                                   []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
@@ -1402,6 +1476,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1410,6 +1485,7 @@ Module bn128.
                                         M.get_associated_function (|
                                           Ty.path "substrate_bn::AffineG1",
                                           "x",
+                                          [],
                                           []
                                         |),
                                         [ sum ]
@@ -1422,6 +1498,7 @@ Module bn128.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 64 ]
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
@@ -1429,6 +1506,7 @@ Module bn128.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1452,6 +1530,7 @@ Module bn128.
                                   []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
@@ -1459,6 +1538,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1467,6 +1547,7 @@ Module bn128.
                                         M.get_associated_function (|
                                           Ty.path "substrate_bn::AffineG1",
                                           "y",
+                                          [],
                                           []
                                         |),
                                         [ sum ]
@@ -1479,6 +1560,7 @@ Module bn128.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 64 ]
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
@@ -1486,6 +1568,7 @@ Module bn128.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1512,6 +1595,7 @@ Module bn128.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -1523,8 +1607,10 @@ Module bn128.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 64 ]
                               [ Ty.path "u8" ],
+                            [],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| output |) ]
@@ -1595,8 +1681,10 @@ Module bn128.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1639,7 +1727,9 @@ Module bn128.
                               Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1653,6 +1743,7 @@ Module bn128.
                                     (Ty.path "array")
                                     [ Value.Integer IntegerKind.Usize 96 ]
                                     [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
@@ -1660,6 +1751,7 @@ Module bn128.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1676,7 +1768,9 @@ Module bn128.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ input ]
@@ -1715,6 +1809,7 @@ Module bn128.
                                           Ty.path "revm_precompile::interface::PrecompileOutput";
                                           Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1725,6 +1820,7 @@ Module bn128.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1755,6 +1851,7 @@ Module bn128.
                         []
                         [ Ty.path "substrate_bn::Fr"; Ty.path "substrate_bn::FieldError" ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -1762,6 +1859,7 @@ Module bn128.
                         M.get_associated_function (|
                           Ty.path "substrate_bn::Fr",
                           "from_slice",
+                          [],
                           []
                         |),
                         [
@@ -1772,9 +1870,11 @@ Module bn128.
                                 (Ty.path "array")
                                 [ Value.Integer IntegerKind.Usize 96 ]
                                 [ Ty.path "u8" ],
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ],
                               "index",
+                              [],
                               []
                             |),
                             [
@@ -1791,7 +1891,9 @@ Module bn128.
                                         [ Ty.path "u8" ]
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ input ]
@@ -1825,6 +1927,7 @@ Module bn128.
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "from_jacobian",
+                                [],
                                 []
                               |),
                               [
@@ -1832,8 +1935,10 @@ Module bn128.
                                   M.get_trait_method (|
                                     "core::ops::arith::Mul",
                                     Ty.path "substrate_bn::G1",
+                                    [],
                                     [ Ty.path "substrate_bn::Fr" ],
                                     "mul",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| p |); M.read (| fr |) ]
@@ -1857,6 +1962,7 @@ Module bn128.
                                   []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
@@ -1864,6 +1970,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1872,6 +1979,7 @@ Module bn128.
                                         M.get_associated_function (|
                                           Ty.path "substrate_bn::AffineG1",
                                           "x",
+                                          [],
                                           []
                                         |),
                                         [ mul ]
@@ -1884,6 +1992,7 @@ Module bn128.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 64 ]
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
@@ -1891,6 +2000,7 @@ Module bn128.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1914,6 +2024,7 @@ Module bn128.
                                   []
                                   [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
@@ -1921,6 +2032,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1929,6 +2041,7 @@ Module bn128.
                                         M.get_associated_function (|
                                           Ty.path "substrate_bn::AffineG1",
                                           "y",
+                                          [],
                                           []
                                         |),
                                         [ mul ]
@@ -1941,6 +2054,7 @@ Module bn128.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 64 ]
                                           [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
@@ -1948,6 +2062,7 @@ Module bn128.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index_mut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1974,6 +2089,7 @@ Module bn128.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -1985,8 +2101,10 @@ Module bn128.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 64 ]
                               [ Ty.path "u8" ],
+                            [],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| output |) ]
@@ -2088,6 +2206,7 @@ Module bn128.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]
@@ -2125,8 +2244,10 @@ Module bn128.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2158,6 +2279,7 @@ Module bn128.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| input |) ]
@@ -2182,8 +2304,10 @@ Module bn128.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2214,6 +2338,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| input |) ]
@@ -2231,6 +2356,7 @@ Module bn128.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| input |) ]
@@ -2253,6 +2379,7 @@ Module bn128.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "with_capacity",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| elements |) ]
@@ -2270,7 +2397,9 @@ Module bn128.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2300,7 +2429,9 @@ Module bn128.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -2473,6 +2604,7 @@ Module bn128.
                                                                                       [ Ty.path "u8"
                                                                                       ],
                                                                                     "get_unchecked",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -2522,6 +2654,7 @@ Module bn128.
                                                                                         "substrate_bn::FieldError"
                                                                                     ],
                                                                                   "map_err",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "revm_precompile::interface::PrecompileError";
@@ -2543,6 +2676,7 @@ Module bn128.
                                                                                       Ty.path
                                                                                         "substrate_bn::Fq",
                                                                                       "from_slice",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -2601,7 +2735,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2621,9 +2757,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2666,6 +2804,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -2679,6 +2818,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -2716,7 +2856,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2736,9 +2878,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2781,6 +2925,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -2794,6 +2939,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -2831,7 +2977,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2851,9 +2999,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2896,6 +3046,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -2909,6 +3060,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -2946,7 +3098,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2966,9 +3120,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3011,6 +3167,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3024,6 +3181,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -3061,7 +3219,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3081,9 +3241,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3126,6 +3288,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3139,6 +3302,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -3176,7 +3340,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3196,9 +3362,11 @@ Module bn128.
                                                                           Ty.path
                                                                             "revm_precompile::interface::PrecompileError"
                                                                         ]),
+                                                                    [],
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3241,6 +3409,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3254,6 +3423,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -3291,7 +3461,9 @@ Module bn128.
                                                                       "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3334,6 +3506,7 @@ Module bn128.
                                                                                 Ty.path
                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3347,6 +3520,7 @@ Module bn128.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -3376,6 +3550,7 @@ Module bn128.
                                                               M.get_associated_function (|
                                                                 Ty.path "substrate_bn::Fq2",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| bax |); M.read (| bay |) ]
@@ -3387,6 +3562,7 @@ Module bn128.
                                                               M.get_associated_function (|
                                                                 Ty.path "substrate_bn::Fq2",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| bbx |); M.read (| bby |) ]
@@ -3406,6 +3582,7 @@ Module bn128.
                                                                             Ty.path
                                                                               "substrate_bn::Fq2",
                                                                             "is_zero",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ ba ]
@@ -3416,6 +3593,7 @@ Module bn128.
                                                                               Ty.path
                                                                                 "substrate_bn::Fq2",
                                                                               "is_zero",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ bb ]
@@ -3433,7 +3611,9 @@ Module bn128.
                                                                       "substrate_bn::Group",
                                                                       Ty.path "substrate_bn::G2",
                                                                       [],
+                                                                      [],
                                                                       "zero",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -3446,11 +3626,13 @@ Module bn128.
                                                                     M.get_trait_method (|
                                                                       "core::convert::From",
                                                                       Ty.path "substrate_bn::G2",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "substrate_bn::AffineG2"
                                                                       ],
                                                                       "from",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -3471,7 +3653,9 @@ Module bn128.
                                                                                       "revm_precompile::interface::PrecompileError"
                                                                                   ],
                                                                                 [],
+                                                                                [],
                                                                                 "branch",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3488,6 +3672,7 @@ Module bn128.
                                                                                           "substrate_bn::groups::Error"
                                                                                       ],
                                                                                     "map_err",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm_precompile::interface::PrecompileError";
@@ -3509,6 +3694,7 @@ Module bn128.
                                                                                         Ty.path
                                                                                           "substrate_bn::AffineG2",
                                                                                         "new",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -3580,6 +3766,7 @@ Module bn128.
                                                                                                 Ty.path
                                                                                                   "revm_precompile::interface::PrecompileErrors"
                                                                                               ],
+                                                                                            [],
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
@@ -3593,6 +3780,7 @@ Module bn128.
                                                                                                 ]
                                                                                             ],
                                                                                             "from_residual",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -3643,6 +3831,7 @@ Module bn128.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "push",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3677,7 +3866,9 @@ Module bn128.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ points ]
@@ -3690,8 +3881,10 @@ Module bn128.
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "substrate_bn::Gt",
+                                [],
                                 [ Ty.path "substrate_bn::Gt" ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
@@ -3701,6 +3894,7 @@ Module bn128.
                                     M.get_associated_function (|
                                       Ty.path "substrate_bn::Gt",
                                       "one",
+                                      [],
                                       []
                                     |),
                                     []
@@ -3720,6 +3914,7 @@ Module bn128.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [

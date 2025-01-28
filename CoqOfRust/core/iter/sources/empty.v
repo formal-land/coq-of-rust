@@ -49,6 +49,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -57,6 +58,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Empty" |) ]

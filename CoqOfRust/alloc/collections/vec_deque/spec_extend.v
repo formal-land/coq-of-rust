@@ -64,7 +64,9 @@ Module collections.
                                     "core::iter::traits::iterator::Iterator",
                                     I,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -84,7 +86,9 @@ Module collections.
                                     "core::iter::traits::iterator::Iterator",
                                     I,
                                     [],
+                                    [],
                                     "size_hint",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -105,6 +109,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "reserve",
+                                            [],
                                             []
                                           |),
                                           [
@@ -113,6 +118,7 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.path "usize",
                                                 "saturating_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -132,6 +138,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "push_unchecked",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| element |) ]
@@ -163,6 +170,7 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "capacity",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
@@ -181,7 +189,9 @@ Module collections.
                                                         "core::iter::traits::iterator::Iterator",
                                                         I,
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -207,6 +217,7 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "push_unchecked",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -320,7 +331,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [ iter ]
@@ -425,6 +438,7 @@ Module collections.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -445,6 +459,7 @@ Module collections.
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
                                                                                           "new_debug",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.tuple
                                                                                               [
@@ -506,6 +521,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "reserve",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |); M.read (| additional |) ]
@@ -520,6 +536,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "write_iter_wrapping",
+                                        [],
                                         [ I ]
                                       |),
                                       [
@@ -531,6 +548,7 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "to_physical_idx",
+                                            [],
                                             []
                                           |),
                                           [
@@ -628,6 +646,7 @@ Module collections.
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_const",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -672,6 +691,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -740,6 +760,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "as_slice",
+                        [],
                         []
                       |),
                       [ iterator ]
@@ -751,6 +772,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "reserve",
+                        [],
                         []
                       |),
                       [
@@ -759,6 +781,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -773,6 +796,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "copy_slice",
+                          [],
                           []
                         |),
                         [
@@ -784,6 +808,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "to_physical_idx",
+                              [],
                               []
                             |),
                             [
@@ -816,6 +841,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -832,6 +858,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "forget_remaining_elements",
+                        [],
                         []
                       |),
                       [ iterator ]
@@ -884,8 +911,10 @@ Module collections.
                 M.get_trait_method (|
                   "alloc::collections::vec_deque::spec_extend::SpecExtend",
                   Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                  [],
                   [ T; Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ I ] ],
                   "spec_extend",
+                  [],
                   []
                 |),
                 [
@@ -895,7 +924,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "copied",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| iterator |) ]
@@ -948,6 +979,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         "as_slice",
+                        [],
                         []
                       |),
                       [ iterator ]
@@ -959,6 +991,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "reserve",
+                        [],
                         []
                       |),
                       [
@@ -967,6 +1000,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -980,6 +1014,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "copy_slice",
+                        [],
                         []
                       |),
                       [
@@ -991,6 +1026,7 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
@@ -1023,6 +1059,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| slice |) ]

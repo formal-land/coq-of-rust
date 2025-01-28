@@ -63,6 +63,7 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
@@ -71,6 +72,7 @@ Module future.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "PollFn" |) ]
@@ -114,9 +116,11 @@ Module future.
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
+                [],
                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ] ]
                 ],
                 "call_mut",
+                [],
                 []
               |),
               [
@@ -133,6 +137,7 @@ Module future.
                             [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ]
                         ],
                       "get_unchecked_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]

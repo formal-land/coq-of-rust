@@ -91,6 +91,7 @@ Module vec.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| step_merge |) ]
@@ -108,6 +109,7 @@ Module vec.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| step_expand |) ]
@@ -180,6 +182,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -415,7 +418,9 @@ Module vec.
                       "alloc::vec::in_place_collect::AsVecIntoIter",
                       Ty.associated,
                       [],
+                      [],
                       "as_into_iter",
+                      [],
                       []
                     |),
                     [
@@ -424,7 +429,9 @@ Module vec.
                           "core::iter::adapters::SourceIter",
                           I,
                           [],
+                          [],
                           "as_inner",
+                          [],
                           []
                         |),
                         [ iterator ]
@@ -460,6 +467,7 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
                         "cast",
+                        [],
                         [ T ]
                       |),
                       [
@@ -482,7 +490,7 @@ Module vec.
                       |));
                     BinOp.Wrap.div (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "unchecked_mul", [] |),
+                        M.get_associated_function (| Ty.path "usize", "unchecked_mul", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -522,8 +530,10 @@ Module vec.
                           M.get_trait_method (|
                             "alloc::vec::in_place_collect::SpecInPlaceCollect",
                             I,
+                            [],
                             [ T; I ],
                             "collect_in_place",
+                            [],
                             []
                           |),
                           [
@@ -533,6 +543,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| dst_buf |) ]
@@ -548,7 +559,9 @@ Module vec.
                             "alloc::vec::in_place_collect::AsVecIntoIter",
                             Ty.associated,
                             [],
+                            [],
                             "as_into_iter",
+                            [],
                             []
                           |),
                           [
@@ -557,7 +570,9 @@ Module vec.
                                 "core::iter::adapters::SourceIter",
                                 I,
                                 [],
+                                [],
                                 "as_inner",
+                                [],
                                 []
                               |),
                               [ iterator ]
@@ -614,6 +629,7 @@ Module vec.
                                                                 "core::ptr::non_null::NonNull")
                                                               []
                                                               [ Ty.associated ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
@@ -622,6 +638,7 @@ Module vec.
                                                                 [ Ty.associated ]
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -701,6 +718,7 @@ Module vec.
                                           (Ty.path "core::ptr::non_null::NonNull")
                                           []
                                           [ Ty.associated ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
@@ -708,6 +726,7 @@ Module vec.
                                             [ Ty.associated ]
                                         ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
@@ -755,6 +774,7 @@ Module vec.
                                                                   "core::ptr::non_null::NonNull")
                                                                 []
                                                                 [ Ty.associated ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
@@ -763,6 +783,7 @@ Module vec.
                                                                   [ Ty.associated ]
                                                               ],
                                                               "le",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -775,6 +796,7 @@ Module vec.
                                                                       []
                                                                       [ T ],
                                                                     "cast",
+                                                                    [],
                                                                     [ Ty.associated ]
                                                                   |),
                                                                   [
@@ -786,6 +808,7 @@ Module vec.
                                                                           []
                                                                           [ T ],
                                                                         "add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -823,6 +846,7 @@ Module vec.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -873,6 +897,7 @@ Module vec.
                               []
                               [ Ty.associated; Ty.path "alloc::alloc::Global" ],
                             "forget_allocation_drop_remaining",
+                            [],
                             []
                           |),
                           [ M.read (| src |) ]
@@ -1110,6 +1135,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "unchecked_mul",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1131,6 +1157,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "from_size_align_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| src_size |); M.read (| src_align |) ]
@@ -1149,6 +1176,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "unchecked_mul",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1166,6 +1194,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "from_size_align_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| dst_size |); M.read (| dst_align |) ]
@@ -1178,7 +1207,9 @@ Module vec.
                                       "core::alloc::Allocator",
                                       Ty.path "alloc::alloc::Global",
                                       [],
+                                      [],
                                       "shrink",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1190,6 +1221,7 @@ Module vec.
                                             []
                                             [ T ],
                                           "cast",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [ M.read (| dst_buf |) ]
@@ -1221,6 +1253,7 @@ Module vec.
                                                 []
                                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               "cast",
+                                              [],
                                               [ T ]
                                             |),
                                             [ M.read (| reallocated |) ]
@@ -1380,6 +1413,7 @@ Module vec.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             "from_parts",
+                            [],
                             []
                           |),
                           [ M.read (| dst_buf |); M.read (| len |); M.read (| dst_cap |) ]
@@ -1495,6 +1529,7 @@ Module vec.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1550,6 +1585,7 @@ Module vec.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1640,6 +1676,7 @@ Module vec.
                           Ty.path "never"
                         ],
                       "into_ok",
+                      [],
                       []
                     |),
                     [
@@ -1648,7 +1685,9 @@ Module vec.
                           "core::iter::traits::iterator::Iterator",
                           I,
                           [],
+                          [],
                           "try_fold",
+                          [],
                           [
                             Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
                             Ty.associated;
@@ -1682,7 +1721,12 @@ Module vec.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    "sub_ptr",
+                    [],
+                    []
+                  |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1695,7 +1739,9 @@ Module vec.
                               [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ]
                               ],
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -1712,6 +1758,7 @@ Module vec.
                                         [ T ]
                                     ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| sink |) ]
@@ -1785,7 +1832,9 @@ Module vec.
                       "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                       I,
                       [],
+                      [],
                       "size",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1806,7 +1855,9 @@ Module vec.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1836,7 +1887,9 @@ Module vec.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1865,6 +1918,7 @@ Module vec.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| dst_buf |); M.read (| i |) ]
@@ -1920,6 +1974,7 @@ Module vec.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1959,7 +2014,9 @@ Module vec.
                                                     "core::iter::traits::iterator::Iterator",
                                                     I,
                                                     [],
+                                                    [],
                                                     "__iterator_get_unchecked",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |); M.read (| i |) ]
@@ -1978,6 +2035,7 @@ Module vec.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| dst |); Value.Integer IntegerKind.Usize 1

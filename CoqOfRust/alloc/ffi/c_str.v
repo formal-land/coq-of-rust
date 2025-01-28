@@ -47,6 +47,7 @@ Module ffi.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -55,6 +56,7 @@ Module ffi.
                     ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -99,6 +101,7 @@ Module ffi.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -107,6 +110,7 @@ Module ffi.
                     ]
                 ],
                 "partial_cmp",
+                [],
                 []
               |),
               [
@@ -183,7 +187,9 @@ Module ffi.
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                   ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
@@ -229,7 +235,9 @@ Module ffi.
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                   ],
                 [],
+                [],
                 "hash",
+                [],
                 [ __H ]
               |),
               [
@@ -276,7 +284,9 @@ Module ffi.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -324,7 +334,15 @@ Module ffi.
               "alloc::ffi::c_str::NulError"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
@@ -341,7 +359,9 @@ Module ffi.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -410,6 +430,7 @@ Module ffi.
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -417,6 +438,7 @@ Module ffi.
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -496,6 +518,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field2_finish",
+                [],
                 []
               |),
               [
@@ -579,7 +602,9 @@ Module ffi.
                                 "core::clone::Clone",
                                 Ty.path "usize",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -690,8 +715,10 @@ Module ffi.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -775,6 +802,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
@@ -793,6 +821,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "NotNulTerminated" |) ]
@@ -846,7 +875,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -866,7 +897,9 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -915,8 +948,10 @@ Module ffi.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind",
+                  [],
                   [ Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -940,6 +975,7 @@ Module ffi.
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -947,6 +983,7 @@ Module ffi.
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -1026,6 +1063,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -1078,8 +1116,10 @@ Module ffi.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ Ty.path "core::ops::range::RangeFull" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -1149,7 +1189,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.path "alloc::ffi::c_str::CString",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1166,7 +1208,9 @@ Module ffi.
                       "core::clone::Clone",
                       Ty.path "core::str::error::Utf8Error",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1215,8 +1259,10 @@ Module ffi.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloc::ffi::c_str::CString",
+                  [],
                   [ Ty.path "alloc::ffi::c_str::CString" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -1237,8 +1283,10 @@ Module ffi.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "core::str::error::Utf8Error",
+                    [],
                     [ Ty.path "core::str::error::Utf8Error" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -1318,6 +1366,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -1422,7 +1471,9 @@ Module ffi.
                 "alloc::ffi::c_str::new::SpecNewImpl",
                 T,
                 [],
+                [],
                 "spec_new_impl",
+                [],
                 []
               |),
               [ M.read (| t |) ]
@@ -1470,6 +1521,7 @@ Module ffi.
                                                 []
                                                 [ Ty.path "usize" ],
                                               "is_none",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1493,7 +1545,9 @@ Module ffi.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         [],
+                                                        [],
                                                         "deref",
+                                                        [],
                                                         []
                                                       |),
                                                       [ v ]
@@ -1535,6 +1589,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "_from_vec_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| v |) ]
@@ -1569,6 +1624,7 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "reserve_exact",
+                      [],
                       []
                     |),
                     [ v; Value.Integer IntegerKind.Usize 1 ]
@@ -1583,6 +1639,7 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "push",
+                      [],
                       []
                     |),
                     [ v; Value.Integer IntegerKind.U8 0 ]
@@ -1600,6 +1657,7 @@ Module ffi.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "into_boxed_slice",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -1673,6 +1731,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "from_raw",
+                          [],
                           []
                         |),
                         [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |)) ]
@@ -1704,6 +1763,7 @@ Module ffi.
                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
                     ],
                   "into_raw",
+                  [],
                   []
                 |),
                 [
@@ -1711,6 +1771,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.path "alloc::ffi::c_str::CString",
                       "into_inner",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1742,6 +1803,7 @@ Module ffi.
                   []
                   [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf8Error" ],
                 "map_err",
+                [],
                 [
                   Ty.path "alloc::ffi::c_str::IntoStringError";
                   Ty.function
@@ -1751,12 +1813,18 @@ Module ffi.
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "from_utf8", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "from_utf8",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "alloc::ffi::c_str::CString",
                         "into_bytes",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1783,6 +1851,7 @@ Module ffi.
                                           M.get_associated_function (|
                                             Ty.path "alloc::string::FromUtf8Error",
                                             "utf8_error",
+                                            [],
                                             []
                                           |),
                                           [ e ]
@@ -1792,6 +1861,7 @@ Module ffi.
                                           M.get_associated_function (|
                                             Ty.path "alloc::ffi::c_str::CString",
                                             "_from_vec_unchecked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1799,6 +1869,7 @@ Module ffi.
                                               M.get_associated_function (|
                                                 Ty.path "alloc::string::FromUtf8Error",
                                                 "into_bytes",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| e |) ]
@@ -1844,6 +1915,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "alloc::ffi::c_str::CString",
                           "into_inner",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -1860,6 +1932,7 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "pop",
+                      [],
                       []
                     |),
                     [ vec ]
@@ -1910,6 +1983,7 @@ Module ffi.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "u8" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -1917,6 +1991,7 @@ Module ffi.
                                                           [ Ty.path "u8" ]
                                                       ],
                                                       "eq",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| left_val |); M.read (| right_val |)
@@ -2004,6 +2079,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "into_inner",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2031,6 +2107,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "get_unchecked",
+                [],
                 [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
               |),
               [
@@ -2050,6 +2127,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -2110,7 +2188,9 @@ Module ffi.
                 "core::ops::deref::Deref",
                 Ty.path "alloc::ffi::c_str::CString",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -2137,6 +2217,7 @@ Module ffi.
                   []
                   [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                 "from_raw",
+                [],
                 []
               |),
               [
@@ -2151,6 +2232,7 @@ Module ffi.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "into_raw",
+                      [],
                       []
                     |),
                     [
@@ -2158,6 +2240,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "alloc::ffi::c_str::CString",
                           "into_inner",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2197,6 +2280,7 @@ Module ffi.
                         []
                         [ Ty.path "alloc::ffi::c_str::CString" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -2227,7 +2311,9 @@ Module ffi.
                             []
                             [ Ty.path "alloc::ffi::c_str::CString" ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ this ]
@@ -2288,6 +2374,7 @@ Module ffi.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   "unwrap",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2310,7 +2397,9 @@ Module ffi.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "deref",
+                                                          [],
                                                           []
                                                         |),
                                                         [ v ]
@@ -2328,6 +2417,7 @@ Module ffi.
                                                   []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ v ]
@@ -2365,6 +2455,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "_from_vec_with_nul_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| v |) ]
@@ -2402,6 +2493,7 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "into_boxed_slice",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -2453,7 +2545,9 @@ Module ffi.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [ v ]
@@ -2487,6 +2581,7 @@ Module ffi.
                                   []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ v ]
@@ -2502,6 +2597,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "alloc::ffi::c_str::CString",
                                 "_from_vec_with_nul_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| v |) ]
@@ -2582,6 +2678,7 @@ Module ffi.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "get_unchecked_mut",
+                      [],
                       [ Ty.path "usize" ]
                     |),
                     [
@@ -2630,6 +2727,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "core::ffi::c_str::CStr",
                 "from_bytes_with_nul_unchecked",
+                [],
                 []
               |),
               [
@@ -2637,6 +2735,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "as_bytes_with_nul",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2674,7 +2773,9 @@ Module ffi.
                 "core::fmt::Debug",
                 Ty.path "core::ffi::c_str::CStr",
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
@@ -2683,7 +2784,9 @@ Module ffi.
                     "core::ops::deref::Deref",
                     Ty.path "alloc::ffi::c_str::CString",
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2720,6 +2823,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "alloc::ffi::c_str::CString",
                 "into_bytes",
+                [],
                 []
               |),
               [ M.read (| s |) ]
@@ -2756,7 +2860,9 @@ Module ffi.
                       "core::default::Default",
                       Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -2768,7 +2874,9 @@ Module ffi.
                     "alloc::borrow::ToOwned",
                     Ty.path "core::ffi::c_str::CStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [ M.read (| a |) ]
@@ -2804,7 +2912,9 @@ Module ffi.
                 "core::ops::deref::Deref",
                 Ty.path "alloc::ffi::c_str::CString",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -2837,6 +2947,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "core::ffi::c_str::CStr" ],
                 "into_owned",
+                [],
                 []
               |),
               [ M.read (| s |) ]
@@ -2885,9 +2996,11 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -2895,6 +3008,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "to_bytes_with_nul",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -2910,6 +3024,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -2924,6 +3039,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| boxed |) ]
@@ -2985,8 +3101,10 @@ Module ffi.
                               (Ty.path "alloc::boxed::Box")
                               []
                               [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
                             "from",
+                            [],
                             []
                           |),
                           [ M.read (| s |) ]
@@ -3009,8 +3127,10 @@ Module ffi.
                               (Ty.path "alloc::boxed::Box")
                               []
                               [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.path "alloc::ffi::c_str::CString" ],
                             "from",
+                            [],
                             []
                           |),
                           [ M.read (| s |) ]
@@ -3057,6 +3177,7 @@ Module ffi.
                           []
                           [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                         "into_raw",
+                        [],
                         []
                       |),
                       [ M.read (| s |) ]
@@ -3077,6 +3198,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "from_raw",
+                          [],
                           []
                         |),
                         [ M.read (| raw |) ]
@@ -3142,6 +3264,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw_parts",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -3164,6 +3287,7 @@ Module ffi.
                                   []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 "from_raw_parts",
+                                [],
                                 []
                               |),
                               [
@@ -3179,6 +3303,7 @@ Module ffi.
                                           [ Ty.path "u8" ]
                                       ],
                                     "cast",
+                                    [],
                                     [ Ty.path "u8" ]
                                   |),
                                   [ M.read (| ptr |) ]
@@ -3196,6 +3321,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "_from_vec_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| v |) ]
@@ -3244,6 +3370,7 @@ Module ffi.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -3251,6 +3378,7 @@ Module ffi.
                     [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ]
                 ],
                 "into",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |) ]
@@ -3287,6 +3415,7 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "alloc::ffi::c_str::CString",
                 "into_boxed_c_str",
+                [],
                 []
               |),
               [ M.read (| s |) ]
@@ -3376,6 +3505,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::CString",
                     "as_c_str",
+                    [],
                     []
                   |),
                   [ M.read (| s |) ]
@@ -3424,6 +3554,7 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -3434,6 +3565,7 @@ Module ffi.
                           ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3441,6 +3573,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "alloc::ffi::c_str::CString",
                           "into_inner",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -3456,6 +3589,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -3470,6 +3604,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| arc |) ]
@@ -3520,9 +3655,11 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3530,6 +3667,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "to_bytes_with_nul",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -3545,6 +3683,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -3559,6 +3698,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| arc |) ]
@@ -3610,6 +3750,7 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -3620,6 +3761,7 @@ Module ffi.
                           ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3627,6 +3769,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "alloc::ffi::c_str::CString",
                           "into_inner",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -3642,6 +3785,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -3656,6 +3800,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| rc |) ]
@@ -3706,9 +3851,11 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [
@@ -3716,6 +3863,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "to_bytes_with_nul",
+                          [],
                           []
                         |),
                         [ M.read (| s |) ]
@@ -3731,6 +3879,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -3745,6 +3894,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| rc |) ]
@@ -3790,7 +3940,9 @@ Module ffi.
                       "core::default::Default",
                       Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -3804,8 +3956,10 @@ Module ffi.
                       (Ty.path "alloc::rc::Rc")
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| c_str |) ]
@@ -3853,6 +4007,7 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "array")
@@ -3860,6 +4015,7 @@ Module ffi.
                           [ Ty.path "u8" ]
                       ],
                       "from",
+                      [],
                       []
                     |),
                     [ Value.Array [ Value.Integer IntegerKind.U8 0 ] ]
@@ -3873,6 +4029,7 @@ Module ffi.
                       []
                       [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
                   [
@@ -3887,6 +4044,7 @@ Module ffi.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw",
+                          [],
                           []
                         |),
                         [ M.read (| boxed |) ]
@@ -3966,11 +4124,11 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| f |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.alloc (|
                       Value.Array
@@ -3984,6 +4142,7 @@ Module ffi.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "new_display",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [
@@ -4054,6 +4213,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -4062,6 +4222,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -4081,6 +4242,7 @@ Module ffi.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ pos ]
@@ -4104,6 +4266,7 @@ Module ffi.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -4112,6 +4275,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -4222,12 +4386,13 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "alloc::ffi::c_str::IntoStringError",
                     "description",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -4270,6 +4435,7 @@ Module ffi.
                     M.get_trait_method (|
                       "core::convert::Into",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -4280,6 +4446,7 @@ Module ffi.
                           ]
                       ],
                       "into",
+                      [],
                       []
                     |),
                     [
@@ -4287,6 +4454,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "to_bytes_with_nul",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4352,7 +4520,9 @@ Module ffi.
                       "alloc::borrow::ToOwned",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "clone_into",
+                      [],
                       []
                     |),
                     [
@@ -4360,6 +4530,7 @@ Module ffi.
                         M.get_associated_function (|
                           Ty.path "core::ffi::c_str::CStr",
                           "to_bytes_with_nul",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -4382,6 +4553,7 @@ Module ffi.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "into_boxed_slice",
+                      [],
                       []
                     |),
                     [ M.read (| b |) ]
@@ -4423,7 +4595,9 @@ Module ffi.
                 "alloc::borrow::ToOwned",
                 Ty.path "core::ffi::c_str::CStr",
                 [],
+                [],
                 "to_owned",
+                [],
                 []
               |),
               [ M.read (| s |) ]
@@ -4462,7 +4636,9 @@ Module ffi.
                 "core::ops::deref::Deref",
                 Ty.path "alloc::ffi::c_str::CString",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -4497,7 +4673,9 @@ Module ffi.
                 "core::ops::deref::Deref",
                 Ty.path "alloc::ffi::c_str::CString",
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -4530,11 +4708,17 @@ Module ffi.
               M.get_associated_function (|
                 Ty.path "alloc::string::String",
                 "from_utf8_lossy",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::ffi::c_str::CStr",
+                    "to_bytes",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |) ]
                 |)
               ]
@@ -4559,6 +4743,7 @@ Module ffi.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::ffi::c_str::CString",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -4566,6 +4751,7 @@ Module ffi.
                     [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ]
                 ],
                 "from",
+                [],
                 []
               |),
               [ M.read (| self |) ]

@@ -43,7 +43,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -60,7 +62,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -73,7 +77,15 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -88,7 +100,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -105,7 +119,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -122,7 +138,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -139,7 +157,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -156,7 +176,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -169,7 +191,15 @@ Module interpreter_action.
                   |));
                 ("is_static",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "bool",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -180,7 +210,15 @@ Module interpreter_action.
                   |));
                 ("is_eof",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "bool",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -296,6 +334,7 @@ Module interpreter_action.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct_fields_finish",
+                    [],
                     []
                   |),
                   [
@@ -354,8 +393,10 @@ Module interpreter_action.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
+                                  [],
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -379,6 +420,7 @@ Module interpreter_action.
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -386,6 +428,7 @@ Module interpreter_action.
                                         [ Ty.path "usize" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
@@ -425,8 +468,10 @@ Module interpreter_action.
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "alloy_primitives::bits::address::Address",
+                                [],
                                 [ Ty.path "alloy_primitives::bits::address::Address" ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
@@ -448,8 +493,10 @@ Module interpreter_action.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "alloy_primitives::bits::address::Address",
+                              [],
                               [ Ty.path "alloy_primitives::bits::address::Address" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
@@ -471,8 +518,10 @@ Module interpreter_action.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.path "alloy_primitives::bits::address::Address",
+                            [],
                             [ Ty.path "alloy_primitives::bits::address::Address" ],
                             "eq",
+                            [],
                             []
                           |),
                           [
@@ -494,9 +543,11 @@ Module interpreter_action.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
+                          [],
                           [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue"
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -518,8 +569,10 @@ Module interpreter_action.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
+                        [],
                         [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -682,7 +735,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -702,7 +757,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -718,7 +775,15 @@ Module interpreter_action.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -736,7 +801,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -756,7 +823,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -776,7 +845,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -796,7 +867,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -816,7 +889,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -836,7 +911,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "bool",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
@@ -851,7 +928,15 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -900,6 +985,7 @@ Module interpreter_action.
                       []
                   ],
                 "is_some_and",
+                [],
                 [
                   Ty.function
                     [
@@ -920,6 +1006,7 @@ Module interpreter_action.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                     "transfer",
+                    [],
                     []
                   |),
                   [
@@ -952,6 +1039,7 @@ Module interpreter_action.
                                           Value.Integer IntegerKind.Usize 4
                                         ]
                                         [],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -962,6 +1050,7 @@ Module interpreter_action.
                                           []
                                       ],
                                       "gt",
+                                      [],
                                       []
                                     |),
                                     [ x; M.get_constant (| "ruint::ZERO" |) ]
@@ -992,6 +1081,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "transfer",
+                [],
                 []
               |),
               [
@@ -1022,6 +1112,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "apparent",
+                [],
                 []
               |),
               [
@@ -1097,6 +1188,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "get",
+                [],
                 []
               |),
               [
@@ -1205,7 +1297,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -1402,7 +1494,15 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |)
@@ -1472,13 +1572,12 @@ Module interpreter_action.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1597,7 +1696,9 @@ Module interpreter_action.
                                   ]
                                   [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -1629,7 +1730,9 @@ Module interpreter_action.
                                   ]
                                   [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| __self_0 |) ]
@@ -1680,6 +1783,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Transfer" |); __self_0 ]
@@ -1700,6 +1804,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Apparent" |); __self_0 ]
@@ -1809,6 +1914,7 @@ Module interpreter_action.
                                           ]
                                           []
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -1824,6 +1930,7 @@ Module interpreter_action.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -1865,6 +1972,7 @@ Module interpreter_action.
                                           ]
                                           []
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -1880,6 +1988,7 @@ Module interpreter_action.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -1974,7 +2083,9 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -2005,7 +2116,9 @@ Module interpreter_action.
                               ]
                               [],
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -2033,7 +2146,9 @@ Module interpreter_action.
                               ]
                               [],
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
@@ -2126,13 +2241,12 @@ Module interpreter_action.
                               let value := M.copy (| γ0_0 |) in
                               Value.Tuple [ value ]))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ value ] => ltac:(M.monadic value)
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ value ] => ltac:(M.monadic value)
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)))
                 ]
               |)

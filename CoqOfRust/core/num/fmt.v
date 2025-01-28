@@ -159,8 +159,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -191,8 +193,10 @@ Module num.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -231,6 +235,7 @@ Module num.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -243,6 +248,7 @@ Module num.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -349,6 +355,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Zero" |); __self_0 ]
@@ -369,6 +376,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Num" |); __self_0 ]
@@ -389,6 +397,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Copy" |); __self_0 ]
@@ -567,6 +576,7 @@ Module num.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| buf |) ]
@@ -616,7 +626,7 @@ Module num.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::num::fmt::Part", "len", [] |),
+                    M.get_associated_function (| Ty.path "core::num::fmt::Part", "len", [], [] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
@@ -633,6 +643,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| out |) ]
@@ -665,7 +676,9 @@ Module num.
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -673,6 +686,7 @@ Module num.
                                             M.get_trait_method (|
                                               "core::ops::index::IndexMut",
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -680,6 +694,7 @@ Module num.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -709,7 +724,9 @@ Module num.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -774,7 +791,9 @@ Module num.
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -786,7 +805,9 @@ Module num.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "rev",
+                                              [],
                                               []
                                             |),
                                             [
@@ -794,6 +815,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "iter_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -804,6 +826,7 @@ Module num.
                                                         (Ty.path "slice")
                                                         []
                                                         [ Ty.path "u8" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ops::range::RangeTo")
@@ -811,6 +834,7 @@ Module num.
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "index_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -849,7 +873,9 @@ Module num.
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -920,6 +946,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "copy_from_slice",
+                                        [],
                                         []
                                       |),
                                       [
@@ -927,6 +954,7 @@ Module num.
                                           M.get_trait_method (|
                                             "core::ops::index::IndexMut",
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -934,6 +962,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index_mut",
+                                            [],
                                             []
                                           |),
                                           [
@@ -949,6 +978,7 @@ Module num.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| buf |) ]
@@ -1012,7 +1042,9 @@ Module num.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1032,7 +1064,9 @@ Module num.
                         []
                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::num::fmt::Part" ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -1076,7 +1110,7 @@ Module num.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1100,7 +1134,9 @@ Module num.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::num::fmt::Part" ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1131,7 +1167,9 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1164,6 +1202,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "core::num::fmt::Part",
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| part |) ]
@@ -1222,12 +1261,13 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| out |) ]
                                     |),
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
@@ -1258,6 +1298,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
+                          [],
                           []
                         |),
                         [
@@ -1265,6 +1306,7 @@ Module num.
                             M.get_trait_method (|
                               "core::ops::index::IndexMut",
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeTo")
@@ -1272,6 +1314,7 @@ Module num.
                                   [ Ty.path "usize" ]
                               ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [
@@ -1281,7 +1324,7 @@ Module num.
                                 [
                                   ("end_",
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
@@ -1296,7 +1339,7 @@ Module num.
                             ]
                           |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -1313,7 +1356,7 @@ Module num.
                   let~ written :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -1338,7 +1381,9 @@ Module num.
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::num::fmt::Part" ]
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -1369,7 +1414,9 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -1407,7 +1454,9 @@ Module num.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1415,6 +1464,7 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.path "core::num::fmt::Part",
                                                             "write",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1426,6 +1476,7 @@ Module num.
                                                                   (Ty.path "slice")
                                                                   []
                                                                   [ Ty.path "u8" ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1434,6 +1485,7 @@ Module num.
                                                                     [ Ty.path "usize" ]
                                                                 ],
                                                                 "index_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1471,6 +1523,7 @@ Module num.
                                                                         "core::option::Option")
                                                                       []
                                                                       [ Ty.path "usize" ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -1482,6 +1535,7 @@ Module num.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]

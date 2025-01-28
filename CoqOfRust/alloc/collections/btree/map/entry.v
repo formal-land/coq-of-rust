@@ -77,6 +77,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugTuple",
                                 "finish",
+                                [],
                                 []
                               |),
                               [
@@ -84,6 +85,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugTuple",
                                     "field",
+                                    [],
                                     []
                                   |),
                                   [
@@ -92,6 +94,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_tuple",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |); M.read (| Value.String "Entry" |) ]
@@ -117,6 +120,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugTuple",
                                 "finish",
+                                [],
                                 []
                               |),
                               [
@@ -124,6 +128,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugTuple",
                                     "field",
+                                    [],
                                     []
                                   |),
                                   [
@@ -132,6 +137,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_tuple",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| f |); M.read (| Value.String "Entry" |) ]
@@ -222,6 +228,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "finish",
+                    [],
                     []
                   |),
                   [
@@ -229,6 +236,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -237,6 +245,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "VacantEntry" |) ]
@@ -249,6 +258,7 @@ Module collections.
                               []
                               [ K; V; A ],
                             "key",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -330,6 +340,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
@@ -337,6 +348,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -344,6 +356,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -352,6 +365,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |); M.read (| Value.String "OccupiedEntry" |) ]
@@ -365,6 +379,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "key",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -379,6 +394,7 @@ Module collections.
                               []
                               [ K; V; A ],
                             "get",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -442,6 +458,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
@@ -449,6 +466,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
@@ -456,6 +474,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -463,6 +482,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugStruct",
                                 "field",
+                                [],
                                 []
                               |),
                               [
@@ -471,6 +491,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "debug_struct",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| f |); M.read (| Value.String "OccupiedError" |) ]
@@ -485,6 +506,7 @@ Module collections.
                                       []
                                       [ K; V; A ],
                                     "key",
+                                    [],
                                     []
                                   |),
                                   [
@@ -505,6 +527,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "get",
+                                [],
                                 []
                               |),
                               [
@@ -565,11 +588,21 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 let f := M.alloc (| f |) in
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "write_fmt",
+                    [],
+                    []
+                  |),
                   [
                     M.read (| f |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -586,6 +619,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
+                                  [],
                                   [ V ]
                                 |),
                                 [
@@ -600,6 +634,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ K ] ]
                                 |),
                                 [
@@ -612,6 +647,7 @@ Module collections.
                                           []
                                           [ K; V; A ],
                                         "key",
+                                        [],
                                         []
                                       |),
                                       [
@@ -629,6 +665,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ V ] ]
                                 |),
                                 [
@@ -641,6 +678,7 @@ Module collections.
                                           []
                                           [ K; V; A ],
                                         "get",
+                                        [],
                                         []
                                       |),
                                       [
@@ -753,6 +791,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "into_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -775,6 +814,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |); M.read (| default |) ]
@@ -831,6 +871,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "into_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -853,6 +894,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
@@ -861,8 +903,10 @@ Module collections.
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
+                                    [],
                                     [ Ty.tuple [] ],
                                     "call_once",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| default |); Value.Tuple [] ]
@@ -924,6 +968,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "into_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -944,8 +989,10 @@ Module collections.
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   F,
+                                  [],
                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ K ] ] ],
                                   "call_once",
+                                  [],
                                   []
                                 |),
                                 [
@@ -960,6 +1007,7 @@ Module collections.
                                             []
                                             [ K; V; A ],
                                           "key",
+                                          [],
                                           []
                                         |),
                                         [ entry ]
@@ -976,6 +1024,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |); M.read (| value |) ]
@@ -1026,6 +1075,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "key",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -1048,6 +1098,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "key",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -1108,8 +1159,10 @@ Module collections.
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   F,
+                                  [],
                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ V ] ] ],
                                   "call_once",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1124,6 +1177,7 @@ Module collections.
                                             []
                                             [ K; V; A ],
                                           "get_mut",
+                                          [],
                                           []
                                         |),
                                         [ entry ]
@@ -1200,6 +1254,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "into_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| entry |) ]
@@ -1222,6 +1277,7 @@ Module collections.
                                   []
                                   [ K; V; A ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
@@ -1231,7 +1287,9 @@ Module collections.
                                     "core::default::Default",
                                     V,
                                     [],
+                                    [],
                                     "default",
+                                    [],
                                     []
                                   |),
                                   []
@@ -1385,6 +1443,7 @@ Module collections.
                                             [ K; V; A ]
                                         ],
                                       "awaken",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1412,6 +1471,7 @@ Module collections.
                                           Ty.path "alloc::collections::btree::node::marker::Leaf"
                                         ],
                                       "new_leaf",
+                                      [],
                                       [ A ]
                                     |),
                                     [
@@ -1420,7 +1480,9 @@ Module collections.
                                           "core::clone::Clone",
                                           A,
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1448,6 +1510,7 @@ Module collections.
                                           Ty.path "alloc::collections::btree::node::marker::Leaf"
                                         ],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1466,6 +1529,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Leaf"
                                               ],
                                             "borrow_mut",
+                                            [],
                                             []
                                           |),
                                           [ root ]
@@ -1506,6 +1570,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Leaf"
                                             ],
                                           "forget_type",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| root |) ]
@@ -1556,6 +1621,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "insert_recursing",
+                                          [],
                                           [
                                             A;
                                             Ty.function
@@ -1592,7 +1658,9 @@ Module collections.
                                               "core::clone::Clone",
                                               A,
                                               [],
+                                              [],
                                               "clone",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1664,6 +1732,7 @@ Module collections.
                                                                             [ K; V; A ]
                                                                         ],
                                                                       "reborrow",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1703,6 +1772,7 @@ Module collections.
                                                                             ]
                                                                         ],
                                                                       "unwrap",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1727,6 +1797,7 @@ Module collections.
                                                                                 ]
                                                                             ],
                                                                           "as_mut",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1756,6 +1827,7 @@ Module collections.
                                                                           "alloc::collections::btree::node::marker::Internal"
                                                                       ],
                                                                     "push",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1775,6 +1847,7 @@ Module collections.
                                                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                             ],
                                                                           "push_internal_level",
+                                                                          [],
                                                                           [ A ]
                                                                         |),
                                                                         [
@@ -1849,6 +1922,7 @@ Module collections.
                                               Ty.path "alloc::collections::btree::node::marker::KV"
                                             ],
                                           "into_val_mut",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| new_handle |) ]
@@ -1869,6 +1943,7 @@ Module collections.
                                                 [ K; V; A ]
                                             ],
                                           "awaken",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1951,6 +2026,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "into_kv",
+                          [],
                           []
                         |),
                         [
@@ -1973,6 +2049,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "reborrow",
+                              [],
                               []
                             |),
                             [
@@ -2019,6 +2096,7 @@ Module collections.
                       []
                       [ K; V; A ],
                     "remove_kv",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2062,6 +2140,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "into_kv",
+                          [],
                           []
                         |),
                         [
@@ -2084,6 +2163,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "reborrow",
+                              [],
                               []
                             |),
                             [
@@ -2144,6 +2224,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "kv_mut",
+                          [],
                           []
                         |),
                         [
@@ -2199,6 +2280,7 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::KV"
                       ],
                     "into_val_mut",
+                    [],
                     []
                   |),
                   [
@@ -2245,6 +2327,7 @@ Module collections.
                           []
                           [ K; V; A ],
                         "get_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2285,6 +2368,7 @@ Module collections.
                             []
                             [ K; V; A ],
                           "remove_kv",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -2348,6 +2432,7 @@ Module collections.
                               Ty.path "alloc::collections::btree::node::marker::KV"
                             ],
                           "remove_kv_tracking",
+                          [],
                           [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); A ]
                         |),
                         [
@@ -2377,7 +2462,15 @@ Module collections.
                                 | _ => M.impossible "wrong number of arguments"
                                 end));
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -2409,6 +2502,7 @@ Module collections.
                                         [ K; V; A ]
                                     ],
                                   "awaken",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2472,6 +2566,7 @@ Module collections.
                                                   ]
                                               ],
                                             "unwrap",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2495,6 +2590,7 @@ Module collections.
                                                       ]
                                                   ],
                                                 "as_mut",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2524,6 +2620,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::LeafOrInternal"
                                               ],
                                             "pop_internal_level",
+                                            [],
                                             [ A ]
                                           |),
                                           [

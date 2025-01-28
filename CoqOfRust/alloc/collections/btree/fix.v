@@ -82,6 +82,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "len",
+                        [],
                         []
                       |),
                       [ self ]
@@ -126,6 +127,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "choose_parent_kv",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -163,6 +165,7 @@ Module collections.
                                                     []
                                                     [ K; V ],
                                                   "can_merge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ left_parent_kv ]
@@ -183,6 +186,7 @@ Module collections.
                                                   []
                                                   [ K; V ],
                                                 "merge_tracking_parent",
+                                                [],
                                                 [ A ]
                                               |),
                                               [ M.read (| left_parent_kv |); M.read (| alloc |) ]
@@ -209,6 +213,7 @@ Module collections.
                                                   []
                                                   [ K; V ],
                                                 "bulk_steal_left",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -262,6 +267,7 @@ Module collections.
                                                     []
                                                     [ K; V ],
                                                   "can_merge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ right_parent_kv ]
@@ -282,6 +288,7 @@ Module collections.
                                                   []
                                                   [ K; V ],
                                                 "merge_tracking_parent",
+                                                [],
                                                 [ A ]
                                               |),
                                               [ M.read (| right_parent_kv |); M.read (| alloc |) ]
@@ -308,6 +315,7 @@ Module collections.
                                                   []
                                                   [ K; V ],
                                                 "bulk_steal_right",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -426,6 +434,7 @@ Module collections.
                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
                                   "fix_node_through_parent",
+                                  [],
                                   [ A ]
                                 |),
                                 [
@@ -435,7 +444,9 @@ Module collections.
                                       "core::clone::Clone",
                                       A,
                                       [],
+                                      [],
                                       "clone",
+                                      [],
                                       []
                                     |),
                                     [ alloc ]
@@ -474,6 +485,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::Internal"
                                           ],
                                         "forget_type",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| parent |) ]
@@ -578,6 +590,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "height",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -600,6 +613,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::LeafOrInternal"
                                               ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -625,6 +639,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "pop_internal_level",
+                                    [],
                                     [ A ]
                                   |),
                                   [
@@ -634,7 +649,9 @@ Module collections.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ alloc ]
@@ -701,12 +718,13 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "fix_top",
+                        [],
                         [ A ]
                       |),
                       [
                         M.read (| self |);
                         M.call_closure (|
-                          M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                          M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                           [ alloc ]
                         |)
                       ]
@@ -734,6 +752,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -764,6 +783,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "fix_right_border_of_right_edge",
+                                [],
                                 [ A ]
                               |),
                               [
@@ -780,6 +800,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "last_kv",
+                                    [],
                                     []
                                   |),
                                   [
@@ -797,6 +818,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                           ],
                                         "borrow_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -804,7 +826,15 @@ Module collections.
                                   ]
                                 |);
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [ alloc ]
                                 |)
                               ]
@@ -825,6 +855,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "fix_top",
+                                [],
                                 [ A ]
                               |),
                               [ M.read (| self |); M.read (| alloc |) ]
@@ -878,12 +909,13 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "fix_top",
+                        [],
                         [ A ]
                       |),
                       [
                         M.read (| self |);
                         M.call_closure (|
-                          M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                          M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                           [ alloc ]
                         |)
                       ]
@@ -911,6 +943,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -941,6 +974,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "fix_left_border_of_left_edge",
+                                [],
                                 [ A ]
                               |),
                               [
@@ -957,6 +991,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "first_kv",
+                                    [],
                                     []
                                   |),
                                   [
@@ -974,6 +1009,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                           ],
                                         "borrow_mut",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -981,7 +1017,15 @@ Module collections.
                                   ]
                                 |);
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    A,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [ alloc ]
                                 |)
                               ]
@@ -1002,6 +1046,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "fix_top",
+                                [],
                                 [ A ]
                               |),
                               [ M.read (| self |); M.read (| alloc |) ]
@@ -1063,6 +1108,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "borrow_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1090,6 +1136,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "force",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| cur_node |) ]
@@ -1123,6 +1170,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::KV"
                                       ],
                                     "consider_for_balancing",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1139,6 +1187,7 @@ Module collections.
                                               "alloc::collections::btree::node::marker::Internal"
                                           ],
                                         "last_kv",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| internal |) ]
@@ -1177,6 +1226,7 @@ Module collections.
                                                                 []
                                                                 [ K; V ],
                                                               "left_child_len",
+                                                              [],
                                                               []
                                                             |),
                                                             [ last_kv ]
@@ -1230,6 +1280,7 @@ Module collections.
                                       []
                                       [ K; V ],
                                     "right_child_len",
+                                    [],
                                     []
                                   |),
                                   [ last_kv ]
@@ -1268,6 +1319,7 @@ Module collections.
                                                 []
                                                 [ K; V ],
                                               "bulk_steal_left",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1297,6 +1349,7 @@ Module collections.
                                       []
                                       [ K; V ],
                                     "into_right_child",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| last_kv |) ]
@@ -1396,6 +1449,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::KV"
                                       ],
                                     "force",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1424,6 +1478,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "first_kv",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1447,6 +1502,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "fix_left_child",
+                                        [],
                                         [ A ]
                                       |),
                                       [
@@ -1456,7 +1512,9 @@ Module collections.
                                             "core::clone::Clone",
                                             A,
                                             [],
+                                            [],
                                             "clone",
+                                            [],
                                             []
                                           |),
                                           [ alloc ]
@@ -1504,6 +1562,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                 ],
                                                               "len",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1531,6 +1590,7 @@ Module collections.
                                                                           "alloc::collections::btree::node::marker::KV"
                                                                       ],
                                                                     "into_node",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1557,6 +1617,7 @@ Module collections.
                                                                               "alloc::collections::btree::node::marker::KV"
                                                                           ],
                                                                         "reborrow",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ self ]
@@ -1678,6 +1739,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::KV"
                                       ],
                                     "force",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1706,6 +1768,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "last_kv",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1729,6 +1792,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "fix_right_child",
+                                        [],
                                         [ A ]
                                       |),
                                       [
@@ -1738,7 +1802,9 @@ Module collections.
                                             "core::clone::Clone",
                                             A,
                                             [],
+                                            [],
                                             "clone",
+                                            [],
                                             []
                                           |),
                                           [ alloc ]
@@ -1786,6 +1852,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                 ],
                                                               "len",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1813,6 +1880,7 @@ Module collections.
                                                                           "alloc::collections::btree::node::marker::KV"
                                                                       ],
                                                                     "into_node",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1839,6 +1907,7 @@ Module collections.
                                                                               "alloc::collections::btree::node::marker::KV"
                                                                           ],
                                                                         "reborrow",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ self ]
@@ -1983,6 +2052,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "consider_for_balancing",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1997,6 +2067,7 @@ Module collections.
                           []
                           [ K; V ],
                         "left_child_len",
+                        [],
                         []
                       |),
                       [ internal_kv ]
@@ -2030,6 +2101,7 @@ Module collections.
                                                     []
                                                     [ K; V ],
                                                   "right_child_len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ internal_kv ]
@@ -2082,6 +2154,7 @@ Module collections.
                                     []
                                     [ K; V ],
                                   "can_merge",
+                                  [],
                                   []
                                 |),
                                 [ internal_kv ]
@@ -2097,6 +2170,7 @@ Module collections.
                                 []
                                 [ K; V ],
                               "merge_tracking_child",
+                              [],
                               [ A ]
                             |),
                             [ M.read (| internal_kv |); M.read (| alloc |) ]
@@ -2107,7 +2181,12 @@ Module collections.
                         (let~ count :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                              M.get_associated_function (|
+                                Ty.path "usize",
+                                "saturating_sub",
+                                [],
+                                []
+                              |),
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
@@ -2148,6 +2227,7 @@ Module collections.
                                             []
                                             [ K; V ],
                                           "bulk_steal_right",
+                                          [],
                                           []
                                         |),
                                         [ internal_kv; M.read (| count |) ]
@@ -2165,6 +2245,7 @@ Module collections.
                                 []
                                 [ K; V ],
                               "into_left_child",
+                              [],
                               []
                             |),
                             [ M.read (| internal_kv |) ]
@@ -2233,6 +2314,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "consider_for_balancing",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2247,6 +2329,7 @@ Module collections.
                           []
                           [ K; V ],
                         "right_child_len",
+                        [],
                         []
                       |),
                       [ internal_kv ]
@@ -2280,6 +2363,7 @@ Module collections.
                                                     []
                                                     [ K; V ],
                                                   "left_child_len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ internal_kv ]
@@ -2332,6 +2416,7 @@ Module collections.
                                     []
                                     [ K; V ],
                                   "can_merge",
+                                  [],
                                   []
                                 |),
                                 [ internal_kv ]
@@ -2347,6 +2432,7 @@ Module collections.
                                 []
                                 [ K; V ],
                               "merge_tracking_child",
+                              [],
                               [ A ]
                             |),
                             [ M.read (| internal_kv |); M.read (| alloc |) ]
@@ -2357,7 +2443,12 @@ Module collections.
                         (let~ count :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                              M.get_associated_function (|
+                                Ty.path "usize",
+                                "saturating_sub",
+                                [],
+                                []
+                              |),
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
@@ -2398,6 +2489,7 @@ Module collections.
                                             []
                                             [ K; V ],
                                           "bulk_steal_left",
+                                          [],
                                           []
                                         |),
                                         [ internal_kv; M.read (| count |) ]
@@ -2415,6 +2507,7 @@ Module collections.
                                 []
                                 [ K; V ],
                               "into_right_child",
+                              [],
                               []
                             |),
                             [ M.read (| internal_kv |) ]

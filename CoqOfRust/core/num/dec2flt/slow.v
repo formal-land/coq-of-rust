@@ -165,6 +165,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.I32 0 ]
@@ -176,6 +177,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [
@@ -315,8 +317,10 @@ Module num.
                                         Ty.function
                                           [ Ty.tuple [ Ty.path "usize" ] ]
                                           (Ty.path "usize"),
+                                        [],
                                         [ Ty.tuple [ Ty.path "usize" ] ],
                                         "call",
+                                        [],
                                         []
                                       |),
                                       [ get_shift; Value.Tuple [ M.read (| n |) ] ]
@@ -328,6 +332,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
+                                        [],
                                         []
                                       |),
                                       [ d; M.read (| shift |) ]
@@ -501,19 +506,17 @@ Module num.
                                                               |) in
                                                             Value.Tuple []))
                                                       ],
-                                                      M.closure
-                                                        (fun γ =>
-                                                          ltac:(M.monadic
-                                                            match γ with
-                                                            | [] =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 2
-                                                                |)))
-                                                            | _ =>
-                                                              M.impossible
-                                                                "wrong number of arguments"
-                                                            end))
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          match γ with
+                                                          | [] =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 2
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
+                                                          end)
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -531,8 +534,10 @@ Module num.
                                                   Ty.function
                                                     [ Ty.tuple [ Ty.path "usize" ] ]
                                                     (Ty.path "usize"),
+                                                  [],
                                                   [ Ty.tuple [ Ty.path "usize" ] ],
                                                   "call",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -562,6 +567,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "left_shift",
+                                        [],
                                         []
                                       |),
                                       [ d; M.read (| shift |) ]
@@ -721,6 +727,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
+                                        [],
                                         []
                                       |),
                                       [ d; M.read (| n |) ]
@@ -791,6 +798,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "left_shift",
+                          [],
                           []
                         |),
                         [
@@ -812,6 +820,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "round",
+                          [],
                           []
                         |),
                         [ d ]
@@ -849,6 +858,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "core::num::dec2flt::decimal::Decimal",
                                     "right_shift",
+                                    [],
                                     []
                                   |),
                                   [ d; Value.Integer IntegerKind.Usize 1 ]
@@ -867,6 +877,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "core::num::dec2flt::decimal::Decimal",
                                     "round",
+                                    [],
                                     []
                                   |),
                                   [ d ]

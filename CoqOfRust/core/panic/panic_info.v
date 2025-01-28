@@ -31,6 +31,7 @@ Module panic.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -267,7 +268,9 @@ Module panic.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -275,6 +278,7 @@ Module panic.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_str",
+                                [],
                                 []
                               |),
                               [ M.read (| formatter |); M.read (| Value.String "panicked at " |) ]
@@ -303,6 +307,7 @@ Module panic.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -313,6 +318,7 @@ Module panic.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -344,7 +350,9 @@ Module panic.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -353,7 +361,9 @@ Module panic.
                                 "core::fmt::Display",
                                 Ty.path "core::panic::location::Location",
                                 [],
+                                [],
                                 "fmt",
+                                [],
                                 []
                               |),
                               [
@@ -391,6 +401,7 @@ Module panic.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -401,6 +412,7 @@ Module panic.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -432,7 +444,9 @@ Module panic.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -440,6 +454,7 @@ Module panic.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_str",
+                                [],
                                 []
                               |),
                               [ M.read (| formatter |); M.read (| Value.String ":
@@ -469,6 +484,7 @@ Module panic.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -479,6 +495,7 @@ Module panic.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -510,7 +527,9 @@ Module panic.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -518,6 +537,7 @@ Module panic.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -557,6 +577,7 @@ Module panic.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -567,6 +588,7 @@ Module panic.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -615,7 +637,7 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -647,7 +669,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| formatter |);
                 M.read (|
@@ -687,7 +709,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| formatter |);
                 M.read (|

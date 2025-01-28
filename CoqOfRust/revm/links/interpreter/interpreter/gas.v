@@ -63,7 +63,7 @@ Module Impl_Default_for_MemoryGas.
   Definition run_default : default.Default.Run_default MemoryGas.t.
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_MemoryGas.Implements. }
       { reflexivity. }
     }
@@ -78,17 +78,26 @@ Module Impl_Default_for_MemoryGas.
       eapply Run.CallClosure. {
         apply run_default_usize.
       }
-      intros; cbn.
+      intros []; cbn; [|run_panic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros; cbn.
+      intros []; cbn; [|run_panic].
       run_symbolic;
+        try apply Output.Success;
         try apply MemoryGas.Build_t;
         try reflexivity.
+    }
+  Defined.
+
+  Definition run : default.Default.Run MemoryGas.t.
+  Proof.
+    constructor.
+    { (* default *)
+      exact run_default.
     }
   Defined.
 End Impl_Default_for_MemoryGas.
@@ -102,13 +111,10 @@ Module Impl_MemoryGas.
       }
   }
   *)
-  Definition run_new :
-    {{
-      gas.Impl_revm_interpreter_gas_MemoryGas.new [] [] [] ⇓
-      fun (v : MemoryGas.t) => inl (φ v)
-    }}.
+  Definition run_new : {{ gas.Impl_revm_interpreter_gas_MemoryGas.new [] [] [] 🔽 MemoryGas.t }}.
   Proof.
     run_symbolic;
+      try apply Output.Success;
       try apply MemoryGas.Build_t;
       try apply Integer.Build_t;
       try reflexivity.
@@ -209,12 +215,14 @@ Module Impl_Clone.
   Definition run_clone : clone.Clone.Run_clone Gas.t.
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
       { reflexivity. }
     }
     { intros.
-      run_symbolic.
+      run_symbolic;
+        try apply Output.Success;
+        try reflexivity.
     }
   Defined.
 
@@ -231,7 +239,7 @@ Module Impl_Default.
   Definition run_default : default.Default.Run_default Gas.t.
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements. }
       { reflexivity. }
     }
@@ -248,30 +256,32 @@ Module Impl_Default.
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros; cbn.
+      intros []; cbn; [|run_panic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros; cbn.
+      intros []; cbn; [|run_panic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_i64.
       }
       eapply Run.CallClosure. {
         apply run_default_i64.
       }
-      intros; cbn.
+      intros []; cbn; [|run_panic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_memory_gas.
       }
       eapply Run.CallClosure. {
         apply run_default_memory_gas.
       }
-      intros; cbn.
-      run_symbolic; [apply Gas.Build_t |].
-      all: try reflexivity.
+      intros []; cbn; [|run_panic].
+      run_symbolic;
+        try apply Output.Success;
+        try apply Gas.Build_t;
+        try reflexivity.
     }
   Defined.
 
@@ -298,10 +308,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_new (limit : U64.t) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] ⇓
-      fun (v : Self) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
     eapply CallPrimitiveGetAssociatedFunction. {
@@ -310,8 +317,9 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
-    intros; cbn.
+    intros []; cbn; [|run_panic].
     run_symbolic;
+      try apply Output.Success;
       try simple apply Gas.Build_t;
       try apply Integer.Build_t;
       try reflexivity.
@@ -328,10 +336,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_new_spent (limit : U64.t) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] ⇓
-      fun (v : Self) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
     eapply CallPrimitiveGetAssociatedFunction. {
@@ -340,8 +345,9 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
-    intros; cbn.
+    intros []; cbn; [|run_panic].
     run_symbolic;
+      try apply Output.Success;
       try simple apply Gas.Build_t;
       try apply Integer.Build_t;
       try reflexivity.
@@ -353,14 +359,13 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_limit (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] ⇓
-      fun (v : U64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_limit_is_valid.
-    run_symbolic.
+    run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
 
   (*
@@ -369,12 +374,10 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_memory (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] ⇓
-      fun (v : U64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic;
+      try apply Output.Success;
       try apply Integer.Build_t;
       try reflexivity.
   Defined.
@@ -385,14 +388,13 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_refunded (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] ⇓
-      fun (v : I64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] 🔽 I64.t }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
-    run_symbolic.
+    run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
 
   (*
@@ -401,16 +403,14 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_spent (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] ⇓
-      fun (v : U64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_limit_is_valid.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic;
+      try apply Output.Success;
       try apply Integer.Build_t;
       try reflexivity.
   Defined.
@@ -421,14 +421,13 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_remaining (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] ⇓
-      fun (v : U64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic.
+    run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
 
   (*
@@ -437,16 +436,14 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_remaining_63_of_64_parts (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.remaining_63_of_64_parts [] [] [φ self] ⇓
-      fun (v : U64.t) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.remaining_63_of_64_parts [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic;
+      try apply Output.Success;
       try apply Integer.Build_t;
       try reflexivity.
   Defined.
@@ -457,10 +454,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_erase_cost (self : Ref.t Pointer.Kind.Ref Self) (returned : U64.t) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] ⇓
-      fun (v : unit) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] 🔽 unit }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
@@ -472,7 +466,9 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.Let. {
       run_symbolic.
     }
-    intros; run_symbolic.
+    intros; run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
 
   (*
@@ -481,10 +477,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_spend_all (self : Ref.t Pointer.Kind.MutRef Self) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.spend_all [] [] [φ self] ⇓
-      fun (v : unit) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.spend_all [] [] [φ self] 🔽 unit }}.
   Proof.
     run_symbolic.
     eapply Run.Let. {
@@ -495,7 +488,9 @@ Module Impl_revm_interpreter_gas_Gas.
         try reflexivity.
       run_symbolic.
     }
-    intros; run_symbolic.
+    intros; run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
 
   (*
@@ -504,10 +499,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_record_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] ⇓
-      fun (v : unit) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] 🔽 unit }}.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
@@ -518,9 +510,12 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.Let. {
       run_symbolic.
     }
-    intros; run_symbolic.
+    intros; run_symbolic;
+      try apply Output.Success;
+      try reflexivity.
   Defined.
-(*
+
+  (*
   (*
       pub fn set_final_refund(&mut self, is_london: bool) {
           let max_refund_quotient = if is_london { 5 } else { 2 };
@@ -528,10 +523,7 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_set_final_refund (self : Ref.t Pointer.Kind.MutRef Self) (is_london : bool) :
-    {{
-      gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] ⇓
-      fun (v : unit) => inl (φ v)
-    }}.
+    {{ gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] 🔽 unit }}.
   Proof.
     run_symbolic.
     eapply Run.Let with (output_to_value' := fun (v : Ref.t Pointer.Kind.Ref U64.t) => inl (φ v)). {
@@ -555,8 +547,17 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.Let. {
       run_symbolic.
       run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
-      
-
+      destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_min.
+      }
+      eapply Run.CallPrimitiveGetAssociatedFunction. {
+        apply gas.Impl_revm_interpreter_gas_Gas.AssociatedFunction_refunded.
+      }
+      run_symbolic.
+      eapply Run.CallClosure. {
+        pose proof (run_refunded self).
+      }
     }
     intros; run_symbolic.
     run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
@@ -569,5 +570,5 @@ Module Impl_revm_interpreter_gas_Gas.
       run_symbolic.
     }
     intros; run_symbolic.
-*)
+  *)
 End Impl_revm_interpreter_gas_Gas.

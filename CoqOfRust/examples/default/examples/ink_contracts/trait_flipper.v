@@ -35,7 +35,9 @@ Module Impl_trait_flipper_Flipper.
                   "core::default::Default",
                   Ty.path "bool",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []

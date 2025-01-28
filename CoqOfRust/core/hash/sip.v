@@ -32,6 +32,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -79,7 +80,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -122,7 +125,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -168,6 +173,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -215,7 +221,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -258,7 +266,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -297,6 +307,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -339,7 +350,9 @@ Module hash.
                     "core::clone::Clone",
                     Ty.path "core::hash::sip::SipHasher24",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -378,7 +391,9 @@ Module hash.
                     "core::default::Default",
                     Ty.path "core::hash::sip::SipHasher24",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -489,6 +504,7 @@ Module hash.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct_fields_finish",
+                    [],
                     []
                   |),
                   [
@@ -540,6 +556,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -768,6 +785,7 @@ Module hash.
                                                                   []
                                                                   [ Ty.path "u8" ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| buf |) ]
@@ -822,6 +840,7 @@ Module hash.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -829,6 +848,7 @@ Module hash.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "as_ptr",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -850,7 +870,7 @@ Module hash.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "u32", "to_le", [] |),
+                                  M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
                                   [ M.read (| data |) ]
                                 |)
                               |)
@@ -937,6 +957,7 @@ Module hash.
                                                                       []
                                                                       [ Ty.path "u8" ],
                                                                     "len",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| buf |) ]
@@ -991,6 +1012,7 @@ Module hash.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -998,6 +1020,7 @@ Module hash.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "as_ptr",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| buf |) ]
@@ -1022,7 +1045,12 @@ Module hash.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "u16", "to_le", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "u16",
+                                        "to_le",
+                                        [],
+                                        []
+                                      |),
                                       [ M.read (| data |) ]
                                     |)
                                   |)
@@ -1060,6 +1088,7 @@ Module hash.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "get_unchecked",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
@@ -1143,6 +1172,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher",
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -1177,6 +1207,7 @@ Module hash.
                             []
                             [ Ty.path "core::hash::sip::Sip24Rounds" ],
                           "new_with_keys",
+                          [],
                           []
                         |),
                         [ M.read (| key0 |); M.read (| key1 |) ]
@@ -1206,6 +1237,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher13",
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -1237,6 +1269,7 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       "new_with_keys",
+                      [],
                       []
                     |),
                     [ M.read (| key0 |); M.read (| key1 |) ]
@@ -1308,6 +1341,7 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       "reset",
+                      [],
                       []
                     |),
                     [ state ]
@@ -1473,7 +1507,9 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip24Rounds" ],
                 [],
+                [],
                 "write",
+                [],
                 []
               |),
               [
@@ -1514,7 +1550,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "write_str",
+                      [],
                       []
                     |),
                     [
@@ -1554,7 +1592,9 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip24Rounds" ],
                 [],
+                [],
                 "finish",
+                [],
                 []
               |),
               [
@@ -1607,7 +1647,9 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip13Rounds" ],
                 [],
+                [],
                 "write",
+                [],
                 []
               |),
               [
@@ -1644,7 +1686,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "write_str",
+                      [],
                       []
                     |),
                     [
@@ -1680,7 +1724,9 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip13Rounds" ],
                 [],
+                [],
                 "finish",
+                [],
                 []
               |),
               [
@@ -1773,6 +1819,7 @@ Module hash.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| msg |) ]
@@ -1930,7 +1977,9 @@ Module hash.
                                             "core::hash::sip::Sip",
                                             S,
                                             [],
+                                            [],
                                             "c_rounds",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2051,6 +2100,7 @@ Module hash.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| msg |) ]
@@ -2106,6 +2156,7 @@ Module hash.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2113,6 +2164,7 @@ Module hash.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "as_ptr",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| msg |) ]
@@ -2134,7 +2186,12 @@ Module hash.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "u64", "to_le", [] |),
+                                        M.get_associated_function (|
+                                          Ty.path "u64",
+                                          "to_le",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| data |) ]
                                       |)
                                     |)
@@ -2161,7 +2218,9 @@ Module hash.
                                         "core::hash::sip::Sip",
                                         S,
                                         [],
+                                        [],
                                         "c_rounds",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2264,13 +2323,15 @@ Module hash.
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       [],
+                      [],
                       "write",
+                      [],
                       []
                     |),
                     [
                       M.read (| self |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                        M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                         [ M.read (| s |) ]
                       |)
                     ]
@@ -2283,7 +2344,9 @@ Module hash.
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       [],
+                      [],
                       "write_u8",
+                      [],
                       []
                     |),
                     [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
@@ -2360,7 +2423,7 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::sip::Sip", S, [], "c_rounds", [] |),
+                    M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "c_rounds", [], [] |),
                     [ state ]
                   |)
                 |) in
@@ -2386,7 +2449,7 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::sip::Sip", S, [], "d_rounds", [] |),
+                    M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "d_rounds", [], [] |),
                     [ state ]
                   |)
                 |) in
@@ -2548,6 +2611,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -2586,7 +2650,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| Value.String "Sip13Rounds" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2662,7 +2726,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2689,7 +2753,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2716,7 +2780,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2756,7 +2820,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2796,7 +2860,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2817,7 +2881,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2844,7 +2908,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2871,7 +2935,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2911,7 +2975,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2951,7 +3015,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2992,7 +3056,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3019,7 +3083,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3046,7 +3110,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3086,7 +3150,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3126,7 +3190,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3147,7 +3211,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3174,7 +3238,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3201,7 +3265,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3241,7 +3305,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3281,7 +3345,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3304,7 +3368,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3331,7 +3395,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3358,7 +3422,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3398,7 +3462,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3438,7 +3502,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3459,7 +3523,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3486,7 +3550,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3513,7 +3577,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3553,7 +3617,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3593,7 +3657,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3616,7 +3680,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3643,7 +3707,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3670,7 +3734,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3710,7 +3774,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3750,7 +3814,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3771,7 +3835,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3798,7 +3862,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3825,7 +3889,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3865,7 +3929,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3905,7 +3969,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3953,7 +4017,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| Value.String "Sip24Rounds" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4030,7 +4094,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4057,7 +4121,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4084,7 +4148,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4124,7 +4188,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4164,7 +4228,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4185,7 +4249,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4212,7 +4276,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4239,7 +4303,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4279,7 +4343,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4319,7 +4383,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4342,7 +4406,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4369,7 +4433,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4396,7 +4460,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4436,7 +4500,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4476,7 +4540,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4497,7 +4561,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4524,7 +4588,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4551,7 +4615,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4591,7 +4655,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4631,7 +4695,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4673,7 +4737,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4700,7 +4764,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4727,7 +4791,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4767,7 +4831,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4807,7 +4871,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4828,7 +4892,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4855,7 +4919,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4882,7 +4946,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4922,7 +4986,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4962,7 +5026,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -4985,7 +5049,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5012,7 +5076,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5039,7 +5103,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5079,7 +5143,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5119,7 +5183,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5140,7 +5204,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5167,7 +5231,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5194,7 +5258,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5234,7 +5298,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5274,7 +5338,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5297,7 +5361,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5324,7 +5388,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5351,7 +5415,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5391,7 +5455,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5431,7 +5495,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5452,7 +5516,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5479,7 +5543,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5506,7 +5570,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5546,7 +5610,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5586,7 +5650,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5609,7 +5673,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5636,7 +5700,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5663,7 +5727,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5703,7 +5767,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5743,7 +5807,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5764,7 +5828,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5791,7 +5855,7 @@ Module hash.
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5818,7 +5882,7 @@ Module hash.
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5858,7 +5922,7 @@ Module hash.
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5898,7 +5962,7 @@ Module hash.
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|

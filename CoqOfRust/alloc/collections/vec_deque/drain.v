@@ -94,6 +94,7 @@ Module collections.
                                   []
                                   [ T; A ]
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -106,6 +107,7 @@ Module collections.
                                 ]
                             ],
                             "from",
+                            [],
                             []
                           |),
                           [ M.read (| deque |) ]
@@ -166,6 +168,7 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ]
                           ],
                         "as_ref",
+                        [],
                         []
                       |),
                       [
@@ -215,6 +218,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "slice_ranges",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
@@ -224,7 +228,9 @@ Module collections.
                             "core::clone::Clone",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [ logical_remaining_range ]
@@ -256,6 +262,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "buffer_range",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| deque |); M.read (| a_range |) ]
@@ -267,6 +274,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "buffer_range",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| deque |); M.read (| b_range |) ]
@@ -309,6 +317,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -316,6 +325,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -323,6 +333,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
+                          [],
                           []
                         |),
                         [
@@ -330,6 +341,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -337,6 +349,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -345,6 +358,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_tuple",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); M.read (| Value.String "Drain" |) ]
@@ -620,6 +634,7 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "as_slices",
+                                  [],
                                   []
                                 |),
                                 [
@@ -664,6 +679,7 @@ Module collections.
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| front |) ]
@@ -694,6 +710,7 @@ Module collections.
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| front |) ]
@@ -830,6 +847,7 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
@@ -845,6 +863,7 @@ Module collections.
                                       [ T; A ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [
@@ -898,6 +917,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_read",
+                              [],
                               []
                             |),
                             [
@@ -913,6 +933,7 @@ Module collections.
                                         [ T; A ]
                                     ],
                                   "as_mut",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1069,6 +1090,7 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
@@ -1084,6 +1106,7 @@ Module collections.
                                       [ T; A ]
                                   ],
                                 "as_ref",
+                                [],
                                 []
                               |),
                               [
@@ -1124,6 +1147,7 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_read",
+                              [],
                               []
                             |),
                             [
@@ -1139,6 +1163,7 @@ Module collections.
                                         [ T; A ]
                                     ],
                                   "as_mut",
+                                  [],
                                   []
                                 |),
                                 [

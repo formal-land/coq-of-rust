@@ -61,6 +61,7 @@ Module loop_summary.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -179,8 +180,10 @@ Module loop_summary.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "u16",
+              [],
               [ Ty.path "u16" ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -218,7 +221,7 @@ Module loop_summary.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -440,7 +443,9 @@ Module loop_summary.
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                       Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                       [],
+                      [],
                       "num_blocks",
+                      [],
                       []
                     |),
                     [ M.read (| cfg |) ]
@@ -487,6 +492,7 @@ Module loop_summary.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -522,6 +528,7 @@ Module loop_summary.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -543,7 +550,9 @@ Module loop_summary.
                     "move_binary_format::control_flow_graph::ControlFlowGraph",
                     Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                     [],
+                    [],
                     "entry_block_id",
+                    [],
                     []
                   |),
                   [ M.read (| cfg |) ]
@@ -555,6 +564,7 @@ Module loop_summary.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                     "bump",
+                    [],
                     []
                   |),
                   [ next_node ]
@@ -573,6 +583,7 @@ Module loop_summary.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -587,8 +598,10 @@ Module loop_summary.
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [ Ty.path "usize" ],
                     "index_mut",
+                    [],
                     []
                   |),
                   [
@@ -597,8 +610,10 @@ Module loop_summary.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "usize",
+                        [],
                         [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                         "from",
+                        [],
                         []
                       |),
                       [ M.read (| root_node |) ]
@@ -620,6 +635,7 @@ Module loop_summary.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "insert",
+                    [],
                     []
                   |),
                   [
@@ -646,7 +662,9 @@ Module loop_summary.
                           (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier")
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -663,7 +681,9 @@ Module loop_summary.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.path "move_bytecode_verifier::loop_summary::new::Frontier";
                           Ty.function
@@ -676,6 +696,7 @@ Module loop_summary.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -687,7 +708,9 @@ Module loop_summary.
                                   []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -697,7 +720,9 @@ Module loop_summary.
                                     Ty.path
                                       "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                     [],
+                                    [],
                                     "successors",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| cfg |); M.read (| root_block |) ]
@@ -753,6 +778,7 @@ Module loop_summary.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "pop",
+                                  [],
                                   []
                                 |),
                                 [ stack ]
@@ -800,8 +826,10 @@ Module loop_summary.
                                             (Ty.path "alloc::vec::Vec")
                                             []
                                             [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                          [],
                                           [ Ty.path "usize" ],
                                           "index_mut",
+                                          [],
                                           []
                                         |),
                                         [
@@ -810,11 +838,13 @@ Module loop_summary.
                                             M.get_trait_method (|
                                               "core::convert::From",
                                               Ty.path "usize",
+                                              [],
                                               [
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::NodeId"
                                               ],
                                               "from",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| parent |) ]
@@ -835,8 +865,10 @@ Module loop_summary.
                                                   (Ty.path "alloc::vec::Vec")
                                                   []
                                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                                [],
                                                 [ Ty.path "usize" ],
                                                 "index",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -845,11 +877,13 @@ Module loop_summary.
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "usize",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                     ],
                                                     "from",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| node_id |) ]
@@ -877,6 +911,7 @@ Module loop_summary.
                                                 ]
                                             ],
                                           "unwrap",
+                                          [],
                                           []
                                         |),
                                         [
@@ -892,6 +927,7 @@ Module loop_summary.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "get_mut",
+                                              [],
                                               [ Ty.path "u16" ]
                                             |),
                                             [ exploration; block ]
@@ -933,6 +969,7 @@ Module loop_summary.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "entry",
+                                          [],
                                           []
                                         |),
                                         [ exploration; M.read (| to_block |) ]
@@ -963,6 +1000,7 @@ Module loop_summary.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "get",
+                                                  [],
                                                   []
                                                 |),
                                                 [ entry ]
@@ -991,6 +1029,7 @@ Module loop_summary.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1011,8 +1050,10 @@ Module loop_summary.
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
+                                                            [],
                                                             [ Ty.path "usize" ],
                                                             "index_mut",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1021,11 +1062,13 @@ Module loop_summary.
                                                               M.get_trait_method (|
                                                                 "core::convert::From",
                                                                 Ty.path "usize",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_bytecode_verifier::loop_summary::NodeId"
                                                                 ],
                                                                 "from",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| M.read (| to_node |) |) ]
@@ -1058,6 +1101,7 @@ Module loop_summary.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1078,8 +1122,10 @@ Module loop_summary.
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
+                                                            [],
                                                             [ Ty.path "usize" ],
                                                             "index_mut",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1088,11 +1134,13 @@ Module loop_summary.
                                                               M.get_trait_method (|
                                                                 "core::convert::From",
                                                                 Ty.path "usize",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_bytecode_verifier::loop_summary::NodeId"
                                                                 ],
                                                                 "from",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| M.read (| to_node |) |) ]
@@ -1121,6 +1169,7 @@ Module loop_summary.
                                                   Ty.path
                                                     "move_bytecode_verifier::loop_summary::NodeId",
                                                   "bump",
+                                                  [],
                                                   []
                                                 |),
                                                 [ next_node ]
@@ -1141,6 +1190,7 @@ Module loop_summary.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "insert",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1161,8 +1211,10 @@ Module loop_summary.
                                                     []
                                                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [ Ty.path "usize" ],
                                                   "index_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1171,11 +1223,13 @@ Module loop_summary.
                                                     M.get_trait_method (|
                                                       "core::convert::From",
                                                       Ty.path "usize",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_bytecode_verifier::loop_summary::NodeId"
                                                       ],
                                                       "from",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| to_node |) ]
@@ -1197,6 +1251,7 @@ Module loop_summary.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1217,8 +1272,10 @@ Module loop_summary.
                                                             ];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
+                                                      [],
                                                       [ Ty.path "usize" ],
                                                       "index_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1227,11 +1284,13 @@ Module loop_summary.
                                                         M.get_trait_method (|
                                                           "core::convert::From",
                                                           Ty.path "usize",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_bytecode_verifier::loop_summary::NodeId"
                                                           ],
                                                           "from",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| to_node |) ]
@@ -1255,6 +1314,7 @@ Module loop_summary.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1282,11 +1342,13 @@ Module loop_summary.
                                                         "move_bytecode_verifier::loop_summary::new::Frontier";
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_bytecode_verifier::loop_summary::new::Frontier"
                                                   ],
                                                   "extend",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::iter::adapters::map::Map")
@@ -1321,7 +1383,9 @@ Module loop_summary.
                                                         []
                                                         [ Ty.path "u16" ],
                                                       [],
+                                                      [],
                                                       "map",
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_bytecode_verifier::loop_summary::new::Frontier";
@@ -1347,6 +1411,7 @@ Module loop_summary.
                                                             []
                                                             [ Ty.path "u16" ],
                                                           "iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1361,7 +1426,9 @@ Module loop_summary.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "deref",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1371,7 +1438,9 @@ Module loop_summary.
                                                                   Ty.path
                                                                     "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                                                   [],
+                                                                  [],
                                                                   "successors",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1506,8 +1575,10 @@ Module loop_summary.
                                           (Ty.path "alloc::vec::Vec")
                                           []
                                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                        [],
                                         [ Ty.path "usize" ],
                                         "index",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1550,7 +1621,9 @@ Module loop_summary.
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
               [],
+              [],
               "map",
+              [],
               [
                 Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                 Ty.function
@@ -1571,6 +1644,7 @@ Module loop_summary.
                           []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1627,8 +1701,10 @@ Module loop_summary.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ Ty.path "usize" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -1641,8 +1717,10 @@ Module loop_summary.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
+                    [],
                     [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| l |) ]
@@ -1682,8 +1760,10 @@ Module loop_summary.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [ Ty.path "usize" ],
               "index",
+              [],
               []
             |),
             [
@@ -1696,8 +1776,10 @@ Module loop_summary.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "usize",
+                  [],
                   [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| l |) ]
@@ -1736,8 +1818,10 @@ Module loop_summary.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [ Ty.path "usize" ],
               "index",
+              [],
               []
             |),
             [
@@ -1750,8 +1834,10 @@ Module loop_summary.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "usize",
+                  [],
                   [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| l |) ]
@@ -1791,6 +1877,7 @@ Module loop_summary.
                       []
                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                     "len",
+                    [],
                     []
                   |),
                   [
@@ -1820,7 +1907,9 @@ Module loop_summary.
                               (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -1837,7 +1926,9 @@ Module loop_summary.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                               Ty.function
@@ -1933,6 +2024,7 @@ Module loop_summary.
                       M.get_associated_function (|
                         Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                         "parent",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| child |) ]
@@ -1944,6 +2036,7 @@ Module loop_summary.
                       M.get_associated_function (|
                         Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                         "parent",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| parent |) ]
@@ -1963,8 +2056,10 @@ Module loop_summary.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                      [],
                                       [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [ child; parent ]
@@ -1974,8 +2069,10 @@ Module loop_summary.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                        [],
                                         [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ parent; grandparent ]
@@ -2002,6 +2099,7 @@ Module loop_summary.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -2022,6 +2120,7 @@ Module loop_summary.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "push",
+                              [],
                               []
                             |),
                             [ descendants; M.read (| child |) ]
@@ -2038,6 +2137,7 @@ Module loop_summary.
                                   M.get_associated_function (|
                                     Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                                     "parent",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| grandparent |) ]
@@ -2071,8 +2171,10 @@ Module loop_summary.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                        [],
                                         [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ parent; grandparent ]
@@ -2103,7 +2205,9 @@ Module loop_summary.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| descendants |) ]
@@ -2130,7 +2234,9 @@ Module loop_summary.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2163,6 +2269,7 @@ Module loop_summary.
                                                   Ty.path
                                                     "move_bytecode_verifier::loop_summary::LoopPartition",
                                                   "parent_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| self |); M.read (| descendant |) ]
@@ -2228,6 +2335,7 @@ Module loop_summary.
                                     M.get_associated_function (|
                                       Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                                       "parent",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| head |) ]
@@ -2256,11 +2364,13 @@ Module loop_summary.
                                                     "core::cmp::PartialEq",
                                                     Ty.path
                                                       "move_bytecode_verifier::loop_summary::NodeId",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                     ],
                                                     "eq",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| left_val |); M.read (| right_val |) ]
@@ -2321,6 +2431,7 @@ Module loop_summary.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                     "depth",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| head |) ]
@@ -2346,7 +2457,9 @@ Module loop_summary.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| body |) ]
@@ -2369,7 +2482,9 @@ Module loop_summary.
                                         []
                                         [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -2416,6 +2531,7 @@ Module loop_summary.
                                                                 Ty.path
                                                                   "move_bytecode_verifier::loop_summary::LoopPartition",
                                                                 "parent",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2457,11 +2573,13 @@ Module loop_summary.
                                                                               "core::cmp::PartialEq",
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::loop_summary::NodeId",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::loop_summary::NodeId"
                                                                               ],
                                                                               "eq",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -2530,6 +2648,7 @@ Module loop_summary.
                                               Ty.path
                                                 "move_bytecode_verifier::loop_summary::LoopPartition",
                                               "parent_mut",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2547,7 +2666,9 @@ Module loop_summary.
                                               "core::cmp::Ord",
                                               Ty.path "u16",
                                               [],
+                                              [],
                                               "max",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2556,6 +2677,7 @@ Module loop_summary.
                                                   Ty.path
                                                     "move_bytecode_verifier::loop_summary::LoopPartition",
                                                   "depth",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2586,6 +2708,7 @@ Module loop_summary.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                     "depth_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| head |) ]
@@ -2622,8 +2745,10 @@ Module loop_summary.
                     Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [ Ty.path "usize" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -2636,8 +2761,10 @@ Module loop_summary.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
+                    [],
                     [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| l |) ]
@@ -2671,8 +2798,10 @@ Module loop_summary.
                   Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [ Ty.path "usize" ],
               "index_mut",
+              [],
               []
             |),
             [
@@ -2685,8 +2814,10 @@ Module loop_summary.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "usize",
+                  [],
                   [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| l |) ]
@@ -2717,8 +2848,10 @@ Module loop_summary.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ Ty.path "usize" ],
                 "index",
+                [],
                 []
               |),
               [
@@ -2731,8 +2864,10 @@ Module loop_summary.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
+                    [],
                     [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| l |) ]
@@ -2763,8 +2898,10 @@ Module loop_summary.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.path "usize" ],
               "index_mut",
+              [],
               []
             |),
             [
@@ -2777,8 +2914,10 @@ Module loop_summary.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "usize",
+                  [],
                   [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| l |) ]

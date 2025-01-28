@@ -71,7 +71,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -245,8 +245,10 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
               [ __self_discr; __arg1_discr ]
@@ -299,7 +301,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [ __self_discr; __arg1_discr ]
             |)
           |)
@@ -359,14 +361,16 @@ Module Meter.
                     "move_bytecode_verifier_meter::Meter",
                     Self,
                     [],
+                    [],
                     "add",
+                    [],
                     []
                   |),
                   [
                     M.read (| self |);
                     M.read (| scope |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u128", "saturating_mul", [] |),
+                      M.get_associated_function (| Ty.path "u128", "saturating_mul", [], [] |),
                       [ M.read (| units_per_item |); M.rust_cast (M.read (| items |)) ]
                     |)
                   ]
@@ -430,7 +434,9 @@ Module Meter.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -460,7 +466,9 @@ Module Meter.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -497,7 +505,9 @@ Module Meter.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -506,7 +516,9 @@ Module Meter.
                                                       "move_bytecode_verifier_meter::Meter",
                                                       Self,
                                                       [],
+                                                      [],
                                                       "add",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -543,6 +555,7 @@ Module Meter.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -555,6 +568,7 @@ Module Meter.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -583,8 +597,10 @@ Module Meter.
                                                 M.get_trait_method (|
                                                   "core::ops::arith::Mul",
                                                   Ty.path "f32",
+                                                  [],
                                                   [ Ty.path "f32" ],
                                                   "mul",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -634,7 +650,9 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],
             [],
+            [],
             "enter_scope",
+            [],
             []
           |),
           [ M.read (| M.read (| self |) |); M.read (| name |); M.read (| scope |) ]
@@ -660,7 +678,9 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],
             [],
+            [],
             "transfer",
+            [],
             []
           |),
           [ M.read (| M.read (| self |) |); M.read (| from |); M.read (| to |); M.read (| factor |)
@@ -686,7 +706,9 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],
             [],
+            [],
             "add",
+            [],
             []
           |),
           [ M.read (| M.read (| self |) |); M.read (| scope |); M.read (| units |) ]

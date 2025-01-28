@@ -111,7 +111,9 @@ Module gas_algebra.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -169,7 +171,9 @@ Module gas_algebra.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -224,7 +228,9 @@ Module gas_algebra.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
                           |),
                           [
@@ -277,7 +283,9 @@ Module gas_algebra.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -312,7 +320,9 @@ Module gas_algebra.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [
                   Ty.apply
                     (Ty.path "move_core_types::gas_algebra::_'1::deserialize::__Visitor")
@@ -432,6 +442,7 @@ Module gas_algebra.
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
               "new",
+              [],
               []
             |),
             [ Value.Integer IntegerKind.U64 16 ]
@@ -449,6 +460,7 @@ Module gas_algebra.
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
               "new",
+              [],
               []
             |),
             [ Value.Integer IntegerKind.U64 8 ]
@@ -498,6 +510,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
+              [],
               []
             |),
             [ Value.Integer IntegerKind.U64 0 ]
@@ -523,6 +536,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
+              [],
               []
             |),
             [ Value.Integer IntegerKind.U64 1 ]
@@ -572,7 +586,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -608,6 +622,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               "map",
+              [],
               [
                 Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ];
                 Ty.function
@@ -617,7 +632,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_sub", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -638,6 +653,7 @@ Module gas_algebra.
               M.get_associated_function (|
                 Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
                 "new",
+                [],
                 []
               |)
             ]
@@ -670,13 +686,15 @@ Module gas_algebra.
             M.get_trait_method (|
               "core::convert::Into",
               Ty.path "u64",
+              [],
               [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
               "into",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "saturating_sub", [] |),
+                M.get_associated_function (| Ty.path "u64", "saturating_sub", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -788,11 +806,12 @@ Module gas_algebra.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                   "new",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -844,6 +863,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               "new",
+              [],
               []
             |),
             [
@@ -899,6 +919,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               "new",
+              [],
               []
             |),
             [
@@ -962,8 +983,10 @@ Module gas_algebra.
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitWithParams",
                     U,
+                    [],
                     [ T ],
                     "multiplier",
+                    [],
                     []
                   |),
                   [ M.read (| params |) ]
@@ -1034,11 +1057,12 @@ Module gas_algebra.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                   "new",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1092,8 +1116,10 @@ Module gas_algebra.
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitFractionalWithParams",
                     U,
+                    [],
                     [ T ],
                     "ratio",
+                    [],
                     []
                   |),
                   [ M.read (| params |) ]
@@ -1111,6 +1137,7 @@ Module gas_algebra.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -1179,8 +1206,10 @@ Module gas_algebra.
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitFractionalWithParams",
                     U,
+                    [],
                     [ T ],
                     "ratio",
+                    [],
                     []
                   |),
                   [ M.read (| params |) ]
@@ -1198,6 +1227,7 @@ Module gas_algebra.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -1255,6 +1285,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
+              [],
               []
             |),
             [ M.read (| val |) ]
@@ -1324,6 +1355,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
+              [],
               []
             |),
             [
@@ -1378,11 +1410,11 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -1392,6 +1424,7 @@ Module gas_algebra.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -1437,11 +1470,11 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -1458,6 +1491,7 @@ Module gas_algebra.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -1472,6 +1506,7 @@ Module gas_algebra.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [
@@ -1525,6 +1560,7 @@ Module gas_algebra.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
                     "cmp_impl",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| other |) ]
@@ -1584,7 +1620,9 @@ Module gas_algebra.
                   "core::cmp::Ord",
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
                   [],
+                  [],
                   "cmp",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -1622,6 +1660,7 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "cmp_impl",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| other |) ]
@@ -1662,11 +1701,12 @@ Module gas_algebra.
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -1723,8 +1763,10 @@ Module gas_algebra.
                 M.get_trait_method (|
                   "core::ops::arith::Add",
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+                  [],
                   [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
                   "add",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -1760,11 +1802,12 @@ Module gas_algebra.
           M.get_associated_function (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             "new",
+            [],
             []
           |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+              M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|

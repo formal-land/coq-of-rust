@@ -33,13 +33,12 @@ Module identifier.
                       fun γ => ltac:(M.monadic (Value.Tuple []));
                       fun γ => ltac:(M.monadic (Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
             ]
@@ -91,6 +90,7 @@ Module identifier.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| b |) ]
@@ -196,7 +196,7 @@ Module identifier.
           let~ b :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.read (| s |) ]
               |)
             |) in
@@ -261,24 +261,23 @@ Module identifier.
                           let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "move_core_types::identifier::all_bytes_valid",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (|
+                                  "move_core_types::identifier::all_bytes_valid",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
+                              |)
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -297,6 +296,7 @@ Module identifier.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| b |) ]
@@ -354,7 +354,9 @@ Module identifier.
                     []
                     [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -391,6 +393,7 @@ Module identifier.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -465,7 +468,9 @@ Module identifier.
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "hash",
+              [],
               [ __H ]
             |),
             [
@@ -506,7 +511,9 @@ Module identifier.
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -561,6 +568,7 @@ Module identifier.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -568,6 +576,7 @@ Module identifier.
                   [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -611,6 +620,7 @@ Module identifier.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -618,6 +628,7 @@ Module identifier.
                   [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -660,7 +671,9 @@ Module identifier.
                 "serde::ser::Serializer",
                 __S,
                 [],
+                [],
                 "serialize_newtype_struct",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -702,7 +715,9 @@ Module identifier.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_newtype_struct",
+                [],
                 [ Ty.path "move_core_types::identifier::_'2::deserialize::__Visitor" ]
               |),
               [
@@ -756,6 +771,7 @@ Module identifier.
                       M.get_trait_method (|
                         "core::convert::Into",
                         impl_Into_Box_str__,
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
@@ -763,6 +779,7 @@ Module identifier.
                             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
                         ],
                         "into",
+                        [],
                         []
                       |),
                       [ M.read (| s |) ]
@@ -780,6 +797,7 @@ Module identifier.
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::identifier::Identifier",
                                   "is_valid",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -819,6 +837,7 @@ Module identifier.
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -843,6 +862,7 @@ Module identifier.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -864,6 +884,7 @@ Module identifier.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -922,8 +943,10 @@ Module identifier.
                 M.get_trait_method (|
                   "core::convert::AsRef",
                   impl_AsRef_str_,
+                  [],
                   [ Ty.path "str" ],
                   "as_ref",
+                  [],
                   []
                 |),
                 [ s ]
@@ -949,8 +972,10 @@ Module identifier.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "eq",
+              [],
               []
             |),
             [
@@ -1000,7 +1025,9 @@ Module identifier.
                                 Ty.path "alloc::string::FromUtf8Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1008,6 +1035,7 @@ Module identifier.
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "from_utf8",
+                                [],
                                 []
                               |),
                               [ M.read (| vec |) ]
@@ -1039,6 +1067,7 @@ Module identifier.
                                             Ty.path "move_core_types::identifier::Identifier";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1049,6 +1078,7 @@ Module identifier.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1075,6 +1105,7 @@ Module identifier.
                     M.get_associated_function (|
                       Ty.path "move_core_types::identifier::Identifier",
                       "new",
+                      [],
                       [ Ty.path "alloc::string::String" ]
                     |),
                     [ M.read (| s |) ]
@@ -1102,7 +1133,9 @@ Module identifier.
               "core::ops::deref::Deref",
               Ty.path "move_core_types::identifier::Identifier",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -1129,8 +1162,10 @@ Module identifier.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.path "alloc::string::String" ],
               "into",
+              [],
               []
             |),
             [
@@ -1159,12 +1194,13 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [] |),
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "move_core_types::identifier::Identifier",
                   "into_string",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1197,6 +1233,7 @@ Module identifier.
             M.get_associated_function (|
               Ty.path "move_core_types::identifier::Identifier",
               "new",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
             |),
             [ M.read (| data |) ]
@@ -1231,7 +1268,9 @@ Module identifier.
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
               [],
+              [],
               "to_owned",
+              [],
               []
             |),
             [ M.read (| ident_str |) ]
@@ -1266,7 +1305,9 @@ Module identifier.
               "core::ops::deref::Deref",
               Ty.path "move_core_types::identifier::Identifier",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -1305,7 +1346,9 @@ Module identifier.
               "ref_cast::RefCast",
               Ty.path "move_core_types::identifier::IdentStr",
               [],
+              [],
               "ref_cast",
+              [],
               []
             |),
             [
@@ -1345,11 +1388,11 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -1359,6 +1402,7 @@ Module identifier.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&")
@@ -1420,6 +1464,7 @@ Module identifier.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -1487,7 +1532,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], "hash", [ __H ] |),
+            M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], [], "hash", [], [ __H ] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -1519,7 +1564,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], [], "cmp", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -1569,8 +1614,10 @@ Module identifier.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
@@ -1611,8 +1658,10 @@ Module identifier.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -1752,6 +1801,7 @@ Module identifier.
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::identifier::IdentStr",
                                   "is_valid",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ M.read (| s |) ]
@@ -1768,7 +1818,9 @@ Module identifier.
                                   "ref_cast::RefCast",
                                   Ty.path "move_core_types::identifier::IdentStr",
                                   [],
+                                  [],
                                   "ref_cast",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| s |) ]
@@ -1788,6 +1840,7 @@ Module identifier.
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -1812,6 +1865,7 @@ Module identifier.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1833,6 +1887,7 @@ Module identifier.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&")
@@ -1886,8 +1941,10 @@ Module identifier.
                 M.get_trait_method (|
                   "core::convert::AsRef",
                   impl_AsRef_str_,
+                  [],
                   [ Ty.path "str" ],
                   "as_ref",
+                  [],
                   []
                 |),
                 [ s ]
@@ -1910,7 +1967,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "len", [] |),
+            M.get_associated_function (| Ty.path "str", "len", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -1935,7 +1992,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+            M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -1980,7 +2037,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -2015,6 +2072,7 @@ Module identifier.
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
               "new",
+              [],
               []
             |),
             [
@@ -2023,6 +2081,7 @@ Module identifier.
                   M.get_associated_function (|
                     Ty.path "move_core_types::identifier::IdentStr",
                     "len",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2054,7 +2113,9 @@ Module identifier.
               "core::ops::deref::Deref",
               Ty.path "move_core_types::identifier::Identifier",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -2094,6 +2155,7 @@ Module identifier.
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -2101,6 +2163,7 @@ Module identifier.
                       [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "into",
+                  [],
                   []
                 |),
                 [
@@ -2139,11 +2202,11 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -2153,6 +2216,7 @@ Module identifier.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [

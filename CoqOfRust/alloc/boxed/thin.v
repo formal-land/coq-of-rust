@@ -72,6 +72,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                       "new",
+                      [],
                       [ Ty.tuple []; T ]
                     |),
                     [ M.read (| meta |); M.read (| value |) ]
@@ -124,6 +125,7 @@ Module boxed.
                         Ty.path "core::alloc::AllocError"
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ];
                       Ty.function
@@ -136,6 +138,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                         "try_new",
+                        [],
                         [ Ty.tuple []; T ]
                       |),
                       [ M.read (| meta |); M.read (| value |) ]
@@ -191,6 +194,7 @@ Module boxed.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                   "header",
+                  [],
                   []
                 |),
                 [
@@ -198,6 +202,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "with_header",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -227,6 +232,7 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                 "value",
+                [],
                 []
               |),
               [
@@ -234,6 +240,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     "with_header",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -327,6 +334,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                               "new_unsize_zst",
+                              [],
                               [ Dyn; T ]
                             |),
                             [ M.read (| value |) ]
@@ -355,6 +363,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                               "new",
+                              [],
                               [ Ty.associated; T ]
                             |),
                             [ M.read (| meta |); M.read (| value |) ]
@@ -396,14 +405,16 @@ Module boxed.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -440,14 +451,16 @@ Module boxed.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -495,6 +508,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "data",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -506,6 +520,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -562,6 +577,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "data",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -573,6 +589,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -630,7 +647,9 @@ Module boxed.
                       "core::ops::deref::DerefMut",
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       [],
+                      [],
                       "deref_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -643,6 +662,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                       "drop",
+                      [],
                       [ T ]
                     |),
                     [
@@ -650,6 +670,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                           "with_header",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -715,6 +736,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "new",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| header |); M.read (| value |) ]
@@ -761,6 +783,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                       "new_unsize_zst",
+                      [],
                       [ Dyn; T ]
                     |),
                     [ M.read (| value |) ]
@@ -807,6 +830,7 @@ Module boxed.
                     Ty.path "core::alloc::AllocError"
                   ],
                 "map",
+                [],
                 [
                   Ty.path "alloc::boxed::thin::WithOpaqueHeader";
                   Ty.function
@@ -819,6 +843,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                     "try_new",
+                    [],
                     [ T ]
                   |),
                   [ M.read (| header |); M.read (| value |) ]
@@ -918,6 +943,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -929,6 +955,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "alloc_layout",
+                      [],
                       []
                     |),
                     [ M.read (| value_layout |) ]
@@ -962,6 +989,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "size",
+                                              [],
                                               []
                                             |),
                                             [ layout ]
@@ -1055,6 +1083,7 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "dangling",
+                                        [],
                                         []
                                       |),
                                       [ layout ]
@@ -1082,6 +1111,7 @@ Module boxed.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                       "is_null",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| ptr |) ]
@@ -1114,6 +1144,7 @@ Module boxed.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| ptr |); M.read (| value_offset |) ]
@@ -1127,6 +1158,7 @@ Module boxed.
                                           []
                                           [ Ty.path "u8" ],
                                         "new_unchecked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| ptr |) ]
@@ -1150,6 +1182,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                   "header",
+                                  [],
                                   []
                                 |),
                                 [ result ]
@@ -1167,6 +1200,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -1174,6 +1208,7 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                       "value",
+                                      [],
                                       []
                                     |),
                                     [ result ]
@@ -1250,6 +1285,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "new",
+                          [],
                           [ T ]
                         |),
                         []
@@ -1261,6 +1297,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                           "alloc_layout",
+                          [],
                           []
                         |),
                         [ M.read (| value_layout |) ]
@@ -1294,6 +1331,7 @@ Module boxed.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
                                                 [ layout ]
@@ -1404,6 +1442,7 @@ Module boxed.
                                           M.get_associated_function (|
                                             Ty.path "core::alloc::layout::Layout",
                                             "dangling",
+                                            [],
                                             []
                                           |),
                                           [ layout ]
@@ -1434,6 +1473,7 @@ Module boxed.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "is_null",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| ptr |) ]
@@ -1469,6 +1509,7 @@ Module boxed.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| ptr |); M.read (| value_offset |) ]
@@ -1482,6 +1523,7 @@ Module boxed.
                                               []
                                               [ Ty.path "u8" ],
                                             "new_unchecked",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| ptr |) ]
@@ -1506,6 +1548,7 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                       "header",
+                                      [],
                                       []
                                     |),
                                     [ result ]
@@ -1523,6 +1566,7 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -1533,6 +1577,7 @@ Module boxed.
                                             []
                                             [ H ],
                                           "value",
+                                          [],
                                           []
                                         |),
                                         [ result ]
@@ -1666,6 +1711,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "cast_mut",
+                      [],
                       []
                     |),
                     [
@@ -1673,6 +1719,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ H ],
                           "cast",
+                          [],
                           [ T ]
                         |),
                         [
@@ -1680,6 +1727,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ H ],
                               "add",
+                              [],
                               []
                             |),
                             [
@@ -1715,6 +1763,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "is_aligned",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| value_ptr |) ]
@@ -1763,6 +1812,7 @@ Module boxed.
                           []
                           [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -1770,6 +1820,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -1777,6 +1828,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "cast",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [ M.read (| value_ptr |) ]
@@ -1863,6 +1915,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "for_value_raw",
+                            [],
                             [ T ]
                           |),
                           [ (* MutToConstPointer *) M.pointer_coercion (M.read (| value |)) ]
@@ -1914,6 +1967,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "sub",
+                        [],
                         []
                       |),
                       [
@@ -1921,6 +1975,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [
@@ -1937,6 +1992,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                             "header_size",
+                            [],
                             []
                           |),
                           []
@@ -1967,6 +2023,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ H ],
                                               "is_aligned",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| hp |) ]
@@ -2021,6 +2078,7 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -2075,13 +2133,19 @@ Module boxed.
           ltac:(M.monadic
             (let value_layout := M.alloc (| value_layout |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "extend", [] |),
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "extend",
+                [],
+                []
+              |),
               [
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ H ]
                     |),
                     []
@@ -2114,14 +2178,16 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
+              M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]

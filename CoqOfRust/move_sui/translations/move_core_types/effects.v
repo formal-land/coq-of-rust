@@ -58,6 +58,7 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "New" |); __self_0 ]
@@ -78,6 +79,7 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Modify" |); __self_0 ]
@@ -92,6 +94,7 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Delete" |) ]
@@ -141,7 +144,15 @@ Module effects.
                         "move_core_types::effects::Op::New"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              T,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [ M.read (| __self_0 |) ]
                           |)
                         ]
@@ -161,7 +172,15 @@ Module effects.
                         "move_core_types::effects::Op::Modify"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              T,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [ M.read (| __self_0 |) ]
                           |)
                         ]
@@ -299,8 +318,10 @@ Module effects.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -331,8 +352,10 @@ Module effects.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -394,7 +417,7 @@ Module effects.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -427,7 +450,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                               |)
                             |)));
@@ -453,7 +476,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                               |)
                             |)));
@@ -543,8 +566,10 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -575,8 +600,10 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -589,8 +616,10 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ __self_discr; __arg1_discr ]
@@ -718,8 +747,10 @@ Module effects.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ T ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| data |) ] ]
@@ -743,8 +774,10 @@ Module effects.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ T ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| data |) ] ]
@@ -809,19 +842,16 @@ Module effects.
                             let data := M.copy (| γ0_0 |) in
                             Value.Tuple [ data ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ data ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [ M.read (| data |) ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ data ] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -894,6 +924,7 @@ Module effects.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -959,7 +990,9 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -991,7 +1024,9 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1093,6 +1128,7 @@ Module effects.
                       ];
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1112,6 +1148,7 @@ Module effects.
                     ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1147,6 +1184,7 @@ Module effects.
                         ];
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1166,6 +1204,7 @@ Module effects.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -1226,7 +1265,9 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -1268,7 +1309,9 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -1335,6 +1378,7 @@ Module effects.
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1354,6 +1398,7 @@ Module effects.
                         ]
                     ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -1400,6 +1445,7 @@ Module effects.
                                 ];
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1419,6 +1465,7 @@ Module effects.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -1512,7 +1559,9 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1528,7 +1577,9 @@ Module effects.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| other |) ]
@@ -1560,7 +1611,9 @@ Module effects.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1603,6 +1656,7 @@ Module effects.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "entry",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| map |); M.read (| key |) ]
@@ -1636,6 +1690,7 @@ Module effects.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "get_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [ entry ]
@@ -1653,6 +1708,7 @@ Module effects.
                                                               []
                                                               [ V ],
                                                             "as_ref",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| r |) ]
@@ -1700,23 +1756,22 @@ Module effects.
                                                                           |) in
                                                                         Value.Tuple []))
                                                                   ],
-                                                                  M.closure
-                                                                    (fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        match γ with
-                                                                        | [] =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ1_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ0_1,
-                                                                                "move_core_types::effects::Op::New",
-                                                                                0
-                                                                              |) in
-                                                                            Value.Tuple []))
-                                                                        | _ =>
-                                                                          M.impossible
-                                                                            "wrong number of arguments"
-                                                                        end))
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      match γ with
+                                                                      | [] =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ1_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ0_1,
+                                                                              "move_core_types::effects::Op::New",
+                                                                              0
+                                                                            |) in
+                                                                          Value.Tuple []))
+                                                                      | _ =>
+                                                                        M.impossible
+                                                                          "wrong number of arguments"
+                                                                      end)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
@@ -1756,75 +1811,74 @@ Module effects.
                                                                           |) in
                                                                         Value.Tuple []))
                                                                   ],
-                                                                  M.closure
-                                                                    (fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        match γ with
-                                                                        | [] =>
-                                                                          ltac:(M.monadic
-                                                                            (Value.Tuple []))
-                                                                        | _ =>
-                                                                          M.impossible
-                                                                            "wrong number of arguments"
-                                                                        end))
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      match γ with
+                                                                      | [] =>
+                                                                        ltac:(M.monadic
+                                                                          (Value.Tuple []))
+                                                                      | _ =>
+                                                                        M.impossible
+                                                                          "wrong number of arguments"
+                                                                      end)
                                                                 |)))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            Value.StructTuple
-                                                                              "core::result::Result::Err"
-                                                                              [
-                                                                                M.read (|
-                                                                                  let~ error :=
-                                                                                    M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                        M.get_function (|
-                                                                                          "anyhow::__private::format_err",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::Arguments",
-                                                                                              "new_const",
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.alloc (|
-                                                                                                Value.Array
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "The given change sets cannot be squashed"
-                                                                                                    |)
-                                                                                                  ]
-                                                                                              |)
-                                                                                            ]
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    |) in
-                                                                                  error
-                                                                                |)
-                                                                              ]
-                                                                          |)
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          Value.StructTuple
+                                                                            "core::result::Result::Err"
+                                                                            [
+                                                                              M.read (|
+                                                                                let~ error :=
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_function (|
+                                                                                        "anyhow::__private::format_err",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
+                                                                                            "new_const",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.alloc (|
+                                                                                              Value.Array
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    Value.String
+                                                                                                      "The given change sets cannot be squashed"
+                                                                                                  |)
+                                                                                                ]
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |) in
+                                                                                error
+                                                                              |)
+                                                                            ]
                                                                         |)
                                                                       |)
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                    |)
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -1958,6 +2012,7 @@ Module effects.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "remove",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| entry |) ]
@@ -1993,6 +2048,7 @@ Module effects.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "insert",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| entry |); M.read (| op |) ]
@@ -2076,6 +2132,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2100,6 +2157,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2156,6 +2214,7 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
@@ -2189,6 +2248,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2213,6 +2273,7 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2235,6 +2296,7 @@ Module effects.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -2276,6 +2338,7 @@ Module effects.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             "key",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ entry ]
@@ -2331,6 +2394,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| op |) ]
@@ -2394,6 +2458,7 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
@@ -2427,6 +2492,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2451,6 +2517,7 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2473,6 +2540,7 @@ Module effects.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -2514,6 +2582,7 @@ Module effects.
                                                                                   "alloc::alloc::Global"
                                                                               ],
                                                                             "key",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ entry ]
@@ -2569,6 +2638,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| op |) ]
@@ -2738,6 +2808,7 @@ Module effects.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -2768,6 +2839,7 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "is_empty",
+                  [],
                   []
                 |),
                 [
@@ -2810,7 +2882,9 @@ Module effects.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2865,6 +2939,7 @@ Module effects.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2875,6 +2950,7 @@ Module effects.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2965,6 +3041,7 @@ Module effects.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -3016,7 +3093,9 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3102,6 +3181,7 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3113,6 +3193,7 @@ Module effects.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -3161,7 +3242,9 @@ Module effects.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -3209,6 +3292,7 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3220,6 +3304,7 @@ Module effects.
                   ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -3262,6 +3347,7 @@ Module effects.
             M.get_associated_function (|
               Ty.path "move_core_types::effects::ChangeSet",
               "new",
+              [],
               []
             |),
             []
@@ -3306,6 +3392,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -3359,6 +3446,7 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
@@ -3391,6 +3479,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -3415,6 +3504,7 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3438,6 +3528,7 @@ Module effects.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "move_core_types::account_address::AccountAddress"
@@ -3485,6 +3576,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| account_changeset |) ]
@@ -3576,6 +3668,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "entry",
+                    [],
                     []
                   |),
                   [
@@ -3610,6 +3703,7 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_mut",
+                          [],
                           []
                         |),
                         [ M.read (| entry |) ]
@@ -3636,6 +3730,7 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "insert",
+                          [],
                           []
                         |),
                         [
@@ -3644,6 +3739,7 @@ Module effects.
                             M.get_associated_function (|
                               Ty.path "move_core_types::effects::AccountChangeSet",
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -3680,6 +3776,7 @@ Module effects.
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
+                    [],
                     []
                   |),
                   [
@@ -3689,6 +3786,7 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "move_core_types::language_storage::ModuleId",
                           "address",
+                          [],
                           []
                         |),
                         [ module_id ]
@@ -3702,6 +3800,7 @@ Module effects.
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_module_op",
+                  [],
                   []
                 |),
                 [
@@ -3711,7 +3810,9 @@ Module effects.
                       "alloc::borrow::ToOwned",
                       Ty.path "move_core_types::identifier::IdentStr",
                       [],
+                      [],
                       "to_owned",
+                      [],
                       []
                     |),
                     [
@@ -3719,6 +3820,7 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "move_core_types::language_storage::ModuleId",
                           "name",
+                          [],
                           []
                         |),
                         [ module_id ]
@@ -3762,6 +3864,7 @@ Module effects.
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| addr |) ]
@@ -3772,6 +3875,7 @@ Module effects.
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_resource_op",
+                  [],
                   []
                 |),
                 [ M.read (| account |); M.read (| struct_tag |); M.read (| op |) ]
@@ -3824,7 +3928,9 @@ Module effects.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3860,7 +3966,9 @@ Module effects.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3905,6 +4013,7 @@ Module effects.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3939,7 +4048,9 @@ Module effects.
                                                               [ Ty.tuple []; Ty.path "anyhow::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3948,6 +4059,7 @@ Module effects.
                                                                 Ty.path
                                                                   "move_core_types::effects::AccountChangeSet",
                                                                 "squash",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3966,6 +4078,7 @@ Module effects.
                                                                           "alloc::alloc::Global"
                                                                       ],
                                                                     "get_mut",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ entry ]
@@ -4001,6 +4114,7 @@ Module effects.
                                                                             Ty.tuple [];
                                                                             Ty.path "anyhow::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4014,6 +4128,7 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4060,6 +4175,7 @@ Module effects.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "insert",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4112,7 +4228,9 @@ Module effects.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -4246,7 +4364,9 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -4294,7 +4414,9 @@ Module effects.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -4367,7 +4489,9 @@ Module effects.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4404,6 +4528,7 @@ Module effects.
                                                               Ty.path
                                                                 "move_core_types::language_storage::ModuleId",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4457,7 +4582,9 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -4618,6 +4745,7 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "iter",
+                  [],
                   []
                 |),
                 [
@@ -4665,7 +4793,9 @@ Module effects.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -4769,6 +4899,7 @@ Module effects.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4829,6 +4960,7 @@ Module effects.
                                                                         ]
                                                                     ],
                                                                   "map",
+                                                                  [],
                                                                   [
                                                                     Ty.function
                                                                       [
@@ -4889,6 +5021,7 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                       "as_ref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| op |) ]
@@ -4921,6 +5054,7 @@ Module effects.
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -4932,6 +5066,7 @@ Module effects.
                                                                                             ]
                                                                                         ],
                                                                                         "as_ref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -4995,7 +5130,9 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -5156,6 +5293,7 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "iter",
+                  [],
                   []
                 |),
                 [
@@ -5203,7 +5341,9 @@ Module effects.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -5310,6 +5450,7 @@ Module effects.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5370,6 +5511,7 @@ Module effects.
                                                                         ]
                                                                     ],
                                                                   "map",
+                                                                  [],
                                                                   [
                                                                     Ty.function
                                                                       [
@@ -5430,6 +5572,7 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                       "as_ref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| op |) ]
@@ -5462,6 +5605,7 @@ Module effects.
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -5473,6 +5617,7 @@ Module effects.
                                                                                             ]
                                                                                         ],
                                                                                         "as_ref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [

@@ -28,7 +28,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -71,10 +71,18 @@ Module Impl_integration_flipper_Flipper.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [] |),
+          M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [], [] |),
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "bool",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]
@@ -114,6 +122,7 @@ Module Impl_integration_flipper_Flipper.
                           M.get_associated_function (|
                             Ty.path "integration_flipper::Flipper",
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Bool true ]
@@ -207,7 +216,12 @@ Module Impl_integration_flipper_Flipper.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "integration_flipper::Flipper", "flip", [] |),
+                M.get_associated_function (|
+                  Ty.path "integration_flipper::Flipper",
+                  "flip",
+                  [],
+                  []
+                |),
                 [ M.read (| self |) ]
               |)
             |) in

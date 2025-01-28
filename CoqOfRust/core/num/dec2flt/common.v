@@ -33,6 +33,7 @@ Module num.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "copy_from_slice",
+                        [],
                         []
                       |),
                       [
@@ -41,9 +42,11 @@ Module num.
                           M.get_trait_method (|
                             "core::ops::index::Index",
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index",
+                            [],
                             []
                           |),
                           [
@@ -58,7 +61,7 @@ Module num.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                    M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                     [ M.read (| tmp |) ]
                   |)
                 |)
@@ -81,6 +84,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "copy_from_slice",
+                  [],
                   []
                 |),
                 [
@@ -88,8 +92,10 @@ Module num.
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index_mut",
+                      [],
                       []
                     |),
                     [
@@ -101,7 +107,7 @@ Module num.
                   |);
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
                       [ M.read (| value |) ]
                     |)
                   |)
@@ -127,6 +133,7 @@ Module num.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -136,6 +143,7 @@ Module num.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -183,6 +191,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "split_first",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| s |) ]
@@ -204,6 +213,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u8",
                                       "wrapping_sub",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| M.read (| c |) |); M.read (| UnsupportedLiteral |) ]
@@ -233,8 +243,10 @@ Module num.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut_u8_,
+                                              [],
                                               [ Ty.tuple [ Ty.path "u8" ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
                                             [ func; Value.Tuple [ M.read (| c |) ] ]
@@ -300,14 +312,14 @@ Module num.
               let~ a :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                     [ M.read (| v |); Value.Integer IntegerKind.U64 5063812098665367110 ]
                   |)
                 |) in
               let~ b :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                     [ M.read (| v |); Value.Integer IntegerKind.U64 3472328296227680304 ]
                   |)
                 |) in
@@ -347,6 +359,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
@@ -545,7 +558,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "u64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -556,7 +571,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "i32",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []

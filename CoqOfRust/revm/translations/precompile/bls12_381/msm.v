@@ -198,6 +198,7 @@ Module bls12_381.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                               "len",
+                              [],
                               []
                             |),
                             [

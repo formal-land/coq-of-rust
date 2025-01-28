@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
           "contract_terminate::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -147,6 +155,7 @@ Module Impl_contract_terminate_JustTerminate.
           M.get_associated_function (|
             Ty.path "contract_terminate::JustTerminate",
             "init_env",
+            [],
             []
           |),
           []
@@ -186,6 +195,7 @@ Module Impl_contract_terminate_JustTerminate.
                 M.get_associated_function (|
                   Ty.path "contract_terminate::Env",
                   "terminate_contract",
+                  [],
                   []
                 |),
                 [
@@ -194,19 +204,26 @@ Module Impl_contract_terminate_JustTerminate.
                       M.get_associated_function (|
                         Ty.path "contract_terminate::JustTerminate",
                         "env",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
                     |)
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "contract_terminate::Env", "caller", [] |),
+                    M.get_associated_function (|
+                      Ty.path "contract_terminate::Env",
+                      "caller",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "contract_terminate::JustTerminate",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]

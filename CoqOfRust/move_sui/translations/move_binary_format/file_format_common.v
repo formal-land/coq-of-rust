@@ -332,7 +332,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -540,7 +540,15 @@ Module file_format_common.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -742,7 +750,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -967,7 +975,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -1447,7 +1455,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -2171,7 +2179,10 @@ Module file_format_common.
     M.run
       ltac:(M.monadic
         (M.alloc (|
-          M.call_closure (| M.get_associated_function (| Ty.path "usize", "max_value", [] |), [] |)
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "usize", "max_value", [], [] |),
+            []
+          |)
         |))).
   
   (* StructRecord
@@ -2209,7 +2220,9 @@ Module file_format_common.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -2240,6 +2253,7 @@ Module file_format_common.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -2291,6 +2305,7 @@ Module file_format_common.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2319,7 +2334,9 @@ Module file_format_common.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -2396,6 +2413,7 @@ Module file_format_common.
                                       []
                                       [ Ty.path "usize" ],
                                     "is_some",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2404,6 +2422,7 @@ Module file_format_common.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2412,6 +2431,7 @@ Module file_format_common.
                                               Ty.path
                                                 "move_binary_format::file_format_common::BinaryData",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -2434,6 +2454,7 @@ Module file_format_common.
                                     []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "push",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2460,6 +2481,7 @@ Module file_format_common.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2484,6 +2506,7 @@ Module file_format_common.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2508,6 +2531,7 @@ Module file_format_common.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -2517,6 +2541,7 @@ Module file_format_common.
                                                                             Ty.path
                                                                               "move_binary_format::file_format_common::BinaryData",
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| self |) ]
@@ -2529,6 +2554,7 @@ Module file_format_common.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -2596,6 +2622,7 @@ Module file_format_common.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| vec |) ]
@@ -2617,6 +2644,7 @@ Module file_format_common.
                                       []
                                       [ Ty.path "usize" ],
                                     "is_some",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2625,6 +2653,7 @@ Module file_format_common.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2633,6 +2662,7 @@ Module file_format_common.
                                               Ty.path
                                                 "move_binary_format::file_format_common::BinaryData",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -2655,8 +2685,10 @@ Module file_format_common.
                                     (Ty.path "alloc::vec::Vec")
                                     []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "extend",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2688,6 +2720,7 @@ Module file_format_common.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2712,6 +2745,7 @@ Module file_format_common.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2737,6 +2771,7 @@ Module file_format_common.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -2746,6 +2781,7 @@ Module file_format_common.
                                                                             Ty.path
                                                                               "move_binary_format::file_format_common::BinaryData",
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| self |) ]
@@ -2758,6 +2794,7 @@ Module file_format_common.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -2769,6 +2806,7 @@ Module file_format_common.
                                                                               []
                                                                               [ Ty.path "u8" ],
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| vec |) ]
@@ -2781,6 +2819,7 @@ Module file_format_common.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -2834,6 +2873,7 @@ Module file_format_common.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "len",
+              [],
               []
             |),
             [
@@ -2866,6 +2906,7 @@ Module file_format_common.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "is_empty",
+              [],
               []
             |),
             [
@@ -2901,6 +2942,7 @@ Module file_format_common.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "clear",
+                    [],
                     []
                   |),
                   [
@@ -3003,7 +3045,9 @@ Module file_format_common.
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3012,6 +3056,7 @@ Module file_format_common.
                                           Ty.path
                                             "move_binary_format::file_format_common::BinaryData",
                                           "push",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3046,6 +3091,7 @@ Module file_format_common.
                                                     (Ty.path "core::result::Result")
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -3056,6 +3102,7 @@ Module file_format_common.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -3099,7 +3146,9 @@ Module file_format_common.
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3108,6 +3157,7 @@ Module file_format_common.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |); M.rust_cast (M.read (| cur |))
@@ -3137,6 +3187,7 @@ Module file_format_common.
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -3147,6 +3198,7 @@ Module file_format_common.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -3200,13 +3252,14 @@ Module file_format_common.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
+            [],
             []
           |),
           [
             M.read (| binary |);
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "to_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
                 [ M.read (| value |) ]
               |)
             |)
@@ -3233,13 +3286,14 @@ Module file_format_common.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
+            [],
             []
           |),
           [
             M.read (| binary |);
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
                 [ M.read (| value |) ]
               |)
             |)
@@ -3266,13 +3320,14 @@ Module file_format_common.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
+            [],
             []
           |),
           [
             M.read (| binary |);
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
                 [ M.read (| value |) ]
               |)
             |)
@@ -3299,13 +3354,14 @@ Module file_format_common.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
+            [],
             []
           |),
           [
             M.read (| binary |);
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "to_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
                 [ M.read (| value |) ]
               |)
             |)
@@ -3335,6 +3391,7 @@ Module file_format_common.
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
+            [],
             []
           |),
           [
@@ -3344,6 +3401,7 @@ Module file_format_common.
                 M.get_associated_function (|
                   Ty.path "move_core_types::u256::U256",
                   "to_le_bytes",
+                  [],
                   []
                 |),
                 [ M.read (| value |) ]
@@ -3387,7 +3445,9 @@ Module file_format_common.
                           []
                           [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3404,7 +3464,9 @@ Module file_format_common.
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                               ],
                             [],
+                            [],
                             "read_exact",
+                            [],
                             []
                           |),
                           [ M.read (| cursor |); buf ]
@@ -3433,6 +3495,7 @@ Module file_format_common.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "u8"; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3443,6 +3506,7 @@ Module file_format_common.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3512,7 +3576,9 @@ Module file_format_common.
                           []
                           [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3529,7 +3595,9 @@ Module file_format_common.
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                               ],
                             [],
+                            [],
                             "read_exact",
+                            [],
                             []
                           |),
                           [ M.read (| cursor |); buf ]
@@ -3558,6 +3626,7 @@ Module file_format_common.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "u32"; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3568,6 +3637,7 @@ Module file_format_common.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3593,7 +3663,7 @@ Module file_format_common.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u32", "from_le_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
                       [ M.read (| buf |) ]
                     |)
                   ]
@@ -3722,6 +3792,7 @@ Module file_format_common.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_const",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3829,6 +3900,7 @@ Module file_format_common.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_const",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3932,6 +4004,7 @@ Module file_format_common.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [

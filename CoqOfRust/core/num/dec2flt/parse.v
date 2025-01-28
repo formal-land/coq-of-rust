@@ -45,7 +45,7 @@ Module num.
               let~ v1 :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_mul", [], [] |),
                     [
                       BinOp.bit_and
                         (M.read (| v |))
@@ -61,7 +61,7 @@ Module num.
               let~ v2 :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_mul", [], [] |),
                     [
                       BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| v |), Value.Integer IntegerKind.I32 16 |))
@@ -79,7 +79,7 @@ Module num.
                   (M.rust_cast
                     (BinOp.Wrap.shr (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                         [ M.read (| v1 |); M.read (| v2 |) ]
                       |),
                       Value.Integer IntegerKind.I32 32
@@ -147,6 +147,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -163,7 +164,9 @@ Module num.
                                     "core::num::dec2flt::common::ByteSlice",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
+                                    [],
                                     "read_u64",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -198,6 +201,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "wrapping_add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -205,6 +209,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "wrapping_mul",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -230,6 +235,7 @@ Module num.
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
@@ -237,6 +243,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -275,7 +282,9 @@ Module num.
                       "core::num::dec2flt::common::ByteSlice",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "parse_digits",
+                      [],
                       [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
                     |),
                     [
@@ -300,6 +309,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "wrapping_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -307,6 +317,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "wrapping_mul",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -398,6 +409,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "split_first",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| s |) ]
@@ -419,6 +431,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u8",
                                             "wrapping_sub",
+                                            [],
                                             []
                                           |),
                                           [
@@ -542,6 +555,7 @@ Module num.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "split_first",
+                                [],
                                 []
                               |),
                               [ M.read (| s |) ]
@@ -609,6 +623,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "first",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| s |) ]
@@ -631,6 +646,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "u8",
                                           "is_ascii_digit",
+                                          [],
                                           []
                                         |),
                                         [ x ]
@@ -654,7 +670,9 @@ Module num.
                               "core::num::dec2flt::common::ByteSlice",
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "parse_digits",
+                              [],
                               [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
                             |),
                             [
@@ -870,6 +888,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "is_empty",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| s |) ]
@@ -924,7 +943,9 @@ Module num.
                           "core::num::dec2flt::common::ByteSlice",
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           [],
+                          [],
                           "offset_from",
+                          [],
                           []
                         |),
                         [ M.read (| s |); M.read (| start |) ]
@@ -945,6 +966,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "split_first",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -996,7 +1018,9 @@ Module num.
                                     "core::num::dec2flt::common::ByteSlice",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
+                                    [],
                                     "offset_from",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |); M.read (| before |) ]
@@ -1056,6 +1080,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "split_first",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -1112,7 +1137,9 @@ Module num.
                                                     []
                                                     [ Ty.path "i64" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1155,6 +1182,7 @@ Module num.
                                                                       Ty.path "usize"
                                                                     ]
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -1165,6 +1193,7 @@ Module num.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1208,7 +1237,9 @@ Module num.
                             "core::num::dec2flt::common::ByteSlice",
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "offset_from",
+                            [],
                             []
                           |),
                           [ M.read (| s |); M.read (| start |) ]
@@ -1279,6 +1310,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "split_first",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| p |) ]
@@ -1331,6 +1363,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u8",
                                                     "saturating_sub",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1431,7 +1464,9 @@ Module num.
                                                   "core::num::dec2flt::common::ByteSlice",
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   [],
+                                                  [],
                                                   "offset_from",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| int_end |); M.read (| s |) ]
@@ -1446,6 +1481,7 @@ Module num.
                                                   M.get_trait_method (|
                                                     "core::ops::index::Index",
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
@@ -1453,6 +1489,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1483,7 +1520,9 @@ Module num.
                                                     "core::num::dec2flt::common::ByteSlice",
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     [],
+                                                    [],
                                                     "offset_from",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| s |); M.read (| before |) ]
@@ -1589,6 +1628,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| s |) ]
@@ -1697,6 +1737,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -1714,7 +1755,9 @@ Module num.
                                     "core::num::dec2flt::common::ByteSlice",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     [],
+                                    [],
                                     "read_u64",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -1737,6 +1780,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| s |) ]
@@ -1905,7 +1949,9 @@ Module num.
                                     "core::ops::arith::Neg",
                                     F,
                                     [],
+                                    [],
                                     "neg",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| float |) ]

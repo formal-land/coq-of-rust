@@ -31,14 +31,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ path :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
+              M.get_associated_function (|
+                Ty.path "std::path::Path",
+                "new",
+                [],
+                [ Ty.path "str" ]
+              |),
               [ M.read (| Value.String "hello.txt" |) ]
             |)
           |) in
         let~ display :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
+              M.get_associated_function (| Ty.path "std::path::Path", "display", [], [] |),
               [ M.read (| path |) ]
             |)
           |) in
@@ -50,6 +55,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.path "std::fs::File",
                     "open",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -75,6 +81,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -92,6 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "std::path::Display" ]
                                         |),
                                         [ display ]
@@ -100,6 +108,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "std::io::error::Error" ]
                                         |),
                                         [ why ]
@@ -124,7 +133,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ s :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
               []
             |)
           |) in
@@ -135,7 +144,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "std::io::Read",
                 Ty.path "std::fs::File",
                 [],
+                [],
                 "read_to_string",
+                [],
                 []
               |),
               [ file; s ]
@@ -156,6 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -173,6 +185,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "std::path::Display" ]
                                     |),
                                     [ display ]
@@ -181,6 +194,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "std::io::error::Error" ]
                                     |),
                                     [ why ]
@@ -206,6 +220,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -224,6 +239,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "std::path::Display" ]
                                     |),
                                     [ display ]
@@ -232,6 +248,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [ s ]

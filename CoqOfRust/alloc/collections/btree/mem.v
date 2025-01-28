@@ -41,8 +41,10 @@ Module collections.
                                         M.get_trait_method (|
                                           "core::ops::function::FnOnce",
                                           impl_FnOnce_T__arrow_T,
+                                          [],
                                           [ Ty.tuple [ T ] ],
                                           "call_once",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
@@ -102,8 +104,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       impl_FnOnce_T__arrow__T__R_,
+                      [],
                       [ Ty.tuple [ T ] ],
                       "call_once",
+                      [],
                       []
                     |),
                     [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]

@@ -25,7 +25,15 @@ Module Impl_core_hash_Hash_for_hash_Person.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u32",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -43,7 +51,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
                   "core::hash::Hash",
                   Ty.path "alloc::string::String",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -58,7 +68,15 @@ Module Impl_core_hash_Hash_for_hash_Person.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "u64",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -97,7 +115,12 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
         let~ s :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "std::hash::random::DefaultHasher", "new", [] |),
+              M.get_associated_function (|
+                Ty.path "std::hash::random::DefaultHasher",
+                "new",
+                [],
+                []
+              |),
               []
             |)
           |) in
@@ -108,7 +131,9 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                 "core::hash::Hash",
                 T,
                 [],
+                [],
                 "hash",
+                [],
                 [ Ty.path "std::hash::random::DefaultHasher" ]
               |),
               [ M.read (| t |); s ]
@@ -120,7 +145,9 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
               "core::hash::Hasher",
               Ty.path "std::hash::random::DefaultHasher",
               [],
+              [],
               "finish",
+              [],
               []
             |),
             [ s ]
@@ -165,7 +192,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "alloc::string::ToString",
                       Ty.path "str",
                       [],
+                      [],
                       "to_string",
+                      [],
                       []
                     |),
                     [ M.read (| Value.String "Janet" |) ]
@@ -185,7 +214,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "alloc::string::ToString",
                       Ty.path "str",
                       [],
+                      [],
                       "to_string",
+                      [],
                       []
                     |),
                     [ M.read (| Value.String "Bob" |) ]

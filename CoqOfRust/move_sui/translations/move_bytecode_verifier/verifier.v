@@ -25,7 +25,9 @@ Module verifier.
                   "core::default::Default",
                   Ty.path "move_vm_config::verifier::VerifierConfig",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -97,6 +99,7 @@ Module verifier.
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -111,6 +114,7 @@ Module verifier.
                     []
                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -118,6 +122,7 @@ Module verifier.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "serialize",
+                      [],
                       []
                     |),
                     [ M.read (| module |); bytes ]
@@ -128,7 +133,7 @@ Module verifier.
           let~ now :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "std::time::Instant", "now", [] |),
+                M.get_associated_function (| Ty.path "std::time::Instant", "now", [], [] |),
                 []
               |)
             |) in
@@ -153,6 +158,7 @@ Module verifier.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1_formatted",
+                        [],
                         []
                       |),
                       [
@@ -174,6 +180,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ name ]
@@ -182,6 +189,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "f64" ]
                                 |),
                                 [
@@ -192,6 +200,7 @@ Module verifier.
                                           M.get_associated_function (|
                                             Ty.path "core::time::Duration",
                                             "as_micros",
+                                            [],
                                             []
                                           |),
                                           [
@@ -200,6 +209,7 @@ Module verifier.
                                                 M.get_associated_function (|
                                                   Ty.path "std::time::Instant",
                                                   "elapsed",
+                                                  [],
                                                   []
                                                 |),
                                                 [ now ]
@@ -216,6 +226,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -255,6 +266,7 @@ Module verifier.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -270,6 +282,7 @@ Module verifier.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_debug",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_core_types::vm_status::StatusCode"
@@ -282,6 +295,7 @@ Module verifier.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::VMError",
                                                                               "major_status",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| e |) ]
@@ -309,7 +323,9 @@ Module verifier.
                                                 "alloc::string::ToString",
                                                 Ty.path "str",
                                                 [],
+                                                [],
                                                 "to_string",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| Value.String "Ok" |) ]
@@ -323,6 +339,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [
@@ -335,6 +352,7 @@ Module verifier.
                                             []
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ bytes ]
@@ -353,6 +371,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Placeholder",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -368,6 +387,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Placeholder",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -385,6 +405,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Placeholder",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -400,6 +421,7 @@ Module verifier.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Placeholder",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -417,6 +439,7 @@ Module verifier.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::UnsafeArg",
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -445,6 +468,7 @@ Module verifier.
                                     []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ bytes ]
@@ -467,6 +491,7 @@ Module verifier.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -485,6 +510,7 @@ Module verifier.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -497,6 +523,7 @@ Module verifier.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -508,6 +535,7 @@ Module verifier.
                                                   []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ bytes ]
@@ -591,7 +619,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -602,6 +632,7 @@ Module verifier.
                               []
                               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::VMError";
                               Ty.function
@@ -615,6 +646,7 @@ Module verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::check_bounds::BoundsChecker",
                                 "verify_module",
+                                [],
                                 []
                               |),
                               [ M.read (| module |) ]
@@ -636,6 +668,7 @@ Module verifier.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "finish",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -676,6 +709,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -686,6 +720,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -717,7 +752,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -725,6 +762,7 @@ Module verifier.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| config |); M.read (| module |) ]
@@ -754,6 +792,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -764,6 +803,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -795,7 +835,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -803,6 +845,7 @@ Module verifier.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -832,6 +875,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -842,6 +886,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -873,7 +918,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -881,6 +928,7 @@ Module verifier.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -910,6 +958,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -920,6 +969,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -951,7 +1001,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -960,6 +1012,7 @@ Module verifier.
                             Ty.path
                               "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -989,6 +1042,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -999,6 +1053,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1030,7 +1085,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1067,6 +1124,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1077,6 +1135,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1108,7 +1167,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1145,6 +1206,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1155,6 +1217,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1186,7 +1249,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1223,6 +1288,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1233,6 +1299,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1264,7 +1331,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1273,6 +1342,7 @@ Module verifier.
                             Ty.path
                               "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -1302,6 +1372,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1312,6 +1383,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1343,7 +1415,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1352,6 +1426,7 @@ Module verifier.
                             Ty.path
                               "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
                             "verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -1381,6 +1456,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1391,6 +1467,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1422,7 +1499,9 @@ Module verifier.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1430,6 +1509,7 @@ Module verifier.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
                             "verify_module",
+                            [],
                             [ impl_Meter__plus___Sized ]
                           |),
                           [ M.read (| config |); M.read (| module |); M.read (| meter |) ]
@@ -1459,6 +1539,7 @@ Module verifier.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1469,6 +1550,7 @@ Module verifier.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]

@@ -41,8 +41,10 @@ Module main.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| f |); Value.Tuple [] ]

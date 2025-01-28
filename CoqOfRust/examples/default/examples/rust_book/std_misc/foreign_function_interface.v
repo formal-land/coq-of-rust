@@ -67,7 +67,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -85,6 +90,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "foreign_function_interface::Complex" ]
                               |),
                               [ z ]
@@ -93,6 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "foreign_function_interface::Complex" ]
                               |),
                               [ z_sqrt ]
@@ -112,7 +119,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -130,6 +142,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "foreign_function_interface::Complex" ]
                               |),
                               [ z ]
@@ -138,6 +151,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "foreign_function_interface::Complex" ]
                               |),
                               [
@@ -249,6 +263,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -257,6 +272,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -275,6 +291,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "f32" ]
                                     |),
                                     [
@@ -289,6 +306,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "f32" ]
                                     |),
                                     [
@@ -319,6 +337,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
@@ -327,6 +346,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -345,6 +365,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "f32" ]
                                     |),
                                     [
@@ -359,6 +380,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "f32" ]
                                     |),
                                     [

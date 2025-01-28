@@ -15,7 +15,9 @@ Module ProvidedAndRequired.
               "provided_method::ProvidedAndRequired",
               Self,
               [],
+              [],
               "required",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -118,7 +120,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "provided_method::ProvidedAndRequired",
                         Ty.path "i32",
                         [],
+                        [],
                         "provided",
+                        [],
                         []
                       |),
                       [ x ]
@@ -193,7 +197,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "provided_method::ProvidedAndRequired",
                         Ty.path "u32",
                         [],
+                        [],
                         "provided",
+                        [],
                         []
                       |),
                       [ y ]

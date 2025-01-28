@@ -113,6 +113,7 @@ Module evm.
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                       ],
                     "transact",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -132,6 +133,7 @@ Module evm.
                       ERROR
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "revm_context_interface::result::ExecutionResult")
@@ -175,7 +177,9 @@ Module evm.
                                               "revm_database_interface::DatabaseCommit",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "commit",
+                                              [],
                                               []
                                             |),
                                             [
@@ -184,7 +188,9 @@ Module evm.
                                                   "revm_database_interface::DatabaseGetter",
                                                   CTX,
                                                   [],
+                                                  [],
                                                   "db",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -286,7 +292,9 @@ Module evm.
                     "revm_context_interface::block::BlockSetter",
                     CTX,
                     [],
+                    [],
                     "set_block",
+                    [],
                     []
                   |),
                   [
@@ -329,7 +337,9 @@ Module evm.
                     "revm_context_interface::transaction::TransactionSetter",
                     CTX,
                     [],
+                    [],
                     "set_tx",
+                    [],
                     []
                   |),
                   [
@@ -377,6 +387,7 @@ Module evm.
                     [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                 ],
               "transact",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -666,6 +677,7 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                     "map",
+                    [],
                     [ Ty.tuple []; Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.tuple []) ]
                   |),
                   [
@@ -683,6 +695,7 @@ Module evm.
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                           ],
                         "preverify_transaction_inner",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -718,6 +731,7 @@ Module evm.
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                       ],
                     "clear",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -759,7 +773,9 @@ Module evm.
                     "revm_handler_interface::post_execution::PostExecutionHandler",
                     POSTEXEC,
                     [],
+                    [],
                     "clear",
+                    [],
                     []
                   |),
                   [
@@ -771,7 +787,9 @@ Module evm.
                           []
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                         [],
+                        [],
                         "post_execution",
+                        [],
                         []
                       |),
                       [
@@ -842,7 +860,9 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -853,6 +873,7 @@ Module evm.
                                   []
                                   [ Ty.path "u64"; ERROR ],
                                 "inspect_err",
+                                [],
                                 [
                                   Ty.function
                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ ERROR ] ] ]
@@ -865,7 +886,9 @@ Module evm.
                                     "revm_handler_interface::validation::ValidationHandler",
                                     VAL,
                                     [],
+                                    [],
                                     "validate_initial_tx_gas",
+                                    [],
                                     []
                                   |),
                                   [
@@ -877,7 +900,9 @@ Module evm.
                                           []
                                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                                         [],
+                                        [],
                                         "validation",
+                                        [],
                                         []
                                       |),
                                       [
@@ -931,6 +956,7 @@ Module evm.
                                                                   ]
                                                               ],
                                                             "clear",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
@@ -968,6 +994,7 @@ Module evm.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; ERROR ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -975,6 +1002,7 @@ Module evm.
                                             [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1012,6 +1040,7 @@ Module evm.
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                           ],
                         "transact_preverified_inner",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| initial_gas_spend |) ]
@@ -1024,7 +1053,9 @@ Module evm.
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [
@@ -1036,7 +1067,9 @@ Module evm.
                               []
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                             [],
+                            [],
                             "post_execution",
+                            [],
                             []
                           |),
                           [
@@ -1072,6 +1105,7 @@ Module evm.
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                           ],
                         "clear",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1125,7 +1159,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1134,7 +1170,9 @@ Module evm.
                               "revm_handler_interface::validation::ValidationHandler",
                               VAL,
                               [],
+                              [],
                               "validate_env",
+                              [],
                               []
                             |),
                             [
@@ -1146,7 +1184,9 @@ Module evm.
                                     []
                                     [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                                   [],
+                                  [],
                                   "validation",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1188,6 +1228,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.path "u64"; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1195,6 +1236,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1224,7 +1266,9 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1233,7 +1277,9 @@ Module evm.
                                 "revm_handler_interface::validation::ValidationHandler",
                                 VAL,
                                 [],
+                                [],
                                 "validate_initial_tx_gas",
+                                [],
                                 []
                               |),
                               [
@@ -1245,7 +1291,9 @@ Module evm.
                                       []
                                       [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                                     [],
+                                    [],
                                     "validation",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1287,6 +1335,7 @@ Module evm.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.path "u64"; ERROR ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1294,6 +1343,7 @@ Module evm.
                                             [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1323,7 +1373,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1332,7 +1384,9 @@ Module evm.
                               "revm_handler_interface::validation::ValidationHandler",
                               VAL,
                               [],
+                              [],
                               "validate_tx_against_state",
+                              [],
                               []
                             |),
                             [
@@ -1344,7 +1398,9 @@ Module evm.
                                     []
                                     [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                                   [],
+                                  [],
                                   "validation",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1386,6 +1442,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.path "u64"; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1393,6 +1450,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1463,7 +1521,9 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1474,6 +1534,7 @@ Module evm.
                                   []
                                   [ Ty.path "u64"; ERROR ],
                                 "inspect_err",
+                                [],
                                 [
                                   Ty.function
                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ ERROR ] ] ]
@@ -1495,6 +1556,7 @@ Module evm.
                                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                                       ],
                                     "preverify_transaction_inner",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1535,6 +1597,7 @@ Module evm.
                                                                   ]
                                                               ],
                                                             "clear",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
@@ -1572,6 +1635,7 @@ Module evm.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; ERROR ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1579,6 +1643,7 @@ Module evm.
                                             [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1616,6 +1681,7 @@ Module evm.
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                           ],
                         "transact_preverified_inner",
+                        [],
                         []
                       |),
                       [ M.read (| self |); M.read (| initial_gas_spend |) ]
@@ -1628,7 +1694,9 @@ Module evm.
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [
@@ -1640,7 +1708,9 @@ Module evm.
                               []
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                             [],
+                            [],
                             "post_execution",
+                            [],
                             []
                           |),
                           [
@@ -1676,6 +1746,7 @@ Module evm.
                               [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
                           ],
                         "clear",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1771,7 +1842,9 @@ Module evm.
                           []
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                         [],
+                        [],
                         "pre_execution",
+                        [],
                         []
                       |),
                       [
@@ -1791,7 +1864,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1800,7 +1875,9 @@ Module evm.
                               "revm_handler_interface::pre_execution::PreExecutionHandler",
                               PREEXEC,
                               [],
+                              [],
                               "load_accounts",
+                              [],
                               []
                             |),
                             [ M.read (| pre_exec |); M.read (| context |) ]
@@ -1829,6 +1906,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1836,6 +1914,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1864,7 +1943,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1873,7 +1954,9 @@ Module evm.
                               "revm_handler_interface::pre_execution::PreExecutionHandler",
                               PREEXEC,
                               [],
+                              [],
                               "deduct_caller",
+                              [],
                               []
                             |),
                             [ M.read (| pre_exec |); M.read (| context |) ]
@@ -1902,6 +1985,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1909,6 +1993,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1941,7 +2026,9 @@ Module evm.
                                 [])
                             ],
                           [],
+                          [],
                           "gas_limit",
+                          [],
                           []
                         |),
                         [
@@ -1950,7 +2037,9 @@ Module evm.
                               "revm_context_interface::transaction::Transaction",
                               Ty.associated,
                               [],
+                              [],
                               "common_fields",
+                              [],
                               []
                             |),
                             [
@@ -1959,7 +2048,9 @@ Module evm.
                                   "revm_context_interface::transaction::TransactionGetter",
                                   Ty.apply (Ty.path "&mut") [] [ CTX ],
                                   [],
+                                  [],
                                   "tx",
+                                  [],
                                   []
                                 |),
                                 [ context ]
@@ -1985,7 +2076,9 @@ Module evm.
                                   []
                                   [ Ty.path "u64"; ERROR ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1994,7 +2087,9 @@ Module evm.
                                     "revm_handler_interface::pre_execution::PreExecutionHandler",
                                     PREEXEC,
                                     [],
+                                    [],
                                     "apply_eip7702_auth_list",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| pre_exec |); M.read (| context |) ]
@@ -2023,6 +2118,7 @@ Module evm.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.associated; ERROR ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -2030,6 +2126,7 @@ Module evm.
                                                 [ Ty.path "core::convert::Infallible"; ERROR ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -2062,7 +2159,9 @@ Module evm.
                           []
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                         [],
+                        [],
                         "execution",
+                        [],
                         []
                       |),
                       [
@@ -2093,7 +2192,9 @@ Module evm.
                                 ERROR
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2102,7 +2203,9 @@ Module evm.
                                 "revm_handler_interface::execution::ExecutionHandler",
                                 EXEC,
                                 [],
+                                [],
                                 "init_first_frame",
+                                [],
                                 []
                               |),
                               [ M.read (| exec |); M.read (| context |); M.read (| gas_limit |) ]
@@ -2131,6 +2234,7 @@ Module evm.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; ERROR ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2138,6 +2242,7 @@ Module evm.
                                             [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2183,7 +2288,9 @@ Module evm.
                                       []
                                       [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2192,7 +2299,9 @@ Module evm.
                                         "revm_handler_interface::execution::ExecutionHandler",
                                         EXEC,
                                         [],
+                                        [],
                                         "run",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| exec |); M.read (| context |); M.read (| frame |)
@@ -2222,6 +2331,7 @@ Module evm.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.associated; ERROR ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -2229,6 +2339,7 @@ Module evm.
                                                     [ Ty.path "core::convert::Infallible"; ERROR ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -2274,7 +2385,9 @@ Module evm.
                               []
                               [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2283,7 +2396,9 @@ Module evm.
                                 "revm_handler_interface::execution::ExecutionHandler",
                                 EXEC,
                                 [],
+                                [],
                                 "last_frame_result",
+                                [],
                                 []
                               |),
                               [ M.read (| exec |); M.read (| context |); M.read (| frame_result |) ]
@@ -2312,6 +2427,7 @@ Module evm.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; ERROR ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2319,6 +2435,7 @@ Module evm.
                                             [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2350,7 +2467,9 @@ Module evm.
                           []
                           [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
                         [],
+                        [],
                         "post_execution",
+                        [],
                         []
                       |),
                       [
@@ -2369,7 +2488,9 @@ Module evm.
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
                         [],
+                        [],
                         "refund",
+                        [],
                         []
                       |),
                       [
@@ -2388,7 +2509,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2397,7 +2520,9 @@ Module evm.
                               "revm_handler_interface::post_execution::PostExecutionHandler",
                               POSTEXEC,
                               [],
+                              [],
                               "reimburse_caller",
+                              [],
                               []
                             |),
                             [ M.read (| post_exec |); M.read (| context |); exec_result ]
@@ -2426,6 +2551,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2433,6 +2559,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2461,7 +2588,9 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2470,7 +2599,9 @@ Module evm.
                               "revm_handler_interface::post_execution::PostExecutionHandler",
                               POSTEXEC,
                               [],
+                              [],
                               "reward_beneficiary",
+                              [],
                               []
                             |),
                             [ M.read (| post_exec |); M.read (| context |); exec_result ]
@@ -2499,6 +2630,7 @@ Module evm.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; ERROR ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2506,6 +2638,7 @@ Module evm.
                                           [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2532,7 +2665,9 @@ Module evm.
                       "revm_handler_interface::post_execution::PostExecutionHandler",
                       POSTEXEC,
                       [],
+                      [],
                       "output",
+                      [],
                       []
                     |),
                     [ M.read (| post_exec |); M.read (| context |); M.read (| exec_result |) ]

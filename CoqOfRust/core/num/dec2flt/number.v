@@ -108,6 +108,7 @@ Module num.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field4_finish",
+                  [],
                   []
                 |),
                 [
@@ -169,7 +170,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "i64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -180,7 +183,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "u64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -191,7 +196,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "bool",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -202,7 +209,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "bool",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -519,6 +528,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::dec2flt::number::Number",
                                       "is_fast_path",
+                                      [],
                                       [ F ]
                                     |),
                                     [ M.read (| self |) ]
@@ -563,7 +573,9 @@ Module num.
                                                 "core::num::dec2flt::float::RawFloat",
                                                 F,
                                                 [],
+                                                [],
                                                 "from_u64",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -606,8 +618,10 @@ Module num.
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Div",
                                                       F,
+                                                      [],
                                                       [ F ],
                                                       "div",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -617,7 +631,9 @@ Module num.
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
                                                           [],
+                                                          [],
                                                           "pow10_fast_path",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -643,8 +659,10 @@ Module num.
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Mul",
                                                       F,
+                                                      [],
                                                       [ F ],
                                                       "mul",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -654,7 +672,9 @@ Module num.
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
                                                           [],
+                                                          [],
                                                           "pow10_fast_path",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -704,7 +724,9 @@ Module num.
                                                       []
                                                       [ Ty.path "u64" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -712,6 +734,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u64",
                                                         "checked_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -758,6 +781,7 @@ Module num.
                                                                   (Ty.path "core::option::Option")
                                                                   []
                                                                   [ F ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
@@ -768,6 +792,7 @@ Module num.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -832,8 +857,10 @@ Module num.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               F,
+                                              [],
                                               [ F ],
                                               "mul",
+                                              [],
                                               []
                                             |),
                                             [
@@ -842,7 +869,9 @@ Module num.
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
                                                   [],
+                                                  [],
                                                   "from_u64",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| mantissa |) ]
@@ -852,7 +881,9 @@ Module num.
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
                                                   [],
+                                                  [],
                                                   "pow10_fast_path",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -896,7 +927,9 @@ Module num.
                                               "core::ops::arith::Neg",
                                               F,
                                               [],
+                                              [],
                                               "neg",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| value |) ]

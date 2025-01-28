@@ -34,7 +34,9 @@ Module resolver.
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [ M.read (| module_id |) ]
@@ -65,7 +67,9 @@ Module resolver.
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [ M.read (| module_id |) ]
@@ -133,7 +137,9 @@ Module resolver.
               "move_core_types::resolver::ResourceResolver",
               T,
               [],
+              [],
               "get_resource",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| tag |) ]
@@ -177,7 +183,9 @@ Module resolver.
               "move_core_types::resolver::ModuleResolver",
               T,
               [],
+              [],
               "get_module",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
@@ -222,7 +230,9 @@ Module resolver.
               "move_core_types::resolver::ModuleResolver",
               T,
               [],
+              [],
               "get_module",
+              [],
               []
             |),
             [
@@ -231,7 +241,9 @@ Module resolver.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -277,7 +289,9 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "link_context",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |) ]
@@ -302,7 +316,9 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "relocate",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
@@ -337,7 +353,9 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "defining_module",
+              [],
               []
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |); M.read (| struct_ |) ]

@@ -19,6 +19,7 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| t |) ]
@@ -237,6 +238,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [
@@ -244,6 +246,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "zeroed",
+                    [],
                     []
                   |),
                   []
@@ -292,6 +295,7 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -311,6 +315,7 @@ Module mem.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "write_bytes",
+                            [],
                             []
                           |),
                           [
@@ -318,6 +323,7 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [ val ]
@@ -336,6 +342,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [ M.read (| val |) ]
@@ -384,7 +391,7 @@ Module mem.
           [
             M.read (| dest |);
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+              M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
               []
             |)
           ]
@@ -524,6 +531,7 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -653,8 +661,10 @@ Module mem.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "eq",
+              [],
               []
             |),
             [
@@ -709,7 +719,15 @@ Module mem.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.associated,
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ H ]
+                  |),
                   [
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
@@ -750,12 +768,18 @@ Module mem.
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::builders::DebugTuple", "finish", [] |),
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugTuple",
+              "finish",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "field",
+                  [],
                   []
                 |),
                 [
@@ -764,6 +788,7 @@ Module mem.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple",
+                        [],
                         []
                       |),
                       [ M.read (| fmt |); M.read (| Value.String "Discriminant" |) ]

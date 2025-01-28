@@ -28,6 +28,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
+                  [],
                   []
                 |),
                 [
@@ -77,7 +78,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
@@ -109,7 +112,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -147,7 +152,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
                 [
@@ -177,7 +184,15 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  I,
+                  [],
+                  [],
+                  "nth",
+                  [],
+                  []
+                |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_tuple_field (|
@@ -217,7 +232,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "try_fold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -237,6 +254,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -273,7 +291,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ B; F; R ]
                 |),
                 [
@@ -329,7 +349,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
@@ -367,7 +389,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
                 [
@@ -401,7 +425,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "nth_back",
+                  [],
                   []
                 |),
                 [
@@ -443,7 +469,9 @@ Module iter.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         I,
                         [],
+                        [],
                         "try_rfold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -463,6 +491,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -499,7 +528,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
                 [

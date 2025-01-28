@@ -45,6 +45,7 @@ Module annotated_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -103,8 +104,10 @@ Module annotated_value.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::language_storage::StructTag",
+                [],
                 [ Ty.path "move_core_types::language_storage::StructTag" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -135,6 +138,7 @@ Module annotated_value.
                         ];
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -149,6 +153,7 @@ Module annotated_value.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -232,7 +237,9 @@ Module annotated_value.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::StructTag",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -259,7 +266,9 @@ Module annotated_value.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -387,6 +396,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
@@ -407,6 +417,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
@@ -427,6 +438,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
@@ -447,6 +459,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |); __self_0 ]
@@ -467,6 +480,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
@@ -487,6 +501,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -507,6 +522,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
@@ -527,6 +543,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |); __self_0 ]
@@ -547,6 +564,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
@@ -567,6 +585,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
@@ -587,6 +606,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
@@ -683,8 +703,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -715,8 +737,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -747,8 +771,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -779,8 +805,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -814,6 +842,7 @@ Module annotated_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -821,6 +850,7 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -862,6 +892,7 @@ Module annotated_value.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -877,6 +908,7 @@ Module annotated_value.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -910,6 +942,7 @@ Module annotated_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::annotated_value::MoveStruct" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -917,6 +950,7 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::annotated_value::MoveStruct" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -950,6 +984,7 @@ Module annotated_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -957,6 +992,7 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -987,8 +1023,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1019,8 +1057,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1054,6 +1094,7 @@ Module annotated_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1061,6 +1102,7 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1226,7 +1268,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1252,7 +1296,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1278,7 +1324,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1304,7 +1352,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "bool",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1330,7 +1380,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1362,7 +1414,9 @@ Module annotated_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1388,7 +1442,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::annotated_value::MoveStruct",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1414,7 +1470,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1440,7 +1498,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1466,7 +1526,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1492,7 +1554,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1539,6 +1603,7 @@ Module annotated_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -1589,7 +1654,9 @@ Module annotated_value.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1606,7 +1673,9 @@ Module annotated_value.
                     "core::clone::Clone",
                     Ty.path "move_core_types::annotated_value::MoveTypeLayout",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1652,7 +1721,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1710,7 +1781,9 @@ Module annotated_value.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -1765,7 +1838,9 @@ Module annotated_value.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ]
                           |),
                           [
@@ -1818,7 +1893,9 @@ Module annotated_value.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1850,7 +1927,9 @@ Module annotated_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::annotated_value::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -1899,7 +1978,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1957,7 +2038,9 @@ Module annotated_value.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::StructTag" ]
                           |),
                           [
@@ -2012,7 +2095,9 @@ Module annotated_value.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -2073,7 +2158,9 @@ Module annotated_value.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -2105,7 +2192,9 @@ Module annotated_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::annotated_value::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -2159,7 +2248,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2183,7 +2274,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2207,7 +2300,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2231,7 +2326,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2255,7 +2352,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2281,7 +2380,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -2316,7 +2417,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ]
                           |),
                           [
@@ -2341,7 +2444,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2365,7 +2470,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2389,7 +2496,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2413,7 +2522,9 @@ Module annotated_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -2451,7 +2562,9 @@ Module annotated_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::annotated_value::_'5::deserialize::__Visitor" ]
               |),
               [
@@ -2539,6 +2652,7 @@ Module annotated_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -2589,7 +2703,9 @@ Module annotated_value.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::StructTag",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2612,7 +2728,9 @@ Module annotated_value.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2740,6 +2858,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |) ]
@@ -2758,6 +2877,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |) ]
@@ -2776,6 +2896,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |) ]
@@ -2794,6 +2915,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |) ]
@@ -2812,6 +2934,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |) ]
@@ -2832,6 +2955,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -2852,6 +2976,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
@@ -2870,6 +2995,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |) ]
@@ -2888,6 +3014,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |) ]
@@ -2906,6 +3033,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |) ]
@@ -2924,6 +3052,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |) ]
@@ -3038,7 +3167,9 @@ Module annotated_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -3064,7 +3195,9 @@ Module annotated_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::annotated_value::MoveStructLayout",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -3166,7 +3299,9 @@ Module annotated_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3210,6 +3345,7 @@ Module annotated_value.
                                             Ty.path "move_core_types::annotated_value::MoveValue";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3220,6 +3356,7 @@ Module annotated_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3288,7 +3425,9 @@ Module annotated_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3324,6 +3463,7 @@ Module annotated_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.path "anyhow::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3331,6 +3471,7 @@ Module annotated_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3364,6 +3505,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| blob |) ]
@@ -3384,8 +3526,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::convert::Into",
                                   Ty.path "move_core_types::annotated_visitor::Error",
+                                  [],
                                   [ Ty.path "anyhow::Error" ],
                                   "into",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3396,6 +3540,7 @@ Module annotated_value.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| blob |) ]
@@ -3438,6 +3583,7 @@ Module annotated_value.
                   Ty.path "bcs::error::Error"
                 ],
               "ok",
+              [],
               []
             |),
             [
@@ -3502,6 +3648,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "move_core_types::annotated_value::MoveStruct",
                               "undecorate",
+                              [],
                               []
                             |),
                             [ M.read (| s |) ]
@@ -3540,7 +3687,9 @@ Module annotated_value.
                                     (Ty.path "move_core_types::runtime_value::MoveValue")
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -3563,7 +3712,9 @@ Module annotated_value.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "map",
+                                  [],
                                   [
                                     Ty.path "move_core_types::runtime_value::MoveValue";
                                     Ty.function
@@ -3583,7 +3734,9 @@ Module annotated_value.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| vals |) ]
@@ -3591,6 +3744,7 @@ Module annotated_value.
                                   M.get_associated_function (|
                                     Ty.path "move_core_types::annotated_value::MoveValue",
                                     "undecorate",
+                                    [],
                                     []
                                   |)
                                 ]
@@ -3776,7 +3930,9 @@ Module annotated_value.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
               ],
             [],
+            [],
             "collect",
+            [],
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -3796,7 +3952,9 @@ Module annotated_value.
                 "core::iter::traits::iterator::Iterator",
                 Ty.associated,
                 [],
+                [],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -3824,7 +3982,9 @@ Module annotated_value.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| vals |) ]
@@ -3853,6 +4013,7 @@ Module annotated_value.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                         ],
                                       "expect",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3860,6 +4021,7 @@ Module annotated_value.
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::annotated_value::MoveValue",
                                           "simple_serialize",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| val |) ]
@@ -3933,7 +4095,9 @@ Module annotated_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3977,6 +4141,7 @@ Module annotated_value.
                                             Ty.path "move_core_types::annotated_value::MoveStruct";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3987,6 +4152,7 @@ Module annotated_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -4055,7 +4221,9 @@ Module annotated_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -4091,6 +4259,7 @@ Module annotated_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.path "anyhow::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -4098,6 +4267,7 @@ Module annotated_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -4131,6 +4301,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| blob |) ]
@@ -4151,8 +4322,10 @@ Module annotated_value.
                                 M.get_trait_method (|
                                   "core::convert::Into",
                                   Ty.path "move_core_types::annotated_visitor::Error",
+                                  [],
                                   [ Ty.path "anyhow::Error" ],
                                   "into",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4163,6 +4336,7 @@ Module annotated_value.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| blob |) ]
@@ -4224,7 +4398,9 @@ Module annotated_value.
                     (Ty.path "move_core_types::annotated_value::MoveValue")
                 ],
               [],
+              [],
               "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -4251,7 +4427,9 @@ Module annotated_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "map",
+                  [],
                   [
                     Ty.path "move_core_types::annotated_value::MoveValue";
                     Ty.function
@@ -4284,7 +4462,9 @@ Module annotated_value.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -4362,7 +4542,9 @@ Module annotated_value.
                         (Ty.path "move_core_types::runtime_value::MoveValue")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -4385,7 +4567,9 @@ Module annotated_value.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_core_types::runtime_value::MoveValue";
                         Ty.function
@@ -4405,7 +4589,9 @@ Module annotated_value.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -4413,6 +4599,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "move_core_types::annotated_value::MoveStruct",
                               "into_fields",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -4422,6 +4609,7 @@ Module annotated_value.
                       M.get_associated_function (|
                         Ty.path "move_core_types::annotated_value::MoveValue",
                         "undecorate",
+                        [],
                         []
                       |)
                     ]
@@ -4486,7 +4674,9 @@ Module annotated_value.
                     (Ty.path "move_core_types::annotated_value::MoveTypeLayout")
                 ],
               [],
+              [],
               "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -4509,7 +4699,9 @@ Module annotated_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "map",
+                  [],
                   [
                     Ty.path "move_core_types::annotated_value::MoveTypeLayout";
                     Ty.function
@@ -4529,7 +4721,9 @@ Module annotated_value.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -4636,6 +4830,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "bool"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4649,7 +4844,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "bool",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4675,6 +4872,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "u8"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4688,7 +4886,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4714,6 +4914,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "u16"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4727,7 +4928,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4753,6 +4956,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "u32"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4766,7 +4970,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4792,6 +4998,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "u64"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4805,7 +5012,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4831,6 +5040,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "u128"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4844,7 +5054,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u128",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4870,6 +5082,7 @@ Module annotated_value.
                                 []
                                 [ Ty.path "move_core_types::u256::U256"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4883,7 +5096,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::u256::U256",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4912,6 +5127,7 @@ Module annotated_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4925,7 +5141,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4954,6 +5172,7 @@ Module annotated_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
@@ -4967,7 +5186,9 @@ Module annotated_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -5009,7 +5230,9 @@ Module annotated_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5024,7 +5247,9 @@ Module annotated_value.
                                                       "move_core_types::annotated_value::MoveStructLayout"
                                                   ],
                                                 [],
+                                                [],
                                                 "deserialize",
+                                                [],
                                                 [ D ]
                                               |),
                                               [ M.read (| ty |); M.read (| deserializer |) ]
@@ -5057,6 +5282,7 @@ Module annotated_value.
                                                               "move_core_types::annotated_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -5067,6 +5293,7 @@ Module annotated_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -5129,7 +5356,9 @@ Module annotated_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5138,7 +5367,9 @@ Module annotated_value.
                                                 "serde::de::Deserializer",
                                                 D,
                                                 [],
+                                                [],
                                                 "deserialize_seq",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_core_types::annotated_value::VectorElementVisitor"
@@ -5179,6 +5410,7 @@ Module annotated_value.
                                                               "move_core_types::annotated_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -5189,6 +5421,7 @@ Module annotated_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -5261,7 +5494,7 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5300,6 +5533,7 @@ Module annotated_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -5333,7 +5567,9 @@ Module annotated_value.
                                             Ty.associated
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5342,7 +5578,9 @@ Module annotated_value.
                                             "serde::de::SeqAccess",
                                             A,
                                             [],
+                                            [],
                                             "next_element_seed",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -5398,6 +5636,7 @@ Module annotated_value.
                                                           ];
                                                         Ty.associated
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5408,6 +5647,7 @@ Module annotated_value.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -5446,6 +5686,7 @@ Module annotated_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ vals; M.read (| elem |) ]
@@ -5535,7 +5776,7 @@ Module annotated_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5581,6 +5822,7 @@ Module annotated_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -5603,7 +5845,9 @@ Module annotated_value.
                                   [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -5615,7 +5859,9 @@ Module annotated_value.
                                   []
                                   [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -5627,6 +5873,7 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::annotated_value::MoveFieldLayout"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5669,7 +5916,9 @@ Module annotated_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -5723,7 +5972,9 @@ Module annotated_value.
                                                         Ty.associated
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5732,7 +5983,9 @@ Module annotated_value.
                                                         "serde::de::SeqAccess",
                                                         A,
                                                         [],
+                                                        [],
                                                         "next_element_seed",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -5785,6 +6038,7 @@ Module annotated_value.
                                                                       ];
                                                                     Ty.associated
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -5796,6 +6050,7 @@ Module annotated_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -5843,6 +6098,7 @@ Module annotated_value.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
                                                       [ vals; M.read (| elem |) ]
@@ -5867,7 +6123,9 @@ Module annotated_value.
                                                                   "serde::de::Error",
                                                                   Ty.associated,
                                                                   [],
+                                                                  [],
                                                                   "invalid_length",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| i |); self ]
@@ -5942,7 +6200,9 @@ Module annotated_value.
                           "core::clone::Clone",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -5967,7 +6227,9 @@ Module annotated_value.
                                     Ty.associated
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -5980,7 +6242,9 @@ Module annotated_value.
                                       [ Ty.path "move_core_types::annotated_value::MoveTypeLayout"
                                       ],
                                     [],
+                                    [],
                                     "deserialize",
+                                    [],
                                     [ D ]
                                   |),
                                   [
@@ -6025,6 +6289,7 @@ Module annotated_value.
                                                   ];
                                                 Ty.associated
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -6033,6 +6298,7 @@ Module annotated_value.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -6123,7 +6389,9 @@ Module annotated_value.
                                 Ty.associated
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -6132,7 +6400,9 @@ Module annotated_value.
                                 "serde::de::Deserializer",
                                 D,
                                 [],
+                                [],
                                 "deserialize_tuple",
+                                [],
                                 [
                                   Ty.path
                                     "move_core_types::annotated_value::DecoratedStructFieldVisitor"
@@ -6150,6 +6420,7 @@ Module annotated_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6175,7 +6446,9 @@ Module annotated_value.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6216,6 +6489,7 @@ Module annotated_value.
                                             Ty.path "move_core_types::annotated_value::MoveStruct";
                                             Ty.associated
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -6223,6 +6497,7 @@ Module annotated_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -6257,7 +6532,9 @@ Module annotated_value.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::language_storage::StructTag",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [
@@ -6340,7 +6617,9 @@ Module annotated_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::annotated_value::MoveStruct",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| s |); M.read (| serializer |) ]
@@ -6362,7 +6641,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_bool",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| b |) |) ]
@@ -6384,7 +6665,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u8",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -6406,7 +6689,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u16",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -6428,7 +6713,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u32",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -6450,7 +6737,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u64",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -6472,7 +6761,9 @@ Module annotated_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u128",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -6494,7 +6785,9 @@ Module annotated_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| i |); M.read (| serializer |) ]
@@ -6516,7 +6809,9 @@ Module annotated_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| a |); M.read (| serializer |) ]
@@ -6538,7 +6833,9 @@ Module annotated_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| a |); M.read (| serializer |) ]
@@ -6566,7 +6863,9 @@ Module annotated_value.
                                       []
                                       [ Ty.associated; Ty.associated ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6575,7 +6874,9 @@ Module annotated_value.
                                         "serde::ser::Serializer",
                                         S,
                                         [],
+                                        [],
                                         "serialize_seq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6594,6 +6895,7 @@ Module annotated_value.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| v |) ]
@@ -6625,6 +6927,7 @@ Module annotated_value.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.associated; Ty.associated ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6635,6 +6938,7 @@ Module annotated_value.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6676,7 +6980,9 @@ Module annotated_value.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| v |) ]
@@ -6702,7 +7008,9 @@ Module annotated_value.
                                                         "move_core_types::annotated_value::MoveValue"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -6739,7 +7047,9 @@ Module annotated_value.
                                                               []
                                                               [ Ty.tuple []; Ty.associated ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6748,7 +7058,9 @@ Module annotated_value.
                                                                 "serde::ser::SerializeSeq",
                                                                 Ty.associated,
                                                                 [],
+                                                                [],
                                                                 "serialize_element",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_core_types::annotated_value::MoveValue"
@@ -6784,6 +7096,7 @@ Module annotated_value.
                                                                             Ty.associated;
                                                                             Ty.associated
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -6796,6 +7109,7 @@ Module annotated_value.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -6829,7 +7143,9 @@ Module annotated_value.
                               "serde::ser::SerializeSeq",
                               Ty.associated,
                               [],
+                              [],
                               "end",
+                              [],
                               []
                             |),
                             [ M.read (| t |) ]
@@ -6908,7 +7224,9 @@ Module annotated_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -6917,7 +7235,9 @@ Module annotated_value.
                                 "serde::ser::Serializer",
                                 S,
                                 [],
+                                [],
                                 "serialize_map",
+                                [],
                                 []
                               |),
                               [
@@ -6939,6 +7259,7 @@ Module annotated_value.
                                               ]
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6978,6 +7299,7 @@ Module annotated_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.associated ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -6985,6 +7307,7 @@ Module annotated_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -7024,7 +7347,9 @@ Module annotated_value.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -7041,6 +7366,7 @@ Module annotated_value.
                                       ]
                                   ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -7080,7 +7406,9 @@ Module annotated_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -7121,7 +7449,9 @@ Module annotated_value.
                                                       []
                                                       [ Ty.tuple []; Ty.associated ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -7130,7 +7460,9 @@ Module annotated_value.
                                                         "serde::ser::SerializeMap",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "serialize_entry",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_core_types::identifier::Identifier";
@@ -7164,6 +7496,7 @@ Module annotated_value.
                                                                   (Ty.path "core::result::Result")
                                                                   []
                                                                   [ Ty.associated; Ty.associated ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -7175,6 +7508,7 @@ Module annotated_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -7208,7 +7542,9 @@ Module annotated_value.
                       "serde::ser::SerializeMap",
                       Ty.associated,
                       [],
+                      [],
                       "end",
+                      [],
                       []
                     |),
                     [ M.read (| t |) ]
@@ -7265,7 +7601,9 @@ Module annotated_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -7274,7 +7612,9 @@ Module annotated_value.
                                 "serde::ser::Serializer",
                                 S,
                                 [],
+                                [],
                                 "serialize_struct",
+                                [],
                                 []
                               |),
                               [
@@ -7311,6 +7651,7 @@ Module annotated_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.associated ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -7318,6 +7659,7 @@ Module annotated_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -7350,7 +7692,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.associated ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -7359,7 +7703,9 @@ Module annotated_value.
                               "serde::ser::SerializeStruct",
                               Ty.associated,
                               [],
+                              [],
                               "serialize_field",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
@@ -7375,7 +7721,9 @@ Module annotated_value.
                                     "alloc::string::ToString",
                                     Ty.path "move_core_types::language_storage::StructTag",
                                     [],
+                                    [],
                                     "to_string",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7413,6 +7761,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; Ty.associated ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7420,6 +7769,7 @@ Module annotated_value.
                                           [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -7451,7 +7801,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.associated ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -7460,7 +7812,9 @@ Module annotated_value.
                               "serde::ser::SerializeStruct",
                               Ty.associated,
                               [],
+                              [],
                               "serialize_field",
+                              [],
                               [ Ty.path "move_core_types::annotated_value::MoveFields" ]
                             |),
                             [
@@ -7490,7 +7844,9 @@ Module annotated_value.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7529,6 +7885,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.associated; Ty.associated ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7536,6 +7893,7 @@ Module annotated_value.
                                           [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -7562,7 +7920,9 @@ Module annotated_value.
                       "serde::ser::SerializeStruct",
                       Ty.associated,
                       [],
+                      [],
                       "end",
+                      [],
                       []
                     |),
                     [ M.read (| t |) ]
@@ -7627,6 +7987,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7635,6 +7996,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
@@ -7655,6 +8017,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7663,6 +8026,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
@@ -7683,6 +8047,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7691,6 +8056,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
@@ -7711,6 +8077,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7719,6 +8086,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
@@ -7739,6 +8107,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7747,6 +8116,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
@@ -7767,6 +8137,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7775,6 +8146,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
@@ -7795,6 +8167,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7803,6 +8176,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
@@ -7823,6 +8197,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7831,6 +8206,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
@@ -7851,6 +8227,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7859,6 +8236,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
@@ -7882,6 +8260,7 @@ Module annotated_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
                           [ M.read (| f |) ]
@@ -7893,6 +8272,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7901,6 +8281,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -7918,6 +8299,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -7945,6 +8327,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7962,6 +8345,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -7986,6 +8370,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7994,6 +8379,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -8011,6 +8397,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -8052,6 +8439,7 @@ Module annotated_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
                           [ M.read (| f |) ]
@@ -8063,6 +8451,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8071,6 +8460,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -8082,6 +8472,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -8103,6 +8494,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8120,6 +8512,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -8144,6 +8537,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8152,6 +8546,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -8163,6 +8558,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -8237,6 +8633,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "alternate",
+                              [],
                               []
                             |),
                             [ M.read (| f |) ]
@@ -8248,6 +8645,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8256,6 +8654,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -8267,6 +8666,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ]
                                       |),
                                       [
@@ -8286,6 +8686,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8303,6 +8704,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -8319,6 +8721,7 @@ Module annotated_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8327,6 +8730,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -8338,6 +8742,7 @@ Module annotated_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ]
                                       |),
                                       [
@@ -8405,7 +8810,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -8413,6 +8820,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -8421,6 +8829,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "struct " |) ] |)
@@ -8452,6 +8861,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -8462,6 +8872,7 @@ Module annotated_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -8493,7 +8904,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -8501,6 +8914,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -8509,6 +8923,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8524,6 +8939,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "move_core_types::language_storage::StructTag"
                                             ]
                                           |),
@@ -8565,6 +8981,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -8575,6 +8992,7 @@ Module annotated_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -8601,6 +9019,7 @@ Module annotated_value.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_map",
+                        [],
                         []
                       |),
                       [ M.read (| f |) ]
@@ -8626,7 +9045,9 @@ Module annotated_value.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -8658,7 +9079,9 @@ Module annotated_value.
                                                 "move_core_types::annotated_value::MoveFieldLayout"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -8690,6 +9113,7 @@ Module annotated_value.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugMap",
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8731,6 +9155,7 @@ Module annotated_value.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugMap",
                       "finish",
+                      [],
                       []
                     |),
                     [ map ]
@@ -8905,6 +9330,7 @@ Module annotated_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -8915,8 +9341,10 @@ Module annotated_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ],
+                                  [],
                                   [ Ty.path "move_core_types::language_storage::TypeTag" ],
                                   "into",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| inner_type |) ]
@@ -8949,6 +9377,7 @@ Module annotated_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -8960,8 +9389,10 @@ Module annotated_value.
                                     []
                                     [ Ty.path "move_core_types::annotated_value::MoveStructLayout"
                                     ],
+                                  [],
                                   [ Ty.path "move_core_types::language_storage::StructTag" ],
                                   "into",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| v |) ]
@@ -9006,7 +9437,9 @@ Module annotated_value.
               "core::clone::Clone",
               Ty.path "move_core_types::language_storage::StructTag",
               [],
+              [],
               "clone",
+              [],
               []
             |),
             [
@@ -9088,6 +9521,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9096,6 +9530,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9111,6 +9546,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                           |),
                                           [ u ]
@@ -9137,6 +9573,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9145,6 +9582,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9162,6 +9600,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           |),
                                           [ u ]
@@ -9188,6 +9627,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9196,6 +9636,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9213,6 +9654,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                           |),
                                           [ u ]
@@ -9239,6 +9681,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9247,6 +9690,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9264,6 +9708,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                           |),
                                           [ u ]
@@ -9290,6 +9735,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9298,6 +9744,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9315,6 +9762,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
                                           |),
                                           [ u ]
@@ -9341,6 +9789,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9349,6 +9798,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9366,6 +9816,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -9398,6 +9849,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9406,6 +9858,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |) ]
@@ -9429,6 +9882,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9437,6 +9891,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |) ]
@@ -9459,6 +9914,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9467,6 +9923,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9478,6 +9935,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -9487,6 +9945,7 @@ Module annotated_value.
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress",
                                                   "to_hex_literal",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| a |) ]
@@ -9516,6 +9975,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9524,6 +9984,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9541,6 +10002,7 @@ Module annotated_value.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -9550,6 +10012,7 @@ Module annotated_value.
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress",
                                                   "to_hex_literal",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| a |) ]
@@ -9585,7 +10048,9 @@ Module annotated_value.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9593,6 +10058,7 @@ Module annotated_value.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "write_fmt",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9601,6 +10067,7 @@ Module annotated_value.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9635,6 +10102,7 @@ Module annotated_value.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9645,6 +10113,7 @@ Module annotated_value.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9671,6 +10140,7 @@ Module annotated_value.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_list",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -9696,7 +10166,9 @@ Module annotated_value.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| v |) ]
@@ -9722,7 +10194,9 @@ Module annotated_value.
                                                         "move_core_types::annotated_value::MoveValue"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -9754,6 +10228,7 @@ Module annotated_value.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::builders::DebugList",
                                                           "entry",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9778,6 +10253,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugList",
                               "finish",
+                              [],
                               []
                             |),
                             [ list ]
@@ -9799,7 +10275,9 @@ Module annotated_value.
                               "core::fmt::Display",
                               Ty.path "move_core_types::annotated_value::MoveStruct",
                               [],
+                              [],
                               "fmt",
+                              [],
                               []
                             |),
                             [ M.read (| s |); M.read (| f |) ]
@@ -9855,7 +10333,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9864,7 +10344,9 @@ Module annotated_value.
                               "core::fmt::Display",
                               Ty.path "move_core_types::language_storage::StructTag",
                               [],
+                              [],
                               "fmt",
+                              [],
                               []
                             |),
                             [
@@ -9900,6 +10382,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9910,6 +10393,7 @@ Module annotated_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9941,7 +10425,9 @@ Module annotated_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9949,6 +10435,7 @@ Module annotated_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -9957,6 +10444,7 @@ Module annotated_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String " " |) ] |) ]
@@ -9987,6 +10475,7 @@ Module annotated_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9997,6 +10486,7 @@ Module annotated_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -10023,6 +10513,7 @@ Module annotated_value.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_map",
+                        [],
                         []
                       |),
                       [ M.read (| f |) ]
@@ -10052,7 +10543,9 @@ Module annotated_value.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -10088,7 +10581,9 @@ Module annotated_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -10124,6 +10619,7 @@ Module annotated_value.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugMap",
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10153,6 +10649,7 @@ Module annotated_value.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugMap",
                       "finish",
+                      [],
                       []
                     |),
                     [ map ]

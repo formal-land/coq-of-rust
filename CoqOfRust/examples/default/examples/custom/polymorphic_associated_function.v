@@ -31,7 +31,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
           [
             ("data",
               M.call_closure (|
-                M.get_trait_method (| "core::convert::Into", A, [ B ], "into", [] |),
+                M.get_trait_method (| "core::convert::Into", A, [], [ B ], "into", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -76,6 +76,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ],
                 "convert",
+                [],
                 [ Ty.path "f64" ]
               |),
               [ M.read (| foo |) ]

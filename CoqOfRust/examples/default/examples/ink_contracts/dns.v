@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -161,7 +165,15 @@ Module Impl_core_default_Default_for_dns_AccountId.
           "dns::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -422,8 +434,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.get_trait_method (|
           "core::convert::Into",
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+          [],
           [ Ty.path "dns::AccountId" ],
           "into",
+          [],
           []
         |),
         [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
@@ -470,6 +484,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -490,6 +505,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -502,7 +518,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -526,6 +544,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -546,6 +565,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -558,7 +578,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -721,7 +743,7 @@ Module Impl_dns_DomainNameService.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [] |),
+          M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -743,7 +765,9 @@ Module Impl_dns_DomainNameService.
             "core::default::Default",
             Ty.path "dns::DomainNameService",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -779,13 +803,14 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -816,6 +841,7 @@ Module Impl_dns_DomainNameService.
                                       Ty.path "dns::AccountId"
                                     ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
@@ -859,6 +885,7 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -875,13 +902,14 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -922,6 +950,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -938,6 +967,7 @@ Module Impl_dns_DomainNameService.
                     Ty.path "dns::AccountId"
                   ],
                 "get",
+                [],
                 []
               |),
               [
@@ -997,13 +1027,14 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1018,6 +1049,7 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.path "dns::DomainNameService",
                       "get_owner_or_default",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| name |) ]
@@ -1036,8 +1068,10 @@ Module Impl_dns_DomainNameService.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "dns::AccountId",
+                                  [],
                                   [ Ty.path "dns::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [ caller; owner ]
@@ -1074,6 +1108,7 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1101,6 +1136,7 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -1117,13 +1153,14 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1186,13 +1223,14 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1207,6 +1245,7 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.path "dns::DomainNameService",
                       "get_owner_or_default",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| name |) ]
@@ -1225,8 +1264,10 @@ Module Impl_dns_DomainNameService.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "dns::AccountId",
+                                  [],
                                   [ Ty.path "dns::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [ caller; owner ]
@@ -1263,6 +1304,7 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1290,6 +1332,7 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -1306,13 +1349,14 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "dns::DomainNameService",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1358,6 +1402,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -1374,6 +1419,7 @@ Module Impl_dns_DomainNameService.
                     Ty.path "dns::AccountId"
                   ],
                 "get",
+                [],
                 []
               |),
               [
@@ -1415,6 +1461,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.path "dns::DomainNameService",
             "get_address_or_default",
+            [],
             []
           |),
           [ M.read (| self |); M.read (| name |) ]
@@ -1439,6 +1486,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.path "dns::DomainNameService",
             "get_owner_or_default",
+            [],
             []
           |),
           [ M.read (| self |); M.read (| name |) ]

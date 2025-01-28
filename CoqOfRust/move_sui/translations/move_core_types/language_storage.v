@@ -34,6 +34,7 @@ Module language_storage.
                         [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])
                   ],
                 "new",
+                [],
                 []
               |),
               [
@@ -60,6 +61,7 @@ Module language_storage.
                                             Ty.path
                                               "move_core_types::gas_algebra::AbstractMemoryUnit"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -70,6 +72,7 @@ Module language_storage.
                                             ]
                                         ],
                                         "add",
+                                        [],
                                         []
                                       |),
                                       [
@@ -208,7 +211,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -232,7 +237,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -256,7 +263,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -280,7 +289,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -304,7 +315,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -328,7 +341,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -354,7 +369,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -389,7 +406,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -422,7 +441,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -446,7 +467,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -470,7 +493,9 @@ Module language_storage.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -508,7 +533,9 @@ Module language_storage.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::language_storage::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -559,7 +586,9 @@ Module language_storage.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -623,7 +652,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
@@ -678,7 +709,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -733,7 +766,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -788,7 +823,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -849,7 +886,9 @@ Module language_storage.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -881,7 +920,9 @@ Module language_storage.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::language_storage::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -930,7 +971,9 @@ Module language_storage.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -988,7 +1031,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
@@ -1043,7 +1088,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::StructTag" ]
                           |),
                           [
@@ -1096,7 +1143,9 @@ Module language_storage.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1128,7 +1177,9 @@ Module language_storage.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::language_storage::_'5::deserialize::__Visitor" ]
               |),
               [
@@ -1177,7 +1228,9 @@ Module language_storage.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1235,7 +1288,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
@@ -1290,7 +1345,9 @@ Module language_storage.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
@@ -1343,7 +1400,9 @@ Module language_storage.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1375,7 +1434,9 @@ Module language_storage.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::language_storage::_'7::deserialize::__Visitor" ]
               |),
               [
@@ -1432,6 +1493,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |) ]
@@ -1447,6 +1509,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |) ]
@@ -1465,6 +1528,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |) ]
@@ -1483,6 +1547,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |) ]
@@ -1501,6 +1566,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |) ]
@@ -1519,6 +1585,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |) ]
@@ -1539,6 +1606,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -1559,6 +1627,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
@@ -1577,6 +1646,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |) ]
@@ -1595,6 +1665,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |) ]
@@ -1613,6 +1684,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |) ]
@@ -1720,6 +1792,7 @@ Module language_storage.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1735,6 +1808,7 @@ Module language_storage.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1776,6 +1850,7 @@ Module language_storage.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1791,6 +1866,7 @@ Module language_storage.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1839,7 +1915,15 @@ Module language_storage.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -1868,7 +1952,9 @@ Module language_storage.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -1896,7 +1982,9 @@ Module language_storage.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -2056,7 +2144,9 @@ Module language_storage.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2088,7 +2178,9 @@ Module language_storage.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2209,6 +2301,7 @@ Module language_storage.
                               Ty.path "move_core_types::language_storage::TypeTag";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -2219,6 +2312,7 @@ Module language_storage.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -2255,6 +2349,7 @@ Module language_storage.
                               Ty.path "move_core_types::language_storage::StructTag";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -2265,6 +2360,7 @@ Module language_storage.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -2277,8 +2373,10 @@ Module language_storage.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ __self_discr; __arg1_discr ]
@@ -2334,7 +2432,7 @@ Module language_storage.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -2377,7 +2475,9 @@ Module language_storage.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -2415,7 +2515,9 @@ Module language_storage.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -2459,13 +2561,22 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let with_prefix := M.alloc (| with_prefix |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::string::ToString", Ty.associated, [], "to_string", [] |),
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.associated,
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
             [
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "move_core_types::language_storage::TypeTag",
                     "to_canonical_display",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| with_prefix |) ]
@@ -2561,6 +2672,7 @@ Module language_storage.
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -2568,6 +2680,7 @@ Module language_storage.
                   [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]
               ],
               "add",
+              [],
               []
             |),
             [
@@ -2591,7 +2704,9 @@ Module language_storage.
                             [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])
                       ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -2694,30 +2809,30 @@ Module language_storage.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                            ],
-                                          "new",
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                           []
-                                        |),
-                                        [ Value.Integer IntegerKind.U64 0 ]
-                                      |)
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                          [
+                                            Ty.path
+                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                          ],
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ Value.Integer IntegerKind.U64 0 ]
+                                    |)
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2734,6 +2849,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "move_core_types::language_storage::TypeTag",
                               "abstract_size_for_gas_metering",
+                              [],
                               []
                             |),
                             [ M.read (| M.read (| x |) |) ]
@@ -2754,6 +2870,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "move_core_types::language_storage::StructTag",
                               "abstract_size_for_gas_metering",
+                              [],
                               []
                             |),
                             [ M.read (| M.read (| y |) |) ]
@@ -2838,6 +2955,7 @@ Module language_storage.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field4_finish",
+              [],
               []
             |),
             [
@@ -2910,8 +3028,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "move_core_types::account_address::AccountAddress",
+                    [],
                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -2932,8 +3052,10 @@ Module language_storage.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "move_core_types::identifier::Identifier",
+                      [],
                       [ Ty.path "move_core_types::identifier::Identifier" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -2955,8 +3077,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "move_core_types::identifier::Identifier",
+                    [],
                     [ Ty.path "move_core_types::identifier::Identifier" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -2984,6 +3108,7 @@ Module language_storage.
                       Ty.path "move_core_types::language_storage::TypeTag";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2994,6 +3119,7 @@ Module language_storage.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3039,7 +3165,9 @@ Module language_storage.
                     "core::hash::Hash",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -3059,7 +3187,9 @@ Module language_storage.
                     "core::hash::Hash",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -3079,7 +3209,9 @@ Module language_storage.
                     "core::hash::Hash",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -3104,7 +3236,9 @@ Module language_storage.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -3192,7 +3326,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3209,7 +3345,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3226,7 +3364,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3249,7 +3389,9 @@ Module language_storage.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3289,8 +3431,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::account_address::AccountAddress",
+                    [],
                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -3323,8 +3467,10 @@ Module language_storage.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_core_types::identifier::Identifier",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -3357,8 +3503,10 @@ Module language_storage.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_core_types::identifier::Identifier",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3397,6 +3545,7 @@ Module language_storage.
                                               Ty.path "move_core_types::language_storage::TypeTag";
                                               Ty.path "alloc::alloc::Global"
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
@@ -3408,6 +3557,7 @@ Module language_storage.
                                               ]
                                           ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3472,7 +3622,9 @@ Module language_storage.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -3500,7 +3652,9 @@ Module language_storage.
                             "core::cmp::Ord",
                             Ty.path "move_core_types::identifier::Identifier",
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
@@ -3528,7 +3682,9 @@ Module language_storage.
                                     "core::cmp::Ord",
                                     Ty.path "move_core_types::identifier::Identifier",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3562,7 +3718,9 @@ Module language_storage.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3631,6 +3789,7 @@ Module language_storage.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "into_vec",
+                    [],
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
@@ -3648,6 +3807,7 @@ Module language_storage.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -3676,6 +3836,7 @@ Module language_storage.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "append",
+                    [],
                     []
                   |),
                   [
@@ -3694,6 +3855,7 @@ Module language_storage.
                               Ty.path "bcs::error::Error"
                             ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -3738,8 +3900,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::account_address::AccountAddress",
+                  [],
                   [ Ty.path "move_core_types::account_address::AccountAddress" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3756,8 +3920,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "str",
+                    [],
                     [ Ty.path "str" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -3765,6 +3931,7 @@ Module language_storage.
                       M.get_associated_function (|
                         Ty.path "move_core_types::identifier::IdentStr",
                         "as_str",
+                        [],
                         []
                       |),
                       [
@@ -3773,7 +3940,9 @@ Module language_storage.
                             "core::ops::deref::Deref",
                             Ty.path "move_core_types::identifier::Identifier",
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -3795,8 +3964,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "str",
+                  [],
                   [ Ty.path "str" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3804,6 +3975,7 @@ Module language_storage.
                     M.get_associated_function (|
                       Ty.path "move_core_types::identifier::IdentStr",
                       "as_str",
+                      [],
                       []
                     |),
                     [
@@ -3812,7 +3984,9 @@ Module language_storage.
                           "core::ops::deref::Deref",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -3854,8 +4028,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::account_address::AccountAddress",
+                  [],
                   [ Ty.path "move_core_types::account_address::AccountAddress" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3872,8 +4048,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "str",
+                    [],
                     [ Ty.path "str" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -3881,6 +4059,7 @@ Module language_storage.
                       M.get_associated_function (|
                         Ty.path "move_core_types::identifier::IdentStr",
                         "as_str",
+                        [],
                         []
                       |),
                       [
@@ -3889,7 +4068,9 @@ Module language_storage.
                             "core::ops::deref::Deref",
                             Ty.path "move_core_types::identifier::Identifier",
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -3911,8 +4092,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "str",
+                  [],
                   [ Ty.path "str" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3920,6 +4103,7 @@ Module language_storage.
                     M.get_associated_function (|
                       Ty.path "move_core_types::identifier::IdentStr",
                       "as_str",
+                      [],
                       []
                     |),
                     [
@@ -3928,7 +4112,9 @@ Module language_storage.
                           "core::ops::deref::Deref",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -3965,6 +4151,7 @@ Module language_storage.
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::ModuleId",
               "new",
+              [],
               []
             |),
             [
@@ -3980,7 +4167,9 @@ Module language_storage.
                   "alloc::borrow::ToOwned",
                   Ty.path "move_core_types::identifier::Identifier",
                   [],
+                  [],
                   "to_owned",
+                  [],
                   []
                 |),
                 [
@@ -4010,13 +4199,22 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let with_prefix := M.alloc (| with_prefix |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::string::ToString", Ty.associated, [], "to_string", [] |),
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.associated,
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
             [
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "move_core_types::language_storage::StructTag",
                     "to_canonical_display",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| with_prefix |) ]
@@ -4112,6 +4310,7 @@ Module language_storage.
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -4119,6 +4318,7 @@ Module language_storage.
                   [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]
               ],
               "add",
+              [],
               []
             |),
             [
@@ -4129,6 +4329,7 @@ Module language_storage.
                     (Ty.path "move_core_types::gas_algebra::GasQuantity")
                     []
                     [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -4136,6 +4337,7 @@ Module language_storage.
                       [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]
                   ],
                   "add",
+                  [],
                   []
                 |),
                 [
@@ -4146,6 +4348,7 @@ Module language_storage.
                         (Ty.path "move_core_types::gas_algebra::GasQuantity")
                         []
                         [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -4153,6 +4356,7 @@ Module language_storage.
                           [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]
                       ],
                       "add",
+                      [],
                       []
                     |),
                     [
@@ -4160,6 +4364,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "move_core_types::account_address::AccountAddress",
                           "abstract_size_for_gas_metering",
+                          [],
                           []
                         |),
                         [
@@ -4174,6 +4379,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "move_core_types::identifier::IdentStr",
                           "abstract_size_for_gas_metering",
+                          [],
                           []
                         |),
                         [
@@ -4182,7 +4388,9 @@ Module language_storage.
                               "core::ops::deref::Deref",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -4201,6 +4409,7 @@ Module language_storage.
                     M.get_associated_function (|
                       Ty.path "move_core_types::identifier::IdentStr",
                       "abstract_size_for_gas_metering",
+                      [],
                       []
                     |),
                     [
@@ -4209,7 +4418,9 @@ Module language_storage.
                           "core::ops::deref::Deref",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -4232,7 +4443,9 @@ Module language_storage.
                     []
                     [ Ty.path "move_core_types::language_storage::TypeTag" ],
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -4266,6 +4479,7 @@ Module language_storage.
                         []
                         [ Ty.path "move_core_types::language_storage::TypeTag" ],
                       "iter",
+                      [],
                       []
                     |),
                     [
@@ -4280,7 +4494,9 @@ Module language_storage.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -4300,6 +4516,7 @@ Module language_storage.
                         []
                         [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.U64 0 ]
@@ -4333,6 +4550,7 @@ Module language_storage.
                                                     Ty.path
                                                       "move_core_types::gas_algebra::AbstractMemoryUnit"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path
@@ -4344,6 +4562,7 @@ Module language_storage.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4353,6 +4572,7 @@ Module language_storage.
                                                     Ty.path
                                                       "move_core_types::language_storage::TypeTag",
                                                     "abstract_size_for_gas_metering",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| val |) ]
@@ -4436,6 +4656,7 @@ Module language_storage.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -4494,8 +4715,10 @@ Module language_storage.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::account_address::AccountAddress",
+                [],
                 [ Ty.path "move_core_types::account_address::AccountAddress" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -4516,8 +4739,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::language_storage::StructTag",
+                  [],
                   [ Ty.path "move_core_types::language_storage::StructTag" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -4563,7 +4788,9 @@ Module language_storage.
                     "core::hash::Hash",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -4582,7 +4809,9 @@ Module language_storage.
                   "core::hash::Hash",
                   Ty.path "move_core_types::language_storage::StructTag",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -4663,7 +4892,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -4680,7 +4911,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::StructTag",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -4720,8 +4953,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::account_address::AccountAddress",
+                    [],
                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -4753,8 +4988,10 @@ Module language_storage.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::language_storage::StructTag",
+                          [],
                           [ Ty.path "move_core_types::language_storage::StructTag" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -4807,7 +5044,9 @@ Module language_storage.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -4834,7 +5073,9 @@ Module language_storage.
                           "core::cmp::Ord",
                           Ty.path "move_core_types::language_storage::StructTag",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -4962,6 +5203,7 @@ Module language_storage.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -5020,8 +5262,10 @@ Module language_storage.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::account_address::AccountAddress",
+                [],
                 [ Ty.path "move_core_types::account_address::AccountAddress" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -5042,8 +5286,10 @@ Module language_storage.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::identifier::Identifier",
+                  [],
                   [ Ty.path "move_core_types::identifier::Identifier" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -5089,7 +5335,9 @@ Module language_storage.
                     "core::hash::Hash",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -5108,7 +5356,9 @@ Module language_storage.
                   "core::hash::Hash",
                   Ty.path "move_core_types::identifier::Identifier",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -5189,7 +5439,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -5206,7 +5458,9 @@ Module language_storage.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -5246,8 +5500,10 @@ Module language_storage.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::account_address::AccountAddress",
+                    [],
                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -5279,8 +5535,10 @@ Module language_storage.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::identifier::Identifier",
+                          [],
                           [ Ty.path "move_core_types::identifier::Identifier" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
@@ -5333,7 +5591,9 @@ Module language_storage.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -5360,7 +5620,9 @@ Module language_storage.
                           "core::cmp::Ord",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
@@ -5479,7 +5741,9 @@ Module language_storage.
               "core::ops::deref::Deref",
               Ty.path "move_core_types::identifier::Identifier",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -5534,6 +5798,7 @@ Module language_storage.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "into_vec",
+                    [],
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
@@ -5551,6 +5816,7 @@ Module language_storage.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
+                          [],
                           []
                         |),
                         [
@@ -5577,6 +5843,7 @@ Module language_storage.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "append",
+                    [],
                     []
                   |),
                   [
@@ -5595,6 +5862,7 @@ Module language_storage.
                               Ty.path "bcs::error::Error"
                             ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -5632,13 +5900,22 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let with_prefix := M.alloc (| with_prefix |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::string::ToString", Ty.associated, [], "to_string", [] |),
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.associated,
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
             [
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "move_core_types::language_storage::ModuleId",
                     "to_canonical_display",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| with_prefix |) ]
@@ -5713,6 +5990,7 @@ Module language_storage.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -5727,6 +6005,7 @@ Module language_storage.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -5736,6 +6015,7 @@ Module language_storage.
                                             Ty.path
                                               "move_core_types::account_address::AccountAddress",
                                             "short_str_lossless",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5753,6 +6033,7 @@ Module language_storage.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                     |),
                                     [
@@ -5796,11 +6077,11 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -5810,6 +6091,7 @@ Module language_storage.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.associated ]
                           |),
                           [
@@ -5818,6 +6100,7 @@ Module language_storage.
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::language_storage::ModuleId",
                                   "to_canonical_display",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); Value.Bool false ]
@@ -5886,7 +6169,9 @@ Module language_storage.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -5894,6 +6179,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -5902,6 +6188,7 @@ Module language_storage.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5920,6 +6207,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -5929,6 +6217,7 @@ Module language_storage.
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress",
                                                   "short_str_lossless",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5946,6 +6235,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "move_core_types::identifier::Identifier" ]
                                           |),
                                           [
@@ -5960,6 +6250,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "move_core_types::identifier::Identifier" ]
                                           |),
                                           [
@@ -6000,6 +6291,7 @@ Module language_storage.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -6010,6 +6302,7 @@ Module language_storage.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -6045,6 +6338,7 @@ Module language_storage.
                                     []
                                     [ Ty.path "move_core_types::language_storage::TypeTag" ],
                                   "first",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6059,7 +6353,9 @@ Module language_storage.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6091,7 +6387,9 @@ Module language_storage.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6099,6 +6397,7 @@ Module language_storage.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6107,6 +6406,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6141,6 +6441,7 @@ Module language_storage.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6151,6 +6452,7 @@ Module language_storage.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6182,7 +6484,9 @@ Module language_storage.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6190,6 +6494,7 @@ Module language_storage.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6198,6 +6503,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6211,6 +6517,7 @@ Module language_storage.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
@@ -6253,6 +6560,7 @@ Module language_storage.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6263,6 +6571,7 @@ Module language_storage.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6300,7 +6609,9 @@ Module language_storage.
                                             [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6313,7 +6624,9 @@ Module language_storage.
                                             [ Ty.path "move_core_types::language_storage::TypeTag"
                                             ],
                                           [],
+                                          [],
                                           "skip",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6327,6 +6640,7 @@ Module language_storage.
                                                     "move_core_types::language_storage::TypeTag"
                                                 ],
                                               "iter",
+                                              [],
                                               []
                                             |),
                                             [
@@ -6342,7 +6656,9 @@ Module language_storage.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6386,7 +6702,9 @@ Module language_storage.
                                                           ]
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -6426,7 +6744,9 @@ Module language_storage.
                                                                   Ty.path "core::fmt::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -6434,6 +6754,7 @@ Module language_storage.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Formatter",
                                                                   "write_fmt",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -6443,6 +6764,7 @@ Module language_storage.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -6462,6 +6784,7 @@ Module language_storage.
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
                                                                                 "new_display",
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path "&")
@@ -6509,6 +6832,7 @@ Module language_storage.
                                                                               Ty.path
                                                                                 "core::fmt::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -6522,6 +6846,7 @@ Module language_storage.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -6560,7 +6885,9 @@ Module language_storage.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6568,6 +6895,7 @@ Module language_storage.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6576,6 +6904,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6610,6 +6939,7 @@ Module language_storage.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6620,6 +6950,7 @@ Module language_storage.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6703,6 +7034,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6711,6 +7043,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -6722,6 +7055,7 @@ Module language_storage.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -6762,6 +7096,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6770,6 +7105,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -6787,6 +7123,7 @@ Module language_storage.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -6822,6 +7159,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6830,6 +7168,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
@@ -6850,6 +7189,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6858,6 +7198,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
@@ -6878,6 +7219,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6886,6 +7228,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
@@ -6906,6 +7249,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6914,6 +7258,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
@@ -6934,6 +7279,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6942,6 +7288,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
@@ -6962,6 +7309,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6970,6 +7318,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
@@ -6990,6 +7339,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6998,6 +7348,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
@@ -7018,6 +7369,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7026,6 +7378,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
@@ -7046,6 +7399,7 @@ Module language_storage.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7054,6 +7408,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
@@ -7090,11 +7445,11 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
@@ -7106,6 +7461,7 @@ Module language_storage.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -7114,6 +7470,7 @@ Module language_storage.
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   "short_str_lossless",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7131,6 +7488,7 @@ Module language_storage.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "move_core_types::language_storage::StructTag" ]
                           |),
                           [
@@ -7184,6 +7542,7 @@ Module language_storage.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| t |) ]

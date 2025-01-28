@@ -40,7 +40,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "peekable",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -107,7 +109,9 @@ Module collections.
                                         []
                                         [ I ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [
@@ -157,6 +161,7 @@ Module collections.
                                         []
                                         [ I ],
                                       "peek",
+                                      [],
                                       []
                                     |),
                                     [
@@ -209,8 +214,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             K,
+                                            [],
                                             [ K ],
                                             "ne",
+                                            [],
                                             []
                                           |),
                                           [

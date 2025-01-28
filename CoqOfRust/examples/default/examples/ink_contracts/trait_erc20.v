@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -106,7 +110,15 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
           "trait_erc20::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -196,7 +208,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -363,7 +375,9 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -377,7 +391,9 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
                     []
                     [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -395,7 +411,9 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
                       Ty.path "u128"
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -513,7 +531,7 @@ Module Impl_trait_erc20_Erc20.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [] |),
+          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -554,7 +572,9 @@ Module Impl_trait_erc20_Erc20.
                     []
                     [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -563,11 +583,16 @@ Module Impl_trait_erc20_Erc20.
           let~ caller :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [] |),
+                      M.get_associated_function (|
+                        Ty.path "trait_erc20::Erc20",
+                        "init_env",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |)
@@ -583,6 +608,7 @@ Module Impl_trait_erc20_Erc20.
                     []
                     [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [ balances; M.read (| caller |); M.read (| total_supply |) ]
@@ -591,11 +617,16 @@ Module Impl_trait_erc20_Erc20.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [] |),
+                      M.get_associated_function (|
+                        Ty.path "trait_erc20::Erc20",
+                        "init_env",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |);
@@ -633,7 +664,9 @@ Module Impl_trait_erc20_Erc20.
                           Ty.path "u128"
                         ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -661,6 +694,7 @@ Module Impl_trait_erc20_Erc20.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
+            [],
             []
           |),
           [
@@ -671,6 +705,7 @@ Module Impl_trait_erc20_Erc20.
                   []
                   [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -706,6 +741,7 @@ Module Impl_trait_erc20_Erc20.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
+            [],
             []
           |),
           [
@@ -719,6 +755,7 @@ Module Impl_trait_erc20_Erc20.
                     Ty.path "u128"
                   ],
                 "get",
+                [],
                 []
               |),
               [
@@ -775,6 +812,7 @@ Module Impl_trait_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.path "trait_erc20::Erc20",
                       "balance_of_impl",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| from |) ]
@@ -816,6 +854,7 @@ Module Impl_trait_erc20_Erc20.
                         []
                         [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -835,6 +874,7 @@ Module Impl_trait_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.path "trait_erc20::Erc20",
                       "balance_of_impl",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| to |) ]
@@ -849,6 +889,7 @@ Module Impl_trait_erc20_Erc20.
                         []
                         [ Ty.path "trait_erc20::AccountId"; Ty.path "u128" ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -865,11 +906,21 @@ Module Impl_trait_erc20_Erc20.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [] |),
+                    M.get_associated_function (|
+                      Ty.path "trait_erc20::Env",
+                      "emit_event",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "trait_erc20::Erc20",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -938,7 +989,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "balance_of_impl", [] |),
+          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "balance_of_impl", [], [] |),
           [ M.read (| self |); owner ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -957,7 +1008,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         let owner := M.alloc (| owner |) in
         let spender := M.alloc (| spender |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "allowance_impl", [] |),
+          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "allowance_impl", [], [] |),
           [ M.read (| self |); owner; spender ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -980,11 +1031,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           let~ from :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [] |),
+                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -993,7 +1044,12 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "trait_erc20::Erc20", "transfer_from_to", [] |),
+              M.get_associated_function (|
+                Ty.path "trait_erc20::Erc20",
+                "transfer_from_to",
+                [],
+                []
+              |),
               [ M.read (| self |); from; to; M.read (| value |) ]
             |)
           |)
@@ -1024,11 +1080,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           let~ owner :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [] |),
+                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -1048,6 +1104,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       Ty.path "u128"
                     ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -1064,11 +1121,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "trait_erc20::Env", "emit_event", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [] |),
+                      M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |);
@@ -1117,11 +1174,16 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "trait_erc20::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "trait_erc20::Erc20",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -1134,6 +1196,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.path "trait_erc20::Erc20",
                       "allowance_impl",
+                      [],
                       []
                     |),
                     [ M.read (| self |); from; caller ]
@@ -1178,7 +1241,9 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                           []
                           [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1186,6 +1251,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                           M.get_associated_function (|
                             Ty.path "trait_erc20::Erc20",
                             "transfer_from_to",
+                            [],
                             []
                           |),
                           [ M.read (| self |); from; to; M.read (| value |) ]
@@ -1214,6 +1280,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1224,6 +1291,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1257,6 +1325,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                           Ty.path "u128"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [

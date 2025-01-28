@@ -23,7 +23,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [ M.read (| f |); M.read (| Value.String "SetValZST" |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

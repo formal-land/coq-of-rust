@@ -56,6 +56,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -219,8 +220,10 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
           M.get_trait_method (|
             "core::convert::Into",
             Ty.path "u8",
+            [],
             [ Ty.path "subtle::Choice" ],
             "into",
+            [],
             []
           |),
           [
@@ -263,8 +266,10 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "subtle::Choice",
+                  [],
                   [ Ty.path "subtle::Choice" ],
                   "bitand",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -304,8 +309,10 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
           M.get_trait_method (|
             "core::convert::Into",
             Ty.path "u8",
+            [],
             [ Ty.path "subtle::Choice" ],
             "into",
+            [],
             []
           |),
           [
@@ -348,8 +355,10 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
                 M.get_trait_method (|
                   "core::ops::bit::BitOr",
                   Ty.path "subtle::Choice",
+                  [],
                   [ Ty.path "subtle::Choice" ],
                   "bitor",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -389,8 +398,10 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
           M.get_trait_method (|
             "core::convert::Into",
             Ty.path "u8",
+            [],
             [ Ty.path "subtle::Choice" ],
             "into",
+            [],
             []
           |),
           [
@@ -433,8 +444,10 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.path "subtle::Choice",
+                  [],
                   [ Ty.path "subtle::Choice" ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
@@ -473,8 +486,10 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
           M.get_trait_method (|
             "core::convert::Into",
             Ty.path "u8",
+            [],
             [ Ty.path "subtle::Choice" ],
             "into",
+            [],
             []
           |),
           [
@@ -625,10 +640,18 @@ Module ConstantTimeEq.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+          M.get_trait_method (|
+            "core::ops::bit::Not",
+            Ty.path "subtle::Choice",
+            [],
+            [],
+            "not",
+            [],
+            []
+          |),
           [
             M.call_closure (|
-              M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], "ct_eq", [] |),
+              M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], [], "ct_eq", [], [] |),
               [ M.read (| self |); M.read (| other |) ]
             |)
           ]
@@ -676,7 +699,12 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
                     [ M.read (| self |) ]
                   |)
                 |) in
@@ -695,6 +723,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| _rhs |) ]
@@ -711,8 +740,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "subtle::Choice",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [ Value.Integer IntegerKind.U8 0 ]
@@ -740,7 +771,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -749,7 +782,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                             |),
                             [
@@ -757,6 +792,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -765,6 +801,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| _rhs |) ]
@@ -794,7 +831,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -830,6 +869,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                 M.get_associated_function (|
                                                   Ty.path "subtle::Choice",
                                                   "unwrap_u8",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -839,7 +879,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                         "subtle::ConstantTimeEq",
                                                         T,
                                                         [],
+                                                        [],
                                                         "ct_eq",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| ai |); M.read (| bi |) ]
@@ -860,8 +902,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.path "u8",
+                    [],
                     [ Ty.path "subtle::Choice" ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| x |) ]
@@ -896,14 +940,24 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.call_closure (|
-          M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+          M.get_trait_method (|
+            "core::ops::bit::Not",
+            Ty.path "subtle::Choice",
+            [],
+            [],
+            "not",
+            [],
+            []
+          |),
           [
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "bitxor",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| rhs |) |) ]
@@ -950,8 +1004,10 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -963,7 +1019,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
+                    M.get_associated_function (| Ty.path "u8", "wrapping_neg", [], [] |),
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Wrap.sub (|
@@ -977,8 +1033,10 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "u8",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "into",
+                [],
                 []
               |),
               [
@@ -1021,7 +1079,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u8", [], "ct_eq", [] |),
+          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u8", [], [], "ct_eq", [], [] |),
           [
             M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
@@ -1067,8 +1125,10 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -1080,7 +1140,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
+                    M.get_associated_function (| Ty.path "u16", "wrapping_neg", [], [] |),
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Wrap.sub (|
@@ -1094,8 +1154,10 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "u8",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "into",
+                [],
                 []
               |),
               [
@@ -1134,7 +1196,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u16", [], "ct_eq", [] |),
+          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u16", [], [], "ct_eq", [], [] |),
           [
             M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
@@ -1180,8 +1242,10 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -1193,7 +1257,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
+                    M.get_associated_function (| Ty.path "u32", "wrapping_neg", [], [] |),
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Wrap.sub (|
@@ -1207,8 +1271,10 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "u8",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "into",
+                [],
                 []
               |),
               [
@@ -1247,7 +1313,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u32", [], "ct_eq", [] |),
+          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u32", [], [], "ct_eq", [], [] |),
           [
             M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
@@ -1293,8 +1359,10 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -1306,7 +1374,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_neg", [], [] |),
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Wrap.sub (|
@@ -1320,8 +1388,10 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "u8",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "into",
+                [],
                 []
               |),
               [
@@ -1360,7 +1430,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u64", [], "ct_eq", [] |),
+          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u64", [], [], "ct_eq", [], [] |),
           [
             M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
@@ -1406,8 +1476,10 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 M.get_trait_method (|
                   "core::ops::bit::BitXor",
                   Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                   "bitxor",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |) ]
@@ -1419,7 +1491,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "wrapping_neg", [] |),
+                    M.get_associated_function (| Ty.path "usize", "wrapping_neg", [], [] |),
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Wrap.sub (|
@@ -1439,8 +1511,10 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.path "u8",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "into",
+                [],
                 []
               |),
               [
@@ -1479,7 +1553,15 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
-          M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "usize", [], "ct_eq", [] |),
+          M.get_trait_method (|
+            "subtle::ConstantTimeEq",
+            Ty.path "usize",
+            [],
+            [],
+            "ct_eq",
+            [],
+            []
+          |),
           [
             M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |);
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
@@ -1519,7 +1601,9 @@ Module ConditionallySelectable.
                   "subtle::ConditionallySelectable",
                   Self,
                   [],
+                  [],
                   "conditional_select",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| other |); M.read (| choice |) ]
@@ -1553,7 +1637,9 @@ Module ConditionallySelectable.
                   "subtle::ConditionallySelectable",
                   Self,
                   [],
+                  [],
                   "conditional_assign",
+                  [],
                   []
                 |),
                 [ M.read (| a |); M.read (| b |); M.read (| choice |) ]
@@ -1566,7 +1652,9 @@ Module ConditionallySelectable.
                   "subtle::ConditionallySelectable",
                   Self,
                   [],
+                  [],
                   "conditional_assign",
+                  [],
                   []
                 |),
                 [ M.read (| b |); t; M.read (| choice |) ]
@@ -1606,7 +1694,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -1616,8 +1704,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                [],
                 [ Ty.path "u8" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -1628,8 +1718,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -1663,7 +1755,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -1709,7 +1801,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -1770,7 +1862,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -1781,8 +1878,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i8" ],
+                [],
                 [ Ty.path "i8" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -1793,8 +1892,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "i8" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -1829,7 +1930,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -1877,7 +1983,12 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -1938,7 +2049,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -1948,8 +2059,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                [],
                 [ Ty.path "u16" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -1960,8 +2073,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -1995,7 +2110,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2041,7 +2156,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2102,7 +2217,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2113,8 +2233,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i16" ],
+                [],
                 [ Ty.path "i16" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -2125,8 +2247,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "i16" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -2161,7 +2285,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2209,7 +2338,12 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2270,7 +2404,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2280,8 +2414,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                [],
                 [ Ty.path "u32" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -2292,8 +2428,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -2327,7 +2465,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2373,7 +2511,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2434,7 +2572,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2445,8 +2588,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [],
                 [ Ty.path "i32" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -2457,8 +2602,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -2493,7 +2640,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2541,7 +2693,12 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2602,7 +2759,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2612,8 +2769,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                [],
                 [ Ty.path "u64" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -2624,8 +2783,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -2659,7 +2820,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2705,7 +2866,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
                       [ choice ]
                     |))
                 |))
@@ -2766,7 +2927,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2777,8 +2943,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.get_trait_method (|
                 "core::ops::bit::BitXor",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i64" ],
+                [],
                 [ Ty.path "i64" ],
                 "bitxor",
+                [],
                 []
               |),
               [
@@ -2789,8 +2957,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "&") [] [ Ty.path "i64" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                       "bitxor",
+                      [],
                       []
                     |),
                     [ M.read (| a |); M.read (| b |) ]
@@ -2825,7 +2995,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2873,7 +3048,12 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [ choice ]
                       |))
                   |)
@@ -2932,7 +3112,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
                 "subtle::ConditionallySelectable",
                 Ty.path "u8",
                 [],
+                [],
                 "conditional_select",
+                [],
                 []
               |),
               [
@@ -2986,7 +3168,9 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                   "core::ops::arith::Neg",
                   Ty.apply (Ty.path "&") [] [ T ],
                   [],
+                  [],
                   "neg",
+                  [],
                   []
                 |),
                 [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
@@ -2999,7 +3183,9 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                   "subtle::ConditionallySelectable",
                   T,
                   [],
+                  [],
                   "conditional_assign",
+                  [],
                   []
                 |),
                 [ M.read (| self |); self_neg; M.read (| choice |) ]
@@ -3042,7 +3228,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
           [
             ("value",
               M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -3057,7 +3243,9 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
                   "core::clone::Clone",
                   Ty.path "subtle::Choice",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -3108,6 +3296,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
@@ -3173,6 +3362,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                             M.get_associated_function (|
                               Ty.path "subtle::Choice",
                               "unwrap_u8",
+                              [],
                               []
                             |),
                             [
@@ -3181,6 +3371,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                                     "is_some",
+                                    [],
                                     []
                                   |),
                                   [ source ]
@@ -3270,7 +3461,12 @@ Module Impl_subtle_CtOption_T.
                   [
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             self,
@@ -3332,6 +3528,7 @@ Module Impl_subtle_CtOption_T.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3345,6 +3542,7 @@ Module Impl_subtle_CtOption_T.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -3400,7 +3598,12 @@ Module Impl_subtle_CtOption_T.
                   [
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
+                        M.get_associated_function (|
+                          Ty.path "subtle::Choice",
+                          "unwrap_u8",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             self,
@@ -3496,7 +3699,9 @@ Module Impl_subtle_CtOption_T.
             "subtle::ConditionallySelectable",
             T,
             [],
+            [],
             "conditional_select",
+            [],
             []
           |),
           [
@@ -3535,7 +3740,9 @@ Module Impl_subtle_CtOption_T.
             "subtle::ConditionallySelectable",
             T,
             [],
+            [],
             "conditional_select",
+            [],
             []
           |),
           [
@@ -3544,8 +3751,10 @@ Module Impl_subtle_CtOption_T.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| f |); Value.Tuple [] ]
@@ -3601,7 +3810,15 @@ Module Impl_subtle_CtOption_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
+          M.get_trait_method (|
+            "core::ops::bit::Not",
+            Ty.path "subtle::Choice",
+            [],
+            [],
+            "not",
+            [],
+            []
+          |),
           [
             M.read (|
               M.SubPointer.get_struct_record_field (|
@@ -3643,14 +3860,21 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [] [ U ], "new", [] |),
+          M.get_associated_function (|
+            Ty.apply (Ty.path "subtle::CtOption") [] [ U ],
+            "new",
+            [],
+            []
+          |),
           [
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
+                [],
                 [ Ty.tuple [ T ] ],
                 "call_once",
+                [],
                 []
               |),
               [
@@ -3662,13 +3886,23 @@ Module Impl_subtle_CtOption_T.
                         "subtle::ConditionallySelectable",
                         T,
                         [],
+                        [],
                         "conditional_select",
+                        [],
                         []
                       |),
                       [
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                            M.get_trait_method (|
+                              "core::default::Default",
+                              T,
+                              [],
+                              [],
+                              "default",
+                              [],
+                              []
+                            |),
                             []
                           |)
                         |);
@@ -3729,8 +3963,10 @@ Module Impl_subtle_CtOption_T.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [ T ] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [
@@ -3742,7 +3978,9 @@ Module Impl_subtle_CtOption_T.
                           "subtle::ConditionallySelectable",
                           T,
                           [],
+                          [],
                           "conditional_select",
+                          [],
                           []
                         |),
                         [
@@ -3752,7 +3990,9 @@ Module Impl_subtle_CtOption_T.
                                 "core::default::Default",
                                 T,
                                 [],
+                                [],
                                 "default",
+                                [],
                                 []
                               |),
                               []
@@ -3782,8 +4022,10 @@ Module Impl_subtle_CtOption_T.
                 M.get_trait_method (|
                   "core::ops::bit::BitAndAssign",
                   Ty.path "subtle::Choice",
+                  [],
                   [ Ty.path "subtle::Choice" ],
                   "bitand_assign",
+                  [],
                   []
                 |),
                 [
@@ -3829,6 +4071,7 @@ Module Impl_subtle_CtOption_T.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_none",
+                  [],
                   []
                 |),
                 [ self ]
@@ -3840,8 +4083,10 @@ Module Impl_subtle_CtOption_T.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
+                  [],
                   [ Ty.tuple [] ],
                   "call_once",
+                  [],
                   []
                 |),
                 [ M.read (| f |); Value.Tuple [] ]
@@ -3853,7 +4098,9 @@ Module Impl_subtle_CtOption_T.
                 "subtle::ConditionallySelectable",
                 Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                 [],
+                [],
                 "conditional_select",
+                [],
                 []
               |),
               [ self; f; M.read (| is_none |) ]
@@ -3893,14 +4140,21 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], "new", [] |),
+          M.get_associated_function (|
+            Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
+            "new",
+            [],
+            []
+          |),
           [
             M.call_closure (|
               M.get_trait_method (|
                 "subtle::ConditionallySelectable",
                 T,
                 [],
+                [],
                 "conditional_select",
+                [],
                 []
               |),
               [
@@ -3922,7 +4176,9 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
                 "subtle::ConditionallySelectable",
                 Ty.path "subtle::Choice",
                 [],
+                [],
                 "conditional_select",
+                [],
                 []
               |),
               [
@@ -3978,6 +4234,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                 M.get_associated_function (|
                   Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_some",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -3989,6 +4246,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                 M.get_associated_function (|
                   Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
                   "is_some",
+                  [],
                   []
                 |),
                 [ M.read (| rhs |) ]
@@ -3999,8 +4257,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
               M.get_trait_method (|
                 "core::ops::bit::BitOr",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "subtle::Choice" ],
                 "bitor",
+                [],
                 []
               |),
               [
@@ -4008,8 +4268,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                   M.get_trait_method (|
                     "core::ops::bit::BitAnd",
                     Ty.path "subtle::Choice",
+                    [],
                     [ Ty.path "subtle::Choice" ],
                     "bitand",
+                    [],
                     []
                   |),
                   [
@@ -4017,14 +4279,16 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                       M.get_trait_method (|
                         "core::ops::bit::BitAnd",
                         Ty.path "subtle::Choice",
+                        [],
                         [ Ty.path "subtle::Choice" ],
                         "bitand",
+                        [],
                         []
                       |),
                       [ M.read (| a |); M.read (| b |) ]
                     |);
                     M.call_closure (|
-                      M.get_trait_method (| "subtle::ConstantTimeEq", T, [], "ct_eq", [] |),
+                      M.get_trait_method (| "subtle::ConstantTimeEq", T, [], [], "ct_eq", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -4044,8 +4308,10 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                   M.get_trait_method (|
                     "core::ops::bit::BitAnd",
                     Ty.path "subtle::Choice",
+                    [],
                     [ Ty.path "subtle::Choice" ],
                     "bitand",
+                    [],
                     []
                   |),
                   [
@@ -4054,7 +4320,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                         "core::ops::bit::Not",
                         Ty.path "subtle::Choice",
                         [],
+                        [],
                         "not",
+                        [],
                         []
                       |),
                       [ M.read (| a |) ]
@@ -4064,7 +4332,9 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                         "core::ops::bit::Not",
                         Ty.path "subtle::Choice",
                         [],
+                        [],
                         "not",
+                        [],
                         []
                       |),
                       [ M.read (| b |) ]
@@ -4129,8 +4399,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                  [],
                   [ Ty.path "u8" ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4140,7 +4412,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -4154,8 +4428,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u8",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4164,7 +4440,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4264,8 +4542,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |),
               [
@@ -4329,8 +4609,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                  [],
                   [ Ty.path "u16" ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4340,7 +4622,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -4354,8 +4638,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u16",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4364,7 +4650,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4464,8 +4752,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |),
               [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U16 1)) ]
@@ -4522,8 +4812,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                  [],
                   [ Ty.path "u32" ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4533,7 +4825,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -4547,8 +4841,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u32",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4557,7 +4853,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4657,8 +4955,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |),
               [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U32 1)) ]
@@ -4715,8 +5015,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                  [],
                   [ Ty.path "u64" ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4726,7 +5028,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -4740,8 +5044,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 M.get_trait_method (|
                   "core::ops::bit::BitAnd",
                   Ty.path "u64",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                   "bitand",
+                  [],
                   []
                 |),
                 [
@@ -4750,7 +5056,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       "core::ops::bit::Not",
                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                       [],
+                      [],
                       "not",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -4850,8 +5158,10 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "subtle::Choice",
+                [],
                 [ Ty.path "u8" ],
                 "from",
+                [],
                 []
               |),
               [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U64 1)) ]
@@ -4881,8 +5191,10 @@ Module ConstantTimeLess.
           M.get_trait_method (|
             "core::ops::bit::BitAnd",
             Ty.path "subtle::Choice",
+            [],
             [ Ty.path "subtle::Choice" ],
             "bitand",
+            [],
             []
           |),
           [
@@ -4891,12 +5203,22 @@ Module ConstantTimeLess.
                 "core::ops::bit::Not",
                 Ty.path "subtle::Choice",
                 [],
+                [],
                 "not",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_trait_method (| "subtle::ConstantTimeGreater", Self, [], "ct_gt", [] |),
+                  M.get_trait_method (|
+                    "subtle::ConstantTimeGreater",
+                    Self,
+                    [],
+                    [],
+                    "ct_gt",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]
@@ -4906,12 +5228,14 @@ Module ConstantTimeLess.
                 "core::ops::bit::Not",
                 Ty.path "subtle::Choice",
                 [],
+                [],
                 "not",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], "ct_eq", [] |),
+                  M.get_trait_method (| "subtle::ConstantTimeEq", Self, [], [], "ct_eq", [], [] |),
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]

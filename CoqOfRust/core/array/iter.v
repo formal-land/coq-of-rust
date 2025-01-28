@@ -88,6 +88,7 @@ Module array.
                         M.get_associated_function (|
                           Ty.path "core::ops::index_range::IndexRange",
                           "zero_to",
+                          [],
                           []
                         |),
                         [ M.read (| M.get_constant (| "core::array::iter::N" |) |) ]
@@ -138,7 +139,9 @@ Module array.
                 "core::iter::traits::collect::IntoIterator",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
                 [],
+                [],
                 "into_iter",
+                [],
                 []
               |),
               [ M.read (| array |) ]
@@ -180,6 +183,7 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -256,6 +260,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                     "new_unchecked",
+                    [ N ],
                     []
                   |),
                   [ M.read (| buffer |); M.read (| initialized |) ]
@@ -300,6 +305,7 @@ Module array.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "get_unchecked",
+                      [],
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
@@ -313,7 +319,9 @@ Module array.
                           "core::clone::Clone",
                           Ty.path "core::ops::index_range::IndexRange",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -332,6 +340,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_ref",
+                    [],
                     []
                   |),
                   [ M.read (| slice |) ]
@@ -376,6 +385,7 @@ Module array.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "get_unchecked_mut",
+                      [],
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
@@ -389,7 +399,9 @@ Module array.
                           "core::clone::Clone",
                           Ty.path "core::ops::index_range::IndexRange",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
@@ -408,6 +420,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
+                    [],
                     []
                   |),
                   [ M.read (| slice |) ]
@@ -463,6 +476,7 @@ Module array.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
+                [],
                 [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
               |),
               [
@@ -471,7 +485,9 @@ Module array.
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "core::ops::index_range::IndexRange",
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |),
                   [
@@ -501,6 +517,7 @@ Module array.
                                         []
                                         [ T ],
                                       "assume_init_read",
+                                      [],
                                       []
                                     |),
                                     [
@@ -516,6 +533,7 @@ Module array.
                                                 [ T ]
                                             ],
                                           "get_unchecked",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -564,7 +582,9 @@ Module array.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -627,7 +647,9 @@ Module array.
                       []
                       [ Ty.path "core::ops::index_range::IndexRange" ],
                     [],
+                    [],
                     "fold",
+                    [],
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
@@ -663,8 +685,10 @@ Module array.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Fold,
+                                                  [],
                                                   [ Ty.tuple [ Acc; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -680,6 +704,7 @@ Module array.
                                                             []
                                                             [ T ],
                                                           "assume_init_read",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -696,6 +721,7 @@ Module array.
                                                                     [ T ]
                                                                 ],
                                                               "get_unchecked",
+                                                              [],
                                                               [ Ty.path "usize" ]
                                                             |),
                                                             [ M.read (| data |); M.read (| idx |) ]
@@ -740,7 +766,9 @@ Module array.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
               [ self ]
@@ -770,7 +798,9 @@ Module array.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [ self ]
@@ -814,6 +844,7 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_prefix",
+                      [],
                       []
                     |),
                     [
@@ -834,6 +865,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
                       [ range_to_drop ]
@@ -850,6 +882,7 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
+                        [],
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
@@ -875,6 +908,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "slice_assume_init_mut",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -891,6 +925,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -915,6 +950,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remaining |) ]
@@ -948,7 +984,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -957,6 +993,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                     "cast",
+                    [],
                     [ T ]
                   |),
                   [
@@ -967,6 +1004,7 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -978,6 +1016,7 @@ Module array.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -993,6 +1032,7 @@ Module array.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [
@@ -1007,6 +1047,7 @@ Module array.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "start",
+                                [],
                                 []
                               |),
                               [
@@ -1086,6 +1127,7 @@ Module array.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
+                [],
                 [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
               |),
               [
@@ -1094,7 +1136,9 @@ Module array.
                     "core::iter::traits::double_ended::DoubleEndedIterator",
                     Ty.path "core::ops::index_range::IndexRange",
                     [],
+                    [],
                     "next_back",
+                    [],
                     []
                   |),
                   [
@@ -1124,6 +1168,7 @@ Module array.
                                         []
                                         [ T ],
                                       "assume_init_read",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1139,6 +1184,7 @@ Module array.
                                                 [ T ]
                                             ],
                                           "get_unchecked",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -1207,7 +1253,9 @@ Module array.
                       []
                       [ Ty.path "core::ops::index_range::IndexRange" ],
                     [],
+                    [],
                     "rfold",
+                    [],
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
@@ -1243,8 +1291,10 @@ Module array.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Fold,
+                                                  [],
                                                   [ Ty.tuple [ Acc; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1260,6 +1310,7 @@ Module array.
                                                             []
                                                             [ T ],
                                                           "assume_init_read",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1276,6 +1327,7 @@ Module array.
                                                                     [ T ]
                                                                 ],
                                                               "get_unchecked",
+                                                              [],
                                                               [ Ty.path "usize" ]
                                                             |),
                                                             [ M.read (| data |); M.read (| idx |) ]
@@ -1334,6 +1386,7 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_suffix",
+                      [],
                       []
                     |),
                     [
@@ -1354,6 +1407,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
                       [ range_to_drop ]
@@ -1370,6 +1424,7 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
+                        [],
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
@@ -1395,6 +1450,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "slice_assume_init_mut",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -1411,6 +1467,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -1435,6 +1492,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remaining |) ]
@@ -1497,6 +1555,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                     "as_mut_slice",
+                    [ N ],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1540,6 +1599,7 @@ Module array.
               M.get_associated_function (|
                 Ty.path "core::ops::index_range::IndexRange",
                 "len",
+                [],
                 []
               |),
               [
@@ -1575,7 +1635,9 @@ Module array.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.path "core::ops::index_range::IndexRange",
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -1715,6 +1777,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.path "core::ops::index_range::IndexRange",
                             "zero_to",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 0 ]
@@ -1740,7 +1803,9 @@ Module array.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1771,6 +1836,7 @@ Module array.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                                   "as_slice",
+                                  [ N ],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -1813,7 +1879,9 @@ Module array.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1848,6 +1916,7 @@ Module array.
                                                   []
                                                   [ T ],
                                                 "write",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1857,7 +1926,9 @@ Module array.
                                                     "core::clone::Clone",
                                                     T,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| src |) ]
@@ -1876,6 +1947,7 @@ Module array.
                                               M.get_associated_function (|
                                                 Ty.path "core::ops::index_range::IndexRange",
                                                 "zero_to",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1884,6 +1956,7 @@ Module array.
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1948,6 +2021,7 @@ Module array.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -1955,6 +2029,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -1963,6 +2038,7 @@ Module array.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
@@ -1973,6 +2049,7 @@ Module array.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                           "as_slice",
+                          [ N ],
                           []
                         |),
                         [ M.read (| self |) ]

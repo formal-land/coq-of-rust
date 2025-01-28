@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -150,7 +154,15 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
           "erc1155::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -280,8 +292,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.get_trait_method (|
           "core::convert::Into",
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+          [],
           [ Ty.path "erc1155::AccountId" ],
           "into",
+          [],
           []
         |),
         [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
@@ -593,7 +607,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -610,7 +626,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                       Ty.tuple []
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -621,7 +639,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -661,7 +681,7 @@ Module Impl_erc1155_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [] |),
+          M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -683,7 +703,9 @@ Module Impl_erc1155_Contract.
             "core::default::Default",
             Ty.path "erc1155::Contract",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -724,11 +746,11 @@ Module Impl_erc1155_Contract.
           let~ caller :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -755,6 +777,7 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -781,11 +804,11 @@ Module Impl_erc1155_Contract.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |);
@@ -920,8 +943,10 @@ Module Impl_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::UnexistentToken" [] ]
@@ -937,11 +962,16 @@ Module Impl_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -958,6 +988,7 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
@@ -974,11 +1005,16 @@ Module Impl_erc1155_Contract.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -1057,6 +1093,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -1068,6 +1105,7 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1097,6 +1135,7 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -1116,6 +1155,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "unwrap_or",
+                  [],
                   []
                 |),
                 [
@@ -1127,6 +1167,7 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
@@ -1154,6 +1195,7 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
@@ -1170,11 +1212,11 @@ Module Impl_erc1155_Contract.
           let~ caller :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -1184,11 +1226,11 @@ Module Impl_erc1155_Contract.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |);
@@ -1334,6 +1376,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
               ],
             "contains",
+            [],
             []
           |),
           [
@@ -1364,6 +1407,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -1374,6 +1418,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   []
                   [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -1432,11 +1477,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -1456,8 +1506,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc1155::AccountId",
+                                  [],
                                   [ Ty.path "erc1155::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [ caller; from ]
@@ -1480,7 +1532,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
                                               [],
+                                              [],
                                               "is_approved_for_all",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1507,8 +1561,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.get_trait_method (|
                                                   "core::convert::Into",
                                                   Ty.path "erc1155::Error",
+                                                  [],
                                                   [ Ty.path "erc1155::Error" ],
                                                   "into",
+                                                  [],
                                                   []
                                                 |),
                                                 [ Value.StructTuple "erc1155::Error::NotApproved" []
@@ -1540,8 +1596,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1569,8 +1627,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
@@ -1590,7 +1650,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       "erc1155::Erc1155",
                       Ty.path "erc1155::Contract",
                       [],
+                      [],
                       "balance_of",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| from |); M.read (| token_id |) ]
@@ -1620,8 +1682,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::InsufficientBalance" [] ]
@@ -1640,6 +1704,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "perform_transfer",
+                      [],
                       []
                     |),
                     [
@@ -1657,6 +1722,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "transfer_acceptance_check",
+                      [],
                       []
                     |),
                     [
@@ -1730,11 +1796,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -1754,8 +1825,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc1155::AccountId",
+                                  [],
                                   [ Ty.path "erc1155::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [ caller; from ]
@@ -1778,7 +1851,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
                                               [],
+                                              [],
                                               "is_approved_for_all",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1805,8 +1880,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.get_trait_method (|
                                                   "core::convert::Into",
                                                   Ty.path "erc1155::Error",
+                                                  [],
                                                   [ Ty.path "erc1155::Error" ],
                                                   "into",
+                                                  [],
                                                   []
                                                 |),
                                                 [ Value.StructTuple "erc1155::Error::NotApproved" []
@@ -1838,8 +1915,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1867,8 +1946,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
@@ -1899,6 +1980,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ token_ids ]
@@ -1919,8 +2001,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
@@ -1952,6 +2036,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ token_ids ]
@@ -1963,6 +2048,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ values ]
@@ -1983,8 +2069,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
@@ -2005,7 +2093,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ] ]
                     |),
                     [
@@ -2013,6 +2103,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
+                          [],
                           []
                         |),
                         [
@@ -2024,7 +2115,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                                 [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ token_ids ]
@@ -2035,6 +2128,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
+                          [],
                           []
                         |),
                         [
@@ -2046,7 +2140,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                                 [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ values ]
@@ -2071,7 +2167,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2089,7 +2187,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ transfers ]
@@ -2123,7 +2223,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2158,7 +2260,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 "erc1155::Erc1155",
                                                 Ty.path "erc1155::Contract",
                                                 [],
+                                                [],
                                                 "balance_of",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2200,8 +2304,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                 M.get_trait_method (|
                                                                   "core::convert::Into",
                                                                   Ty.path "erc1155::Error",
+                                                                  [],
                                                                   [ Ty.path "erc1155::Error" ],
                                                                   "into",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2241,7 +2347,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| transfers |) ]
@@ -2273,7 +2381,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2307,6 +2417,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.get_associated_function (|
                                                 Ty.path "erc1155::Contract",
                                                 "perform_transfer",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2331,6 +2442,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "transfer_acceptance_check",
+                      [],
                       []
                     |),
                     [
@@ -2346,8 +2458,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               (Ty.path "alloc::vec::Vec")
                               []
                               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.path "usize" ],
                             "index",
+                            [],
                             []
                           |),
                           [ token_ids; Value.Integer IntegerKind.Usize 0 ]
@@ -2361,8 +2475,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               (Ty.path "alloc::vec::Vec")
                               []
                               [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.path "usize" ],
                             "index",
+                            [],
                             []
                           |),
                           [ values; Value.Integer IntegerKind.Usize 0 ]
@@ -2407,6 +2523,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     []
                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -2429,7 +2546,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             [ Ty.path "erc1155::AccountId"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ owners ]
@@ -2452,7 +2571,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                       [ Ty.path "erc1155::AccountId" ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]
@@ -2490,7 +2611,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                     ]
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
                                             [ token_ids ]
@@ -2513,7 +2636,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                               []
                                                               [ Ty.path "u128" ],
                                                             [],
+                                                            [],
                                                             "next",
+                                                            [],
                                                             []
                                                           |),
                                                           [ iter ]
@@ -2548,7 +2673,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                     "erc1155::Erc1155",
                                                                     Ty.path "erc1155::Contract",
                                                                     [],
+                                                                    [],
                                                                     "balance_of",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2571,6 +2698,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                           "alloc::alloc::Global"
                                                                       ],
                                                                     "push",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ output; M.read (| amount |) ]
@@ -2627,11 +2755,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -2652,8 +2785,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [ operator; caller ]
@@ -2673,8 +2808,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::SelfApproval" [] ]
@@ -2710,6 +2847,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     Ty.tuple []
                                   ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
@@ -2740,6 +2878,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     Ty.tuple []
                                   ],
                                 "remove",
+                                [],
                                 []
                               |),
                               [
@@ -2758,11 +2897,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
+                          M.get_associated_function (|
+                            Ty.path "erc1155::Contract",
+                            "env",
+                            [],
+                            []
+                          |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -2843,7 +2987,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -2856,7 +3000,12 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                   |);
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::rt::Argument",
+                        "none",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |)
@@ -2906,7 +3055,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -2919,7 +3068,12 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
                   |);
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::rt::Argument",
+                        "none",
+                        [],
+                        []
+                      |),
                       []
                     |)
                   |)

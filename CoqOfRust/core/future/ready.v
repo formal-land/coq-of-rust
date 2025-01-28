@@ -26,6 +26,7 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
@@ -70,7 +71,9 @@ Module future.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -131,6 +134,7 @@ Module future.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "expect",
+                    [],
                     []
                   |),
                   [
@@ -138,6 +142,7 @@ Module future.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         "take",
+                        [],
                         []
                       |),
                       [
@@ -155,7 +160,9 @@ Module future.
                                     [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ]
                                 ],
                               [],
+                              [],
                               "deref_mut",
+                              [],
                               []
                             |),
                             [ self ]
@@ -200,6 +207,7 @@ Module future.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "expect",
+                [],
                 []
               |),
               [

@@ -45,7 +45,9 @@ Module num.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                     [],
+                    [],
                     "rposition",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
@@ -58,6 +60,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "iter",
+                          [],
                           []
                         |),
                         [ M.read (| d |) ]
@@ -112,7 +115,9 @@ Module num.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -129,6 +134,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| d |) ]
@@ -154,7 +160,9 @@ Module num.
                                                 []
                                                 [ Ty.path "usize" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -206,6 +214,7 @@ Module num.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| d |) ]
@@ -231,7 +240,9 @@ Module num.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -244,6 +255,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| d |) ]
@@ -269,7 +281,9 @@ Module num.
                                                 []
                                                 [ Ty.path "usize" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -425,6 +439,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -500,6 +515,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -546,6 +562,7 @@ Module num.
                               []
                               [ Ty.path "core::num::fmt::Part" ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -568,6 +585,7 @@ Module num.
                               []
                               [ Ty.path "core::num::fmt::Part" ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -590,6 +608,7 @@ Module num.
                               []
                               [ Ty.path "core::num::fmt::Part" ],
                             "new",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::num::fmt::Part::Copy" [ M.read (| buf |) ] ]
@@ -610,6 +629,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| buf |) ]
@@ -623,6 +643,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -647,6 +668,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -660,6 +682,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| buf |) ]
@@ -679,6 +702,7 @@ Module num.
                                     []
                                     [ Ty.path "core::num::fmt::Part" ],
                                   "slice_assume_init_ref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -694,6 +718,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -701,6 +726,7 @@ Module num.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -723,6 +749,7 @@ Module num.
                                     []
                                     [ Ty.path "core::num::fmt::Part" ],
                                   "slice_assume_init_ref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -738,6 +765,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
@@ -745,6 +773,7 @@ Module num.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -776,6 +805,7 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| buf |) ]
@@ -797,6 +827,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -807,6 +838,7 @@ Module num.
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -814,6 +846,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -840,6 +873,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -862,6 +896,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -872,6 +907,7 @@ Module num.
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeFrom")
@@ -879,6 +915,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -907,6 +944,7 @@ Module num.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| buf |) ]
@@ -933,6 +971,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -949,6 +988,7 @@ Module num.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| buf |) ]
@@ -968,6 +1008,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           "slice_assume_init_ref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -983,6 +1024,7 @@ Module num.
                                                     []
                                                     [ Ty.path "core::num::fmt::Part" ]
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -990,6 +1032,7 @@ Module num.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1012,6 +1055,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           "slice_assume_init_ref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1027,6 +1071,7 @@ Module num.
                                                     []
                                                     [ Ty.path "core::num::fmt::Part" ]
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -1034,6 +1079,7 @@ Module num.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1063,6 +1109,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1085,6 +1132,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1097,6 +1145,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| buf |) ]
@@ -1137,6 +1186,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1159,6 +1209,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1176,6 +1227,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           "slice_assume_init_ref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1191,6 +1243,7 @@ Module num.
                                                     []
                                                     [ Ty.path "core::num::fmt::Part" ]
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -1198,6 +1251,7 @@ Module num.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1220,6 +1274,7 @@ Module num.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           "slice_assume_init_ref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1235,6 +1290,7 @@ Module num.
                                                     []
                                                     [ Ty.path "core::num::fmt::Part" ]
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -1242,6 +1298,7 @@ Module num.
                                                   [ Ty.path "usize" ]
                                               ],
                                               "index",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1332,6 +1389,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -1407,6 +1465,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -1438,6 +1497,7 @@ Module num.
                       []
                       [ Ty.path "core::num::fmt::Part" ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -1448,9 +1508,11 @@ Module num.
                           M.get_trait_method (|
                             "core::ops::index::Index",
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
                             ],
                             "index",
+                            [],
                             []
                           |),
                           [
@@ -1485,6 +1547,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -1509,6 +1572,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1533,6 +1597,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1543,6 +1608,7 @@ Module num.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeFrom")
@@ -1550,6 +1616,7 @@ Module num.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1583,6 +1650,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| buf |) ]
@@ -1604,6 +1672,7 @@ Module num.
                                         []
                                         [ Ty.path "core::num::fmt::Part" ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1616,6 +1685,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| buf |) ]
@@ -1667,6 +1737,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1711,6 +1782,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1733,6 +1805,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1777,6 +1850,7 @@ Module num.
                                 []
                                 [ Ty.path "core::num::fmt::Part" ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -1797,6 +1871,7 @@ Module num.
                     []
                     [ Ty.path "core::num::fmt::Part" ],
                   "slice_assume_init_ref",
+                  [],
                   []
                 |),
                 [
@@ -1812,8 +1887,10 @@ Module num.
                             []
                             [ Ty.path "core::num::fmt::Part" ]
                         ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -1983,7 +2060,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -2191,6 +2268,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -2234,6 +2312,7 @@ Module num.
                                           [ Ty.path "u8" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -2304,6 +2383,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2326,6 +2406,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2341,6 +2422,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -2348,6 +2430,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2381,6 +2464,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2403,6 +2487,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2418,6 +2503,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -2425,6 +2511,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2476,6 +2563,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2498,6 +2586,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2520,6 +2609,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2536,6 +2626,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -2543,6 +2634,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2572,6 +2664,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2594,6 +2687,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2610,6 +2704,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -2617,6 +2712,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2648,6 +2744,7 @@ Module num.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -2672,6 +2769,7 @@ Module num.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2809,6 +2907,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -2852,6 +2951,7 @@ Module num.
                                           [ Ty.path "u8" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf |) ]
@@ -2954,6 +3054,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2976,6 +3077,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2991,6 +3093,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -2998,6 +3101,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3031,6 +3135,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3053,6 +3158,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3068,6 +3174,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -3075,6 +3182,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3145,6 +3253,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3164,6 +3273,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3214,6 +3324,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3229,6 +3340,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -3236,6 +3348,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3264,6 +3377,7 @@ Module num.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -3288,6 +3402,7 @@ Module num.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3544,6 +3659,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -3633,6 +3749,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3655,6 +3772,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3670,6 +3788,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -3677,6 +3796,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3710,6 +3830,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3732,6 +3853,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3747,6 +3869,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -3754,6 +3877,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3805,6 +3929,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3827,6 +3952,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3854,6 +3980,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3900,6 +4027,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3916,6 +4044,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -3923,6 +4052,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3952,6 +4082,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3998,6 +4129,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4014,6 +4146,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -4021,6 +4154,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4090,6 +4224,7 @@ Module num.
                                                             [ Ty.path "u8" ]
                                                         ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| buf |) ]
@@ -4111,6 +4246,7 @@ Module num.
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| buf |) ]
@@ -4172,6 +4308,7 @@ Module num.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -4197,6 +4334,7 @@ Module num.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4216,6 +4354,7 @@ Module num.
                                                   []
                                                   [ Ty.path "u8" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -4223,6 +4362,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index_mut",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4398,6 +4538,7 @@ Module num.
                                           [ Ty.path "core::num::fmt::Part" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parts |) ]
@@ -4462,6 +4603,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4484,6 +4626,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4499,6 +4642,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -4506,6 +4650,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4539,6 +4684,7 @@ Module num.
                                       []
                                       [ Ty.path "core::num::fmt::Part" ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4561,6 +4707,7 @@ Module num.
                                           []
                                           [ Ty.path "core::num::fmt::Part" ],
                                         "slice_assume_init_ref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4576,6 +4723,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -4583,6 +4731,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4634,6 +4783,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4656,6 +4806,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4678,6 +4829,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4694,6 +4846,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -4701,6 +4854,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4730,6 +4884,7 @@ Module num.
                                               []
                                               [ Ty.path "core::num::fmt::Part" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4752,6 +4907,7 @@ Module num.
                                                   []
                                                   [ Ty.path "core::num::fmt::Part" ],
                                                 "slice_assume_init_ref",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4768,6 +4924,7 @@ Module num.
                                                           []
                                                           [ Ty.path "core::num::fmt::Part" ]
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeTo")
@@ -4775,6 +4932,7 @@ Module num.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4843,6 +5001,7 @@ Module num.
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| buf |) ]
@@ -4905,6 +5064,7 @@ Module num.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -4930,6 +5090,7 @@ Module num.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4949,6 +5110,7 @@ Module num.
                                                   []
                                                   [ Ty.path "u8" ]
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::RangeTo")
@@ -4956,6 +5118,7 @@ Module num.
                                                 [ Ty.path "usize" ]
                                             ],
                                             "index_mut",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5021,6 +5184,7 @@ Module num.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| buf |) ]
@@ -5163,6 +5327,7 @@ Module num.
                                                               []
                                                               [ Ty.path "core::num::fmt::Part" ],
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5188,6 +5353,7 @@ Module num.
                                                               []
                                                               [ Ty.path "core::num::fmt::Part" ],
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5212,6 +5378,7 @@ Module num.
                                                                   [ Ty.path "core::num::fmt::Part"
                                                                   ],
                                                                 "slice_assume_init_ref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5231,6 +5398,7 @@ Module num.
                                                                               "core::num::fmt::Part"
                                                                           ]
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -5239,6 +5407,7 @@ Module num.
                                                                         [ Ty.path "usize" ]
                                                                     ],
                                                                     "index",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -5275,6 +5444,7 @@ Module num.
                                                               []
                                                               [ Ty.path "core::num::fmt::Part" ],
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5299,6 +5469,7 @@ Module num.
                                                                   [ Ty.path "core::num::fmt::Part"
                                                                   ],
                                                                 "slice_assume_init_ref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5318,6 +5489,7 @@ Module num.
                                                                               "core::num::fmt::Part"
                                                                           ]
                                                                       ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -5326,6 +5498,7 @@ Module num.
                                                                         [ Ty.path "usize" ]
                                                                     ],
                                                                     "index",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [

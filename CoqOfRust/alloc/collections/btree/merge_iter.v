@@ -76,7 +76,9 @@ Module collections.
                                   "core::clone::Clone",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |) ]
@@ -102,7 +104,9 @@ Module collections.
                                   "core::clone::Clone",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |) ]
@@ -155,6 +159,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "A" |); __self_0 ]
@@ -175,6 +180,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
+                              [],
                               []
                             |),
                             [ M.read (| f |); M.read (| Value.String "B" |); __self_0 ]
@@ -215,7 +221,7 @@ Module collections.
                 [
                   ("a",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -226,7 +232,7 @@ Module collections.
                     |));
                   ("b",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -249,7 +255,9 @@ Module collections.
                               [ I ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -293,6 +301,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -300,6 +309,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -307,6 +317,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
+                          [],
                           []
                         |),
                         [
@@ -314,6 +325,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -322,6 +334,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "debug_tuple",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |); M.read (| Value.String "MergeIterInner" |) ]
@@ -451,6 +464,7 @@ Module collections.
                                 [ I ]
                             ],
                           "take",
+                          [],
                           []
                         |),
                         [
@@ -491,7 +505,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [
@@ -532,7 +548,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [
@@ -556,7 +574,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [
@@ -576,7 +596,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [
@@ -622,6 +644,7 @@ Module collections.
                                 M.get_trait_method (|
                                   "core::ops::function::Fn",
                                   Cmp,
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -630,6 +653,7 @@ Module collections.
                                       ]
                                   ],
                                   "call",
+                                  [],
                                   []
                                 |),
                                 [ cmp; Value.Tuple [ M.read (| a1 |); M.read (| b1 |) ] ]
@@ -653,6 +677,7 @@ Module collections.
                                           []
                                           [ Ty.associated ],
                                         "map",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path
@@ -676,6 +701,7 @@ Module collections.
                                               []
                                               [ Ty.associated ],
                                             "take",
+                                            [],
                                             []
                                           |),
                                           [ b_next ]
@@ -702,6 +728,7 @@ Module collections.
                                           []
                                           [ Ty.associated ],
                                         "map",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path
@@ -725,6 +752,7 @@ Module collections.
                                               []
                                               [ Ty.associated ],
                                             "take",
+                                            [],
                                             []
                                           |),
                                           [ a_next ]
@@ -803,7 +831,9 @@ Module collections.
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -820,7 +850,9 @@ Module collections.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -855,7 +887,9 @@ Module collections.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -873,7 +907,9 @@ Module collections.
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -897,7 +933,9 @@ Module collections.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -913,7 +951,9 @@ Module collections.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
                                   [],
+                                  [],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [

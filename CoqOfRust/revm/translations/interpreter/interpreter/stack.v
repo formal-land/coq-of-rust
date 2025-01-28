@@ -41,6 +41,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -101,6 +102,7 @@ Module interpreter.
                       [];
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -114,6 +116,7 @@ Module interpreter.
                     ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -195,7 +198,9 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 [],
+                [],
                 "hash",
+                [],
                 [ __H ]
               |),
               [
@@ -253,7 +258,9 @@ Module interpreter.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -261,6 +268,7 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_str",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); M.read (| Value.String "[" |) ]
@@ -289,6 +297,7 @@ Module interpreter.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -299,6 +308,7 @@ Module interpreter.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -344,7 +354,9 @@ Module interpreter.
                                     ]
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -364,7 +376,9 @@ Module interpreter.
                                         []
                                     ],
                                   [],
+                                  [],
                                   "enumerate",
+                                  [],
                                   []
                                 |),
                                 [
@@ -383,6 +397,7 @@ Module interpreter.
                                             []
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -403,7 +418,9 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -451,7 +468,9 @@ Module interpreter.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -515,7 +534,9 @@ Module interpreter.
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -523,6 +544,7 @@ Module interpreter.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Formatter",
                                                                     "write_str",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -559,6 +581,7 @@ Module interpreter.
                                                                                 Ty.path
                                                                                   "core::fmt::Error"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -572,6 +595,7 @@ Module interpreter.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -608,7 +632,9 @@ Module interpreter.
                                                         []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -616,6 +642,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Formatter",
                                                           "write_fmt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -624,6 +651,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -639,6 +667,7 @@ Module interpreter.
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&")
@@ -694,6 +723,7 @@ Module interpreter.
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -706,6 +736,7 @@ Module interpreter.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -738,6 +769,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_str",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "]" |) ]
@@ -772,6 +804,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "new",
+                [],
                 []
               |),
               []
@@ -812,6 +845,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -833,6 +867,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "extend_from_slice",
+                      [],
                       []
                     |),
                     [
@@ -858,7 +893,9 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -902,6 +939,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "len",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -940,6 +978,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -971,6 +1010,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1013,6 +1053,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -1047,6 +1088,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn_top",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1074,6 +1116,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "exchange",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |); M.read (| m |) ]
@@ -1096,6 +1139,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "dup",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| n |) ]
@@ -1118,6 +1162,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "push",
+                [],
                 []
               |),
               [ M.read (| self |); M.read (| value |) ]
@@ -1174,6 +1219,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [
@@ -1211,6 +1257,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
@@ -1249,6 +1296,7 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "is_empty",
+                [],
                 []
               |),
               [
@@ -1348,6 +1396,7 @@ Module interpreter.
                       []
                   ],
                 "ok_or",
+                [],
                 [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
               |),
               [
@@ -1364,6 +1413,7 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [
@@ -1406,6 +1456,7 @@ Module interpreter.
                       []
                   ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
@@ -1422,6 +1473,7 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [
@@ -1467,6 +1519,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -1491,6 +1544,7 @@ Module interpreter.
                           []
                       ],
                     "get_unchecked_mut",
+                    [],
                     [ Ty.path "usize" ]
                   |),
                   [
@@ -1511,7 +1565,9 @@ Module interpreter.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref_mut",
+                        [],
                         []
                       |),
                       [
@@ -1606,7 +1662,9 @@ Module interpreter.
                                     []
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -1625,6 +1683,7 @@ Module interpreter.
                                         []
                                     ],
                                   "iter_mut",
+                                  [],
                                   []
                                 |),
                                 [ result ]
@@ -1657,7 +1716,9 @@ Module interpreter.
                                                   []
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
                                           [ iter ]
@@ -1701,6 +1762,7 @@ Module interpreter.
                                                           []
                                                       ],
                                                     "unwrap_unchecked",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1720,6 +1782,7 @@ Module interpreter.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "pop",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1767,6 +1830,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "popn",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1778,6 +1842,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "top_unsafe",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1837,6 +1902,7 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "capacity",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1885,6 +1951,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1902,6 +1969,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "none",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -1970,6 +2038,7 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2013,6 +2082,7 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "push",
+                          [],
                           []
                         |),
                         [
@@ -2074,6 +2144,7 @@ Module interpreter.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2109,8 +2180,10 @@ Module interpreter.
                                         [];
                                       Ty.path "alloc::alloc::Global"
                                     ],
+                                  [],
                                   [ Ty.path "usize" ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2137,6 +2210,7 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2242,6 +2316,7 @@ Module interpreter.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2259,6 +2334,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "none",
+                                                          [],
                                                           []
                                                         |),
                                                         []
@@ -2317,6 +2393,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [
@@ -2374,6 +2451,7 @@ Module interpreter.
                                       []
                                   ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -2393,6 +2471,7 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2441,6 +2520,7 @@ Module interpreter.
                                             []
                                         ],
                                       "sub",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |); M.read (| n |) ]
@@ -2468,6 +2548,7 @@ Module interpreter.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "set_len",
+                                [],
                                 []
                               |),
                               [
@@ -2508,6 +2589,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "exchange",
+                [],
                 []
               |),
               [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| n |) ]
@@ -2590,6 +2672,7 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2607,6 +2690,7 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "none",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -2667,6 +2751,7 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -2717,6 +2802,7 @@ Module interpreter.
                                   []
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -2736,6 +2822,7 @@ Module interpreter.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [
@@ -2782,6 +2869,7 @@ Module interpreter.
                                       []
                                   ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [ M.read (| top |); M.read (| n |) ]
@@ -2801,6 +2889,7 @@ Module interpreter.
                                       []
                                   ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [ M.read (| top |); M.read (| n_m_index |) ]
@@ -2903,6 +2992,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| slice |) ]
@@ -2930,6 +3020,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| slice |) ]
@@ -2958,6 +3049,7 @@ Module interpreter.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -3027,6 +3119,7 @@ Module interpreter.
                                   []
                               ],
                             "cast",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -3045,6 +3138,7 @@ Module interpreter.
                                       []
                                   ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -3064,6 +3158,7 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3090,6 +3185,7 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3123,6 +3219,7 @@ Module interpreter.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "set_len",
+                            [],
                             []
                           |),
                           [
@@ -3142,6 +3239,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "chunks_exact",
+                            [],
                             []
                           |),
                           [ M.read (| slice |); Value.Integer IntegerKind.Usize 32 ]
@@ -3153,6 +3251,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                             "remainder",
+                            [],
                             []
                           |),
                           [ words ]
@@ -3170,7 +3269,9 @@ Module interpreter.
                                   []
                                   [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| words |) ]
@@ -3193,7 +3294,9 @@ Module interpreter.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -3231,7 +3334,9 @@ Module interpreter.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3242,6 +3347,7 @@ Module interpreter.
                                                               []
                                                               [ Ty.path "u8" ],
                                                             "rchunks_exact",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3270,7 +3376,9 @@ Module interpreter.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ iter ]
@@ -3307,6 +3415,7 @@ Module interpreter.
                                                                                 []
                                                                                 [ Ty.path "u64" ],
                                                                               "write",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3318,6 +3427,7 @@ Module interpreter.
                                                                                     [ Ty.path "u64"
                                                                                     ],
                                                                                   "add",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3329,6 +3439,7 @@ Module interpreter.
                                                                                 M.get_associated_function (|
                                                                                   Ty.path "u64",
                                                                                   "from_be_bytes",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3355,6 +3466,7 @@ Module interpreter.
                                                                                             "core::array::TryFromSliceError"
                                                                                         ],
                                                                                       "unwrap",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -3375,6 +3487,7 @@ Module interpreter.
                                                                                                     "u8"
                                                                                                 ]
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -3390,6 +3503,7 @@ Module interpreter.
                                                                                               ]
                                                                                           ],
                                                                                           "try_into",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -3442,6 +3556,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "is_empty",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| partial_last_word |) ]
@@ -3472,6 +3587,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "rchunks_exact",
+                            [],
                             []
                           |),
                           [ M.read (| partial_last_word |); Value.Integer IntegerKind.Usize 8 ]
@@ -3486,6 +3602,7 @@ Module interpreter.
                               []
                               [ Ty.path "u8" ],
                             "remainder",
+                            [],
                             []
                           |),
                           [ limbs ]
@@ -3503,7 +3620,9 @@ Module interpreter.
                                   []
                                   [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| limbs |) ]
@@ -3526,7 +3645,9 @@ Module interpreter.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
                                             [ iter ]
@@ -3561,6 +3682,7 @@ Module interpreter.
                                                         []
                                                         [ Ty.path "u64" ],
                                                       "write",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3571,6 +3693,7 @@ Module interpreter.
                                                             []
                                                             [ Ty.path "u64" ],
                                                           "add",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| dst |); M.read (| i |) ]
@@ -3579,6 +3702,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "u64",
                                                           "from_be_bytes",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -3600,6 +3724,7 @@ Module interpreter.
                                                                     "core::array::TryFromSliceError"
                                                                 ],
                                                               "unwrap",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3615,6 +3740,7 @@ Module interpreter.
                                                                         []
                                                                         [ Ty.path "u8" ]
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "array")
@@ -3626,6 +3752,7 @@ Module interpreter.
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                   "try_into",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| l |) ]
@@ -3667,6 +3794,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "is_empty",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| partial_last_limb |) ]
@@ -3691,6 +3819,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "copy_from_slice",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3701,6 +3830,7 @@ Module interpreter.
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 8 ]
                                             [ Ty.path "u8" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::RangeFrom")
@@ -3708,6 +3838,7 @@ Module interpreter.
                                               [ Ty.path "usize" ]
                                           ],
                                           "index_mut",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3725,6 +3856,7 @@ Module interpreter.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| partial_last_limb |) ]
@@ -3743,6 +3875,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "write",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3750,6 +3883,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| dst |); M.read (| i |) ]
@@ -3758,6 +3892,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "from_be_bytes",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| tmp |) ]
@@ -3861,6 +3996,7 @@ Module interpreter.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3913,6 +4049,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "write_bytes",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3920,6 +4057,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                         "add",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| dst |); M.read (| i |) ]
@@ -3988,6 +4126,7 @@ Module interpreter.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4020,6 +4159,7 @@ Module interpreter.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [
@@ -4049,8 +4189,10 @@ Module interpreter.
                                     [];
                                   Ty.path "alloc::alloc::Global"
                                 ],
+                              [],
                               [ Ty.path "usize" ],
                               "index_mut",
+                              [],
                               []
                             |),
                             [

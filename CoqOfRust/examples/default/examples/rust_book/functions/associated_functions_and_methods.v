@@ -151,7 +151,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           let y2 := M.copy (| γ0_1 |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                              M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                               [
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |),
@@ -235,11 +235,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               M.read (| UnsupportedLiteral |),
                               BinOp.Wrap.add (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                                   [ BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |) ]
                                 |),
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                                   [ BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |) ]
                                 |)
                               |)
@@ -388,6 +388,7 @@ Module Impl_associated_functions_and_methods_Pair.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -407,6 +408,7 @@ Module Impl_associated_functions_and_methods_Pair.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
@@ -420,6 +422,7 @@ Module Impl_associated_functions_and_methods_Pair.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
@@ -498,6 +501,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "origin",
+                      [],
                       []
                     |),
                     []
@@ -507,6 +511,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
@@ -520,7 +525,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -537,6 +547,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "f64" ]
                               |),
                               [
@@ -545,6 +556,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "associated_functions_and_methods::Rectangle",
                                       "perimeter",
+                                      [],
                                       []
                                     |),
                                     [ rectangle ]
@@ -567,7 +579,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -584,6 +601,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "f64" ]
                               |),
                               [
@@ -592,6 +610,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "associated_functions_and_methods::Rectangle",
                                       "area",
+                                      [],
                                       []
                                     |),
                                     [ rectangle ]
@@ -617,6 +636,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "origin",
+                      [],
                       []
                     |),
                     []
@@ -626,6 +646,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
@@ -638,6 +659,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "associated_functions_and_methods::Rectangle",
                 "translate",
+                [],
                 []
               |),
               [ square; M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
@@ -655,6 +677,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 1 ]
@@ -666,6 +689,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 2 ]
@@ -678,6 +702,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "associated_functions_and_methods::Pair",
                 "destroy",
+                [],
                 []
               |),
               [ M.read (| pair_ |) ]

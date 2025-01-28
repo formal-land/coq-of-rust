@@ -67,7 +67,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [ M.alloc (| Value.Array [ M.read (| Value.String "Guess the number!
 " |) ] |) ]
                   |)
@@ -91,6 +96,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
@@ -107,7 +113,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let~ guess :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -120,6 +126,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
@@ -127,6 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "std::io::stdio::Stdin",
                         "read_line",
+                        [],
                         []
                       |),
                       [
@@ -148,17 +156,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
+                      M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "trim", [] |),
+                          M.get_associated_function (| Ty.path "str", "trim", [], [] |),
                           [
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.path "alloc::string::String",
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ guess ]
@@ -201,6 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
+                          [],
                           []
                         |),
                         [
@@ -219,6 +230,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
+                                    [],
                                     [ Ty.path "u32" ]
                                   |),
                                   [ guess ]
@@ -234,7 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
                   [ guess; secret_number ]
                 |)
               |),
@@ -251,6 +263,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -276,6 +289,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [ M.alloc (| Value.Array [ M.read (| Value.String "Too big!
@@ -302,6 +316,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [

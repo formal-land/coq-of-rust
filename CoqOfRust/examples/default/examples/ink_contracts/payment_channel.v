@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
           "payment_channel::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -651,7 +659,12 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "payment_channel::PaymentChannel", "init_env", [] |),
+          M.get_associated_function (|
+            Ty.path "payment_channel::PaymentChannel",
+            "init_env",
+            [],
+            []
+          |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -690,6 +703,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "account_id",
+                      [],
                       []
                     |),
                     [
@@ -698,6 +712,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -718,7 +733,9 @@ Module Impl_payment_channel_PaymentChannel.
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [ Ty.path "u8" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -751,6 +768,7 @@ Module Impl_payment_channel_PaymentChannel.
                     []
                     [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                   "unwrap_or_else",
+                  [],
                   [ Ty.function [ Ty.tuple [ Ty.path "payment_channel::Error" ] ] (Ty.tuple []) ]
                 |),
                 [
@@ -798,7 +816,9 @@ Module Impl_payment_channel_PaymentChannel.
                   "payment_channel::CryptoHash",
                   Ty.path "payment_channel::Blake2x256",
                   [],
+                  [],
                   "hash",
+                  [],
                   []
                 |),
                 [ pub_key; signature_account_id ]
@@ -809,8 +829,10 @@ Module Impl_payment_channel_PaymentChannel.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "payment_channel::AccountId",
+                [],
                 [ Ty.path "payment_channel::AccountId" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -827,8 +849,10 @@ Module Impl_payment_channel_PaymentChannel.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
+                      [],
                       [ Ty.path "payment_channel::AccountId" ],
                       "into",
+                      [],
                       []
                     |),
                     [ M.read (| signature_account_id |) ]
@@ -866,13 +890,14 @@ Module Impl_payment_channel_PaymentChannel.
           [
             ("sender",
               M.call_closure (|
-                M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [], [] |),
                 [
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "payment_channel::PaymentChannel",
                         "init_env",
+                        [],
                         []
                       |),
                       []
@@ -935,8 +960,10 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
@@ -945,6 +972,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       M.get_associated_function (|
                                         Ty.path "payment_channel::Env",
                                         "caller",
+                                        [],
                                         []
                                       |),
                                       [
@@ -953,6 +981,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             M.get_associated_function (|
                                               Ty.path "payment_channel::PaymentChannel",
                                               "env",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -1043,6 +1072,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
@@ -1077,7 +1107,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1088,6 +1120,7 @@ Module Impl_payment_channel_PaymentChannel.
                               []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
@@ -1100,6 +1133,7 @@ Module Impl_payment_channel_PaymentChannel.
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
+                                [],
                                 []
                               |),
                               [
@@ -1108,6 +1142,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     M.get_associated_function (|
                                       Ty.path "payment_channel::PaymentChannel",
                                       "env",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -1176,6 +1211,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1186,6 +1222,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1243,7 +1280,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1251,6 +1290,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "close_inner",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
@@ -1279,6 +1319,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1289,6 +1330,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1315,6 +1357,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "terminate_contract",
+                      [],
                       []
                     |),
                     [
@@ -1323,6 +1366,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1387,8 +1431,10 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1397,6 +1443,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       M.get_associated_function (|
                                         Ty.path "payment_channel::Env",
                                         "caller",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1405,6 +1452,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             M.get_associated_function (|
                                               Ty.path "payment_channel::PaymentChannel",
                                               "env",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -1444,6 +1492,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "block_timestamp",
+                      [],
                       []
                     |),
                     [
@@ -1452,6 +1501,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1479,6 +1529,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "emit_event",
+                      [],
                       []
                     |),
                     [
@@ -1487,6 +1538,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "env",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -1580,6 +1632,7 @@ Module Impl_payment_channel_PaymentChannel.
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "block_timestamp",
+                              [],
                               []
                             |),
                             [
@@ -1588,6 +1641,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "env",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1636,6 +1690,7 @@ Module Impl_payment_channel_PaymentChannel.
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "terminate_contract",
+                              [],
                               []
                             |),
                             [
@@ -1644,6 +1699,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "env",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -1729,8 +1785,10 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1739,6 +1797,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       M.get_associated_function (|
                                         Ty.path "payment_channel::Env",
                                         "caller",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1747,6 +1806,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             M.get_associated_function (|
                                               Ty.path "payment_channel::PaymentChannel",
                                               "env",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| self |) ]
@@ -1797,6 +1857,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
@@ -1895,7 +1956,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1906,6 +1969,7 @@ Module Impl_payment_channel_PaymentChannel.
                               []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
@@ -1918,6 +1982,7 @@ Module Impl_payment_channel_PaymentChannel.
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
+                                [],
                                 []
                               |),
                               [
@@ -1926,6 +1991,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     M.get_associated_function (|
                                       Ty.path "payment_channel::PaymentChannel",
                                       "env",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -1985,6 +2051,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1995,6 +2062,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2148,13 +2216,14 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "payment_channel::Env", "balance", [] |),
+          M.get_associated_function (| Ty.path "payment_channel::Env", "balance", [], [] |),
           [
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "payment_channel::PaymentChannel",
                   "env",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]

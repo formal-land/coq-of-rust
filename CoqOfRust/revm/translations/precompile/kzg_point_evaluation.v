@@ -110,8 +110,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -142,6 +144,7 @@ Module kzg_point_evaluation.
                                   M.get_associated_function (|
                                     Ty.path "bytes::bytes::Bytes",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -150,7 +153,9 @@ Module kzg_point_evaluation.
                                         "core::ops::deref::Deref",
                                         Ty.path "alloy_primitives::bytes_::Bytes",
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| input |) ]
@@ -173,8 +178,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -197,8 +204,10 @@ Module kzg_point_evaluation.
                     M.get_trait_method (|
                       "core::ops::index::Index",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -207,7 +216,9 @@ Module kzg_point_evaluation.
                           "core::ops::deref::Deref",
                           Ty.path "bytes::bytes::Bytes",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -216,7 +227,9 @@ Module kzg_point_evaluation.
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]
@@ -235,8 +248,10 @@ Module kzg_point_evaluation.
                     M.get_trait_method (|
                       "core::ops::index::Index",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -245,7 +260,9 @@ Module kzg_point_evaluation.
                           "core::ops::deref::Deref",
                           Ty.path "bytes::bytes::Bytes",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -254,7 +271,9 @@ Module kzg_point_evaluation.
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]
@@ -286,6 +305,7 @@ Module kzg_point_evaluation.
                                     (Ty.path "array")
                                     [ Value.Integer IntegerKind.Usize 32 ]
                                     [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -293,6 +313,7 @@ Module kzg_point_evaluation.
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
@@ -323,8 +344,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -365,8 +388,10 @@ Module kzg_point_evaluation.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -375,7 +400,9 @@ Module kzg_point_evaluation.
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -384,7 +411,9 @@ Module kzg_point_evaluation.
                                   "core::ops::deref::Deref",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| input |) ]
@@ -415,8 +444,10 @@ Module kzg_point_evaluation.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -425,7 +456,9 @@ Module kzg_point_evaluation.
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -434,7 +467,9 @@ Module kzg_point_evaluation.
                                   "core::ops::deref::Deref",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| input |) ]
@@ -465,8 +500,10 @@ Module kzg_point_evaluation.
                         M.get_trait_method (|
                           "core::ops::index::Index",
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -475,7 +512,9 @@ Module kzg_point_evaluation.
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -484,7 +523,9 @@ Module kzg_point_evaluation.
                                   "core::ops::deref::Deref",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| input |) ]
@@ -540,8 +581,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -566,6 +609,7 @@ Module kzg_point_evaluation.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -584,8 +628,10 @@ Module kzg_point_evaluation.
                                   [ Value.Integer IntegerKind.Usize 64 ]
                                   [ Ty.path "u8" ]
                               ],
+                            [],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
+                            [],
                             []
                           |),
                           [
@@ -668,6 +714,7 @@ Module kzg_point_evaluation.
                           Ty.path "typenum::bit::B0"
                         ]
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "array")
@@ -675,6 +722,7 @@ Module kzg_point_evaluation.
                       [ Ty.path "u8" ]
                   ],
                   "into",
+                  [],
                   []
                 |),
                 [
@@ -731,7 +779,9 @@ Module kzg_point_evaluation.
                             ]
                         ],
                       [],
+                      [],
                       "digest",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ]
                     |),
@@ -799,6 +849,7 @@ Module kzg_point_evaluation.
                   []
                   [ Ty.path "bool"; Ty.path "c_kzg::bindings::Error" ],
                 "unwrap_or",
+                [],
                 []
               |),
               [
@@ -806,6 +857,7 @@ Module kzg_point_evaluation.
                   M.get_associated_function (|
                     Ty.path "c_kzg::bindings::KZGProof",
                     "verify_kzg_proof",
+                    [],
                     []
                   |),
                   [
@@ -847,6 +899,7 @@ Module kzg_point_evaluation.
                 Ty.path "core::array::TryFromSliceError"
               ],
             "expect",
+            [],
             []
           |),
           [
@@ -854,8 +907,10 @@ Module kzg_point_evaluation.
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] ],
                 "try_into",
+                [],
                 []
               |),
               [ M.read (| bytes |) ]
@@ -883,6 +938,7 @@ Module kzg_point_evaluation.
           M.get_associated_function (|
             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
             "cast",
+            [],
             [ Ty.path "c_kzg::bindings::Bytes32" ]
           |),
           [
@@ -890,6 +946,7 @@ Module kzg_point_evaluation.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -926,6 +983,7 @@ Module kzg_point_evaluation.
           M.get_associated_function (|
             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
             "cast",
+            [],
             [ Ty.path "c_kzg::bindings::Bytes48" ]
           |),
           [
@@ -933,6 +991,7 @@ Module kzg_point_evaluation.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "as_ptr",
+                [],
                 []
               |),
               [

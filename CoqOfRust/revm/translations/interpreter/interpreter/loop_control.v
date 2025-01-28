@@ -47,7 +47,12 @@ Module interpreter.
                     []);
                 ("gas",
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "revm_interpreter::gas::Gas", "new", [] |),
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::gas::Gas",
+                      "new",
+                      [],
+                      []
+                    |),
                     [ M.read (| gas_limit |) ]
                   |))
               ]))

@@ -28,7 +28,7 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -43,7 +43,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -83,6 +85,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
@@ -175,7 +178,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -184,7 +189,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     I,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
@@ -219,6 +226,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -226,6 +234,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -292,7 +301,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
@@ -333,7 +344,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -342,7 +355,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     I,
                                     [],
+                                    [],
                                     "nth",
+                                    [],
                                     []
                                   |),
                                   [
@@ -378,6 +393,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -385,6 +401,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -454,7 +471,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "count",
+                  [],
                   []
                 |),
                 [
@@ -506,7 +525,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ Acc; Ty.associated; R ]
                 |),
                 [
@@ -517,7 +538,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "enumerate.try_fold", [] |),
+                    M.get_associated_function (| Self, "enumerate.try_fold", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -566,7 +587,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; Ty.associated ]
                 |),
                 [
@@ -579,7 +602,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    M.get_associated_function (| Self, "enumerate.fold", [] |),
+                    M.get_associated_function (| Self, "enumerate.fold", [], [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -627,7 +650,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "advance_by",
+                        [],
                         []
                       |),
                       [
@@ -673,6 +698,7 @@ Module iter.
                                       []
                                       [ Ty.path "usize" ],
                                     "get",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| rem |) ]
@@ -808,7 +834,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -817,7 +845,9 @@ Module iter.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     I,
                                     [],
+                                    [],
                                     "next_back",
+                                    [],
                                     []
                                   |),
                                   [
@@ -852,6 +882,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -859,6 +890,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -887,7 +919,9 @@ Module iter.
                             "core::iter::traits::exact_size::ExactSizeIterator",
                             I,
                             [],
+                            [],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -952,7 +986,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -961,7 +997,9 @@ Module iter.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     I,
                                     [],
+                                    [],
                                     "nth_back",
+                                    [],
                                     []
                                   |),
                                   [
@@ -997,6 +1035,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1004,6 +1043,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1032,7 +1072,9 @@ Module iter.
                             "core::iter::traits::exact_size::ExactSizeIterator",
                             I,
                             [],
+                            [],
                             "len",
+                            [],
                             []
                           |),
                           [
@@ -1116,7 +1158,9 @@ Module iter.
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
                           [],
+                          [],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -1135,7 +1179,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "try_rfold",
+                      [],
                       [ Acc; Ty.associated; R ]
                     |),
                     [
@@ -1146,7 +1192,7 @@ Module iter.
                       |);
                       M.read (| init |);
                       M.call_closure (|
-                        M.get_associated_function (| Self, "enumerate.try_rfold", [] |),
+                        M.get_associated_function (| Self, "enumerate.try_rfold", [], [] |),
                         [ M.read (| count |); M.read (| fold |) ]
                       |)
                     ]
@@ -1201,7 +1247,9 @@ Module iter.
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
                           [],
+                          [],
                           "len",
+                          [],
                           []
                         |),
                         [
@@ -1220,7 +1268,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "rfold",
+                      [],
                       [ Acc; Ty.associated ]
                     |),
                     [
@@ -1233,7 +1283,7 @@ Module iter.
                       |);
                       M.read (| init |);
                       M.call_closure (|
-                        M.get_associated_function (| Self, "enumerate.rfold", [] |),
+                        M.get_associated_function (| Self, "enumerate.rfold", [], [] |),
                         [ M.read (| count |); M.read (| fold |) ]
                       |)
                     ]
@@ -1267,7 +1317,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
                 [
@@ -1318,7 +1370,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
@@ -1348,7 +1402,9 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "is_empty",
+                  [],
                   []
                 |),
                 [
@@ -1470,7 +1526,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  I,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1552,11 +1616,12 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [] [ I ],
                   "new",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", I, [], "default", [] |),
+                    M.get_trait_method (| "core::default::Default", I, [], [], "default", [], [] |),
                     []
                   |)
                 ]

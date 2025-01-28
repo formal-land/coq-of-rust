@@ -29,6 +29,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -114,6 +115,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [
@@ -122,7 +124,9 @@ Module interpreter.
                           "core::ops::deref::Deref",
                           Ty.path "bytes::bytes::Bytes",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -131,7 +135,9 @@ Module interpreter.
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -139,6 +145,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.path "revm_bytecode::bytecode::Bytecode",
                                   "bytecode",
+                                  [],
                                   []
                                 |),
                                 [ base ]
@@ -191,6 +198,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       "offset",
+                      [],
                       []
                     |),
                     [
@@ -233,6 +241,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       "add",
+                      [],
                       []
                     |),
                     [
@@ -240,6 +249,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [
@@ -248,7 +258,9 @@ Module interpreter.
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -257,7 +269,9 @@ Module interpreter.
                                   "core::ops::deref::Deref",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -265,6 +279,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "bytecode",
+                                      [],
                                       []
                                     |),
                                     [
@@ -308,6 +323,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
                 "is_valid",
+                [],
                 []
               |),
               [
@@ -323,6 +339,7 @@ Module interpreter.
                           [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
                       ],
                     "expect",
+                    [],
                     []
                   |),
                   [
@@ -330,6 +347,7 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "revm_bytecode::bytecode::Bytecode",
                         "legacy_jump_table",
+                        [],
                         []
                       |),
                       [
@@ -392,6 +410,7 @@ Module interpreter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                   "offset_from",
+                  [],
                   []
                 |),
                 [
@@ -406,6 +425,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [
@@ -414,7 +434,9 @@ Module interpreter.
                           "core::ops::deref::Deref",
                           Ty.path "bytes::bytes::Bytes",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -423,7 +445,9 @@ Module interpreter.
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [
@@ -431,6 +455,7 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.path "revm_bytecode::bytecode::Bytecode",
                                   "bytecode",
+                                  [],
                                   []
                                 |),
                                 [
@@ -624,6 +649,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     "offset",
+                    [],
                     []
                   |),
                   [
@@ -666,6 +692,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     "offset",
+                    [],
                     []
                   |),
                   [
@@ -734,6 +761,7 @@ Module interpreter.
                       ]
                   ],
                 "and_then",
+                [],
                 [
                   Ty.apply
                     (Ty.path "&")
@@ -771,6 +799,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
+                    [],
                     []
                   |),
                   [
@@ -801,6 +830,7 @@ Module interpreter.
                                         [ Ty.path "revm_bytecode::eof::types_section::TypesSection"
                                         ],
                                       "get",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
@@ -816,7 +846,9 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -833,7 +865,9 @@ Module interpreter.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| eof |) ]
@@ -888,6 +922,7 @@ Module interpreter.
                       ]
                   ],
                 "and_then",
+                [],
                 [
                   Ty.path "usize";
                   Ty.function
@@ -914,6 +949,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
+                    [],
                     []
                   |),
                   [
@@ -940,6 +976,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::eof::body::EofBody",
                                       "eof_code_section_start",
+                                      [],
                                       []
                                     |),
                                     [
@@ -955,7 +992,9 @@ Module interpreter.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| eof |) ]
@@ -1001,7 +1040,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "revm_bytecode::eof::Eof", "data", [] |),
+              M.get_associated_function (| Ty.path "revm_bytecode::eof::Eof", "data", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1011,7 +1050,9 @@ Module interpreter.
                       []
                       [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -1035,6 +1076,7 @@ Module interpreter.
                               ]
                           ],
                         "expect",
+                        [],
                         []
                       |),
                       [
@@ -1042,6 +1084,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_bytecode::bytecode::Bytecode",
                             "eof",
+                            [],
                             []
                           |),
                           [
@@ -1075,7 +1118,12 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let len := M.alloc (| len |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "revm_bytecode::eof::Eof", "data_slice", [] |),
+              M.get_associated_function (|
+                Ty.path "revm_bytecode::eof::Eof",
+                "data_slice",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1085,7 +1133,9 @@ Module interpreter.
                       []
                       [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -1109,6 +1159,7 @@ Module interpreter.
                               ]
                           ],
                         "expect",
+                        [],
                         []
                       |),
                       [
@@ -1116,6 +1167,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_bytecode::bytecode::Bytecode",
                             "eof",
+                            [],
                             []
                           |),
                           [
@@ -1160,7 +1212,9 @@ Module interpreter.
                           []
                           [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -1184,6 +1238,7 @@ Module interpreter.
                                   ]
                               ],
                             "expect",
+                            [],
                             []
                           |),
                           [
@@ -1191,6 +1246,7 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.path "revm_bytecode::bytecode::Bytecode",
                                 "eof",
+                                [],
                                 []
                               |),
                               [
@@ -1262,6 +1318,7 @@ Module interpreter.
                       ]
                   ],
                 "and_then",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                   Ty.function
@@ -1291,6 +1348,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
+                    [],
                     []
                   |),
                   [
@@ -1320,6 +1378,7 @@ Module interpreter.
                                         []
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                       "get",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
@@ -1334,7 +1393,9 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1351,7 +1412,9 @@ Module interpreter.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "deref",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| eof |) ]
@@ -1415,6 +1478,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1458,6 +1522,7 @@ Module interpreter.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1475,6 +1540,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "none",
+                                                          [],
                                                           []
                                                         |),
                                                         []
@@ -1522,6 +1588,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "len",
+                    [],
                     []
                   |),
                   [
@@ -1565,6 +1632,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1608,6 +1676,7 @@ Module interpreter.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1625,6 +1694,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "none",
+                                                          [],
                                                           []
                                                         |),
                                                         []
@@ -1672,6 +1742,7 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "original_byte_slice",
+                    [],
                     []
                   |),
                   [

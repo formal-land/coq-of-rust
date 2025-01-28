@@ -76,7 +76,12 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
+          M.get_associated_function (|
+            Ty.path "trait_incrementer::Incrementer",
+            "inc_by",
+            [],
+            []
+          |),
           [ M.read (| self |); Value.Integer IntegerKind.U64 1 ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

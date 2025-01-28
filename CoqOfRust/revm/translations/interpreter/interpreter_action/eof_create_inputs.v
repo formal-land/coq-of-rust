@@ -60,6 +60,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct_field1_finish",
+                            [],
                             []
                           |),
                           [
@@ -99,6 +100,7 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct_field3_finish",
+                            [],
                             []
                           |),
                           [
@@ -161,7 +163,9 @@ Module interpreter_action.
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |) ]
@@ -202,7 +206,9 @@ Module interpreter_action.
                                   "core::clone::Clone",
                                   Ty.path "revm_bytecode::eof::Eof",
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |) ]
@@ -213,7 +219,9 @@ Module interpreter_action.
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_1 |) ]
@@ -224,7 +232,9 @@ Module interpreter_action.
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bits::address::Address",
                                   [],
+                                  [],
                                   "clone",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_2 |) ]
@@ -333,6 +343,7 @@ Module interpreter_action.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -340,6 +351,7 @@ Module interpreter_action.
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -403,6 +415,7 @@ Module interpreter_action.
                                           (Ty.path "&")
                                           []
                                           [ Ty.path "revm_bytecode::eof::Eof" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -410,6 +423,7 @@ Module interpreter_action.
                                             [ Ty.path "revm_bytecode::eof::Eof" ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ __self_0; __arg1_0 ]
@@ -422,6 +436,7 @@ Module interpreter_action.
                                             (Ty.path "&")
                                             []
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -429,6 +444,7 @@ Module interpreter_action.
                                               [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ __self_1; __arg1_1 ]
@@ -442,6 +458,7 @@ Module interpreter_action.
                                           (Ty.path "&")
                                           []
                                           [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -449,6 +466,7 @@ Module interpreter_action.
                                             [ Ty.path "alloy_primitives::bits::address::Address" ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
                                       [ __self_2; __arg1_2 ]
@@ -611,7 +629,9 @@ Module interpreter_action.
                       "core::default::Default",
                       Ty.path "revm_bytecode::eof::Eof",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -622,7 +642,9 @@ Module interpreter_action.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -633,7 +655,9 @@ Module interpreter_action.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -684,6 +708,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
@@ -746,7 +771,9 @@ Module interpreter_action.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -760,7 +787,9 @@ Module interpreter_action.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -771,7 +800,9 @@ Module interpreter_action.
                       "core::default::Default",
                       Ty.path "u64",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -783,7 +814,9 @@ Module interpreter_action.
                       Ty.path
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -819,7 +852,9 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -839,7 +874,9 @@ Module interpreter_action.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -852,7 +889,15 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -868,7 +913,9 @@ Module interpreter_action.
                       Ty.path
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -921,8 +968,10 @@ Module interpreter_action.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bits::address::Address",
+                      [],
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -946,6 +995,7 @@ Module interpreter_action.
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -954,6 +1004,7 @@ Module interpreter_action.
                             []
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -994,11 +1045,13 @@ Module interpreter_action.
                     "core::cmp::PartialEq",
                     Ty.path
                       "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+                    [],
                     [
                       Ty.path
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -1150,6 +1203,7 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                 "new",
+                [],
                 []
               |),
               [

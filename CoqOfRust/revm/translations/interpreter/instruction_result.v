@@ -261,7 +261,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -782,7 +782,15 @@ Module instruction_result.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -932,13 +940,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1014,13 +1021,12 @@ Module instruction_result.
                                       |) in
                                     Value.Tuple []))
                               ],
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [] => ltac:(M.monadic (Value.Tuple []))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1076,22 +1082,20 @@ Module instruction_result.
                                       |) in
                                     Value.Tuple []))
                               ],
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [] => ltac:(M.monadic (Value.Tuple []))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end)
                             |)))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1202,13 +1206,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1471,13 +1474,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -2030,7 +2032,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -2228,7 +2230,15 @@ Module instruction_result.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -2332,7 +2342,9 @@ Module instruction_result.
                               "core::clone::Clone",
                               Ty.path "revm_context_interface::result::SuccessReason",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2371,7 +2383,9 @@ Module instruction_result.
                               "core::clone::Clone",
                               HaltReasonT,
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2410,7 +2424,9 @@ Module instruction_result.
                               "core::clone::Clone",
                               Ty.path "revm_interpreter::instruction_result::InternalResult",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2463,6 +2479,7 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Success" |); __self_0 ]
@@ -2481,6 +2498,7 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Revert" |) ]
@@ -2501,6 +2519,7 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Halt" |); __self_0 ]
@@ -2519,6 +2538,7 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "FatalExternalError" |) ]
@@ -2539,6 +2559,7 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Internal" |); __self_0 ]
@@ -2653,6 +2674,7 @@ Module instruction_result.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2660,6 +2682,7 @@ Module instruction_result.
                                       [ Ty.path "revm_context_interface::result::SuccessReason" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -2690,8 +2713,10 @@ Module instruction_result.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ HaltReasonT ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ HaltReasonT ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -2726,6 +2751,7 @@ Module instruction_result.
                                     []
                                     [ Ty.path "revm_interpreter::instruction_result::InternalResult"
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2736,6 +2762,7 @@ Module instruction_result.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -2849,7 +2876,15 @@ Module instruction_result.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -2872,7 +2907,9 @@ Module instruction_result.
                           "core::hash::Hash",
                           Ty.path "revm_context_interface::result::SuccessReason",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -2894,7 +2931,9 @@ Module instruction_result.
                           "core::hash::Hash",
                           HaltReasonT,
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -2916,7 +2955,9 @@ Module instruction_result.
                           "core::hash::Hash",
                           Ty.path "revm_interpreter::instruction_result::InternalResult",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -3178,8 +3219,10 @@ Module instruction_result.
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.path "revm_context_interface::result::HaltReason",
+                  [],
                   [ HALT ],
                   "into",
+                  [],
                   []
                 |),
                 [ M.read (| reason |) ]
@@ -3414,8 +3457,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3441,8 +3486,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3468,8 +3515,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3499,8 +3548,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3530,8 +3581,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3561,8 +3614,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3592,8 +3647,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3623,8 +3680,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3661,34 +3720,35 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_context_interface::result::HaltReason",
-                                          [ HaltReasonT ],
-                                          "into",
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_context_interface::result::HaltReason",
+                                        [],
+                                        [ HaltReasonT ],
+                                        "into",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_context_interface::result::HaltReason::OpcodeNotFound"
                                           []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_context_interface::result::HaltReason::OpcodeNotFound"
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                      ]
+                                    |)
+                                  ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3705,8 +3765,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3732,8 +3794,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3759,8 +3823,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3786,8 +3852,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3813,8 +3881,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3840,8 +3910,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3867,8 +3939,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3894,8 +3968,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3921,8 +3997,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3948,8 +4026,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3975,8 +4055,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4002,8 +4084,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4036,34 +4120,35 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_context_interface::result::HaltReason",
-                                          [ HaltReasonT ],
-                                          "into",
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_context_interface::result::HaltReason",
+                                        [],
+                                        [ HaltReasonT ],
+                                        "into",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
                                           []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                      ]
+                                    |)
+                                  ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4080,8 +4165,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4131,8 +4218,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4158,8 +4247,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4201,8 +4292,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4228,8 +4321,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4255,8 +4350,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [

@@ -19,7 +19,12 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -32,6 +37,7 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -76,7 +82,12 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -89,6 +100,7 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -138,7 +150,12 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -226,7 +243,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "std::env::Args",
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -246,6 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                     "len",
+                    [],
                     []
                   |),
                   [ args ]
@@ -269,6 +289,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -299,14 +320,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+                          M.get_associated_function (|
+                            Ty.path "str",
+                            "parse",
+                            [],
+                            [ Ty.path "i32" ]
+                          |),
                           [
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.path "alloc::string::String",
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -320,8 +348,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         Ty.path "alloc::string::String";
                                         Ty.path "alloc::alloc::Global"
                                       ],
+                                    [],
                                     [ Ty.path "usize" ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [ args; Value.Integer IntegerKind.Usize 1 ]
@@ -354,6 +384,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
@@ -379,6 +410,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
@@ -411,8 +443,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "alloc::vec::Vec")
                               []
                               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.path "usize" ],
                             "index",
+                            [],
                             []
                           |),
                           [ args; Value.Integer IntegerKind.Usize 1 ]
@@ -427,8 +461,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (Ty.path "alloc::vec::Vec")
                               []
                               [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                            [],
                             [ Ty.path "usize" ],
                             "index",
+                            [],
                             []
                           |),
                           [ args; Value.Integer IntegerKind.Usize 2 ]
@@ -442,6 +478,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "str",
                                 "parse",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -450,7 +487,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::deref::Deref",
                                     Ty.path "alloc::string::String",
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| num |) ]
@@ -494,6 +533,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -537,8 +577,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_trait_method (|
                             "core::ops::index::Index",
                             Ty.path "alloc::string::String",
+                            [],
                             [ Ty.path "core::ops::range::RangeFull" ],
                             "index",
+                            [],
                             []
                           |),
                           [ M.read (| cmd |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -583,6 +625,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
+                                          [],
                                           []
                                         |),
                                         [

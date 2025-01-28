@@ -799,14 +799,22 @@ Module fmt.
               let~ zero :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::fmt::num::DisplayInt", T, [], "zero", [] |),
+                    M.get_trait_method (|
+                      "core::fmt::num::DisplayInt",
+                      T,
+                      [],
+                      [],
+                      "zero",
+                      [],
+                      []
+                    |),
                     []
                   |)
                 |) in
               let~ is_nonnegative :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "ge", [] |),
+                    M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
                     [ x; zero ]
                   |)
                 |) in
@@ -820,6 +828,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ],
                         "uninit",
+                        [],
                         []
                       |),
                       []
@@ -841,6 +850,7 @@ Module fmt.
                             [ Ty.path "u8" ]
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [ buf ]
@@ -849,7 +859,15 @@ Module fmt.
               let~ base :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::fmt::num::DisplayInt", T, [], "from_u8", [] |),
+                    M.get_trait_method (|
+                      "core::fmt::num::DisplayInt",
+                      T,
+                      [],
+                      [],
+                      "from_u8",
+                      [],
+                      []
+                    |),
                     [ M.read (| M.get_constant (| "core::fmt::num::GenericRadix::BASE" |) |) ]
                   |)
                 |) in
@@ -883,7 +901,9 @@ Module fmt.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -900,7 +920,9 @@ Module fmt.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "rev",
+                                      [],
                                       []
                                     |),
                                     [
@@ -916,6 +938,7 @@ Module fmt.
                                                 [ Ty.path "u8" ]
                                             ],
                                           "iter_mut",
+                                          [],
                                           []
                                         |),
                                         [ buf ]
@@ -953,7 +976,9 @@ Module fmt.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -985,8 +1010,10 @@ Module fmt.
                                                       M.get_trait_method (|
                                                         "core::ops::arith::Rem",
                                                         T,
+                                                        [],
                                                         [ T ],
                                                         "rem",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| x |); M.read (| base |) ]
@@ -999,8 +1026,10 @@ Module fmt.
                                                       M.get_trait_method (|
                                                         "core::ops::arith::Div",
                                                         T,
+                                                        [],
                                                         [ T ],
                                                         "div",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| x |); M.read (| base |) ]
@@ -1016,6 +1045,7 @@ Module fmt.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "write",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1025,7 +1055,9 @@ Module fmt.
                                                             "core::fmt::num::GenericRadix",
                                                             Self,
                                                             [],
+                                                            [],
                                                             "digit",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1034,7 +1066,9 @@ Module fmt.
                                                                 "core::fmt::num::DisplayInt",
                                                                 T,
                                                                 [],
+                                                                [],
                                                                 "to_u8",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ n ]
@@ -1066,8 +1100,10 @@ Module fmt.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialEq",
                                                                     T,
+                                                                    [],
                                                                     [ T ],
                                                                     "eq",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ x; zero ]
@@ -1118,7 +1154,9 @@ Module fmt.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1135,7 +1173,9 @@ Module fmt.
                                             [ Ty.path "u8" ]
                                         ],
                                       [],
+                                      [],
                                       "rev",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1151,6 +1191,7 @@ Module fmt.
                                                 [ Ty.path "u8" ]
                                             ],
                                           "iter_mut",
+                                          [],
                                           []
                                         |),
                                         [ buf ]
@@ -1188,7 +1229,9 @@ Module fmt.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -1220,8 +1263,10 @@ Module fmt.
                                                       M.get_trait_method (|
                                                         "core::ops::arith::Sub",
                                                         T,
+                                                        [],
                                                         [ T ],
                                                         "sub",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1230,8 +1275,10 @@ Module fmt.
                                                           M.get_trait_method (|
                                                             "core::ops::arith::Rem",
                                                             T,
+                                                            [],
                                                             [ T ],
                                                             "rem",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| x |); M.read (| base |) ]
@@ -1246,8 +1293,10 @@ Module fmt.
                                                       M.get_trait_method (|
                                                         "core::ops::arith::Div",
                                                         T,
+                                                        [],
                                                         [ T ],
                                                         "div",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| x |); M.read (| base |) ]
@@ -1263,6 +1312,7 @@ Module fmt.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "write",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1272,7 +1322,9 @@ Module fmt.
                                                             "core::fmt::num::GenericRadix",
                                                             Self,
                                                             [],
+                                                            [],
                                                             "digit",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1281,7 +1333,9 @@ Module fmt.
                                                                 "core::fmt::num::DisplayInt",
                                                                 T,
                                                                 [],
+                                                                [],
                                                                 "to_u8",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ n ]
@@ -1313,8 +1367,10 @@ Module fmt.
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialEq",
                                                                     T,
+                                                                    [],
                                                                     [ T ],
                                                                     "eq",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ x; zero ]
@@ -1358,8 +1414,10 @@ Module fmt.
                             []
                             [ Ty.path "u8" ]
                         ],
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -1389,6 +1447,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ],
                               "slice_as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| buf |) ]
@@ -1405,6 +1464,7 @@ Module fmt.
                                     [ Ty.path "u8" ]
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| buf |) ]
@@ -1419,6 +1479,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "pad_integral",
+                    [],
                     []
                   |),
                   [
@@ -1732,6 +1793,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1749,6 +1811,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -1768,6 +1831,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [ x ]
@@ -1846,6 +1910,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1863,6 +1928,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -1882,6 +1948,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [ x ]
@@ -1969,6 +2036,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1986,6 +2054,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -2005,6 +2074,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [ x ]
@@ -2092,6 +2162,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2109,6 +2180,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -2128,6 +2200,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [ x ]
@@ -2178,7 +2251,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2217,7 +2292,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2256,7 +2333,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2295,7 +2374,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2334,7 +2415,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2373,7 +2456,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2412,7 +2497,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2451,7 +2538,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -2490,7 +2579,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2529,7 +2620,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2568,7 +2661,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2607,7 +2702,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2646,7 +2743,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2685,7 +2784,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2724,7 +2825,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2763,7 +2866,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -2802,7 +2907,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -2841,7 +2948,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -2880,7 +2989,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -2919,7 +3030,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -2958,7 +3071,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -2997,7 +3112,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -3036,7 +3153,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -3075,7 +3194,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -3114,7 +3235,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3153,7 +3276,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3192,7 +3317,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3231,7 +3358,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3270,7 +3399,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3309,7 +3440,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3348,7 +3481,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3387,7 +3522,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -3426,7 +3563,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3465,7 +3604,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3504,7 +3645,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3543,7 +3686,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3582,7 +3727,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3621,7 +3768,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3660,7 +3809,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3699,7 +3850,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -3738,7 +3891,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3777,7 +3932,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3816,7 +3973,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3855,7 +4014,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3894,7 +4055,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Binary",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3933,7 +4096,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::Octal",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -3972,7 +4137,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::LowerHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -4011,7 +4178,9 @@ Module fmt.
                 "core::fmt::num::GenericRadix",
                 Ty.path "core::fmt::num::UpperHex",
                 [],
+                [],
                 "fmt_int",
+                [],
                 [ Ty.path "u128" ]
               |),
               [
@@ -4064,6 +4233,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4076,7 +4246,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "i8",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4096,6 +4268,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4112,7 +4285,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "i8",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4126,7 +4301,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "i8",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4181,6 +4358,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4193,7 +4371,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "i16",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4213,6 +4393,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4229,7 +4410,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "i16",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4243,7 +4426,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "i16",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4298,6 +4483,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4310,7 +4496,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "i32",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4330,6 +4518,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4346,7 +4535,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "i32",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4360,7 +4551,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "i32",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4415,6 +4608,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4427,7 +4621,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "i64",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4447,6 +4643,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4463,7 +4660,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "i64",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4477,7 +4676,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "i64",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4532,6 +4733,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4544,7 +4746,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "i128",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4564,6 +4768,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4580,7 +4785,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "i128",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4594,7 +4801,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "i128",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4649,6 +4858,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4661,7 +4871,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "isize",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4681,6 +4893,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4697,7 +4910,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "isize",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4711,7 +4926,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "isize",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4766,6 +4983,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4778,7 +4996,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "u8",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4798,6 +5018,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4814,7 +5035,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "u8",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4828,7 +5051,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "u8",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4883,6 +5108,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -4895,7 +5121,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "u16",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -4915,6 +5143,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -4931,7 +5160,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "u16",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -4945,7 +5176,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "u16",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5000,6 +5233,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -5012,7 +5246,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "u32",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -5032,6 +5268,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -5048,7 +5285,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "u32",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5062,7 +5301,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "u32",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5117,6 +5358,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -5129,7 +5371,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "u64",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -5149,6 +5393,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -5165,7 +5410,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "u64",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5179,7 +5426,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "u64",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5234,6 +5483,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -5246,7 +5496,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "u128",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -5266,6 +5518,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -5282,7 +5535,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "u128",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5296,7 +5551,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "u128",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5351,6 +5608,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_lower_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| f |) ]
@@ -5363,7 +5621,9 @@ Module fmt.
                             "core::fmt::LowerHex",
                             Ty.path "usize",
                             [],
+                            [],
                             "fmt",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| f |) ]
@@ -5383,6 +5643,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_upper_hex",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |) ]
@@ -5399,7 +5660,9 @@ Module fmt.
                                     "core::fmt::UpperHex",
                                     Ty.path "usize",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5413,7 +5676,9 @@ Module fmt.
                                     "core::fmt::Display",
                                     Ty.path "usize",
                                     [],
+                                    [],
                                     "fmt",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| f |) ]
@@ -5523,6 +5788,7 @@ Module fmt.
                           []
                           [ Ty.path "u8" ],
                         "uninit",
+                        [],
                         []
                       |),
                       []
@@ -5544,6 +5810,7 @@ Module fmt.
                             [ Ty.path "u8" ]
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [ buf ]
@@ -5555,6 +5822,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "slice_as_mut_ptr",
+                      [],
                       []
                     |),
                     [ buf ]
@@ -5566,6 +5834,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [
@@ -5697,6 +5966,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| lut_ptr |); M.read (| d1 |) ]
@@ -5705,6 +5975,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -5726,6 +5997,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| lut_ptr |); M.read (| d2 |) ]
@@ -5734,6 +6006,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5817,6 +6090,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| lut_ptr |); M.read (| d1 |) ]
@@ -5825,6 +6099,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -5861,6 +6136,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -5896,6 +6172,7 @@ Module fmt.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| lut_ptr |); M.read (| d1 |) ]
@@ -5904,6 +6181,7 @@ Module fmt.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -5933,6 +6211,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -5950,6 +6229,7 @@ Module fmt.
                                       [ Ty.path "u8" ]
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ buf ]
@@ -5966,6 +6246,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "pad_integral",
+                    [],
                     []
                   |),
                   [
@@ -6024,7 +6305,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6034,7 +6317,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6042,7 +6330,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6115,7 +6405,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6125,7 +6417,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6133,7 +6430,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6206,7 +6505,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6216,7 +6517,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6224,7 +6530,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6297,7 +6605,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6307,7 +6617,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6315,7 +6630,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6388,7 +6705,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6398,7 +6717,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6406,7 +6730,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6479,7 +6805,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6489,7 +6817,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6497,7 +6830,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6570,7 +6905,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6580,7 +6917,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6588,7 +6930,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6661,7 +7005,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6671,7 +7017,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6679,7 +7030,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6752,7 +7105,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "usize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6762,7 +7117,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6770,7 +7130,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -6843,7 +7205,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "isize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -6853,7 +7217,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -6861,7 +7230,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -7111,6 +7482,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "precision",
+                          [],
                           []
                         |),
                         [ M.read (| f |) ]
@@ -7191,6 +7563,7 @@ Module fmt.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_sub",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| fmt_prec |); M.read (| prec |) ]
@@ -7199,6 +7572,7 @@ Module fmt.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_sub",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| prec |); M.read (| fmt_prec |) ]
@@ -7234,7 +7608,9 @@ Module fmt.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7264,7 +7640,9 @@ Module fmt.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -7422,6 +7800,7 @@ Module fmt.
                                                             M.get_associated_function (|
                                                               Ty.path "u64",
                                                               "ilog10",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| n |) ]
@@ -7430,6 +7809,7 @@ Module fmt.
                                                             M.get_associated_function (|
                                                               Ty.path "u64",
                                                               "ilog10",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7507,6 +7887,7 @@ Module fmt.
                                   []
                                   [ Ty.path "u8" ],
                                 "uninit",
+                                [],
                                 []
                               |),
                               []
@@ -7528,6 +7909,7 @@ Module fmt.
                                     [ Ty.path "u8" ]
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [ buf ]
@@ -7542,6 +7924,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ],
                               "slice_as_mut_ptr",
+                              [],
                               []
                             |),
                             [ buf ]
@@ -7553,6 +7936,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [
@@ -7617,6 +8001,7 @@ Module fmt.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| lut_ptr |); M.read (| d1 |) ]
@@ -7625,6 +8010,7 @@ Module fmt.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -7705,6 +8091,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -7781,6 +8168,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                         "add",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -7805,6 +8193,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -7829,6 +8218,7 @@ Module fmt.
                                           [ Ty.path "u8" ]
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ buf ]
@@ -7850,6 +8240,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -7869,6 +8260,7 @@ Module fmt.
                                   []
                                   [ Ty.path "u8" ],
                                 "uninit",
+                                [],
                                 []
                               |),
                               []
@@ -7885,6 +8277,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ],
                               "slice_as_mut_ptr",
+                              [],
                               []
                             |),
                             [ exp_buf ]
@@ -7898,6 +8291,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
@@ -7946,6 +8340,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -7981,6 +8376,7 @@ Module fmt.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| lut_ptr |); M.read (| off |) ]
@@ -7989,6 +8385,7 @@ Module fmt.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8067,6 +8464,7 @@ Module fmt.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "sign_plus",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| f |) ]
@@ -8099,6 +8497,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "pad_formatted_parts",
+                            [],
                             []
                           |),
                           [ M.read (| f |); formatted ]
@@ -8154,7 +8553,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8164,7 +8565,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8172,7 +8578,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8246,7 +8654,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8256,7 +8666,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8264,7 +8679,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8338,7 +8755,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8348,7 +8767,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8356,7 +8780,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8430,7 +8856,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8440,7 +8868,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8448,7 +8881,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8522,7 +8957,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8532,7 +8969,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8540,7 +8982,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8614,7 +9058,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8624,7 +9070,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8632,7 +9083,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8706,7 +9159,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8716,7 +9171,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8724,7 +9184,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8798,7 +9260,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8808,7 +9272,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8816,7 +9285,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8890,7 +9361,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "usize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8900,7 +9373,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -8908,7 +9386,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -8982,7 +9462,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "isize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -8992,7 +9474,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9000,7 +9487,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9074,7 +9563,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9084,7 +9575,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9092,7 +9588,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9165,7 +9663,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9175,7 +9675,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9183,7 +9688,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u8",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9256,7 +9763,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9266,7 +9775,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9274,7 +9788,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9347,7 +9863,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9357,7 +9875,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9365,7 +9888,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u16",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9438,7 +9963,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9448,7 +9975,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9456,7 +9988,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9529,7 +10063,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9539,7 +10075,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9547,7 +10088,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u32",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9620,7 +10163,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "i64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9630,7 +10175,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9638,7 +10188,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "i64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9711,7 +10263,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9721,7 +10275,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9729,7 +10288,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "u64",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9802,7 +10363,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "usize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9812,7 +10375,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9820,7 +10388,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "usize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -9893,7 +10463,9 @@ Module fmt.
                                   "core::fmt::num::DisplayInt",
                                   Ty.path "isize",
                                   [],
+                                  [],
                                   "to_u64",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -9903,7 +10475,12 @@ Module fmt.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   UnOp.not (|
                                     M.call_closure (|
@@ -9911,7 +10488,9 @@ Module fmt.
                                         "core::fmt::num::DisplayInt",
                                         Ty.path "isize",
                                         [],
+                                        [],
                                         "to_u64",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -10157,6 +10736,7 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "precision",
+                        [],
                         []
                       |),
                       [ M.read (| f |) ]
@@ -10237,6 +10817,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| fmt_prec |); M.read (| prec |) ]
@@ -10245,6 +10826,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| prec |); M.read (| fmt_prec |) ]
@@ -10279,7 +10861,9 @@ Module fmt.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -10309,7 +10893,9 @@ Module fmt.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -10467,6 +11053,7 @@ Module fmt.
                                                           M.get_associated_function (|
                                                             Ty.path "u128",
                                                             "ilog10",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| n |) ]
@@ -10475,6 +11062,7 @@ Module fmt.
                                                           M.get_associated_function (|
                                                             Ty.path "u128",
                                                             "ilog10",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -10551,6 +11139,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ],
                               "uninit",
+                              [],
                               []
                             |),
                             []
@@ -10572,6 +11161,7 @@ Module fmt.
                                   [ Ty.path "u8" ]
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ buf ]
@@ -10586,6 +11176,7 @@ Module fmt.
                               []
                               [ Ty.path "u8" ],
                             "slice_as_mut_ptr",
+                            [],
                             []
                           |),
                           [ buf ]
@@ -10597,6 +11188,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [
@@ -10661,6 +11253,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| lut_ptr |); M.read (| d1 |) ]
@@ -10669,6 +11262,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -10749,6 +11343,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                         "add",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -10825,6 +11420,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -10849,6 +11445,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -10873,6 +11470,7 @@ Module fmt.
                                         [ Ty.path "u8" ]
                                     ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ buf ]
@@ -10894,6 +11492,7 @@ Module fmt.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -10913,6 +11512,7 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ],
                               "uninit",
+                              [],
                               []
                             |),
                             []
@@ -10929,6 +11529,7 @@ Module fmt.
                               []
                               [ Ty.path "u8" ],
                             "slice_as_mut_ptr",
+                            [],
                             []
                           |),
                           [ exp_buf ]
@@ -10942,6 +11543,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 0 ]
@@ -10990,6 +11592,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| exp_ptr |); Value.Integer IntegerKind.Usize 1
@@ -11023,6 +11626,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| lut_ptr |); M.read (| off |) ]
@@ -11031,6 +11635,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -11109,6 +11714,7 @@ Module fmt.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Formatter",
                                                       "sign_plus",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| f |) ]
@@ -11141,6 +11747,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "pad_formatted_parts",
+                          [],
                           []
                         |),
                         [ M.read (| f |); formatted ]
@@ -11196,7 +11803,9 @@ Module fmt.
                                 "core::fmt::num::DisplayInt",
                                 Ty.path "i128",
                                 [],
+                                [],
                                 "to_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -11206,7 +11815,12 @@ Module fmt.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "wrapping_add",
+                                [],
+                                []
+                              |),
                               [
                                 UnOp.not (|
                                   M.call_closure (|
@@ -11214,7 +11828,9 @@ Module fmt.
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
                                       [],
+                                      [],
                                       "to_u128",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11287,7 +11903,9 @@ Module fmt.
                                 "core::fmt::num::DisplayInt",
                                 Ty.path "u128",
                                 [],
+                                [],
                                 "to_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -11297,7 +11915,12 @@ Module fmt.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "wrapping_add",
+                                [],
+                                []
+                              |),
                               [
                                 UnOp.not (|
                                   M.call_closure (|
@@ -11305,7 +11928,9 @@ Module fmt.
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "u128",
                                       [],
+                                      [],
                                       "to_u128",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11378,7 +12003,9 @@ Module fmt.
                                 "core::fmt::num::DisplayInt",
                                 Ty.path "i128",
                                 [],
+                                [],
                                 "to_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -11388,7 +12015,12 @@ Module fmt.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "wrapping_add",
+                                [],
+                                []
+                              |),
                               [
                                 UnOp.not (|
                                   M.call_closure (|
@@ -11396,7 +12028,9 @@ Module fmt.
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
                                       [],
+                                      [],
                                       "to_u128",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11469,7 +12103,9 @@ Module fmt.
                                 "core::fmt::num::DisplayInt",
                                 Ty.path "u128",
                                 [],
+                                [],
                                 "to_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -11479,7 +12115,12 @@ Module fmt.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "wrapping_add",
+                                [],
+                                []
+                              |),
                               [
                                 UnOp.not (|
                                   M.call_closure (|
@@ -11487,7 +12128,9 @@ Module fmt.
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "u128",
                                       [],
+                                      [],
                                       "to_u128",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -11619,6 +12262,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "slice_as_mut_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -11630,6 +12274,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |) |)
@@ -11818,6 +12463,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
@@ -11826,6 +12472,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11853,6 +12500,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
@@ -11861,6 +12509,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11888,6 +12537,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d3 |)) ]
@@ -11896,6 +12546,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11923,6 +12574,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d4 |)) ]
@@ -11931,6 +12583,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11958,6 +12611,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d5 |)) ]
@@ -11966,6 +12620,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11993,6 +12648,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d6 |)) ]
@@ -12001,6 +12657,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12028,6 +12685,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d7 |)) ]
@@ -12036,6 +12694,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12063,6 +12722,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d8 |)) ]
@@ -12071,6 +12731,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12191,6 +12852,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
@@ -12199,6 +12861,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12226,6 +12889,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
@@ -12234,6 +12898,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12261,6 +12926,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d3 |)) ]
@@ -12269,6 +12935,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12296,6 +12963,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d4 |)) ]
@@ -12304,6 +12972,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12393,6 +13062,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
@@ -12401,6 +13071,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12428,6 +13099,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d2 |)) ]
@@ -12436,6 +13108,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12499,6 +13172,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
@@ -12507,6 +13181,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
@@ -12542,6 +13217,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                             "add",
+                            [],
                             []
                           |),
                           [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
@@ -12577,6 +13253,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| lut_ptr |); M.rust_cast (M.read (| d1 |)) ]
@@ -12585,6 +13262,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                 "add",
+                                [],
                                 []
                               |),
                               [ M.read (| buf_ptr |); M.read (| M.read (| curr |) |) ]
@@ -12673,7 +13351,9 @@ Module fmt.
                                 "core::fmt::num::DisplayInt",
                                 Ty.path "i128",
                                 [],
+                                [],
                                 "to_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -12683,7 +13363,12 @@ Module fmt.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "wrapping_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u128",
+                                "wrapping_add",
+                                [],
+                                []
+                              |),
                               [
                                 UnOp.not (|
                                   M.call_closure (|
@@ -12691,7 +13376,9 @@ Module fmt.
                                       "core::fmt::num::DisplayInt",
                                       Ty.path "i128",
                                       [],
+                                      [],
                                       "to_u128",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -12789,6 +13476,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
+                      [],
                       []
                     |),
                     []
@@ -12810,6 +13498,7 @@ Module fmt.
                           [ Ty.path "u8" ]
                       ],
                     "len",
+                    [],
                     []
                   |),
                   [ buf ]
@@ -12871,6 +13560,7 @@ Module fmt.
                                               [ Ty.path "u8" ]
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ buf ]
@@ -12892,6 +13582,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [
@@ -12902,6 +13593,7 @@ Module fmt.
                                                   []
                                                   [ Ty.path "u8" ],
                                                 "slice_as_mut_ptr",
+                                                [],
                                                 []
                                               |),
                                               [ buf ]
@@ -12975,6 +13667,7 @@ Module fmt.
                                                               [ Ty.path "u8" ]
                                                           ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [ buf ]
@@ -12992,6 +13685,7 @@ Module fmt.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "slice_as_mut_ptr",
+                                                      [],
                                                       []
                                                     |),
                                                     [ buf ]
@@ -13013,6 +13707,7 @@ Module fmt.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "add",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| buf_ptr |); M.read (| target |)
@@ -13040,6 +13735,7 @@ Module fmt.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                       "add",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| buf_ptr |); M.read (| curr |) ]
@@ -13076,6 +13772,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13086,6 +13783,7 @@ Module fmt.
                                             []
                                             [ Ty.path "u8" ],
                                           "slice_as_mut_ptr",
+                                          [],
                                           []
                                         |),
                                         [ buf ]
@@ -13106,6 +13804,7 @@ Module fmt.
                                             [ Ty.path "u8" ]
                                         ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ buf ]
@@ -13122,6 +13821,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "pad_integral",
+                          [],
                           []
                         |),
                         [

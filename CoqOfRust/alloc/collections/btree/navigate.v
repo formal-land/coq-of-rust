@@ -102,7 +102,9 @@ Module collections.
                               ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -138,7 +140,9 @@ Module collections.
                               ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -273,6 +277,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ]
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -296,6 +301,7 @@ Module collections.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -369,6 +375,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -453,6 +460,7 @@ Module collections.
                                   ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
@@ -496,6 +504,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| f |) ]
@@ -535,6 +544,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -619,6 +629,7 @@ Module collections.
                                   ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
@@ -662,6 +673,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| b |) ]
@@ -723,6 +735,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -830,6 +843,7 @@ Module collections.
                                         ]
                                     ],
                                   "unwrap",
+                                  [],
                                   []
                                 |),
                                 [
@@ -858,6 +872,7 @@ Module collections.
                                             ]
                                         ],
                                       "as_mut",
+                                      [],
                                       []
                                     |),
                                     [
@@ -912,6 +927,7 @@ Module collections.
                                                                 ]
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -953,6 +969,7 @@ Module collections.
                                                                     ]
                                                                 ],
                                                               "ok",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -978,6 +995,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::Edge"
                                                                     ],
                                                                   "next_kv",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| front |) ]
@@ -993,6 +1011,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::Fn",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -1023,6 +1042,7 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call",
+                                                          [],
                                                           []
                                                         |),
                                                         [ f; Value.Tuple [ kv ] ]
@@ -1053,6 +1073,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::KV"
                                                               ],
                                                             "next_leaf_edge",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| kv |) ]
@@ -1127,6 +1148,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |) ]
@@ -1234,6 +1256,7 @@ Module collections.
                                         ]
                                     ],
                                   "unwrap",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1262,6 +1285,7 @@ Module collections.
                                             ]
                                         ],
                                       "as_mut",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1316,6 +1340,7 @@ Module collections.
                                                                 ]
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1357,6 +1382,7 @@ Module collections.
                                                                     ]
                                                                 ],
                                                               "ok",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1382,6 +1408,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::Edge"
                                                                     ],
                                                                   "next_back_kv",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| back |) ]
@@ -1397,6 +1424,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::Fn",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -1427,6 +1455,7 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call",
+                                                          [],
                                                           []
                                                         |),
                                                         [ f; Value.Tuple [ kv ] ]
@@ -1457,6 +1486,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::KV"
                                                               ],
                                                             "next_back_leaf_edge",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| kv |) ]
@@ -1518,6 +1548,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                   "perform_next_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1585,6 +1616,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| kv |) |) ]
@@ -1625,6 +1657,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                   "perform_next_back_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1692,6 +1725,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| kv |) |) ]
@@ -1740,6 +1774,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                   "perform_next_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1807,6 +1842,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv_valmut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1876,6 +1912,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                   "perform_next_back_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1943,6 +1980,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv_valmut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2169,6 +2207,7 @@ Module collections.
                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
                                   "reborrow",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| root |) ]
@@ -2207,6 +2246,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "reborrow",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| edge |) ]
@@ -2326,7 +2366,9 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -2351,7 +2393,9 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -2450,6 +2494,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::navigate::LazyLeafHandle")
@@ -2490,6 +2535,7 @@ Module collections.
                                   [ BorrowType; K; V ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
@@ -2520,6 +2566,7 @@ Module collections.
                                                 []
                                                 [ BorrowType; K; V ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| f |) ]
@@ -2548,6 +2595,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::navigate::LazyLeafHandle")
@@ -2588,6 +2636,7 @@ Module collections.
                                   [ BorrowType; K; V ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
@@ -2618,6 +2667,7 @@ Module collections.
                                                 []
                                                 [ BorrowType; K; V ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| b |) ]
@@ -2716,6 +2766,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "first_leaf_edge",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2895,6 +2946,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "last_leaf_edge",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3035,6 +3087,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -3066,6 +3119,7 @@ Module collections.
                             ]
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -3076,6 +3130,7 @@ Module collections.
                             []
                             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                           "init_front",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3125,6 +3180,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_back_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -3156,6 +3212,7 @@ Module collections.
                             ]
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -3166,6 +3223,7 @@ Module collections.
                             []
                             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                           "init_back",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3223,6 +3281,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -3254,6 +3313,7 @@ Module collections.
                             ]
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -3264,6 +3324,7 @@ Module collections.
                             []
                             [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                           "init_front",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3313,6 +3374,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_back_unchecked",
+                  [],
                   []
                 |),
                 [
@@ -3344,6 +3406,7 @@ Module collections.
                             ]
                         ],
                       "unwrap",
+                      [],
                       []
                     |),
                     [
@@ -3354,6 +3417,7 @@ Module collections.
                             []
                             [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                           "init_back",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3418,7 +3482,9 @@ Module collections.
                                     ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -3439,6 +3505,7 @@ Module collections.
                                         ]
                                     ],
                                   "take",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3493,6 +3560,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3500,6 +3568,7 @@ Module collections.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -3547,6 +3616,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "first_leaf_edge",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| root |) ]
@@ -3636,6 +3706,7 @@ Module collections.
                                                       ]
                                                   ],
                                                 "is_some",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3702,6 +3773,7 @@ Module collections.
                               ]
                           ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -3712,6 +3784,7 @@ Module collections.
                               []
                               [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V ],
                             "init_front",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -3738,6 +3811,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "deallocating_next_unchecked",
+                      [],
                       [ A ]
                     |),
                     [ M.read (| front |); M.read (| alloc |) ]
@@ -3814,6 +3888,7 @@ Module collections.
                                                       ]
                                                   ],
                                                 "is_some",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3880,6 +3955,7 @@ Module collections.
                               ]
                           ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -3890,6 +3966,7 @@ Module collections.
                               []
                               [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V ],
                             "init_back",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -3916,6 +3993,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "deallocating_next_back_unchecked",
+                      [],
                       [ A ]
                     |),
                     [ M.read (| back |); M.read (| alloc |) ]
@@ -3967,6 +4045,7 @@ Module collections.
                                   [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V
                                   ],
                                 "take_front",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3998,6 +4077,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::Edge"
                                 ],
                               "deallocating_end",
+                              [],
                               [ A ]
                             |),
                             [ M.read (| front |); M.read (| alloc |) ]
@@ -4089,6 +4169,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "search_tree_for_bifurcation",
+                            [],
                             [ Q; R ]
                           |),
                           [ M.read (| self |); range ]
@@ -4111,6 +4192,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "none",
+                                  [],
                                   []
                                 |),
                                 []
@@ -4155,6 +4237,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "new_edge",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4202,6 +4285,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "new_edge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| node |); M.read (| upper_edge_idx |) ]
@@ -4238,6 +4322,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| lower_edge |) ]
@@ -4264,6 +4349,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| upper_edge |) ]
@@ -4346,6 +4432,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                                           ],
                                                         "find_lower_bound_edge",
+                                                        [],
                                                         [ Q ]
                                                       |),
                                                       [
@@ -4371,6 +4458,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "descend",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| f |) ]
@@ -4418,6 +4506,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                                           ],
                                                         "find_upper_bound_edge",
+                                                        [],
                                                         [ Q ]
                                                       |),
                                                       [
@@ -4443,6 +4532,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "descend",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| b |) ]
@@ -4489,6 +4579,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4506,6 +4597,7 @@ Module collections.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "none",
+                                                                [],
                                                                 []
                                                               |),
                                                               []
@@ -4582,6 +4674,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "force",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| node |) ]
@@ -4615,6 +4708,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Leaf"
                                                     ],
                                                   "first_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| leaf |) ]
@@ -4655,6 +4749,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "descend",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4672,6 +4767,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::Internal"
                                                   ],
                                                 "first_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| internal |) ]
@@ -4743,6 +4839,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "force",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| node |) ]
@@ -4776,6 +4873,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Leaf"
                                                     ],
                                                   "last_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| leaf |) ]
@@ -4816,6 +4914,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "descend",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4833,6 +4932,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::Internal"
                                                   ],
                                                 "last_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| internal |) ]
@@ -4915,6 +5015,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "find_lower_bound_edge",
+                                      [],
                                       [ Q ]
                                     |),
                                     [ M.read (| node |); M.read (| bound |) ]
@@ -4950,6 +5051,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "force",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edge |) ]
@@ -5004,6 +5106,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5087,6 +5190,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "find_upper_bound_edge",
+                                      [],
                                       [ Q ]
                                     |),
                                     [ M.read (| node |); M.read (| bound |) ]
@@ -5122,6 +5226,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "force",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edge |) ]
@@ -5176,6 +5281,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5292,6 +5398,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "find_leaf_edges_spanning_range",
+                  [],
                   [ Q; R ]
                 |),
                 [ M.read (| self |); M.read (| range |) ]
@@ -5394,6 +5501,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5414,6 +5522,7 @@ Module collections.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -5429,6 +5538,7 @@ Module collections.
                                       ]
                                   ],
                                   "call_mut",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5457,6 +5567,7 @@ Module collections.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -5473,6 +5584,7 @@ Module collections.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5500,6 +5612,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "first_edge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| internal |) ]
@@ -5530,6 +5643,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5556,6 +5670,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5579,6 +5694,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::FnMut",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -5595,6 +5711,7 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -5633,6 +5750,7 @@ Module collections.
                                                                 "alloc::collections::btree::node::marker::Edge"
                                                             ],
                                                           "next_kv",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| edge |) ]
@@ -5654,6 +5772,7 @@ Module collections.
                                                                 M.get_trait_method (|
                                                                   "core::ops::function::FnMut",
                                                                   F,
+                                                                  [],
                                                                   [
                                                                     Ty.tuple
                                                                       [
@@ -5670,6 +5789,7 @@ Module collections.
                                                                       ]
                                                                   ],
                                                                   "call_mut",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -5707,6 +5827,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::KV"
                                                                   ],
                                                                 "right_edge",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| kv |) ]
@@ -5744,6 +5865,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::FnMut",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -5760,6 +5882,7 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -5789,6 +5912,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Internal"
                                                           ],
                                                         "first_edge",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| internal |) ]
@@ -5851,6 +5975,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "visit_nodes_in_order",
+                        [],
                         [
                           Ty.function
                             [
@@ -5913,6 +6038,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Leaf"
                                                               ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ node ]
@@ -5948,6 +6074,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Internal"
                                                               ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ node ]
@@ -6028,6 +6155,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "find_leaf_edges_spanning_range",
+                  [],
                   [ Q; R ]
                 |),
                 [ M.read (| self |); M.read (| range |) ]
@@ -6237,6 +6365,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -6272,6 +6401,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6323,6 +6453,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6348,6 +6479,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6388,6 +6520,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -6485,6 +6618,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -6520,6 +6654,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "left_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6571,6 +6706,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6596,6 +6732,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6636,6 +6773,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -6758,6 +6896,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6809,6 +6948,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Internal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6834,6 +6974,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6965,6 +7106,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -7001,6 +7143,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -7048,6 +7191,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::KV"
                                                                 ],
                                                               "next_leaf_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7115,6 +7259,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "deallocate_and_ascend",
+                                                  [],
                                                   [ A ]
                                                 |),
                                                 [
@@ -7141,6 +7286,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -7150,7 +7296,9 @@ Module collections.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ alloc ]
@@ -7192,6 +7340,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -7289,6 +7438,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -7325,6 +7475,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "left_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -7372,6 +7523,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::KV"
                                                                 ],
                                                               "next_back_leaf_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7439,6 +7591,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "deallocate_and_ascend",
+                                                  [],
                                                   [ A ]
                                                 |),
                                                 [
@@ -7465,6 +7618,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -7474,7 +7628,9 @@ Module collections.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
                                                     [ alloc ]
@@ -7516,6 +7672,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -7601,6 +7758,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "forget_node_type",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -7628,6 +7786,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "deallocate_and_ascend",
+                                    [],
                                     [ A ]
                                   |),
                                   [
@@ -7651,6 +7810,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::Edge"
                                           ],
                                         "into_node",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| edge |) ]
@@ -7660,7 +7820,9 @@ Module collections.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ alloc ]
@@ -7698,6 +7860,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "forget_node_type",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parent_edge |) ]
@@ -7903,6 +8066,7 @@ Module collections.
                                               ]
                                           ],
                                         "unwrap",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7928,6 +8092,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "deallocating_next",
+                                            [],
                                             [ A ]
                                           |),
                                           [ M.read (| leaf_edge |); M.read (| alloc |) ]
@@ -8128,6 +8293,7 @@ Module collections.
                                               ]
                                           ],
                                         "unwrap",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8153,6 +8319,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "deallocating_next_back",
+                                            [],
                                             [ A ]
                                           |),
                                           [ M.read (| leaf_edge |); M.read (| alloc |) ]
@@ -8322,6 +8489,7 @@ Module collections.
                                                     ]
                                                 ],
                                               "unwrap",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8365,6 +8533,7 @@ Module collections.
                                                         ]
                                                     ],
                                                   "ok",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8391,6 +8560,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "next_kv",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| leaf_edge |) ]
@@ -8426,6 +8596,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "next_leaf_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8453,6 +8624,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "into_kv",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8601,6 +8773,7 @@ Module collections.
                                                     ]
                                                 ],
                                               "unwrap",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8644,6 +8817,7 @@ Module collections.
                                                         ]
                                                     ],
                                                   "ok",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8670,6 +8844,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "next_back_kv",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| leaf_edge |) ]
@@ -8705,6 +8880,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "next_back_leaf_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8732,6 +8908,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "into_kv",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8932,6 +9109,7 @@ Module collections.
                                                           ]
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8975,6 +9153,7 @@ Module collections.
                                                               ]
                                                           ],
                                                         "ok",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9001,6 +9180,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "next_kv",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| leaf_edge |) ]
@@ -9036,6 +9216,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::KV"
                                                         ],
                                                       "next_leaf_edge",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9100,6 +9281,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "into_kv_valmut",
+                      [],
                       []
                     |),
                     [ M.read (| kv |) ]
@@ -9274,6 +9456,7 @@ Module collections.
                                                           ]
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9317,6 +9500,7 @@ Module collections.
                                                               ]
                                                           ],
                                                         "ok",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9343,6 +9527,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "next_back_kv",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| leaf_edge |) ]
@@ -9378,6 +9563,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::KV"
                                                         ],
                                                       "next_back_leaf_edge",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9442,6 +9628,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "into_kv_valmut",
+                      [],
                       []
                     |),
                     [ M.read (| kv |) ]
@@ -9565,6 +9752,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "force",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9599,6 +9787,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "right_edge",
+                              [],
                               []
                             |),
                             [ M.read (| leaf_kv |) ]
@@ -9633,6 +9822,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "right_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| internal_kv |) ]
@@ -9651,6 +9841,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "first_leaf_edge",
+                              [],
                               []
                             |),
                             [
@@ -9673,6 +9864,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "descend",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| next_internal_edge |) ]
@@ -9738,6 +9930,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "force",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9772,6 +9965,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "left_edge",
+                              [],
                               []
                             |),
                             [ M.read (| leaf_kv |) ]
@@ -9806,6 +10000,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "left_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| internal_kv |) ]
@@ -9824,6 +10019,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "last_leaf_edge",
+                              [],
                               []
                             |),
                             [
@@ -9846,6 +10042,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "descend",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| next_internal_edge |) ]

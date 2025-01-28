@@ -90,7 +90,9 @@ Module errors.
                               "core::clone::Clone",
                               Ty.path "move_core_types::language_storage::ModuleId",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -138,6 +140,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Undefined" |) ]
@@ -158,6 +161,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Module" |); __self_0 ]
@@ -244,7 +248,7 @@ Module errors.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -281,7 +285,9 @@ Module errors.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::language_storage::ModuleId",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -390,6 +396,7 @@ Module errors.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -397,6 +404,7 @@ Module errors.
                                       [ Ty.path "move_core_types::language_storage::ModuleId" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -481,8 +489,10 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::language_storage::ModuleId",
+                          [],
                           [ Ty.path "move_core_types::language_storage::ModuleId" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -495,8 +505,10 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ __self_discr; __arg1_discr ]
@@ -568,7 +580,9 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -605,6 +619,7 @@ Module errors.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -688,7 +703,9 @@ Module errors.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -751,6 +768,7 @@ Module errors.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -766,6 +784,7 @@ Module errors.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -817,6 +836,7 @@ Module errors.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -832,6 +852,7 @@ Module errors.
                   ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -935,7 +956,9 @@ Module errors.
                     [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -1007,7 +1030,9 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -1062,6 +1087,7 @@ Module errors.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -1069,6 +1095,7 @@ Module errors.
                   [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -1112,6 +1139,7 @@ Module errors.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -1119,6 +1147,7 @@ Module errors.
                   [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -1203,7 +1232,9 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1220,7 +1251,9 @@ Module errors.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1240,7 +1273,9 @@ Module errors.
                       []
                       [ Ty.path "alloc::string::String" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1260,7 +1295,9 @@ Module errors.
                       []
                       [ Ty.path "move_binary_format::errors::ExecutionState" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1277,7 +1314,9 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::errors::Location",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1300,7 +1339,9 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1327,7 +1368,9 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1445,7 +1488,9 @@ Module errors.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
@@ -1473,7 +1518,9 @@ Module errors.
                             "core::cmp::Ord",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
@@ -1504,7 +1551,9 @@ Module errors.
                                       []
                                       [ Ty.path "alloc::string::String" ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1537,7 +1586,9 @@ Module errors.
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1569,7 +1620,9 @@ Module errors.
                                                     "core::cmp::Ord",
                                                     Ty.path "move_binary_format::errors::Location",
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1612,7 +1665,9 @@ Module errors.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1654,7 +1709,9 @@ Module errors.
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1750,8 +1807,10 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "move_core_types::vm_status::StatusCode",
+                          [],
                           [ Ty.path "move_core_types::vm_status::StatusCode" ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -1772,8 +1831,10 @@ Module errors.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            [],
                             [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                             "eq",
+                            [],
                             []
                           |),
                           [
@@ -1798,6 +1859,7 @@ Module errors.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "alloc::string::String" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1805,6 +1867,7 @@ Module errors.
                               [ Ty.path "alloc::string::String" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -1829,6 +1892,7 @@ Module errors.
                           (Ty.path "core::option::Option")
                           []
                           [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1836,6 +1900,7 @@ Module errors.
                             [ Ty.path "move_binary_format::errors::ExecutionState" ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -1857,8 +1922,10 @@ Module errors.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "move_binary_format::errors::Location",
+                      [],
                       [ Ty.path "move_binary_format::errors::Location" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -1886,6 +1953,7 @@ Module errors.
                         Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1896,6 +1964,7 @@ Module errors.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -1927,6 +1996,7 @@ Module errors.
                         ];
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1941,6 +2011,7 @@ Module errors.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -1985,8 +2056,10 @@ Module errors.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::vm_status::StatusCode",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
@@ -2019,8 +2092,10 @@ Module errors.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            [],
                             [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
@@ -2056,6 +2131,7 @@ Module errors.
                                       (Ty.path "core::option::Option")
                                       []
                                       [ Ty.path "alloc::string::String" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -2063,6 +2139,7 @@ Module errors.
                                         [ Ty.path "alloc::string::String" ]
                                     ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2100,6 +2177,7 @@ Module errors.
                                               []
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2110,6 +2188,7 @@ Module errors.
                                                 ]
                                             ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2146,9 +2225,11 @@ Module errors.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Ty.path "move_binary_format::errors::Location",
+                                                    [],
                                                     [ Ty.path "move_binary_format::errors::Location"
                                                     ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2196,6 +2277,7 @@ Module errors.
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -2211,6 +2293,7 @@ Module errors.
                                                                 ]
                                                             ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2257,6 +2340,7 @@ Module errors.
                                                                         ];
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "alloc::vec::Vec")
@@ -2273,6 +2357,7 @@ Module errors.
                                                                       ]
                                                                   ],
                                                                   "partial_cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2410,6 +2495,7 @@ Module errors.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "alloc::string::String" ],
               "as_ref",
+              [],
               []
             |),
             [
@@ -2448,6 +2534,7 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::ExecutionState" ],
               "as_ref",
+              [],
               []
             |),
             [
@@ -2595,6 +2682,7 @@ Module errors.
             M.get_associated_function (|
               Ty.path "move_core_types::vm_status::StatusCode",
               "status_type",
+              [],
               []
             |),
             [
@@ -2830,6 +2918,7 @@ Module errors.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -2878,7 +2967,9 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -2993,6 +3084,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "finish",
+                          [],
                           []
                         |),
                         [
@@ -3000,6 +3092,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -3007,6 +3100,7 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3014,6 +3108,7 @@ Module errors.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3021,6 +3116,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           "field",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3028,6 +3124,7 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugStruct",
                                               "field",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3035,6 +3132,7 @@ Module errors.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugStruct",
                                                   "field",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3042,6 +3140,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::builders::DebugStruct",
                                                       "field",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3050,6 +3149,7 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Formatter",
                                                             "debug_struct",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3152,7 +3252,9 @@ Module errors.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -3232,7 +3334,9 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3249,7 +3353,9 @@ Module errors.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3269,7 +3375,9 @@ Module errors.
                       []
                       [ Ty.path "alloc::string::String" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3289,7 +3397,9 @@ Module errors.
                       []
                       [ Ty.path "move_binary_format::errors::ExecutionState" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3312,7 +3422,9 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3339,7 +3451,9 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3567,6 +3681,7 @@ Module errors.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -3623,6 +3738,7 @@ Module errors.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -3644,6 +3760,7 @@ Module errors.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -3664,6 +3781,7 @@ Module errors.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -3744,6 +3862,7 @@ Module errors.
                                               []
                                               [ Ty.path "u64" ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3849,6 +3968,7 @@ Module errors.
                                               []
                                               [ Ty.path "alloc::string::String" ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3953,6 +4073,7 @@ Module errors.
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4045,6 +4166,7 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
+                    [],
                     []
                   |),
                   [
@@ -4095,8 +4217,10 @@ Module errors.
                         Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ] ],
                     "extend",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -4160,6 +4284,7 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
+                    [],
                     []
                   |),
                   [
@@ -4218,6 +4343,7 @@ Module errors.
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.tuple
                         [
@@ -4226,6 +4352,7 @@ Module errors.
                         ]
                     ],
                     "extend",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -4304,6 +4431,7 @@ Module errors.
                         []
                         [ Ty.path "alloc::string::String" ],
                       "as_mut",
+                      [],
                       []
                     |),
                     [
@@ -4345,6 +4473,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "alloc::string::String",
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| msg |) ]
@@ -4362,6 +4491,7 @@ Module errors.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| msg |); M.read (| separator |) ]
@@ -4377,6 +4507,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "push_str",
+                              [],
                               []
                             |),
                             [
@@ -4386,7 +4517,9 @@ Module errors.
                                   "core::ops::deref::Deref",
                                   Ty.path "alloc::string::String",
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ additional_message ]
@@ -4459,6 +4592,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -4467,6 +4601,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "UNDEFINED" |) ] |) ]
@@ -4489,6 +4624,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -4497,6 +4633,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -4508,6 +4645,7 @@ Module errors.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -4593,6 +4731,7 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1_formatted",
+                                  [],
                                   []
                                 |),
                                 [
@@ -4607,6 +4746,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
+                                            [],
                                             [ Ty.path "move_core_types::vm_status::StatusCode" ]
                                           |),
                                           [
@@ -4632,6 +4772,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Placeholder",
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4651,6 +4792,7 @@ Module errors.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::UnsafeArg",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -4710,6 +4852,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4727,6 +4870,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [ status ]
@@ -4735,6 +4879,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "u64" ]
                                                     |),
                                                     [ sub_status ]
@@ -4803,6 +4948,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4820,6 +4966,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [ status ]
@@ -4828,6 +4975,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
@@ -4873,7 +5021,9 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -4912,7 +5062,9 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -4963,6 +5115,7 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4984,6 +5137,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -4996,6 +5150,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5010,6 +5165,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5066,7 +5222,9 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5108,7 +5266,9 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5159,6 +5319,7 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5183,6 +5344,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -5195,6 +5357,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5209,6 +5372,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5242,11 +5406,16 @@ Module errors.
                 |)) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
                   M.read (| f |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                       M.alloc (|
@@ -5256,6 +5425,7 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "alloc::string::String" ]
                               |),
                               [ status ]
@@ -5335,6 +5505,7 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1_formatted",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5348,6 +5519,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
+                                            [],
                                             [ Ty.path "move_core_types::vm_status::StatusCode" ]
                                           |),
                                           [
@@ -5373,6 +5545,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Placeholder",
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5392,6 +5565,7 @@ Module errors.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::UnsafeArg",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -5451,6 +5625,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5468,6 +5643,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [ status ]
@@ -5476,6 +5652,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "u64" ]
                                                     |),
                                                     [ sub_status ]
@@ -5516,6 +5693,7 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5533,6 +5711,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [ status ]
@@ -5541,6 +5720,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
+                                            [],
                                             [ Ty.path "move_binary_format::errors::Location" ]
                                           |),
                                           [
@@ -5617,6 +5797,7 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5634,6 +5815,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [ status ]
@@ -5642,6 +5824,7 @@ Module errors.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
@@ -5687,7 +5870,9 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5726,7 +5911,9 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5777,6 +5964,7 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5798,6 +5986,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -5810,6 +5999,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5824,6 +6014,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -5880,7 +6071,9 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5922,7 +6115,9 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5973,6 +6168,7 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5997,6 +6193,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -6009,6 +6206,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -6023,6 +6221,7 @@ Module errors.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -6056,11 +6255,16 @@ Module errors.
                 |)) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
                   M.read (| f |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                       M.alloc (|
@@ -6070,6 +6274,7 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "alloc::string::String" ]
                               |),
                               [ status ]
@@ -6141,6 +6346,7 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -6161,6 +6367,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ target_offset ]
@@ -6169,6 +6376,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ target_pool_len ]
@@ -6177,6 +6385,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u16" ]
                                         |),
                                         [ cur_bytecode_offset ]
@@ -6185,6 +6394,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [
                                             Ty.path
                                               "move_binary_format::file_format::FunctionDefinitionIndex"
@@ -6196,6 +6406,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "move_binary_format::IndexKind" ]
                                         |),
                                         [ kind ]
@@ -6217,6 +6428,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
+                [],
                 []
               |),
               [
@@ -6224,6 +6436,7 @@ Module errors.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "with_message",
+                    [],
                     []
                   |),
                   [
@@ -6231,6 +6444,7 @@ Module errors.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::errors::PartialVMError",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| status |) ]
@@ -6294,6 +6508,7 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -6312,6 +6527,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u16" ]
                                         |),
                                         [ idx ]
@@ -6320,6 +6536,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [ len ]
@@ -6328,6 +6545,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "move_binary_format::IndexKind" ]
                                         |),
                                         [ kind ]
@@ -6349,6 +6567,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "with_message",
+                [],
                 []
               |),
               [
@@ -6356,6 +6575,7 @@ Module errors.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "at_index",
+                    [],
                     []
                   |),
                   [
@@ -6363,6 +6583,7 @@ Module errors.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::errors::PartialVMError",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| status |) ]
@@ -6398,6 +6619,7 @@ Module errors.
           M.get_associated_function (|
             Ty.path "move_binary_format::errors::PartialVMError",
             "at_index",
+            [],
             []
           |),
           [
@@ -6405,6 +6627,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "new",
+                [],
                 []
               |),
               [ M.read (| status |) ]
@@ -6444,7 +6667,9 @@ Module errors.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -6550,6 +6775,7 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "finish",
+                          [],
                           []
                         |),
                         [
@@ -6557,6 +6783,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -6564,6 +6791,7 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6571,6 +6799,7 @@ Module errors.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6578,6 +6807,7 @@ Module errors.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           "field",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6585,6 +6815,7 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugStruct",
                                               "field",
+                                              [],
                                               []
                                             |),
                                             [
@@ -6592,6 +6823,7 @@ Module errors.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugStruct",
                                                   "field",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6600,6 +6832,7 @@ Module errors.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "debug_struct",
+                                                        [],
                                                         []
                                                       |),
                                                       [

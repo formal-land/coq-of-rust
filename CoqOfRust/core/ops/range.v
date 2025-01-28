@@ -157,11 +157,16 @@ Module ops.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.read (| fmt |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_const",
+                    [],
+                    []
+                  |),
                   [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                 |)
               ]
@@ -201,7 +206,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -212,7 +217,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -249,12 +254,28 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Idx,
+                      [],
+                      [],
+                      "default",
+                      [],
+                      []
+                    |),
                     []
                   |));
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", Idx, [], "default", [] |),
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Idx,
+                      [],
+                      [],
+                      "default",
+                      [],
+                      []
+                    |),
                     []
                   |))
               ]))
@@ -297,7 +318,7 @@ Module ops.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+                M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -313,7 +334,7 @@ Module ops.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -392,7 +413,7 @@ Module ops.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+                    M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -405,7 +426,7 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+                  M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -462,12 +483,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -501,6 +532,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -511,6 +543,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -542,7 +575,9 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -550,6 +585,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -558,6 +594,7 @@ Module ops.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
@@ -588,6 +625,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -598,6 +636,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -629,12 +668,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -668,6 +717,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -678,6 +728,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -737,8 +788,10 @@ Module ops.
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ],
+                [],
                 [ Idx ],
                 "contains",
+                [],
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
@@ -763,7 +816,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "lt", [] |),
+                M.get_trait_method (| "core::cmp::PartialOrd", Idx, [], [ Idx ], "lt", [], [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -810,7 +863,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -858,7 +911,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -933,7 +986,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+              M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -987,12 +1040,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1026,6 +1089,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1036,6 +1100,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1067,7 +1132,9 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1075,6 +1142,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -1083,6 +1151,7 @@ Module ops.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
@@ -1113,6 +1182,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1123,6 +1193,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1182,8 +1253,10 @@ Module ops.
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ],
+                [],
                 [ Idx ],
                 "contains",
+                [],
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
@@ -1233,7 +1306,7 @@ Module ops.
               [
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1281,7 +1354,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1356,7 +1429,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+              M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1410,7 +1483,9 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1418,6 +1493,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -1426,6 +1502,7 @@ Module ops.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
@@ -1456,6 +1533,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1466,6 +1544,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1497,12 +1576,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1536,6 +1625,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1546,6 +1636,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1605,8 +1696,10 @@ Module ops.
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ],
+                [],
                 [ Idx ],
                 "contains",
+                [],
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
@@ -1643,7 +1736,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1654,7 +1747,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1665,7 +1758,15 @@ Module ops.
                   |));
                 ("exhausted",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "bool",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1715,7 +1816,7 @@ Module ops.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+                  M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1731,7 +1832,7 @@ Module ops.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+                    M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1835,7 +1936,7 @@ Module ops.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+                    M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1849,7 +1950,7 @@ Module ops.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+                    M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1862,7 +1963,15 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -2021,8 +2130,10 @@ Module ops.
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ],
+                [],
                 [ Idx ],
                 "contains",
+                [],
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
@@ -2056,7 +2167,15 @@ Module ops.
               ltac:(M.monadic
                 (UnOp.not (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "le", [] |),
+                    M.get_trait_method (|
+                      "core::cmp::PartialOrd",
+                      Idx,
+                      [],
+                      [ Idx ],
+                      "le",
+                      [],
+                      []
+                    |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2189,12 +2308,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -2228,6 +2357,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2238,6 +2368,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2269,7 +2400,9 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2277,6 +2410,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -2285,6 +2419,7 @@ Module ops.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
@@ -2315,6 +2450,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2325,6 +2461,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2356,12 +2493,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -2395,6 +2542,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2405,6 +2553,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2451,7 +2600,9 @@ Module ops.
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2459,6 +2610,7 @@ Module ops.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "write_fmt",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2467,6 +2619,7 @@ Module ops.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2502,6 +2655,7 @@ Module ops.
                                                     (Ty.path "core::result::Result")
                                                     []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -2512,6 +2666,7 @@ Module ops.
                                                       ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -2589,7 +2744,7 @@ Module ops.
               [
                 ("end_",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Idx, [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2637,7 +2792,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::PartialEq", Idx, [ Idx ], "eq", [] |),
+              M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -2712,7 +2867,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
+              M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -2766,7 +2921,9 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2774,6 +2931,7 @@ Module ops.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
@@ -2782,6 +2940,7 @@ Module ops.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
@@ -2812,6 +2971,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2822,6 +2982,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2853,12 +3014,22 @@ Module ops.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::fmt::Debug", Idx, [], "fmt", [] |),
+                              M.get_trait_method (|
+                                "core::fmt::Debug",
+                                Idx,
+                                [],
+                                [],
+                                "fmt",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -2892,6 +3063,7 @@ Module ops.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2902,6 +3074,7 @@ Module ops.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2961,8 +3134,10 @@ Module ops.
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ],
+                [],
                 [ Idx ],
                 "contains",
+                [],
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
@@ -3030,7 +3205,15 @@ Module ops.
                           "core::ops::range::Bound::Included"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -3050,7 +3233,15 @@ Module ops.
                           "core::ops::range::Bound::Excluded"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| __self_0 |) ]
                             |)
                           ]
@@ -3117,6 +3308,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Included" |); __self_0 ]
@@ -3137,6 +3329,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Excluded" |); __self_0 ]
@@ -3151,6 +3344,7 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "Unbounded" |) ]
@@ -3201,7 +3395,9 @@ Module ops.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [ __self_discr; M.read (| state |) ]
@@ -3222,7 +3418,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            T,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
@@ -3238,7 +3442,15 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            T,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
@@ -3337,8 +3549,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -3369,8 +3583,10 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [ __self_0; __arg1_0 ]
@@ -3587,8 +3803,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ T ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
@@ -3612,8 +3830,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ T ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
@@ -3672,7 +3892,15 @@ Module ops.
                           "core::ops::range::Bound::Included"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| x |) ]
                             |)
                           ]
@@ -3691,7 +3919,15 @@ Module ops.
                           "core::ops::range::Bound::Excluded"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
                               [ M.read (| x |) ]
                             |)
                           ]
@@ -3728,8 +3964,10 @@ Module ops.
                       M.get_trait_method (|
                         "core::ops::range::RangeBounds",
                         Self,
+                        [],
                         [ T ],
                         "start_bound",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -3750,8 +3988,10 @@ Module ops.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.apply (Ty.path "&") [] [ T ],
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ U ] ],
                               "le",
+                              [],
                               []
                             |),
                             [ start; M.alloc (| M.read (| item |) |) ]
@@ -3771,8 +4011,10 @@ Module ops.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.apply (Ty.path "&") [] [ T ],
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ U ] ],
                               "lt",
+                              [],
                               []
                             |),
                             [ start; M.alloc (| M.read (| item |) |) ]
@@ -3793,8 +4035,10 @@ Module ops.
                         M.get_trait_method (|
                           "core::ops::range::RangeBounds",
                           Self,
+                          [],
                           [ T ],
                           "end_bound",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -3815,8 +4059,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
                                 Ty.apply (Ty.path "&") [] [ U ],
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                                 "le",
+                                [],
                                 []
                               |),
                               [ item; M.alloc (| M.read (| end_ |) |) ]
@@ -3836,8 +4082,10 @@ Module ops.
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
                                 Ty.apply (Ty.path "&") [] [ U ],
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                                 "lt",
+                                [],
                                 []
                               |),
                               [ item; M.alloc (| M.read (| end_ |) |) ]

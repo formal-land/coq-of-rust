@@ -28,7 +28,7 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -39,7 +39,7 @@ Module iter.
                     |));
                   ("f",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -108,6 +108,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -115,6 +116,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -123,6 +125,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct",
+                            [],
                             []
                           |),
                           [ M.read (| f |); M.read (| Value.String "FilterMap" |) ]
@@ -194,8 +197,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 impl_FnMut_T__arrow_Option_B_,
+                                                [],
                                                 [ Ty.tuple [ T ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| item |) ] ]
@@ -216,8 +221,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       impl_FnMut_Acc__B__arrow_Acc,
+                                                      [],
                                                       [ Ty.tuple [ Acc; B ] ],
                                                       "call_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -298,8 +305,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 impl_FnMut_T__arrow_Option_B_,
+                                                [],
                                                 [ Ty.tuple [ T ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| f |); Value.Tuple [ M.read (| item |) ] ]
@@ -320,8 +329,10 @@ Module iter.
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       impl_FnMut_Acc__B__arrow_R__plus__'a,
+                                                      [],
                                                       [ Ty.tuple [ Acc; B ] ],
                                                       "call_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -344,7 +355,9 @@ Module iter.
                                                       "core::ops::try_trait::Try",
                                                       R,
                                                       [],
+                                                      [],
                                                       "from_output",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| acc |) ]
@@ -392,7 +405,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "find_map",
+                  [],
                   [ B; Ty.apply (Ty.path "&mut") [] [ F ] ]
                 |),
                 [
@@ -507,7 +522,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "try_for_each",
+                        [],
                         [
                           Ty.function
                             [ Ty.tuple [ Ty.associated ] ]
@@ -554,8 +571,10 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ Ty.associated ] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -585,6 +604,7 @@ Module iter.
                                                           []
                                                           [ B ],
                                                         "is_some",
+                                                        [],
                                                         []
                                                       |),
                                                       [ val ]
@@ -606,6 +626,7 @@ Module iter.
                                                             [ B ]
                                                         ],
                                                       "cast",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path
@@ -627,6 +648,7 @@ Module iter.
                                                                 [ B ]
                                                             ],
                                                           "byte_add",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -655,6 +677,7 @@ Module iter.
                                                             [ B ]
                                                         ],
                                                       "add",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -671,6 +694,7 @@ Module iter.
                                                                 [ B ]
                                                             ],
                                                           "as_mut_ptr",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -789,6 +813,7 @@ Module iter.
                               [ B ]
                           ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| guard |) ]
@@ -816,6 +841,7 @@ Module iter.
                                     []
                                     [ B ],
                                   "array_assume_init",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| array |) ]
@@ -847,7 +873,9 @@ Module iter.
                                         [ B ]
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [ guard ]
@@ -864,6 +892,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ B ],
                                   "new_unchecked",
+                                  [ N ],
                                   []
                                 |),
                                 [
@@ -909,7 +938,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [
@@ -964,7 +995,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ Acc; Ty.associated; R ]
                 |),
                 [
@@ -1015,7 +1048,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; Ty.associated ]
                 |),
                 [
@@ -1100,6 +1135,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; Ty.tuple [] ],
                   "break_value",
+                  [],
                   []
                 |),
                 [
@@ -1108,7 +1144,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
                       [],
+                      [],
                       "try_rfold",
+                      [],
                       [
                         Ty.tuple [];
                         Ty.associated;
@@ -1126,7 +1164,7 @@ Module iter.
                       |);
                       Value.Tuple [];
                       M.call_closure (|
-                        M.get_associated_function (| Self, "find.next_back", [] |),
+                        M.get_associated_function (| Self, "find.next_back", [], [] |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -1170,7 +1208,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ Acc; Ty.associated; R ]
                 |),
                 [
@@ -1221,7 +1261,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "rfold",
+                  [],
                   [ Acc; Ty.associated ]
                 |),
                 [
@@ -1320,7 +1362,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  I,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),

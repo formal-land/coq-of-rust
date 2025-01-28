@@ -25,8 +25,10 @@ Module vec.
               M.get_trait_method (|
                 "alloc::vec::spec_from_iter_nested::SpecFromIterNested",
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ T; I ],
                 "from_iter",
+                [],
                 []
               |),
               [ M.read (| iterator |) ]
@@ -90,8 +92,10 @@ Module vec.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          [],
                           [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                           "ne",
+                          [],
                           []
                         |),
                         [
@@ -129,7 +133,9 @@ Module vec.
                                               []
                                               [ T; Ty.path "alloc::alloc::Global" ],
                                             [],
+                                            [],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ iterator ]
@@ -166,6 +172,7 @@ Module vec.
                                                 [ T; Ty.path "alloc::alloc::Global" ]
                                             ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| iterator |) ]
@@ -201,6 +208,7 @@ Module vec.
                                                             []
                                                             [ T ],
                                                           "as_ptr",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -225,7 +233,9 @@ Module vec.
                                                                         ]
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "deref",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ it ]
@@ -243,6 +253,7 @@ Module vec.
                                                           []
                                                           [ T ],
                                                         "as_ptr",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -267,7 +278,9 @@ Module vec.
                                                                       ]
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "deref",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ it ]
@@ -287,7 +300,9 @@ Module vec.
                                                           []
                                                           [ T; Ty.path "alloc::alloc::Global" ],
                                                         [],
+                                                        [],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -309,7 +324,9 @@ Module vec.
                                                                   ]
                                                               ],
                                                             [],
+                                                            [],
                                                             "deref",
+                                                            [],
                                                             []
                                                           |),
                                                           [ it ]
@@ -331,6 +348,7 @@ Module vec.
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         "from_parts",
+                                        [],
                                         []
                                       |),
                                       [
@@ -349,7 +367,9 @@ Module vec.
                                                       [ T; Ty.path "alloc::alloc::Global" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ it ]
@@ -366,7 +386,9 @@ Module vec.
                                               []
                                               [ T; Ty.path "alloc::alloc::Global" ],
                                             [],
+                                            [],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [
@@ -383,7 +405,9 @@ Module vec.
                                                       [ T; Ty.path "alloc::alloc::Global" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ it ]
@@ -405,7 +429,9 @@ Module vec.
                                                       [ T; Ty.path "alloc::alloc::Global" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "deref",
+                                                [],
                                                 []
                                               |),
                                               [ it ]
@@ -432,6 +458,7 @@ Module vec.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -446,6 +473,7 @@ Module vec.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [
                             T;
                             Ty.apply
@@ -454,6 +482,7 @@ Module vec.
                               [ T; Ty.path "alloc::alloc::Global" ]
                           ],
                           "spec_extend",
+                          [],
                           []
                         |),
                         [ vec; M.read (| iterator |) ]

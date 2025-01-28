@@ -42,6 +42,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "core::option::Option::None" [] ]
@@ -70,6 +71,7 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_ref",
+                [],
                 []
               |),
               [
@@ -80,6 +82,7 @@ Module cell.
                       []
                       [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     "get",
+                    [],
                     []
                   |),
                   [
@@ -114,6 +117,7 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_mut",
+                [],
                 []
               |),
               [
@@ -124,6 +128,7 @@ Module cell.
                       []
                       [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     "get_mut",
+                    [],
                     []
                   |),
                   [
@@ -165,6 +170,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "try_insert",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| value |) ]
@@ -242,6 +248,7 @@ Module cell.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -277,6 +284,7 @@ Module cell.
                             []
                             [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           "get",
+                          [],
                           []
                         |),
                         [
@@ -296,6 +304,7 @@ Module cell.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "insert",
+                            [],
                             []
                           |),
                           [ M.read (| slot |); M.read (| value |) ]
@@ -335,6 +344,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get_or_try_init",
+                      [],
                       [
                         Ty.function
                           [ Ty.tuple [] ]
@@ -362,8 +372,10 @@ Module cell.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnOnce",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [] ],
                                                 "call_once",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| f |); Value.Tuple [] ]
@@ -426,6 +438,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get_mut_or_try_init",
+                      [],
                       [
                         Ty.function
                           [ Ty.tuple [] ]
@@ -453,8 +466,10 @@ Module cell.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnOnce",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [] ],
                                                 "call_once",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| f |); Value.Tuple [] ]
@@ -526,6 +541,7 @@ Module cell.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| self |) ]
@@ -557,6 +573,7 @@ Module cell.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "try_init",
+                        [],
                         [ F; E ]
                       |),
                       [ M.read (| self |); M.read (| f |) ]
@@ -613,6 +630,7 @@ Module cell.
                                         []
                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
@@ -624,6 +642,7 @@ Module cell.
                                               []
                                               [ T ],
                                             "get",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -645,7 +664,9 @@ Module cell.
                                         []
                                         [ Ty.apply (Ty.path "&") [] [ T ]; E ],
                                       [],
+                                      [],
                                       "branch",
+                                      [],
                                       []
                                     |),
                                     [
@@ -653,6 +674,7 @@ Module cell.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                           "try_init",
+                                          [],
                                           [ F; E ]
                                         |),
                                         [ M.read (| self |); M.read (| f |) ]
@@ -681,6 +703,7 @@ Module cell.
                                                     (Ty.path "core::result::Result")
                                                     []
                                                     [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
@@ -688,6 +711,7 @@ Module cell.
                                                       [ Ty.path "core::convert::Infallible"; E ]
                                                   ],
                                                   "from_residual",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| residual |) ]
@@ -723,6 +747,7 @@ Module cell.
                               []
                               [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -730,6 +755,7 @@ Module cell.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "get_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -779,7 +805,9 @@ Module cell.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -787,8 +815,10 @@ Module cell.
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   F,
+                                  [],
                                   [ Ty.tuple [] ],
                                   "call_once",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| f |); Value.Tuple [] ]
@@ -817,6 +847,7 @@ Module cell.
                                             (Ty.path "core::result::Result")
                                             []
                                             [ Ty.apply (Ty.path "&") [] [ T ]; E ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -824,6 +855,7 @@ Module cell.
                                               [ Ty.path "core::convert::Infallible"; E ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -856,6 +888,7 @@ Module cell.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                   "try_insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| val |) ]
@@ -882,6 +915,7 @@ Module cell.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -925,6 +959,7 @@ Module cell.
                   []
                   [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -959,6 +994,7 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "into_inner",
+                [],
                 []
               |),
               [
@@ -997,6 +1033,7 @@ Module cell.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "new",
+                [],
                 []
               |),
               []
@@ -1040,6 +1077,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_tuple",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "OnceCell" |) ]
@@ -1052,6 +1090,7 @@ Module cell.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1072,6 +1111,7 @@ Module cell.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [ d; M.read (| v |) ]
@@ -1085,6 +1125,7 @@ Module cell.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
+                              [],
                               []
                             |),
                             [
@@ -1094,6 +1135,7 @@ Module cell.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1113,6 +1155,7 @@ Module cell.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "finish",
+                    [],
                     []
                   |),
                   [ d ]
@@ -1159,6 +1202,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -1176,6 +1220,7 @@ Module cell.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "get",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1194,12 +1239,21 @@ Module cell.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "set",
+                                [],
                                 []
                               |),
                               [
                                 res;
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    T,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| value |) ]
                                 |)
                               ]
@@ -1273,9 +1327,11 @@ Module cell.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+                [],
                 [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1284,6 +1340,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1294,6 +1351,7 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -1350,6 +1408,7 @@ Module cell.
                         []
                         [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]

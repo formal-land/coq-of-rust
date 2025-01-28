@@ -89,6 +89,7 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
@@ -133,7 +134,9 @@ Module num.
                       "core::clone::Clone",
                       Ty.path "core::num::dec2flt::FloatErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
@@ -181,8 +184,10 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::num::dec2flt::FloatErrorKind",
+                [],
                 [ Ty.path "core::num::dec2flt::FloatErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -272,7 +277,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.read (| f |);
                 M.read (|
@@ -505,14 +510,16 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::error::Error",
                     Ty.path "core::num::dec2flt::ParseFloatError",
                     [],
+                    [],
                     "description",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -614,7 +621,9 @@ Module num.
                   "core::num::dec2flt::float::RawFloat",
                   T,
                   [],
+                  [],
                   "from_u64_bits",
+                  [],
                   []
                 |),
                 [ M.read (| word |) ]
@@ -687,7 +696,7 @@ Module num.
                 let~ s :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.read (| s |) ]
                     |)
                   |) in
@@ -704,6 +713,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "first",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -772,6 +782,7 @@ Module num.
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
@@ -779,6 +790,7 @@ Module num.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -806,6 +818,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]
@@ -943,6 +956,7 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "core::num::dec2flt::number::Number",
                                           "try_fast_path",
+                                          [],
                                           [ F ]
                                         |),
                                         [ num ]
@@ -1029,8 +1043,10 @@ Module num.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "core::num::dec2flt::common::BiasedFp",
+                                        [],
                                         [ Ty.path "core::num::dec2flt::common::BiasedFp" ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1146,7 +1162,15 @@ Module num.
                             M.write (|
                               float,
                               M.call_closure (|
-                                M.get_trait_method (| "core::ops::arith::Neg", F, [], "neg", [] |),
+                                M.get_trait_method (|
+                                  "core::ops::arith::Neg",
+                                  F,
+                                  [],
+                                  [],
+                                  "neg",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| float |) ]
                               |)
                             |) in

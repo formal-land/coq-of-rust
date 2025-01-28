@@ -214,6 +214,7 @@ Module constant.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -231,7 +232,9 @@ Module constant.
                                                     "move_core_types::runtime_value::MoveTypeLayout"
                                                 ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -253,11 +256,13 @@ Module constant.
                                                             "move_binary_format::file_format::SignatureToken";
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_binary_format::file_format::SignatureToken"
                                                       ],
                                                       "as_ref",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| v |) ]
@@ -291,6 +296,7 @@ Module constant.
                                                               Ty.path
                                                                 "move_core_types::runtime_value::MoveTypeLayout"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -299,6 +305,7 @@ Module constant.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -381,15 +388,14 @@ Module constant.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)))
                 ]
               |)
@@ -591,6 +597,7 @@ Module constant.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
@@ -608,7 +615,9 @@ Module constant.
                                                     "move_binary_format::file_format::SignatureToken"
                                                 ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -630,11 +639,13 @@ Module constant.
                                                             "move_core_types::runtime_value::MoveTypeLayout";
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
+                                                      [],
                                                       [
                                                         Ty.path
                                                           "move_core_types::runtime_value::MoveTypeLayout"
                                                       ],
                                                       "as_ref",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| v |) ]
@@ -668,6 +679,7 @@ Module constant.
                                                               Ty.path
                                                                 "move_binary_format::file_format::SignatureToken"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -676,6 +688,7 @@ Module constant.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -775,7 +788,9 @@ Module constant.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -814,6 +829,7 @@ Module constant.
                                                   Ty.path
                                                     "move_binary_format::file_format::Constant"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -821,6 +837,7 @@ Module constant.
                                                   [ Ty.path "core::convert::Infallible" ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -859,7 +876,9 @@ Module constant.
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -867,6 +886,7 @@ Module constant.
                                     M.get_associated_function (|
                                       Ty.path "move_core_types::runtime_value::MoveValue",
                                       "simple_serialize",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| v |) ]
@@ -898,6 +918,7 @@ Module constant.
                                                   Ty.path
                                                     "move_binary_format::file_format::Constant"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -905,6 +926,7 @@ Module constant.
                                                   [ Ty.path "core::convert::Infallible" ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -961,7 +983,9 @@ Module constant.
                               []
                               [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1003,6 +1027,7 @@ Module constant.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "move_core_types::runtime_value::MoveValue" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1010,6 +1035,7 @@ Module constant.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1042,6 +1068,7 @@ Module constant.
                           Ty.path "anyhow::Error"
                         ],
                       "ok",
+                      [],
                       []
                     |),
                     [
@@ -1049,6 +1076,7 @@ Module constant.
                         M.get_associated_function (|
                           Ty.path "move_core_types::runtime_value::MoveValue",
                           "simple_deserialize",
+                          [],
                           []
                         |),
                         [
@@ -1060,7 +1088,9 @@ Module constant.
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [

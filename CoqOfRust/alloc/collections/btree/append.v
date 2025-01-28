@@ -62,6 +62,7 @@ Module collections.
                               []
                               [ I ],
                             "new",
+                            [],
                             []
                           |),
                           [ M.read (| left |); M.read (| right |) ]
@@ -81,6 +82,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                         ],
                       "bulk_push",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::append::MergeIter")
@@ -194,6 +196,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "into_node",
+                        [],
                         []
                       |),
                       [
@@ -209,6 +212,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "last_leaf_edge",
+                            [],
                             []
                           |),
                           [
@@ -225,6 +229,7 @@ Module collections.
                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                   ],
                                 "borrow_mut",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -243,7 +248,9 @@ Module collections.
                             "core::iter::traits::collect::IntoIterator",
                             I,
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -263,7 +270,9 @@ Module collections.
                                           "core::iter::traits::iterator::Iterator",
                                           I,
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -317,6 +326,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::Leaf"
                                                                   ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ cur_node ]
@@ -350,6 +360,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Leaf"
                                                               ],
                                                             "push",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -381,6 +392,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Leaf"
                                                               ],
                                                             "forget_type",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cur_node |) ]
@@ -406,6 +418,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                     ],
                                                                   "ascend",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| test_node |) ]
@@ -446,6 +459,7 @@ Module collections.
                                                                                 "alloc::collections::btree::node::marker::Edge"
                                                                             ],
                                                                           "into_node",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| parent |) ]
@@ -475,6 +489,7 @@ Module collections.
                                                                                             "alloc::collections::btree::node::marker::Internal"
                                                                                         ],
                                                                                       "len",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ parent ]
@@ -525,6 +540,7 @@ Module collections.
                                                                                         "alloc::collections::btree::node::marker::Internal"
                                                                                     ],
                                                                                   "forget_type",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -568,6 +584,7 @@ Module collections.
                                                                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                                   ],
                                                                                 "push_internal_level",
+                                                                                [],
                                                                                 [ A ]
                                                                               |),
                                                                               [
@@ -577,7 +594,9 @@ Module collections.
                                                                                     "core::clone::Clone",
                                                                                     A,
                                                                                     [],
+                                                                                    [],
                                                                                     "clone",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [ alloc ]
@@ -610,6 +629,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::Internal"
                                                                 ],
                                                               "height",
+                                                              [],
                                                               []
                                                             |),
                                                             [ open_node ]
@@ -634,6 +654,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::LeafOrInternal"
                                                               ],
                                                             "new",
+                                                            [],
                                                             [ A ]
                                                           |),
                                                           [
@@ -642,7 +663,9 @@ Module collections.
                                                                 "core::clone::Clone",
                                                                 A,
                                                                 [],
+                                                                [],
                                                                 "clone",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ alloc ]
@@ -663,7 +686,9 @@ Module collections.
                                                                   []
                                                                   [ Ty.path "usize" ],
                                                                 [],
+                                                                [],
                                                                 "into_iter",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -698,7 +723,9 @@ Module collections.
                                                                                 []
                                                                                 [ Ty.path "usize" ],
                                                                               [],
+                                                                              [],
                                                                               "next",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ iter ]
@@ -744,6 +771,7 @@ Module collections.
                                                                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                                         ],
                                                                                       "push_internal_level",
+                                                                                      [],
                                                                                       [ A ]
                                                                                     |),
                                                                                     [
@@ -753,7 +781,9 @@ Module collections.
                                                                                           "core::clone::Clone",
                                                                                           A,
                                                                                           [],
+                                                                                          [],
                                                                                           "clone",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [ alloc ]
@@ -787,6 +817,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Internal"
                                                               ],
                                                             "push",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -823,6 +854,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "into_node",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -841,6 +873,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::LeafOrInternal"
                                                                   ],
                                                                 "last_leaf_edge",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -859,6 +892,7 @@ Module collections.
                                                                           "alloc::collections::btree::node::marker::Internal"
                                                                       ],
                                                                     "forget_type",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| open_node |) ]
@@ -901,6 +935,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "fix_right_border_of_plentiful",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -954,6 +989,7 @@ Module collections.
                           []
                           [ I ],
                         "nexts",
+                        [],
                         [
                           Ty.function
                             [
@@ -995,7 +1031,9 @@ Module collections.
                                                       "core::cmp::Ord",
                                                       K,
                                                       [],
+                                                      [],
                                                       "cmp",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1030,6 +1068,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ K; V ] ],
                               "or",
+                              [],
                               []
                             |),
                             [ M.read (| b_next |); M.read (| a_next |) ]

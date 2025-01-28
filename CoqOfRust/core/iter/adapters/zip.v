@@ -35,7 +35,7 @@ Module iter.
                 [
                   ("a",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -46,7 +46,7 @@ Module iter.
                     |));
                   ("b",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", B, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", B, [], [], "clone", [], [] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -61,7 +61,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -78,7 +80,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -95,7 +99,9 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
@@ -139,8 +145,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]
@@ -196,7 +204,9 @@ Module iter.
                                             []
                                             [ A; B ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |) ]
@@ -301,8 +311,10 @@ Module iter.
                   (Ty.path "core::iter::adapters::zip::Zip")
                   []
                   [ Ty.associated; Ty.associated ],
+                [],
                 [ Ty.associated; Ty.associated ],
                 "new",
+                [],
                 []
               |),
               [
@@ -311,7 +323,9 @@ Module iter.
                     "core::iter::traits::collect::IntoIterator",
                     A,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| a |) ]
@@ -321,7 +335,9 @@ Module iter.
                     "core::iter::traits::collect::IntoIterator",
                     B,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -355,8 +371,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "next",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -384,8 +402,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "size_hint",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -409,8 +429,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -438,8 +460,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -473,8 +497,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "get_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| idx |) ]
@@ -523,8 +549,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "next_back",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -606,7 +634,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -615,7 +645,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     A,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
@@ -650,6 +682,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -657,6 +690,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -687,7 +721,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -696,7 +732,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     B,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
@@ -731,6 +769,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -738,6 +777,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -785,6 +825,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -842,7 +883,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -861,7 +904,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -910,7 +955,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -944,7 +991,9 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -978,7 +1027,9 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1010,7 +1061,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1044,7 +1097,9 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -1078,7 +1133,9 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1111,7 +1168,9 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
@@ -1127,7 +1186,9 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
@@ -1224,7 +1285,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         A,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [
@@ -1250,7 +1313,9 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 B,
                                 [],
+                                [],
                                 "size_hint",
+                                [],
                                 []
                               |),
                               [
@@ -1417,7 +1482,12 @@ Module iter.
                   M.get_function (| "core::panicking::panic_fmt", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -1433,6 +1503,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
                               "none",
+                              [],
                               []
                             |),
                             []
@@ -1467,7 +1538,9 @@ Module iter.
                   "core::iter::adapters::zip::SpecFold",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   [],
+                  [],
                   "spec_fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -1553,7 +1626,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1562,7 +1637,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     A,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1597,6 +1674,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1604,6 +1682,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1634,7 +1713,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1643,7 +1724,9 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     B,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1678,6 +1761,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1685,6 +1769,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1732,6 +1817,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
@@ -1789,7 +1875,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1808,7 +1896,9 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -1857,7 +1947,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1891,7 +1983,9 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -1925,7 +2019,9 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1957,7 +2053,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1991,7 +2089,9 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
                                                         [ iter ]
@@ -2025,7 +2125,9 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2058,7 +2160,9 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
@@ -2074,7 +2178,9 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
@@ -2163,7 +2269,9 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             A,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
@@ -2179,7 +2287,9 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
@@ -2246,7 +2356,9 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           A,
                           [],
+                          [],
                           "__iterator_get_unchecked",
+                          [],
                           []
                         |),
                         [
@@ -2263,7 +2375,9 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           B,
                           [],
+                          [],
                           "__iterator_get_unchecked",
+                          [],
                           []
                         |),
                         [
@@ -2317,8 +2431,10 @@ Module iter.
                           M.get_trait_method (|
                             "core::iter::adapters::zip::ZipImpl",
                             Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                            [],
                             [ A; B ],
                             "size_hint",
+                            [],
                             []
                           |),
                           [ self ]
@@ -2336,7 +2452,9 @@ Module iter.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2366,7 +2484,9 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2399,6 +2519,7 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [
                                                     Ty.tuple
                                                       [
@@ -2407,6 +2528,7 @@ Module iter.
                                                       ]
                                                   ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2422,8 +2544,10 @@ Module iter.
                                                               "core::iter::adapters::zip::Zip")
                                                             []
                                                             [ A; B ],
+                                                          [],
                                                           [ A; B ],
                                                           "get_unchecked",
+                                                          [],
                                                           []
                                                         |),
                                                         [ self; M.read (| i |) ]
@@ -2488,7 +2612,9 @@ Module iter.
                         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                         A,
                         [],
+                        [],
                         "size",
+                        [],
                         []
                       |),
                       [ a ]
@@ -2505,7 +2631,9 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [ b ]
@@ -2619,7 +2747,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       A,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2636,7 +2766,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       B,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2735,7 +2867,9 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           A,
                                           [],
+                                          [],
                                           "__iterator_get_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2955,7 +3089,9 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 A,
                                                 [],
+                                                [],
                                                 "__iterator_get_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2994,7 +3130,9 @@ Module iter.
                                               "core::iter::traits::iterator::Iterator",
                                               B,
                                               [],
+                                              [],
                                               "__iterator_get_unchecked",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3032,6 +3170,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                       "super_nth",
+                      [],
                       []
                     |),
                     [ M.read (| self |); BinOp.Wrap.sub (| M.read (| n |), M.read (| delta |) |) ]
@@ -3132,7 +3271,9 @@ Module iter.
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   A,
                                   [],
+                                  [],
                                   "size",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3151,7 +3292,9 @@ Module iter.
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   B,
                                   [],
+                                  [],
                                   "size",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3185,7 +3328,9 @@ Module iter.
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           A,
                                           [],
+                                          [],
                                           "size",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3242,7 +3387,9 @@ Module iter.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3284,7 +3431,9 @@ Module iter.
                                                                         []
                                                                         [ Ty.path "usize" ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ iter ]
@@ -3334,7 +3483,9 @@ Module iter.
                                                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                               A,
                                                                               [],
+                                                                              [],
                                                                               "next_back",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3492,7 +3643,9 @@ Module iter.
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           B,
                                           [],
+                                          [],
                                           "size",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3547,7 +3700,9 @@ Module iter.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3589,7 +3744,9 @@ Module iter.
                                                                     []
                                                                     [ Ty.path "usize" ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ iter ]
@@ -3623,7 +3780,9 @@ Module iter.
                                                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                           B,
                                                                           [],
+                                                                          [],
                                                                           "next_back",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3719,7 +3878,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       A,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3736,7 +3897,9 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       B,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3918,7 +4081,15 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", A, [], "as_inner", [] |),
+                M.get_trait_method (|
+                  "core::iter::adapters::SourceIter",
+                  A,
+                  [],
+                  [],
+                  "as_inner",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -4002,8 +4173,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipFmt",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "fmt",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
@@ -4043,6 +4216,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -4050,6 +4224,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -4057,6 +4232,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
@@ -4065,6 +4241,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_struct",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); M.read (| Value.String "Zip" |) ]
@@ -4122,6 +4299,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -4130,6 +4308,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Zip" |) ]
@@ -4167,7 +4346,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Self,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -4204,7 +4385,9 @@ Module iter.
                 "core::iter::adapters::zip::SpecTrustedRandomAccess",
                 I,
                 [],
+                [],
                 "try_get_unchecked",
+                [],
                 []
               |),
               [ M.read (| it |); M.read (| idx |) ]
@@ -4251,6 +4434,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -4309,7 +4493,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "__iterator_get_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| index |) ]
@@ -4377,8 +4563,10 @@ Module iter.
                                         (Ty.path "core::iter::adapters::zip::Zip")
                                         []
                                         [ A; B ],
+                                      [],
                                       [ A; B ],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ self ]
@@ -4398,9 +4586,11 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ Acc; Ty.tuple [ Ty.associated; Ty.associated ] ]
                                       ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
                                     [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
@@ -4504,8 +4694,10 @@ Module iter.
                                             (Ty.path "core::iter::adapters::zip::Zip")
                                             []
                                             [ A; B ],
+                                          [],
                                           [ A; B ],
                                           "size_hint",
+                                          [],
                                           []
                                         |),
                                         [ self ]
@@ -4553,7 +4745,9 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4583,7 +4777,9 @@ Module iter.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -4622,6 +4818,7 @@ Module iter.
                                                                       []
                                                                       [ Ty.associated ],
                                                                     "unwrap_unchecked",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4630,7 +4827,9 @@ Module iter.
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         A,
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4651,6 +4850,7 @@ Module iter.
                                                                       []
                                                                       [ Ty.associated ],
                                                                     "unwrap_unchecked",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4659,7 +4859,9 @@ Module iter.
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         B,
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4681,6 +4883,7 @@ Module iter.
                                                               M.get_trait_method (|
                                                                 "core::ops::function::FnMut",
                                                                 F,
+                                                                [],
                                                                 [
                                                                   Ty.tuple
                                                                     [
@@ -4693,6 +4896,7 @@ Module iter.
                                                                     ]
                                                                 ],
                                                                 "call_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [

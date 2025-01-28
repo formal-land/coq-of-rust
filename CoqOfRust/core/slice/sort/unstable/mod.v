@@ -71,6 +71,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -215,6 +216,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -282,6 +284,7 @@ Module slice.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [] [ T ],
                                                             "reverse",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| v |) ]
@@ -304,7 +307,7 @@ Module slice.
                               BinOp.Wrap.mul (|
                                 Value.Integer IntegerKind.U32 2,
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
+                                  M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
                                   [
                                     BinOp.bit_or
                                       (M.read (| len |))

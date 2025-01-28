@@ -71,7 +71,7 @@ Module absint.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -136,7 +136,7 @@ Module absint.
             [
               ("pre",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", State, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", State, [], [], "clone", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -214,7 +214,9 @@ Module absint.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -223,7 +225,9 @@ Module absint.
                               "move_bytecode_verifier_meter::Meter",
                               impl_Meter__plus___Sized,
                               [],
+                              [],
                               "add",
+                              [],
                               []
                             |),
                             [
@@ -263,6 +267,7 @@ Module absint.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -273,6 +278,7 @@ Module absint.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -309,6 +315,7 @@ Module absint.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -321,7 +328,9 @@ Module absint.
                         "move_binary_format::control_flow_graph::ControlFlowGraph",
                         Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                         [],
+                        [],
                         "entry_block_id",
+                        [],
                         []
                       |),
                       [
@@ -329,6 +338,7 @@ Module absint.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "cfg",
+                            [],
                             []
                           |),
                           [ M.read (| function_context |) ]
@@ -356,6 +366,7 @@ Module absint.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "insert",
+                        [],
                         []
                       |),
                       [
@@ -402,6 +413,7 @@ Module absint.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "get_mut",
+                                          [],
                                           [ Ty.path "u16" ]
                                         |),
                                         [ inv_map; block_id ]
@@ -437,7 +449,9 @@ Module absint.
                                                         Ty.path
                                                           "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                                         [],
+                                                        [],
                                                         "next_block",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -446,6 +460,7 @@ Module absint.
                                                             Ty.path
                                                               "move_bytecode_verifier::absint::FunctionContext",
                                                             "cfg",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| function_context |) ]
@@ -484,7 +499,9 @@ Module absint.
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -493,7 +510,9 @@ Module absint.
                                               "move_bytecode_verifier::absint::AbstractInterpreter",
                                               Self,
                                               [],
+                                              [],
                                               "execute_block",
+                                              [],
                                               [ impl_Meter__plus___Sized ]
                                             |),
                                             [
@@ -532,6 +551,7 @@ Module absint.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -543,6 +563,7 @@ Module absint.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -572,7 +593,9 @@ Module absint.
                                       Ty.path
                                         "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                       [],
+                                      [],
                                       "next_block",
+                                      [],
                                       []
                                     |),
                                     [
@@ -580,6 +603,7 @@ Module absint.
                                         M.get_associated_function (|
                                           Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                           "cfg",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| function_context |) ]
@@ -605,7 +629,9 @@ Module absint.
                                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                                             ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -615,7 +641,9 @@ Module absint.
                                               Ty.path
                                                 "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                               [],
+                                              [],
                                               "successors",
+                                              [],
                                               []
                                             |),
                                             [
@@ -624,6 +652,7 @@ Module absint.
                                                   Ty.path
                                                     "move_bytecode_verifier::absint::FunctionContext",
                                                   "cfg",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| function_context |) ]
@@ -651,7 +680,9 @@ Module absint.
                                                           []
                                                           [ Ty.path "u16" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -695,7 +726,9 @@ Module absint.
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "branch",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -704,7 +737,9 @@ Module absint.
                                                                       "move_bytecode_verifier_meter::Meter",
                                                                       impl_Meter__plus___Sized,
                                                                       [],
+                                                                      [],
                                                                       "add",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -749,6 +784,7 @@ Module absint.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError"
                                                                                 ],
+                                                                              [],
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -762,6 +798,7 @@ Module absint.
                                                                                   ]
                                                                               ],
                                                                               "from_residual",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| residual |)
@@ -801,6 +838,7 @@ Module absint.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "get_mut",
+                                                                [],
                                                                 [ Ty.path "u16" ]
                                                               |),
                                                               [
@@ -838,7 +876,9 @@ Module absint.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -859,7 +899,9 @@ Module absint.
                                                                                     "move_bytecode_verifier::absint::AbstractDomain",
                                                                                     Ty.associated,
                                                                                     [],
+                                                                                    [],
                                                                                     "join",
+                                                                                    [],
                                                                                     [
                                                                                       impl_Meter__plus___Sized
                                                                                     ]
@@ -907,6 +949,7 @@ Module absint.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -920,6 +963,7 @@ Module absint.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -982,7 +1026,9 @@ Module absint.
                                                                                           Ty.path
                                                                                             "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                                                                           [],
+                                                                                          [],
                                                                                           "is_back_edge",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -991,6 +1037,7 @@ Module absint.
                                                                                               Ty.path
                                                                                                 "move_bytecode_verifier::absint::FunctionContext",
                                                                                               "cfg",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -1035,7 +1082,9 @@ Module absint.
                                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                                   ],
                                                                                                 [],
+                                                                                                [],
                                                                                                 "branch",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -1044,7 +1093,9 @@ Module absint.
                                                                                                     "move_bytecode_verifier_meter::Meter",
                                                                                                     impl_Meter__plus___Sized,
                                                                                                     [],
+                                                                                                    [],
                                                                                                     "add",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -1096,6 +1147,7 @@ Module absint.
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::errors::PartialVMError"
                                                                                                               ],
+                                                                                                            [],
                                                                                                             [
                                                                                                               Ty.apply
                                                                                                                 (Ty.path
@@ -1109,6 +1161,7 @@ Module absint.
                                                                                                                 ]
                                                                                                             ],
                                                                                                             "from_residual",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -1190,6 +1243,7 @@ Module absint.
                                                                               "alloc::alloc::Global"
                                                                           ],
                                                                         "insert",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1208,7 +1262,9 @@ Module absint.
                                                                                   "core::clone::Clone",
                                                                                   Ty.associated,
                                                                                   [],
+                                                                                  [],
                                                                                   "clone",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [ post_state ]
@@ -1284,7 +1340,9 @@ Module absint.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1293,7 +1351,9 @@ Module absint.
                               "move_bytecode_verifier_meter::Meter",
                               impl_Meter__plus___Sized,
                               [],
+                              [],
                               "add",
+                              [],
                               []
                             |),
                             [
@@ -1333,6 +1393,7 @@ Module absint.
                                           Ty.associated;
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1343,6 +1404,7 @@ Module absint.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1366,7 +1428,15 @@ Module absint.
                 let~ state_acc :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [ M.read (| pre_state |) ]
                     |)
                   |) in
@@ -1377,7 +1447,9 @@ Module absint.
                         "move_binary_format::control_flow_graph::ControlFlowGraph",
                         Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                         [],
+                        [],
                         "block_end",
+                        [],
                         []
                       |),
                       [
@@ -1385,6 +1457,7 @@ Module absint.
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "cfg",
+                            [],
                             []
                           |),
                           [ M.read (| function_context |) ]
@@ -1408,7 +1481,9 @@ Module absint.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1418,7 +1493,9 @@ Module absint.
                                 Ty.path
                                   "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                 [],
+                                [],
                                 "instr_indexes",
+                                [],
                                 []
                               |),
                               [
@@ -1426,6 +1503,7 @@ Module absint.
                                   M.get_associated_function (|
                                     Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                     "cfg",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| function_context |) ]
@@ -1460,7 +1538,9 @@ Module absint.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1499,8 +1579,10 @@ Module absint.
                                                         "move_binary_format::file_format::Bytecode";
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [ Ty.path "usize" ],
                                                   "index",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1510,6 +1592,7 @@ Module absint.
                                                         Ty.path
                                                           "move_bytecode_verifier::absint::FunctionContext",
                                                         "code",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| function_context |) ]
@@ -1535,7 +1618,9 @@ Module absint.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1544,7 +1629,9 @@ Module absint.
                                                       "move_bytecode_verifier::absint::TransferFunctions",
                                                       Self,
                                                       [],
+                                                      [],
                                                       "execute",
+                                                      [],
                                                       [ impl_Meter__plus___Sized ]
                                                     |),
                                                     [
@@ -1584,6 +1671,7 @@ Module absint.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -1596,6 +1684,7 @@ Module absint.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1676,6 +1765,7 @@ Module absint.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "signature_at",
+                    [],
                     []
                   |),
                   [
@@ -1694,6 +1784,7 @@ Module absint.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "signature_at",
+                    [],
                     []
                   |),
                   [
@@ -1712,6 +1803,7 @@ Module absint.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "signature_at",
+                    [],
                     []
                   |),
                   [
@@ -1737,7 +1829,9 @@ Module absint.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [
@@ -1753,6 +1847,7 @@ Module absint.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -1767,7 +1862,9 @@ Module absint.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [

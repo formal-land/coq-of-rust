@@ -45,6 +45,7 @@ Module net.
                           []
                           [ Ty.path "u8" ],
                         "uninit",
+                        [],
                         []
                       |),
                       []
@@ -88,6 +89,7 @@ Module net.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "slice_assume_init_ref",
+                      [],
                       []
                     |),
                     [
@@ -103,8 +105,10 @@ Module net.
                                 []
                                 [ Ty.path "u8" ]
                             ],
+                          [],
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                           "index",
+                          [],
                           []
                         |),
                         [
@@ -178,7 +182,7 @@ Module net.
               let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| s |) ]
                   |)
                 |) in
@@ -201,6 +205,7 @@ Module net.
                                     [ Ty.path "u8" ]
                                 ],
                               "get_mut",
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ]
                             |),
@@ -234,6 +239,7 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| bytes |) ]
@@ -259,6 +265,7 @@ Module net.
                                 []
                                 [ Ty.path "u8" ],
                               "copy_from_slice",
+                              [],
                               []
                             |),
                             [ M.read (| buf |); M.read (| bytes |) ]
@@ -279,6 +286,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| bytes |) ]

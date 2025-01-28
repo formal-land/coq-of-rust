@@ -19,8 +19,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -28,8 +30,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -38,8 +42,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -61,8 +67,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -70,8 +78,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -80,8 +90,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -118,8 +130,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -127,8 +141,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -137,8 +153,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -163,8 +181,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -172,8 +192,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -182,8 +204,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -222,8 +246,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -231,8 +257,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -241,8 +269,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -267,8 +297,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -276,8 +308,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -286,8 +320,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -327,8 +363,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -336,8 +374,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -349,8 +389,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -372,8 +414,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -381,8 +425,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -394,8 +440,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -432,8 +480,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -441,8 +491,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -454,8 +506,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -477,8 +531,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -486,8 +542,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -499,8 +557,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -536,8 +596,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -545,8 +607,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -555,8 +619,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -578,8 +644,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -587,8 +655,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -597,8 +667,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -633,8 +705,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -642,8 +716,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -652,8 +728,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -675,8 +753,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -684,8 +764,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -694,8 +776,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -732,8 +816,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -741,8 +827,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -754,7 +842,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -766,8 +856,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -789,8 +881,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -798,8 +892,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -811,7 +907,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -823,8 +921,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -861,8 +961,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -870,8 +972,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -883,7 +987,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -895,8 +1001,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -921,8 +1029,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -930,8 +1040,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -943,7 +1055,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -955,8 +1069,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -996,8 +1112,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1005,8 +1123,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -1018,7 +1138,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1030,8 +1152,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -1056,8 +1180,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -1065,8 +1191,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -1078,7 +1206,9 @@ Module vec.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1090,8 +1220,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "slice") [] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -1137,8 +1269,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1146,8 +1280,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1156,8 +1292,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1185,8 +1323,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -1194,8 +1334,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1204,8 +1346,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1247,8 +1391,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -1256,8 +1402,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1266,8 +1414,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [
@@ -1298,8 +1448,10 @@ Module vec.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
+                [],
                 []
               |),
               [
@@ -1307,8 +1459,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
@@ -1317,8 +1471,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply (Ty.path "array") [ N ] [ U ],
+                    [],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
+                    [],
                     []
                   |),
                   [

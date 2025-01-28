@@ -39,7 +39,7 @@ Module checked.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -189,7 +189,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "sqrt", [] |),
+                          M.get_associated_function (| Ty.path "f64", "sqrt", [], [] |),
                           [ M.read (| x |) ]
                         |)
                       ]
@@ -244,7 +244,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "ln", [] |),
+                          M.get_associated_function (| Ty.path "f64", "ln", [], [] |),
                           [ M.read (| x |) ]
                         |)
                       ]
@@ -292,7 +292,9 @@ Module checked.
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -332,6 +334,7 @@ Module checked.
                                           Ty.path
                                             "result_chaining_with_question_mark::checked::MathError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -343,6 +346,7 @@ Module checked.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -379,7 +383,9 @@ Module checked.
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -419,6 +425,7 @@ Module checked.
                                           Ty.path
                                             "result_chaining_with_question_mark::checked::MathError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -430,6 +437,7 @@ Module checked.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -557,6 +565,7 @@ Module checked.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -572,6 +581,7 @@ Module checked.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "f64" ]
                                       |),
                                       [ value ]

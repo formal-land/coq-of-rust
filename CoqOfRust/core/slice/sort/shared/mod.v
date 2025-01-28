@@ -64,6 +64,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -99,11 +100,13 @@ Module slice.
                         M.get_trait_method (|
                           "core::ops::function::FnMut",
                           F,
+                          [],
                           [
                             Ty.tuple
                               [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                           ],
                           "call_mut",
+                          [],
                           []
                         |),
                         [
@@ -114,6 +117,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "get_unchecked",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [ M.read (| v |); Value.Integer IntegerKind.Usize 1 ]
@@ -122,6 +126,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "get_unchecked",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [ M.read (| v |); Value.Integer IntegerKind.Usize 0 ]
@@ -159,6 +164,7 @@ Module slice.
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       F,
+                                                      [],
                                                       [
                                                         Ty.tuple
                                                           [
@@ -167,6 +173,7 @@ Module slice.
                                                           ]
                                                       ],
                                                       "call_mut",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -177,6 +184,7 @@ Module slice.
                                                             M.get_associated_function (|
                                                               Ty.apply (Ty.path "slice") [] [ T ],
                                                               "get_unchecked",
+                                                              [],
                                                               [ Ty.path "usize" ]
                                                             |),
                                                             [ M.read (| v |); M.read (| run_len |) ]
@@ -185,6 +193,7 @@ Module slice.
                                                             M.get_associated_function (|
                                                               Ty.apply (Ty.path "slice") [] [ T ],
                                                               "get_unchecked",
+                                                              [],
                                                               [ Ty.path "usize" ]
                                                             |),
                                                             [
@@ -254,6 +263,7 @@ Module slice.
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnMut",
                                                         F,
+                                                        [],
                                                         [
                                                           Ty.tuple
                                                             [
@@ -262,6 +272,7 @@ Module slice.
                                                             ]
                                                         ],
                                                         "call_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -272,6 +283,7 @@ Module slice.
                                                               M.get_associated_function (|
                                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                                 "get_unchecked",
+                                                                [],
                                                                 [ Ty.path "usize" ]
                                                               |),
                                                               [ M.read (| v |); M.read (| run_len |)
@@ -281,6 +293,7 @@ Module slice.
                                                               M.get_associated_function (|
                                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                                 "get_unchecked",
+                                                                [],
                                                                 [ Ty.path "usize" ]
                                                               |),
                                                               [

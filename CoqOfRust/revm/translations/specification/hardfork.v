@@ -161,7 +161,7 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -513,8 +513,10 @@ Module hardfork.
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "u8",
+                  [],
                   [ Ty.path "u8" ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [ __self_discr; __arg1_discr ]
@@ -567,7 +569,7 @@ Module hardfork.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
                 [ __self_discr; __arg1_discr ]
               |)
             |)
@@ -607,7 +609,15 @@ Module hardfork.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [ __self_discr; M.read (| state |) ]
               |)
             |)
@@ -923,7 +933,12 @@ Module hardfork.
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "revm_specification::hardfork::SpecId", "n", [] |),
+            M.get_associated_function (|
+              Ty.path "revm_specification::hardfork::SpecId",
+              "n",
+              [],
+              []
+            |),
             [ M.read (| spec_id |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1425,11 +1440,11 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -1439,6 +1454,7 @@ Module hardfork.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [
@@ -1447,8 +1463,10 @@ Module hardfork.
                                 M.get_trait_method (|
                                   "core::convert::From",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                  [],
                                   [ Ty.path "revm_specification::hardfork::SpecId" ],
                                   "from",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| M.read (| self |) |) ]

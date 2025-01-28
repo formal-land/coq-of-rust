@@ -19,13 +19,13 @@ Module exec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "revm::exec::EvmExec", Self, [], "set_tx", [] |),
+                  M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "set_tx", [], [] |),
                   [ M.read (| self |); M.read (| tx |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "revm::exec::EvmExec", Self, [], "exec", [] |),
+                M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "exec", [], [] |),
                 [ M.read (| self |) ]
               |)
             |)
@@ -54,13 +54,21 @@ Module exec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "revm::exec::EvmExec", Self, [], "set_tx", [] |),
+                  M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "set_tx", [], [] |),
                   [ M.read (| self |); M.read (| tx |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "revm::exec::EvmCommit", Self, [], "exec_commit", [] |),
+                M.get_trait_method (|
+                  "revm::exec::EvmCommit",
+                  Self,
+                  [],
+                  [],
+                  "exec_commit",
+                  [],
+                  []
+                |),
                 [ M.read (| self |) ]
               |)
             |)

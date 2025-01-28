@@ -63,6 +63,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
@@ -70,6 +71,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugTuple",
                       "field",
+                      [],
                       []
                     |),
                     [
@@ -77,6 +79,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
+                          [],
                           []
                         |),
                         [
@@ -85,6 +88,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_tuple",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
@@ -95,6 +99,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                 "as_slice",
+                                [],
                                 []
                               |),
                               [
@@ -113,6 +118,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                             "as_slice",
+                            [],
                             []
                           |),
                           [
@@ -163,7 +169,9 @@ Module collections.
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -174,7 +182,9 @@ Module collections.
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -229,7 +239,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
@@ -285,7 +297,9 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
@@ -334,7 +348,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "advance_by",
+                        [],
                         []
                       |),
                       [
@@ -396,7 +412,9 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
+                              [],
                               "advance_by",
+                              [],
                               []
                             |),
                             [
@@ -412,6 +430,7 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| remaining |) ]
@@ -448,7 +467,9 @@ Module collections.
                           []
                           [ T ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -490,7 +511,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "fold",
+                        [],
                         [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
@@ -512,7 +535,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
+                      [],
                       "fold",
+                      [],
                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
@@ -562,7 +587,9 @@ Module collections.
                                 "core::ops::try_trait::Try",
                                 R,
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -571,7 +598,9 @@ Module collections.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                     [],
+                                    [],
                                     "try_fold",
+                                    [],
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
@@ -605,8 +634,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
+                                            [],
                                             [ Ty.associated ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -634,7 +665,9 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           [],
+                          [],
                           "try_fold",
+                          [],
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
@@ -669,7 +702,9 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [ self ]
@@ -711,7 +746,9 @@ Module collections.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
@@ -743,7 +780,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
+                                  [],
                                   "__iterator_get_unchecked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -764,7 +803,9 @@ Module collections.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
+                                  [],
                                   "__iterator_get_unchecked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -838,7 +879,9 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "next_back",
+                        [],
                         []
                       |),
                       [
@@ -894,7 +937,9 @@ Module collections.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
+                              [],
                               "next_back",
+                              [],
                               []
                             |),
                             [
@@ -943,7 +988,9 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "advance_back_by",
+                        [],
                         []
                       |),
                       [
@@ -1005,7 +1052,9 @@ Module collections.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
+                              [],
                               "advance_back_by",
+                              [],
                               []
                             |),
                             [
@@ -1021,6 +1070,7 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| remaining |) ]
@@ -1059,7 +1109,9 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "rfold",
+                        [],
                         [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
@@ -1081,7 +1133,9 @@ Module collections.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
+                      [],
                       "rfold",
+                      [],
                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
@@ -1131,7 +1185,9 @@ Module collections.
                                 "core::ops::try_trait::Try",
                                 R,
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1140,7 +1196,9 @@ Module collections.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                     [],
+                                    [],
                                     "try_rfold",
+                                    [],
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
@@ -1174,8 +1232,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
+                                            [],
                                             [ Ty.associated ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1203,7 +1263,9 @@ Module collections.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           [],
+                          [],
                           "try_rfold",
+                          [],
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
@@ -1258,7 +1320,9 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [
@@ -1274,7 +1338,9 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [
@@ -1306,7 +1372,9 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
+                    [],
                     "is_empty",
+                    [],
                     []
                   |),
                   [
@@ -1323,7 +1391,9 @@ Module collections.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
+                      [],
                       "is_empty",
+                      [],
                       []
                     |),
                     [

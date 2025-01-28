@@ -26,6 +26,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
@@ -124,7 +125,12 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -137,6 +143,7 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ T ] ]
                               |),
                               [ t ]
@@ -167,7 +174,7 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.call_closure (|
-        M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |),
+        M.get_trait_method (| "generics_bounds::HasArea", T, [], [], "area", [], [] |),
         [ M.read (| t |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -236,7 +243,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -250,6 +262,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "f64" ]
                               |),
                               [
@@ -259,7 +272,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "generics_bounds::HasArea",
                                       Ty.path "generics_bounds::Rectangle",
                                       [],
+                                      [],
                                       "area",
+                                      [],
                                       []
                                     |),
                                     [ rectangle ]

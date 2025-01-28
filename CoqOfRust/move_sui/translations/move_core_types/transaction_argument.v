@@ -97,7 +97,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -123,7 +125,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -149,7 +153,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -175,7 +181,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -204,7 +212,9 @@ Module transaction_argument.
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -230,7 +240,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "bool",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -256,7 +268,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -282,7 +296,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -308,7 +324,9 @@ Module transaction_argument.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -354,7 +372,15 @@ Module transaction_argument.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -377,7 +403,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "u8",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -399,7 +427,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "u64",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -421,7 +451,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "u128",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -443,7 +475,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "move_core_types::account_address::AccountAddress",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -468,7 +502,9 @@ Module transaction_argument.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -490,7 +526,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "bool",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -512,7 +550,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "u16",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -534,7 +574,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "u32",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -556,7 +598,9 @@ Module transaction_argument.
                           "core::hash::Hash",
                           Ty.path "move_core_types::u256::U256",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -746,8 +790,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -778,8 +824,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -810,8 +858,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -845,6 +895,7 @@ Module transaction_argument.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -852,6 +903,7 @@ Module transaction_argument.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -890,6 +942,7 @@ Module transaction_argument.
                                         []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -902,6 +955,7 @@ Module transaction_argument.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -932,8 +986,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -964,8 +1020,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -996,8 +1054,10 @@ Module transaction_argument.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1031,6 +1091,7 @@ Module transaction_argument.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1038,6 +1099,7 @@ Module transaction_argument.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1101,7 +1163,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [
@@ -1128,7 +1192,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -1155,7 +1221,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "u128" ]
                           |),
                           [
@@ -1182,7 +1250,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
@@ -1209,7 +1279,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.path
                                 "move_core_types::transaction_argument::_::serialize::__SerializeWith"
@@ -1246,7 +1318,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "bool" ]
                           |),
                           [
@@ -1273,7 +1347,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "u16" ]
                           |),
                           [
@@ -1300,7 +1376,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "u32" ]
                           |),
                           [
@@ -1327,7 +1405,9 @@ Module transaction_argument.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::u256::U256" ]
                           |),
                           [
@@ -1367,7 +1447,9 @@ Module transaction_argument.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::transaction_argument::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -1410,7 +1492,9 @@ Module transaction_argument.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_newtype_struct",
+                [],
                 [ Ty.path "move_core_types::transaction_argument::_'2::deserialize::__Visitor" ]
               |),
               [
@@ -1482,6 +1566,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1490,6 +1575,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1505,6 +1591,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                       |),
                                       [ value ]
@@ -1531,6 +1618,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1539,6 +1627,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1556,6 +1645,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                       |),
                                       [ value ]
@@ -1582,6 +1672,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1590,6 +1681,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1607,6 +1699,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
                                       |),
                                       [ value ]
@@ -1633,6 +1726,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1641,6 +1735,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1658,6 +1753,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]
                                       |),
                                       [ boolean ]
@@ -1684,6 +1780,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1692,6 +1789,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1709,6 +1807,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -1743,6 +1842,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1751,6 +1851,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1768,6 +1869,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -1816,6 +1918,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1824,6 +1927,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1841,6 +1945,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       |),
                                       [ value ]
@@ -1867,6 +1972,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1875,6 +1981,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1892,6 +1999,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                       |),
                                       [ value ]
@@ -1918,6 +2026,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -1926,6 +2035,7 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -1943,6 +2053,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -2084,6 +2195,7 @@ Module transaction_argument.
                         M.get_associated_function (|
                           Ty.path "move_core_types::runtime_value::MoveValue",
                           "vector_u8",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -2294,7 +2406,9 @@ Module transaction_argument.
                                                 Ty.path "anyhow::Error"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2327,7 +2441,9 @@ Module transaction_argument.
                                                         [ Ty.path "u8"; Ty.path "anyhow::Error" ])
                                                   ],
                                                 [],
+                                                [],
                                                 "collect",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -2357,7 +2473,9 @@ Module transaction_argument.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "map",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -2390,7 +2508,9 @@ Module transaction_argument.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| v |) ]
@@ -2446,6 +2566,7 @@ Module transaction_argument.
                                                                                           Ty.path
                                                                                             "anyhow::Error",
                                                                                           "msg",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "alloc::string::String"
@@ -2478,6 +2599,7 @@ Module transaction_argument.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -2498,6 +2620,7 @@ Module transaction_argument.
                                                                                                                       Ty.path
                                                                                                                         "core::fmt::rt::Argument",
                                                                                                                       "new_debug",
+                                                                                                                      [],
                                                                                                                       [
                                                                                                                         Ty.path
                                                                                                                           "move_core_types::runtime_value::MoveValue"
@@ -2562,6 +2685,7 @@ Module transaction_argument.
                                                               "move_core_types::transaction_argument::TransactionArgument";
                                                             Ty.path "anyhow::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2572,6 +2696,7 @@ Module transaction_argument.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2619,95 +2744,97 @@ Module transaction_argument.
                                       |) in
                                     Value.Tuple []))
                               ],
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [] =>
-                                      ltac:(M.monadic
-                                        (M.alloc (|
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                Value.StructTuple
-                                                  "core::result::Result::Err"
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "anyhow::Error",
-                                                        "msg",
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::hint::must_use",
-                                                            [],
-                                                            [ Ty.path "alloc::string::String" ]
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              let~ res :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "alloc::fmt::format",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "invalid transaction argument: "
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
+                              fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [] =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              Value.StructTuple
+                                                "core::result::Result::Err"
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "anyhow::Error",
+                                                      "msg",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::hint::must_use",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            let~ res :=
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "invalid transaction argument: "
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [],
+                                                                                  [
                                                                                     Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_core_types::runtime_value::MoveValue"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ val ]
-                                                                                |)
-                                                                              ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              res
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              |)
+                                                                                      "move_core_types::runtime_value::MoveValue"
+                                                                                  ]
+                                                                                |),
+                                                                                [ val ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            res
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                             |)
                                           |)
-                                        |)))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
+                                        |)
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -2812,7 +2939,9 @@ Module transaction_argument.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
               ],
             [],
+            [],
             "collect",
+            [],
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -2835,7 +2964,9 @@ Module transaction_argument.
                   []
                   [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ],
                 [],
+                [],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -2865,6 +2996,7 @@ Module transaction_argument.
                       []
                       [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ],
                     "iter",
+                    [],
                     []
                   |),
                   [ M.read (| args |) ]
@@ -2893,6 +3025,7 @@ Module transaction_argument.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                         ],
                                       "expect",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2900,6 +3033,7 @@ Module transaction_argument.
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::runtime_value::MoveValue",
                                           "simple_serialize",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2908,11 +3042,13 @@ Module transaction_argument.
                                               M.get_trait_method (|
                                                 "core::convert::From",
                                                 Ty.path "move_core_types::runtime_value::MoveValue",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_core_types::transaction_argument::TransactionArgument"
                                                 ],
                                                 "from",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2922,7 +3058,9 @@ Module transaction_argument.
                                                     Ty.path
                                                       "move_core_types::transaction_argument::TransactionArgument",
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| arg |) ]
@@ -2985,7 +3123,9 @@ Module transaction_argument.
                     []
                     [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -3026,7 +3166,9 @@ Module transaction_argument.
                 []
                 [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "hash",
+              [],
               [ __H ]
             |),
             [
@@ -3108,6 +3250,7 @@ Module transaction_argument.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -3115,6 +3258,7 @@ Module transaction_argument.
                   [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -3190,7 +3334,9 @@ Module transaction_argument.
                         (Ty.path "serde_bytes::bytebuf::ByteBuf")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3213,7 +3359,9 @@ Module transaction_argument.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "serde_bytes::bytebuf::ByteBuf";
                         Ty.function
@@ -3241,7 +3389,9 @@ Module transaction_argument.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| vec_bytes |) ]
@@ -3249,6 +3399,7 @@ Module transaction_argument.
                       M.get_associated_function (|
                         Ty.path "serde_bytes::bytebuf::ByteBuf",
                         "from",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -3298,7 +3449,9 @@ Module transaction_argument.
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
                 ],
               [],
+              [],
               "collect",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -3321,7 +3474,9 @@ Module transaction_argument.
                     []
                     [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "map",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3344,7 +3499,9 @@ Module transaction_argument.
                         []
                         [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -3373,6 +3530,7 @@ Module transaction_argument.
                                       M.get_associated_function (|
                                         Ty.path "serde_bytes::bytebuf::ByteBuf",
                                         "into_vec",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| byte_buf |) ]

@@ -122,6 +122,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
                                               "ok",
+                                              [],
                                               []
                                             |),
                                             [
@@ -129,8 +130,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "try_from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -156,6 +159,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
                                               "ok",
+                                              [],
                                               []
                                             |),
                                             [
@@ -163,8 +167,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "try_from",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| count |) ]

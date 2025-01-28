@@ -107,8 +107,10 @@ Module str.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                    [],
                     [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -183,6 +185,7 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
@@ -335,6 +338,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -343,6 +347,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -360,6 +365,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [ error_len ]
@@ -368,6 +374,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -392,6 +399,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
+                            [],
                             []
                           |),
                           [
@@ -400,6 +408,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
@@ -418,6 +427,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -493,7 +503,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [ M.read (| f |); M.read (| Value.String "ParseBoolError" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -602,7 +612,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.read (| Value.String "provided string was not `true` or `false`" |);
                 M.read (| f |)

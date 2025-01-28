@@ -353,8 +353,10 @@ Module panic.
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
+                [],
                 [ Ty.tuple [] ],
                 "call_once",
+                [],
                 []
               |),
               [
@@ -404,6 +406,7 @@ Module panic.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
@@ -411,6 +414,7 @@ Module panic.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [
@@ -419,6 +423,7 @@ Module panic.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "AssertUnwindSafe" |) ]
@@ -463,7 +468,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                  M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                   []
                 |)
               ]))
@@ -520,6 +525,7 @@ Module panic.
                             ]
                         ],
                       "map_unchecked_mut",
+                      [],
                       [
                         F;
                         Ty.function
@@ -568,7 +574,15 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::future::future::Future", F, [], "poll", [] |),
+                  M.get_trait_method (|
+                    "core::future::future::Future",
+                    F,
+                    [],
+                    [],
+                    "poll",
+                    [],
+                    []
+                  |),
                   [ M.read (| pinned_field |); M.read (| cx |) ]
                 |)
               |)
@@ -611,7 +625,9 @@ Module panic.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "poll_next",
+                [],
                 []
               |),
               [
@@ -628,6 +644,7 @@ Module panic.
                           ]
                       ],
                     "map_unchecked_mut",
+                    [],
                     [
                       S;
                       Ty.function
@@ -695,7 +712,9 @@ Module panic.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [

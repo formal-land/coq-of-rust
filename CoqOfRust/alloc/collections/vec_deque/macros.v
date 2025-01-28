@@ -44,6 +44,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -52,6 +53,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -72,6 +74,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -90,6 +93,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -97,8 +101,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -110,6 +116,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -133,6 +140,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -140,6 +148,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -152,6 +161,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -159,6 +169,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]
@@ -225,6 +236,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -233,6 +245,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
@@ -253,6 +266,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -271,6 +285,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -278,8 +293,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ U ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -291,6 +308,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -314,6 +332,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -321,6 +340,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -333,6 +353,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -340,6 +361,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]
@@ -406,6 +428,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -414,6 +437,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
@@ -434,6 +458,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -452,6 +477,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -459,8 +485,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ U ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -472,6 +500,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -495,6 +524,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -502,6 +532,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -514,6 +545,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -521,6 +553,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]
@@ -593,6 +626,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -601,6 +635,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| other |) ]
@@ -621,6 +656,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -639,6 +675,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -646,8 +683,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "array") [ N ] [ U ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -659,6 +698,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -682,6 +722,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -689,6 +730,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -701,6 +743,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -708,6 +751,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]
@@ -779,6 +823,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -787,6 +832,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
@@ -807,6 +853,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -825,6 +872,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -832,8 +880,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "array") [ N ] [ U ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -845,6 +895,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -868,6 +919,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -875,6 +927,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -887,6 +940,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -894,6 +948,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]
@@ -966,6 +1021,7 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| self |) ]
@@ -974,6 +1030,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
@@ -994,6 +1051,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -1012,6 +1070,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1019,8 +1078,10 @@ Module collections.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "array") [ N ] [ U ],
+                                      [],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1032,6 +1093,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| sa |) ]
@@ -1055,6 +1117,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1062,6 +1125,7 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
                                         [ sa; oa ]
@@ -1074,6 +1138,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -1081,6 +1146,7 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [ sb; ob ]

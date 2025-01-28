@@ -24,11 +24,11 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
           [
             M.read (| f |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |);
                 M.alloc (|
@@ -38,6 +38,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_display",
+                          [],
                           [ Ty.path "i32" ]
                         |),
                         [
@@ -89,7 +90,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "alloc::string::ToString",
                 Ty.path "converting_to_string::Circle",
                 [],
+                [],
                 "to_string",
+                [],
                 []
               |),
               [ circle ]

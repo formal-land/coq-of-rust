@@ -21,6 +21,7 @@ Module future.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -70,6 +71,7 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
@@ -78,6 +80,7 @@ Module future.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "AsyncDropOwning" |) ]
@@ -144,6 +147,7 @@ Module future.
                             ]
                         ],
                       "get_unchecked_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -168,6 +172,7 @@ Module future.
                             ]
                         ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -183,6 +188,7 @@ Module future.
                                 [ T ]
                             ],
                           "get_or_insert_with",
+                          [],
                           [
                             Ty.function
                               [ Ty.tuple [] ]
@@ -224,6 +230,7 @@ Module future.
                                                       []
                                                       [ T ],
                                                     "as_mut_ptr",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -251,7 +258,9 @@ Module future.
                     "core::future::future::Future",
                     Ty.apply (Ty.path "core::future::async_drop::AsyncDropInPlace") [] [ T ],
                     [],
+                    [],
                     "poll",
+                    [],
                     []
                   |),
                   [ M.read (| dtor |); M.read (| cx |) ]
@@ -350,6 +359,7 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
@@ -358,6 +368,7 @@ Module future.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
+                      [],
                       []
                     |),
                     [ M.read (| f |); M.read (| Value.String "AsyncDropInPlace" |) ]
@@ -402,7 +413,9 @@ Module future.
                 "core::future::future::Future",
                 Ty.associated,
                 [],
+                [],
                 "poll",
+                [],
                 []
               |),
               [
@@ -413,6 +426,7 @@ Module future.
                       []
                       [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -434,6 +448,7 @@ Module future.
                                 ]
                             ],
                           "get_unchecked_mut",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -503,7 +518,9 @@ Module future.
                                         "core::future::into_future::IntoFuture",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "into_future",
+                                        [],
                                         []
                                       |),
                                       [
@@ -512,7 +529,9 @@ Module future.
                                             "core::future::async_drop::AsyncDrop",
                                             T,
                                             [],
+                                            [],
                                             "async_drop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -523,6 +542,7 @@ Module future.
                                                   []
                                                   [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                                 "new_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| ptr |) ]
@@ -546,7 +566,9 @@ Module future.
                                                       "core::future::future::Future",
                                                       Ty.associated,
                                                       [],
+                                                      [],
                                                       "poll",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -562,6 +584,7 @@ Module future.
                                                                 [ Ty.associated ]
                                                             ],
                                                           "new_unchecked",
+                                                          [],
                                                           []
                                                         |),
                                                         [ __awaitee ]
@@ -753,6 +776,7 @@ Module future.
                                   [ Ty.apply (Ty.path "core::future::async_drop::Fuse") [] [ T ] ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -787,7 +811,9 @@ Module future.
                                       "core::future::future::Future",
                                       T,
                                       [],
+                                      [],
                                       "poll",
+                                      [],
                                       []
                                     |),
                                     [
@@ -798,6 +824,7 @@ Module future.
                                             []
                                             [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                           "new_unchecked",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| inner |) ]
@@ -903,6 +930,7 @@ Module future.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -917,6 +945,7 @@ Module future.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "as_mut_ptr",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -933,7 +962,9 @@ Module future.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -963,7 +994,9 @@ Module future.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ iter ]
@@ -998,7 +1031,9 @@ Module future.
                                                                 "core::future::into_future::IntoFuture",
                                                                 Ty.associated,
                                                                 [],
+                                                                [],
                                                                 "into_future",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1016,6 +1051,7 @@ Module future.
                                                                           []
                                                                           [ T ],
                                                                         "add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1042,7 +1078,9 @@ Module future.
                                                                               "core::future::future::Future",
                                                                               Ty.associated,
                                                                               [],
+                                                                              [],
                                                                               "poll",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1062,6 +1100,7 @@ Module future.
                                                                                         ]
                                                                                     ],
                                                                                   "new_unchecked",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [ __awaitee ]
@@ -1186,7 +1225,9 @@ Module future.
                                           "core::future::into_future::IntoFuture",
                                           F,
                                           [],
+                                          [],
                                           "into_future",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| first |) ]
@@ -1206,7 +1247,9 @@ Module future.
                                                         "core::future::future::Future",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "poll",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1222,6 +1265,7 @@ Module future.
                                                                   [ Ty.associated ]
                                                               ],
                                                             "new_unchecked",
+                                                            [],
                                                             []
                                                           |),
                                                           [ __awaitee ]
@@ -1281,7 +1325,9 @@ Module future.
                                           "core::future::into_future::IntoFuture",
                                           G,
                                           [],
+                                          [],
                                           "into_future",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| last |) ]
@@ -1301,7 +1347,9 @@ Module future.
                                                         "core::future::future::Future",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "poll",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1317,6 +1365,7 @@ Module future.
                                                                   [ Ty.associated ]
                                                               ],
                                                             "new_unchecked",
+                                                            [],
                                                             []
                                                           |),
                                                           [ __awaitee ]
@@ -1419,7 +1468,9 @@ Module future.
                                           []
                                           [ T ],
                                         [],
+                                        [],
                                         "into_future",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1452,7 +1503,9 @@ Module future.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "poll",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1474,6 +1527,7 @@ Module future.
                                                                 ]
                                                             ],
                                                           "new_unchecked",
+                                                          [],
                                                           []
                                                         |),
                                                         [ __awaitee ]
@@ -1594,8 +1648,10 @@ Module future.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.associated,
+                                                  [],
                                                   [ Ty.associated ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1632,7 +1688,9 @@ Module future.
                                                 "core::future::into_future::IntoFuture",
                                                 M_,
                                                 [],
+                                                [],
                                                 "into_future",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| matched |) ]
@@ -1652,7 +1710,9 @@ Module future.
                                                               "core::future::future::Future",
                                                               Ty.associated,
                                                               [],
+                                                              [],
                                                               "poll",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1668,6 +1728,7 @@ Module future.
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   "new_unchecked",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ __awaitee ]
@@ -1735,7 +1796,9 @@ Module future.
                                                 "core::future::into_future::IntoFuture",
                                                 O,
                                                 [],
+                                                [],
                                                 "into_future",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| other |) ]
@@ -1755,7 +1818,9 @@ Module future.
                                                               "core::future::future::Future",
                                                               Ty.associated,
                                                               [],
+                                                              [],
                                                               "poll",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1771,6 +1836,7 @@ Module future.
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   "new_unchecked",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ __awaitee ]

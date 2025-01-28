@@ -55,7 +55,9 @@ Module abi.
                               "core::clone::Clone",
                               Ty.path "move_core_types::abi::TransactionScriptABI",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -81,7 +83,9 @@ Module abi.
                               "core::clone::Clone",
                               Ty.path "move_core_types::abi::ScriptFunctionABI",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -131,6 +135,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "TransactionScript" |); __self_0 ]
@@ -151,6 +156,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "ScriptFunction" |); __self_0 ]
@@ -195,7 +201,15 @@ Module abi.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -218,7 +232,9 @@ Module abi.
                           "core::hash::Hash",
                           Ty.path "move_core_types::abi::TransactionScriptABI",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -240,7 +256,9 @@ Module abi.
                           "core::hash::Hash",
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
@@ -378,6 +396,7 @@ Module abi.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -385,6 +404,7 @@ Module abi.
                                       [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -418,6 +438,7 @@ Module abi.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -425,6 +446,7 @@ Module abi.
                                       [ Ty.path "move_core_types::abi::ScriptFunctionABI" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -487,7 +509,9 @@ Module abi.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
                           |),
                           [
@@ -514,7 +538,9 @@ Module abi.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::abi::ScriptFunctionABI" ]
                           |),
                           [
@@ -553,7 +579,9 @@ Module abi.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::abi::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -602,7 +630,9 @@ Module abi.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -669,7 +699,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -724,7 +756,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
@@ -779,7 +813,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -834,7 +870,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -897,7 +935,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -958,7 +998,9 @@ Module abi.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -990,7 +1032,9 @@ Module abi.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::abi::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -1037,7 +1081,9 @@ Module abi.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1104,7 +1150,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -1159,7 +1207,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -1214,7 +1264,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::abi::_'4::serialize::__SerializeWith" ]
                           |),
                           [
@@ -1280,7 +1332,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -1343,7 +1397,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -1404,7 +1460,9 @@ Module abi.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1436,7 +1494,9 @@ Module abi.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::abi::_'5::deserialize::__Visitor" ]
               |),
               [
@@ -1483,7 +1543,9 @@ Module abi.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1541,7 +1603,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -1596,7 +1660,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::TypeTag" ]
                           |),
                           [
@@ -1649,7 +1715,9 @@ Module abi.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1681,7 +1749,9 @@ Module abi.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::abi::_'7::deserialize::__Visitor" ]
               |),
               [
@@ -1728,7 +1798,9 @@ Module abi.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -1783,7 +1855,9 @@ Module abi.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -1836,7 +1910,9 @@ Module abi.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -1868,7 +1944,9 @@ Module abi.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::abi::_'9::deserialize::__Visitor" ]
               |),
               [
@@ -1937,7 +2015,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1954,7 +2034,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1971,7 +2053,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -1994,7 +2078,9 @@ Module abi.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2015,7 +2101,9 @@ Module abi.
                       [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2052,6 +2140,7 @@ Module abi.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field5_finish",
+              [],
               []
             |),
             [
@@ -2120,7 +2209,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2140,7 +2231,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2160,7 +2253,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2186,7 +2281,9 @@ Module abi.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2208,7 +2305,9 @@ Module abi.
                     []
                     [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -2314,8 +2413,10 @@ Module abi.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
+                      [],
                       [ Ty.path "alloc::string::String" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -2336,8 +2437,10 @@ Module abi.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_core_types::language_storage::ModuleId",
+                        [],
                         [ Ty.path "move_core_types::language_storage::ModuleId" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -2359,8 +2462,10 @@ Module abi.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
+                      [],
                       [ Ty.path "alloc::string::String" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -2388,6 +2493,7 @@ Module abi.
                         Ty.path "move_core_types::abi::TypeArgumentABI";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -2398,6 +2504,7 @@ Module abi.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -2422,6 +2529,7 @@ Module abi.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2430,6 +2538,7 @@ Module abi.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -2504,7 +2613,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2521,7 +2632,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2541,7 +2654,9 @@ Module abi.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2564,7 +2679,9 @@ Module abi.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2585,7 +2702,9 @@ Module abi.
                       [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -2622,6 +2741,7 @@ Module abi.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field5_finish",
+              [],
               []
             |),
             [
@@ -2690,7 +2810,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2710,7 +2832,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2733,7 +2857,9 @@ Module abi.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2759,7 +2885,9 @@ Module abi.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -2781,7 +2909,9 @@ Module abi.
                     []
                     [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -2887,8 +3017,10 @@ Module abi.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
+                      [],
                       [ Ty.path "alloc::string::String" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -2909,8 +3041,10 @@ Module abi.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloc::string::String",
+                        [],
                         [ Ty.path "alloc::string::String" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
@@ -2935,6 +3069,7 @@ Module abi.
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -2942,6 +3077,7 @@ Module abi.
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
@@ -2969,6 +3105,7 @@ Module abi.
                         Ty.path "move_core_types::abi::TypeArgumentABI";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -2979,6 +3116,7 @@ Module abi.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
@@ -3003,6 +3141,7 @@ Module abi.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3011,6 +3150,7 @@ Module abi.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3070,7 +3210,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3087,7 +3229,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::TypeTag",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3124,6 +3268,7 @@ Module abi.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
@@ -3174,7 +3319,9 @@ Module abi.
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
@@ -3193,7 +3340,9 @@ Module abi.
                   "core::hash::Hash",
                   Ty.path "move_core_types::language_storage::TypeTag",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
@@ -3282,8 +3431,10 @@ Module abi.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "alloc::string::String",
+                [],
                 [ Ty.path "alloc::string::String" ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -3304,8 +3455,10 @@ Module abi.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::language_storage::TypeTag",
+                  [],
                   [ Ty.path "move_core_types::language_storage::TypeTag" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
@@ -3361,7 +3514,9 @@ Module abi.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3398,6 +3553,7 @@ Module abi.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -3439,7 +3595,9 @@ Module abi.
               "core::hash::Hash",
               Ty.path "alloc::string::String",
               [],
+              [],
               "hash",
+              [],
               [ __H ]
             |),
             [
@@ -3518,8 +3676,10 @@ Module abi.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.path "alloc::string::String" ],
               "eq",
+              [],
               []
             |),
             [
@@ -3606,7 +3766,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3637,7 +3799,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3671,7 +3835,9 @@ Module abi.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3705,7 +3871,9 @@ Module abi.
                 []
                 [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3739,7 +3907,9 @@ Module abi.
                 []
                 [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3814,7 +3984,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3865,7 +4037,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3899,7 +4073,9 @@ Module abi.
                 []
                 [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3933,7 +4109,9 @@ Module abi.
                 []
                 [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -4057,6 +4235,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::TransactionScriptABI",
                           "name",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4077,6 +4256,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
                           "name",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4122,6 +4302,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::TransactionScriptABI",
                           "doc",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4142,6 +4323,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
                           "doc",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4187,6 +4369,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::TransactionScriptABI",
                           "ty_args",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4207,6 +4390,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
                           "ty_args",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4252,6 +4436,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::TransactionScriptABI",
                           "args",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4272,6 +4457,7 @@ Module abi.
                         M.get_associated_function (|
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
                           "args",
+                          [],
                           []
                         |),
                         [ M.read (| abi |) ]
@@ -4323,7 +4509,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -4396,7 +4584,9 @@ Module abi.
               "core::ops::deref::Deref",
               Ty.path "alloc::string::String",
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [

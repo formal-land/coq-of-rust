@@ -32,8 +32,10 @@ Module serializer.
                     M.get_trait_method (|
                       "core::convert::Into",
                       T1,
+                      [],
                       [ Ty.path "u64" ],
                       "into",
+                      [],
                       []
                     |),
                     [ M.read (| x |) ]
@@ -45,8 +47,10 @@ Module serializer.
                     M.get_trait_method (|
                       "core::convert::Into",
                       T2,
+                      [],
                       [ Ty.path "u64" ],
                       "into",
+                      [],
                       []
                     |),
                     [ M.read (| max |) ]
@@ -73,6 +77,7 @@ Module serializer.
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -97,6 +102,7 @@ Module serializer.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -118,6 +124,7 @@ Module serializer.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "u64" ]
                                                                   |),
                                                                   [ x ]
@@ -127,6 +134,7 @@ Module serializer.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "u64" ]
                                                                   |),
                                                                   [ max ]
@@ -1261,6 +1269,7 @@ Module serializer.
                                     []
                                     [ Ty.path "u32" ],
                                   "contains",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [
@@ -1272,6 +1281,7 @@ Module serializer.
                                           []
                                           [ Ty.path "u32" ],
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1305,6 +1315,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "anyhow::Error",
                                       "msg",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -1325,6 +1336,7 @@ Module serializer.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1350,6 +1362,7 @@ Module serializer.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
+                                                                  [],
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 [ version ]
@@ -1358,6 +1371,7 @@ Module serializer.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
+                                                                  [],
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 [
@@ -1370,6 +1384,7 @@ Module serializer.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
+                                                                  [],
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 [
@@ -1429,6 +1444,7 @@ Module serializer.
             M.get_associated_function (|
               Ty.path "move_binary_format::file_format::CompiledModule",
               "serialize_for_version",
+              [],
               []
             |),
             [
@@ -1488,6 +1504,7 @@ Module serializer.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                         "unwrap_or",
+                        [],
                         []
                       |),
                       [
@@ -1509,7 +1526,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1545,6 +1564,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1555,6 +1575,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1581,6 +1602,7 @@ Module serializer.
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.path "move_binary_format::file_format_common::BinaryData",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -1588,6 +1610,7 @@ Module serializer.
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                         ],
                         "from",
+                        [],
                         []
                       |),
                       [
@@ -1599,7 +1622,9 @@ Module serializer.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
                           [ M.read (| binary |) ]
@@ -1613,6 +1638,7 @@ Module serializer.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::serializer::ModuleSerializer",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| version |) ]
@@ -1624,6 +1650,7 @@ Module serializer.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format_common::BinaryData",
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -1640,7 +1667,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1648,6 +1677,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_tables",
+                              [],
                               []
                             |),
                             [ ser; temp; M.read (| self |) ]
@@ -1676,6 +1706,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1686,6 +1717,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1720,6 +1752,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ temp ]
@@ -1729,6 +1762,7 @@ Module serializer.
                                       M.get_associated_function (|
                                         Ty.path "u32",
                                         "max_value",
+                                        [],
                                         []
                                       |),
                                       []
@@ -1748,6 +1782,7 @@ Module serializer.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -1772,6 +1807,7 @@ Module serializer.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1796,6 +1832,7 @@ Module serializer.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "usize" ]
                                                                     |),
                                                                     [
@@ -1805,6 +1842,7 @@ Module serializer.
                                                                             Ty.path
                                                                               "move_binary_format::file_format_common::BinaryData",
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ temp ]
@@ -1817,6 +1855,7 @@ Module serializer.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_display",
+                                                                      [],
                                                                       [ Ty.path "u32" ]
                                                                     |),
                                                                     [
@@ -1825,6 +1864,7 @@ Module serializer.
                                                                           M.get_associated_function (|
                                                                             Ty.path "u32",
                                                                             "max_value",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           []
@@ -1864,7 +1904,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1872,6 +1914,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_header",
+                              [],
                               []
                             |),
                             [
@@ -1907,6 +1950,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1917,6 +1961,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1948,7 +1993,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1956,6 +2003,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_table_indices",
+                              [],
                               []
                             |),
                             [ ser; binary_data ]
@@ -1984,6 +2032,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1994,6 +2043,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2025,7 +2075,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2033,6 +2085,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format_common::BinaryData",
                               "extend",
+                              [],
                               []
                             |),
                             [
@@ -2041,6 +2094,7 @@ Module serializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format_common::BinaryData",
                                   "as_inner",
+                                  [],
                                   []
                                 |),
                                 [ temp ]
@@ -2071,6 +2125,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2081,6 +2136,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2112,7 +2168,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2155,6 +2213,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2165,6 +2224,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2192,6 +2252,7 @@ Module serializer.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format_common::BinaryData",
                         "into_inner",
+                        [],
                         []
                       |),
                       [ M.read (| binary_data |) ]
@@ -2328,6 +2389,7 @@ Module serializer.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -2443,6 +2505,7 @@ Module serializer.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
@@ -2498,7 +2561,12 @@ Module serializer.
                                 M.read (| index |),
                                 M.rust_cast
                                   (M.call_closure (|
-                                    M.get_associated_function (| Ty.path "u32", "max_value", [] |),
+                                    M.get_associated_function (|
+                                      Ty.path "u32",
+                                      "max_value",
+                                      [],
+                                      []
+                                    |),
                                     []
                                   |))
                               |)
@@ -2516,6 +2584,7 @@ Module serializer.
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -2540,6 +2609,7 @@ Module serializer.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2563,6 +2633,7 @@ Module serializer.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "usize" ]
                                                                   |),
                                                                   [ index ]
@@ -2572,6 +2643,7 @@ Module serializer.
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
                                                                     "new_display",
+                                                                    [],
                                                                     [ Ty.path "u32" ]
                                                                   |),
                                                                   [
@@ -2580,6 +2652,7 @@ Module serializer.
                                                                         M.get_associated_function (|
                                                                           Ty.path "u32",
                                                                           "max_value",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         []
@@ -2669,7 +2742,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2677,6 +2752,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| binary |); M.rust_cast (M.read (| kind |)) ]
@@ -2705,6 +2781,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -2715,6 +2792,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -2746,7 +2824,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2782,6 +2862,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -2792,6 +2873,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -2823,7 +2905,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2859,6 +2943,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -2869,6 +2954,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -2935,7 +3021,9 @@ Module serializer.
                                 [ Ty.path "u8" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.get_constant (| "move_binary_format::file_format_common::MOVE_MAGIC" |)
@@ -2959,7 +3047,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -2993,7 +3083,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3002,6 +3094,7 @@ Module serializer.
                                                       Ty.path
                                                         "move_binary_format::file_format_common::BinaryData",
                                                       "push",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3036,6 +3129,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -3047,6 +3141,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -3110,7 +3205,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3145,7 +3242,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3180,7 +3279,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3219,7 +3320,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3252,7 +3355,9 @@ Module serializer.
                 [ Ty.path "move_core_types::identifier::Identifier"; Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3287,7 +3392,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3322,7 +3429,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3357,7 +3466,9 @@ Module serializer.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3389,7 +3500,9 @@ Module serializer.
                 []
                 [ Ty.path "move_core_types::metadata::Metadata"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -3449,7 +3562,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3492,6 +3607,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3502,6 +3618,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3533,7 +3650,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3576,6 +3695,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3586,6 +3706,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3643,7 +3764,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3686,6 +3809,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3696,6 +3820,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3727,7 +3852,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3770,6 +3897,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3780,6 +3908,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3811,7 +3940,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3856,6 +3987,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -3866,6 +3998,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -3906,7 +4039,9 @@ Module serializer.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -3960,7 +4095,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -3980,6 +4117,7 @@ Module serializer.
                                   [ Ty.path "move_binary_format::file_format::StructTypeParameter"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| type_parameters |) ]
@@ -4010,6 +4148,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4020,6 +4159,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4057,7 +4197,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| type_parameters |) ]
@@ -4083,7 +4225,9 @@ Module serializer.
                                               "move_binary_format::file_format::StructTypeParameter"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -4117,7 +4261,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4156,6 +4302,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -4167,6 +4314,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -4234,7 +4382,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4279,6 +4429,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4289,6 +4440,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4372,7 +4524,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4415,6 +4569,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4425,6 +4580,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4456,7 +4612,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4499,6 +4657,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4509,6 +4668,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4540,7 +4700,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4583,6 +4745,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4593,6 +4756,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4624,7 +4788,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4667,6 +4833,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4677,6 +4844,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4717,7 +4885,9 @@ Module serializer.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -4775,7 +4945,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4818,6 +4990,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4828,6 +5001,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4859,7 +5033,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4902,6 +5078,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -4912,6 +5089,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -4965,7 +5143,7 @@ Module serializer.
               let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.read (| string |) ]
                   |)
                 |) in
@@ -4980,7 +5158,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -4996,6 +5176,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| bytes |) ]
@@ -5026,6 +5207,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5036,6 +5218,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5068,7 +5251,9 @@ Module serializer.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| bytes |) ]
@@ -5091,7 +5276,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -5125,7 +5312,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5134,6 +5323,7 @@ Module serializer.
                                                       Ty.path
                                                         "move_binary_format::file_format_common::BinaryData",
                                                       "push",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5168,6 +5358,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -5179,6 +5370,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -5244,7 +5436,9 @@ Module serializer.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -5252,8 +5446,10 @@ Module serializer.
                             M.get_trait_method (|
                               "core::convert::AsRef",
                               Ty.path "move_core_types::account_address::AccountAddress",
+                              [],
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_ref",
+                              [],
                               []
                             |),
                             [ M.read (| address |) ]
@@ -5278,7 +5474,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -5312,7 +5510,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5321,6 +5521,7 @@ Module serializer.
                                                       Ty.path
                                                         "move_binary_format::file_format_common::BinaryData",
                                                       "push",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5355,6 +5556,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -5366,6 +5568,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -5428,7 +5631,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -5471,6 +5676,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5481,6 +5687,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5536,7 +5743,9 @@ Module serializer.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -5584,7 +5793,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -5623,7 +5834,9 @@ Module serializer.
                                   []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [
@@ -5660,6 +5873,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5670,6 +5884,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5725,7 +5940,9 @@ Module serializer.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -5783,7 +6000,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -5791,6 +6010,7 @@ Module serializer.
                           M.get_trait_method (|
                             "core::ops::function::Fn",
                             impl_Fn__mut_BinaryData__usize__arrow_Result____,
+                            [],
                             [
                               Ty.tuple
                                 [
@@ -5803,6 +6023,7 @@ Module serializer.
                                 ]
                             ],
                             "call",
+                            [],
                             []
                           |),
                           [
@@ -5814,6 +6035,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| blob |) ]
@@ -5845,6 +6067,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -5855,6 +6078,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -5887,7 +6111,9 @@ Module serializer.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| blob |) ]
@@ -5910,7 +6136,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -5944,7 +6172,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5953,6 +6183,7 @@ Module serializer.
                                                       Ty.path
                                                         "move_binary_format::file_format_common::BinaryData",
                                                       "push",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5987,6 +6218,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -5998,6 +6230,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6073,7 +6306,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -6116,6 +6351,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -6126,6 +6362,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -6168,6 +6405,7 @@ Module serializer.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format_common::BinaryData",
                             "push",
+                            [],
                             []
                           |),
                           [
@@ -6203,7 +6441,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -6211,6 +6451,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6248,6 +6489,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -6258,6 +6500,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -6298,7 +6541,9 @@ Module serializer.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "deref",
+                                [],
                                 []
                               |),
                               [ M.read (| fields |) ]
@@ -6352,7 +6597,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -6395,6 +6642,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -6405,6 +6653,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -6436,7 +6685,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -6479,6 +6730,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -6489,6 +6741,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -6553,7 +6806,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -6572,6 +6827,7 @@ Module serializer.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| fields |) ]
@@ -6602,6 +6858,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -6612,6 +6869,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -6649,7 +6907,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| fields |) ]
@@ -6675,7 +6935,9 @@ Module serializer.
                                               "move_binary_format::file_format::FieldDefinition"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -6709,7 +6971,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6751,6 +7015,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -6762,6 +7027,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -6829,7 +7095,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -6872,6 +7140,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -6882,6 +7151,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -6960,7 +7230,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7003,6 +7275,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7013,6 +7286,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7044,7 +7318,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7089,6 +7365,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7099,6 +7376,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7162,7 +7440,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7205,6 +7485,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7215,6 +7496,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7246,7 +7528,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7289,6 +7573,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7299,6 +7584,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7359,7 +7645,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7379,6 +7667,7 @@ Module serializer.
                                   [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
                                   ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| indices |) ]
@@ -7409,6 +7698,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7419,6 +7709,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7456,7 +7747,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| indices |) ]
@@ -7482,7 +7775,9 @@ Module serializer.
                                               "move_binary_format::file_format::StructDefinitionIndex"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7516,7 +7811,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7555,6 +7852,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -7566,6 +7864,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -7628,7 +7927,9 @@ Module serializer.
                     Ty.path "alloc::alloc::Global"
                   ],
                 [],
+                [],
                 "deref",
+                [],
                 []
               |),
               [
@@ -7676,7 +7977,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -7695,6 +7998,7 @@ Module serializer.
                                   []
                                   [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| tokens |) ]
@@ -7725,6 +8029,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -7735,6 +8040,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -7772,7 +8078,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| tokens |) ]
@@ -7798,7 +8106,9 @@ Module serializer.
                                               "move_binary_format::file_format::SignatureToken"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -7832,7 +8142,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7871,6 +8183,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -7882,6 +8195,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -7997,7 +8311,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8005,6 +8321,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8042,6 +8359,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8052,6 +8370,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8090,7 +8409,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8098,6 +8419,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8135,6 +8457,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8145,6 +8468,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8183,7 +8507,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8191,6 +8517,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8228,6 +8555,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8238,6 +8566,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8276,7 +8605,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8284,6 +8615,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8321,6 +8653,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8331,6 +8664,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8369,7 +8703,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8377,6 +8713,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8414,6 +8751,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8424,6 +8762,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8462,7 +8801,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8470,6 +8811,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8507,6 +8849,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8517,6 +8860,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8555,7 +8899,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8563,6 +8909,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8600,6 +8947,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8610,6 +8958,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8648,7 +8997,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8656,6 +9007,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8693,6 +9045,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8703,6 +9056,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8741,7 +9095,9 @@ Module serializer.
                                   []
                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -8749,6 +9105,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format_common::BinaryData",
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [
@@ -8786,6 +9143,7 @@ Module serializer.
                                               (Ty.path "core::result::Result")
                                               []
                                               [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -8796,6 +9154,7 @@ Module serializer.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -8836,7 +9195,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8844,6 +9205,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8881,6 +9243,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -8891,6 +9254,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -8933,7 +9297,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -8941,6 +9307,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -8978,6 +9345,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -8988,6 +9356,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9019,7 +9388,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9055,6 +9426,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9065,6 +9437,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9117,7 +9490,9 @@ Module serializer.
                                             []
                                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9126,6 +9501,7 @@ Module serializer.
                                               Ty.path
                                                 "move_binary_format::file_format_common::BinaryData",
                                               "push",
+                                              [],
                                               []
                                             |),
                                             [
@@ -9163,6 +9539,7 @@ Module serializer.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -9173,6 +9550,7 @@ Module serializer.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -9204,7 +9582,9 @@ Module serializer.
                                             []
                                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9240,6 +9620,7 @@ Module serializer.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -9250,6 +9631,7 @@ Module serializer.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -9281,7 +9663,9 @@ Module serializer.
                                             []
                                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -9304,6 +9688,7 @@ Module serializer.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| type_params |) ]
@@ -9334,6 +9719,7 @@ Module serializer.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -9344,6 +9730,7 @@ Module serializer.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -9387,7 +9774,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9395,6 +9784,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9432,6 +9822,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9442,6 +9833,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9483,7 +9875,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9491,6 +9885,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9528,6 +9923,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9538,6 +9934,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9580,7 +9977,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9588,6 +9987,7 @@ Module serializer.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format_common::BinaryData",
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
@@ -9625,6 +10025,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9635,6 +10036,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9666,7 +10068,9 @@ Module serializer.
                                     []
                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -9702,6 +10106,7 @@ Module serializer.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -9712,6 +10117,7 @@ Module serializer.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -9780,7 +10186,9 @@ Module serializer.
                           Ty.path
                             "move_binary_format::file_format::SignatureTokenPreorderTraversalIterWithDepth",
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -9788,6 +10196,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::SignatureToken",
                               "preorder_traversal_with_depth",
+                              [],
                               []
                             |),
                             [ M.read (| token |) ]
@@ -9810,7 +10219,9 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format::SignatureTokenPreorderTraversalIterWithDepth",
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -9881,6 +10292,7 @@ Module serializer.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -9920,7 +10332,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9959,6 +10373,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -9970,6 +10385,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -10034,7 +10450,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -10050,6 +10468,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::AbilitySet",
                                 "into_u8",
+                                [],
                                 []
                               |),
                               [ M.read (| set |) ]
@@ -10058,6 +10477,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::AbilitySet",
                                 "into_u8",
+                                [],
                                 []
                               |),
                               [
@@ -10092,6 +10512,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -10102,6 +10523,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -10160,7 +10582,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -10179,6 +10603,7 @@ Module serializer.
                                   []
                                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| sets |) ]
@@ -10209,6 +10634,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -10219,6 +10645,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -10256,7 +10683,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| sets |) ]
@@ -10279,7 +10708,9 @@ Module serializer.
                                           []
                                           [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -10313,7 +10744,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10355,6 +10788,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -10366,6 +10800,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -10429,7 +10864,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -10472,6 +10909,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -10482,6 +10920,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -10519,7 +10958,9 @@ Module serializer.
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [
@@ -10859,108 +11300,109 @@ Module serializer.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.alloc (|
-                                        BinOp.lt (|
-                                          M.read (| major_version |),
-                                          M.read (|
-                                            M.get_constant (|
-                                              "move_binary_format::file_format_common::VERSION_6"
-                                            |)
-                                          |)
-                                        |)
-                                      |) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (let γ :=
                                     M.alloc (|
-                                      M.never_to_any (|
+                                      BinOp.lt (|
+                                        M.read (| major_version |),
                                         M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "anyhow::Error",
-                                                    "msg",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::hint::must_use",
-                                                        [],
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          let~ res :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "alloc::fmt::format",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::Arguments",
-                                                                      "new_v1",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "Loading or casting u16, u32, u256 integers not supported in bytecode version "
-                                                                            |)
-                                                                          ]
-                                                                      |);
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument",
-                                                                                "new_display",
-                                                                                [ Ty.path "u32" ]
-                                                                              |),
-                                                                              [ major_version ]
-                                                                            |)
-                                                                          ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          res
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
+                                          M.get_constant (|
+                                            "move_binary_format::file_format_common::VERSION_6"
                                           |)
                                         |)
                                       |)
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                    |) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "anyhow::Error",
+                                                  "msg",
+                                                  [],
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::hint::must_use",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        let~ res :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "alloc::fmt::format",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "core::fmt::Arguments",
+                                                                    "new_v1",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                          |)
+                                                                        ]
+                                                                    |);
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_display",
+                                                                              [],
+                                                                              [ Ty.path "u32" ]
+                                                                            |),
+                                                                            [ major_version ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        res
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
@@ -10983,6 +11425,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11010,6 +11453,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11037,6 +11481,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11072,7 +11517,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11081,6 +11528,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11118,6 +11566,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11128,6 +11577,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11179,7 +11629,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11188,6 +11640,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11225,6 +11678,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11235,6 +11689,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11286,7 +11741,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11295,6 +11752,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11332,6 +11790,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11342,6 +11801,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11393,7 +11853,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11402,6 +11864,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11439,6 +11902,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11449,6 +11913,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11474,6 +11939,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| value |) |) ]
@@ -11500,7 +11966,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11509,6 +11977,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11546,6 +12015,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11556,6 +12026,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11607,7 +12078,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11616,6 +12089,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11653,6 +12127,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11663,6 +12138,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11706,6 +12182,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11733,6 +12210,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11760,6 +12238,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11795,7 +12274,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11804,6 +12285,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -11841,6 +12323,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -11851,6 +12334,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -11894,6 +12378,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11921,6 +12406,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -11956,7 +12442,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -11965,6 +12453,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12002,6 +12491,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12012,6 +12502,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12063,7 +12554,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12072,6 +12565,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12109,6 +12603,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12119,6 +12614,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12170,7 +12666,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12179,6 +12677,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12216,6 +12715,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12226,6 +12726,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12277,7 +12778,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12286,6 +12789,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12323,6 +12827,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12333,6 +12838,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12384,7 +12890,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12393,6 +12901,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12430,6 +12939,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12440,6 +12950,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12491,7 +13002,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12500,6 +13013,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12537,6 +13051,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12547,6 +13062,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12598,7 +13114,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12607,6 +13125,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12644,6 +13163,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12654,6 +13174,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12705,7 +13226,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12714,6 +13237,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12751,6 +13275,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12761,6 +13286,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12812,7 +13338,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12821,6 +13349,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12858,6 +13387,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12868,6 +13398,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -12919,7 +13450,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -12928,6 +13461,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -12965,6 +13499,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -12975,6 +13510,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13026,7 +13562,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13035,6 +13573,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13072,6 +13611,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13082,6 +13622,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13133,7 +13674,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13142,6 +13685,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13179,6 +13723,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13189,6 +13734,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13240,7 +13786,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13249,6 +13797,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13286,6 +13835,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13296,6 +13846,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13347,7 +13898,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13356,6 +13909,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13393,6 +13947,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13403,6 +13958,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13454,7 +14010,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -13463,6 +14021,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -13500,6 +14059,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -13510,6 +14070,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -13553,6 +14114,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13580,6 +14142,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13607,6 +14170,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13634,6 +14198,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13661,6 +14226,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13688,6 +14254,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13715,6 +14282,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13742,6 +14310,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13769,6 +14338,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13796,6 +14366,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13823,6 +14394,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13850,6 +14422,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13877,6 +14450,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13904,6 +14478,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13931,6 +14506,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13958,6 +14534,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -13985,6 +14562,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14012,6 +14590,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14039,6 +14618,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14066,6 +14646,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14093,6 +14674,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14120,6 +14702,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14147,6 +14730,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -14182,7 +14766,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14191,6 +14777,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14228,6 +14815,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14238,6 +14826,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14289,7 +14878,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14298,6 +14889,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14335,6 +14927,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14345,6 +14938,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14396,7 +14990,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14405,6 +15001,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14442,6 +15039,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14452,6 +15050,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14503,7 +15102,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14512,6 +15113,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14549,6 +15151,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14559,6 +15162,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14610,7 +15214,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14619,6 +15225,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14656,6 +15263,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14666,6 +15274,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14717,7 +15326,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14726,6 +15337,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14763,6 +15375,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14773,6 +15386,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14824,7 +15438,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14833,6 +15449,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14870,6 +15487,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14880,6 +15498,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -14931,7 +15550,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -14940,6 +15561,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -14977,6 +15599,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -14987,6 +15610,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15038,7 +15662,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15047,6 +15673,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15084,6 +15711,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15094,6 +15722,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15145,7 +15774,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15154,6 +15785,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15191,6 +15823,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15201,6 +15834,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15259,7 +15893,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15268,6 +15904,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15305,6 +15942,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15315,6 +15953,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15346,7 +15985,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15382,6 +16023,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15392,6 +16034,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15443,7 +16086,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15452,6 +16097,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15489,6 +16135,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15499,6 +16146,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15550,7 +16198,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15559,6 +16209,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15596,6 +16247,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15606,6 +16258,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15657,7 +16310,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15666,6 +16321,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15703,6 +16359,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15713,6 +16370,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15764,7 +16422,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15773,6 +16433,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15810,6 +16471,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15820,6 +16482,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15871,7 +16534,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15880,6 +16545,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -15917,6 +16583,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -15927,6 +16594,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -15985,7 +16653,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -15994,6 +16664,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16031,6 +16702,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16041,6 +16713,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16072,7 +16745,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16108,6 +16783,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16118,6 +16794,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16169,7 +16846,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16178,6 +16857,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16215,6 +16895,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16225,6 +16906,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16276,7 +16958,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16285,6 +16969,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16322,6 +17007,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16332,6 +17018,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16383,7 +17070,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16392,6 +17081,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16429,6 +17119,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16439,6 +17130,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16490,7 +17182,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -16499,6 +17193,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -16536,6 +17231,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -16546,6 +17242,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -16589,6 +17286,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -16616,6 +17314,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -16643,6 +17342,7 @@ Module serializer.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format_common::BinaryData",
                                 "push",
+                                [],
                                 []
                               |),
                               [
@@ -16671,7 +17371,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [ M.read (| res |) ]
@@ -16698,6 +17400,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -16708,6 +17411,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -16769,7 +17473,9 @@ Module serializer.
                           []
                           [ Ty.tuple []; Ty.path "anyhow::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -16788,6 +17494,7 @@ Module serializer.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                 "len",
+                                [],
                                 []
                               |),
                               [ M.read (| code |) ]
@@ -16818,6 +17525,7 @@ Module serializer.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -16828,6 +17536,7 @@ Module serializer.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -16865,7 +17574,9 @@ Module serializer.
                                 [ Ty.path "move_binary_format::file_format::Bytecode" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| code |) ]
@@ -16888,7 +17599,9 @@ Module serializer.
                                           []
                                           [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -16922,7 +17635,9 @@ Module serializer.
                                                     []
                                                     [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -16965,6 +17680,7 @@ Module serializer.
                                                                   Ty.tuple [];
                                                                   Ty.path "anyhow::Error"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -16976,6 +17692,7 @@ Module serializer.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -17044,7 +17761,9 @@ Module serializer.
                             []
                             [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17059,6 +17778,7 @@ Module serializer.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format_common::BinaryData",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| binary |) ]
@@ -17089,6 +17809,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.path "u32"; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17099,6 +17820,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17142,6 +17864,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
@@ -17255,7 +17978,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17291,6 +18016,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17301,6 +18027,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17332,7 +18059,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17377,6 +18106,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17387,6 +18117,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17500,7 +18231,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17545,6 +18278,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17555,6 +18289,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17586,7 +18321,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17647,6 +18384,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17657,6 +18395,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17688,7 +18427,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17749,6 +18490,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17759,6 +18501,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17790,7 +18533,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17851,6 +18596,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17861,6 +18607,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17892,7 +18639,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -17953,6 +18702,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -17963,6 +18713,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -17994,7 +18745,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18055,6 +18808,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18065,6 +18819,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18096,7 +18851,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18157,6 +18914,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18167,6 +18925,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18198,7 +18957,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18259,6 +19020,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18269,6 +19031,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18300,7 +19063,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18361,6 +19126,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18371,6 +19137,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18428,7 +19195,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -18489,6 +19258,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -18499,6 +19269,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -18630,7 +19401,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18638,6 +19411,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_module_handles",
+                              [],
                               []
                             |),
                             [
@@ -18648,7 +19422,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_module_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -18679,6 +19455,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18689,6 +19466,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18720,7 +19498,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18728,6 +19508,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_struct_handles",
+                              [],
                               []
                             |),
                             [
@@ -18738,7 +19519,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_struct_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -18769,6 +19552,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18779,6 +19563,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18810,7 +19595,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18818,6 +19605,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_function_handles",
+                              [],
                               []
                             |),
                             [
@@ -18828,7 +19616,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_function_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -18859,6 +19649,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -18869,6 +19660,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -18955,7 +19747,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -18963,6 +19757,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_function_instantiations",
+                              [],
                               []
                             |),
                             [
@@ -18973,7 +19768,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_function_instantiations",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -19004,6 +19801,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19014,6 +19812,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19045,7 +19844,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19053,6 +19854,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_signatures",
+                              [],
                               []
                             |),
                             [
@@ -19063,7 +19865,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_signatures",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -19094,6 +19898,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19104,6 +19909,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19135,7 +19941,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19143,6 +19951,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_identifiers",
+                              [],
                               []
                             |),
                             [
@@ -19153,7 +19962,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_identifiers",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -19184,6 +19995,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19194,6 +20006,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19225,7 +20038,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19233,6 +20048,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_address_identifiers",
+                              [],
                               []
                             |),
                             [
@@ -19243,7 +20059,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_address_identifiers",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -19274,6 +20092,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19284,6 +20103,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19315,7 +20135,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -19323,6 +20145,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_constants",
+                              [],
                               []
                             |),
                             [
@@ -19333,7 +20156,9 @@ Module serializer.
                                   "move_binary_format::serializer::CommonTables",
                                   T,
                                   [],
+                                  [],
                                   "get_constant_pool",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tables |) ]
@@ -19364,6 +20189,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -19374,6 +20200,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -19431,7 +20258,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -19439,6 +20268,7 @@ Module serializer.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::serializer::CommonSerializer",
                                         "serialize_metadata",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19449,7 +20279,9 @@ Module serializer.
                                             "move_binary_format::serializer::CommonTables",
                                             T,
                                             [],
+                                            [],
                                             "get_metadata",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| tables |) ]
@@ -19480,6 +20312,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -19490,6 +20323,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -19567,6 +20401,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| module_handles |) ]
@@ -19607,7 +20442,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19623,6 +20460,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -19653,6 +20491,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -19663,6 +20502,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -19705,7 +20545,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| module_handles |) ]
@@ -19731,7 +20573,9 @@ Module serializer.
                                                           "move_binary_format::file_format::ModuleHandle"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -19771,7 +20615,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -19815,6 +20661,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -19828,6 +20675,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -19876,7 +20724,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -19924,6 +20774,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -19934,6 +20785,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20013,6 +20865,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::StructHandle" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_handles |) ]
@@ -20053,7 +20906,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20069,6 +20924,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -20099,6 +20955,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -20109,6 +20966,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20151,7 +21009,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_handles |) ]
@@ -20177,7 +21037,9 @@ Module serializer.
                                                           "move_binary_format::file_format::StructHandle"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -20217,7 +21079,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -20261,6 +21125,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -20274,6 +21139,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -20322,7 +21188,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20370,6 +21238,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -20380,6 +21249,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20465,6 +21335,7 @@ Module serializer.
                                         [ Ty.path "move_binary_format::file_format::FunctionHandle"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_handles |) ]
@@ -20505,7 +21376,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20521,6 +21394,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -20551,6 +21425,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -20561,6 +21436,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20603,7 +21479,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_handles |) ]
@@ -20629,7 +21507,9 @@ Module serializer.
                                                           "move_binary_format::file_format::FunctionHandle"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -20669,7 +21549,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -20713,6 +21595,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -20726,6 +21609,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -20774,7 +21658,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20822,6 +21708,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -20832,6 +21719,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -20919,6 +21807,7 @@ Module serializer.
                                             "move_binary_format::file_format::FunctionInstantiation"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_instantiations |) ]
@@ -20959,7 +21848,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -20975,6 +21866,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -21005,6 +21897,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21015,6 +21908,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21057,7 +21951,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_instantiations |) ]
@@ -21083,7 +21979,9 @@ Module serializer.
                                                           "move_binary_format::file_format::FunctionInstantiation"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -21124,7 +22022,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -21170,6 +22070,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -21183,6 +22084,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -21231,7 +22133,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21279,6 +22183,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21289,6 +22194,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21372,6 +22278,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_core_types::identifier::Identifier" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| identifiers |) ]
@@ -21412,7 +22319,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21428,6 +22337,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -21458,6 +22368,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21468,6 +22379,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21507,7 +22419,9 @@ Module serializer.
                                             [ Ty.path "move_core_types::identifier::Identifier" ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| identifiers |) ]
@@ -21533,7 +22447,9 @@ Module serializer.
                                                           "move_core_types::identifier::Identifier"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -21573,7 +22489,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -21590,6 +22508,7 @@ Module serializer.
                                                                       Ty.path
                                                                         "move_core_types::identifier::IdentStr",
                                                                       "as_str",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -21599,7 +22518,9 @@ Module serializer.
                                                                           Ty.path
                                                                             "move_core_types::identifier::Identifier",
                                                                           [],
+                                                                          [],
                                                                           "deref",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| identifier |) ]
@@ -21637,6 +22558,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -21650,6 +22572,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -21698,7 +22621,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21746,6 +22671,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21756,6 +22682,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21841,6 +22768,7 @@ Module serializer.
                                         [ Ty.path "move_core_types::account_address::AccountAddress"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| addresses |) ]
@@ -21881,7 +22809,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -21897,6 +22827,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -21927,6 +22858,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -21937,6 +22869,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -21979,7 +22912,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| addresses |) ]
@@ -22005,7 +22940,9 @@ Module serializer.
                                                           "move_core_types::account_address::AccountAddress"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -22045,7 +22982,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22089,6 +23028,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -22102,6 +23042,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -22150,7 +23091,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -22198,6 +23141,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -22208,6 +23152,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -22287,6 +23232,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::Constant" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| constants |) ]
@@ -22327,7 +23273,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -22343,6 +23291,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -22373,6 +23322,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -22383,6 +23333,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -22422,7 +23373,9 @@ Module serializer.
                                             [ Ty.path "move_binary_format::file_format::Constant" ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| constants |) ]
@@ -22448,7 +23401,9 @@ Module serializer.
                                                           "move_binary_format::file_format::Constant"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -22488,7 +23443,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22532,6 +23489,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -22545,6 +23503,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -22593,7 +23552,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -22641,6 +23602,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -22651,6 +23613,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -22726,6 +23689,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_core_types::metadata::Metadata" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| metadata |) ]
@@ -22766,7 +23730,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -22782,6 +23748,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -22812,6 +23779,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -22822,6 +23790,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -22861,7 +23830,9 @@ Module serializer.
                                             [ Ty.path "move_core_types::metadata::Metadata" ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| metadata |) ]
@@ -22887,7 +23858,9 @@ Module serializer.
                                                           "move_core_types::metadata::Metadata"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -22927,7 +23900,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -22971,6 +23946,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -22984,6 +23960,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -23032,7 +24009,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -23080,6 +24059,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -23090,6 +24070,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -23169,6 +24150,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::Signature" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| signatures |) ]
@@ -23209,7 +24191,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -23225,6 +24209,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -23255,6 +24240,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -23265,6 +24251,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -23304,7 +24291,9 @@ Module serializer.
                                             [ Ty.path "move_binary_format::file_format::Signature" ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| signatures |) ]
@@ -23330,7 +24319,9 @@ Module serializer.
                                                           "move_binary_format::file_format::Signature"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -23370,7 +24361,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -23414,6 +24407,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -23427,6 +24421,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -23475,7 +24470,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -23523,6 +24520,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -23533,6 +24531,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -23621,6 +24620,7 @@ Module serializer.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::serializer::CommonSerializer",
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| major_version |) ]
@@ -23675,7 +24675,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23683,6 +24685,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_common_tables",
+                              [],
                               [ Ty.path "move_binary_format::file_format::CompiledModule" ]
                             |),
                             [
@@ -23719,6 +24722,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -23729,6 +24733,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23760,7 +24765,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23768,6 +24775,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_struct_definitions",
+                              [],
                               []
                             |),
                             [
@@ -23784,7 +24792,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23821,6 +24831,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -23831,6 +24842,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23862,7 +24874,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23870,6 +24884,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_struct_def_instantiations",
+                              [],
                               []
                             |),
                             [
@@ -23887,7 +24902,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23924,6 +24941,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -23934,6 +24952,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23965,7 +24984,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23973,6 +24994,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_function_definitions",
+                              [],
                               []
                             |),
                             [
@@ -23989,7 +25011,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24026,6 +25050,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24036,6 +25061,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24067,7 +25093,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24075,6 +25103,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_field_handles",
+                              [],
                               []
                             |),
                             [
@@ -24091,7 +25120,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24128,6 +25159,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24138,6 +25170,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24169,7 +25202,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24177,6 +25212,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::ModuleSerializer",
                               "serialize_field_instantiations",
+                              [],
                               []
                             |),
                             [
@@ -24193,7 +25229,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24230,6 +25268,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24240,6 +25279,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24265,6 +25305,7 @@ Module serializer.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::serializer::ModuleSerializer",
                       "serialize_friend_declarations",
+                      [],
                       []
                     |),
                     [
@@ -24281,7 +25322,9 @@ Module serializer.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -24365,7 +25408,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24373,6 +25418,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::serializer::CommonSerializer",
                               "serialize_table_indices",
+                              [],
                               []
                             |),
                             [
@@ -24408,6 +25454,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24418,6 +25465,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24449,7 +25497,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24510,6 +25560,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24520,6 +25571,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24551,7 +25603,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24612,6 +25666,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24622,6 +25677,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24653,7 +25709,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24714,6 +25772,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24724,6 +25783,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24755,7 +25815,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24816,6 +25878,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24826,6 +25889,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24857,7 +25921,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -24918,6 +25984,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -24928,6 +25995,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -24959,7 +26027,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -25020,6 +26090,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -25030,6 +26101,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -25110,6 +26182,7 @@ Module serializer.
                                             "move_binary_format::file_format::StructDefinition"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_definitions |) ]
@@ -25130,7 +26203,12 @@ Module serializer.
                                 "table_count"
                               |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -25168,7 +26246,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -25184,6 +26264,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -25214,6 +26295,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -25224,6 +26306,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -25266,7 +26349,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_definitions |) ]
@@ -25292,7 +26377,9 @@ Module serializer.
                                                           "move_binary_format::file_format::StructDefinition"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -25332,7 +26419,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -25376,6 +26465,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -25389,6 +26479,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -25437,7 +26528,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -25485,6 +26578,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -25495,6 +26589,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -25582,6 +26677,7 @@ Module serializer.
                                             "move_binary_format::file_format::StructDefInstantiation"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_def_instantiations |) ]
@@ -25602,7 +26698,12 @@ Module serializer.
                                 "table_count"
                               |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -25640,7 +26741,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -25656,6 +26759,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -25686,6 +26790,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -25696,6 +26801,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -25738,7 +26844,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| struct_def_instantiations |) ]
@@ -25764,7 +26872,9 @@ Module serializer.
                                                           "move_binary_format::file_format::StructDefInstantiation"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -25804,7 +26914,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -25848,6 +26960,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -25861,6 +26974,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -25909,7 +27023,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -25957,6 +27073,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -25967,6 +27084,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -26049,6 +27167,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| field_handles |) ]
@@ -26093,7 +27212,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -26109,6 +27230,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -26139,6 +27261,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -26149,6 +27272,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -26189,7 +27313,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| field_handles |) ]
@@ -26215,7 +27341,9 @@ Module serializer.
                                                           "move_binary_format::file_format::FieldHandle"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -26255,7 +27383,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -26299,6 +27429,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -26312,6 +27443,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -26360,7 +27492,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -26408,6 +27542,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -26418,6 +27553,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -26505,6 +27641,7 @@ Module serializer.
                                             "move_binary_format::file_format::FieldInstantiation"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| field_instantiations |) ]
@@ -26549,7 +27686,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -26565,6 +27704,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -26595,6 +27735,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -26605,6 +27746,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -26647,7 +27789,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| field_instantiations |) ]
@@ -26673,7 +27817,9 @@ Module serializer.
                                                           "move_binary_format::file_format::FieldInstantiation"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -26713,7 +27859,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -26757,6 +27905,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -26770,6 +27919,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -26818,7 +27968,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -26866,6 +28018,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -26876,6 +28029,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -26962,6 +28116,7 @@ Module serializer.
                                             "move_binary_format::file_format::FunctionDefinition"
                                         ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_definitions |) ]
@@ -26982,7 +28137,12 @@ Module serializer.
                                 "table_count"
                               |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -27020,7 +28180,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -27036,6 +28198,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -27066,6 +28229,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -27076,6 +28240,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -27118,7 +28283,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| function_definitions |) ]
@@ -27144,7 +28311,9 @@ Module serializer.
                                                           "move_binary_format::file_format::FunctionDefinition"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -27184,7 +28353,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -27193,6 +28364,7 @@ Module serializer.
                                                                   Ty.path
                                                                     "move_binary_format::serializer::ModuleSerializer",
                                                                   "serialize_function_definition",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -27230,6 +28402,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -27243,6 +28416,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -27291,7 +28465,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -27339,6 +28515,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -27349,6 +28526,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -27445,7 +28623,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -27488,6 +28668,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -27498,6 +28679,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -27565,11 +28747,13 @@ Module serializer.
                                                   "core::cmp::PartialEq",
                                                   Ty.path
                                                     "move_binary_format::file_format::Visibility",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_binary_format::file_format::Visibility"
                                                   ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -27629,7 +28813,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -27638,6 +28824,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| binary |); M.read (| visibility |) ]
@@ -27666,6 +28853,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -27676,6 +28864,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -27710,7 +28899,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -27719,6 +28910,7 @@ Module serializer.
                                         Ty.path
                                           "move_binary_format::file_format_common::BinaryData",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
@@ -27757,6 +28949,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -27767,6 +28960,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -27835,6 +29029,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::FunctionDefinition",
                                     "is_native",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| function_definition |) ]
@@ -27865,7 +29060,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -27873,6 +29070,7 @@ Module serializer.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format_common::BinaryData",
                               "push",
+                              [],
                               []
                             |),
                             [ M.read (| binary |); M.read (| flags |) ]
@@ -27901,6 +29099,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -27911,6 +29110,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -27942,7 +29142,9 @@ Module serializer.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -27966,7 +29168,9 @@ Module serializer.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "deref",
+                                  [],
                                   []
                                 |),
                                 [
@@ -28003,6 +29207,7 @@ Module serializer.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -28013,6 +29218,7 @@ Module serializer.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -28066,7 +29272,9 @@ Module serializer.
                                       []
                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -28082,6 +29290,7 @@ Module serializer.
                                             Ty.path
                                               "move_binary_format::serializer::CommonSerializer",
                                             "major_version",
+                                            [],
                                             []
                                           |),
                                           [
@@ -28120,6 +29329,7 @@ Module serializer.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -28130,6 +29340,7 @@ Module serializer.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -28211,6 +29422,7 @@ Module serializer.
                                         []
                                         [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| friend_declarations |) ]
@@ -28231,7 +29443,12 @@ Module serializer.
                                 "table_count"
                               |),
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u8", "wrapping_add", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "wrapping_add",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -28269,7 +29486,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -28285,6 +29504,7 @@ Module serializer.
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| binary |) ]
@@ -28315,6 +29535,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -28325,6 +29546,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -28367,7 +29589,9 @@ Module serializer.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| friend_declarations |) ]
@@ -28393,7 +29617,9 @@ Module serializer.
                                                           "move_binary_format::file_format::ModuleHandle"
                                                       ],
                                                     [],
+                                                    [],
                                                     "next",
+                                                    [],
                                                     []
                                                   |),
                                                   [ iter ]
@@ -28433,7 +29659,9 @@ Module serializer.
                                                                   Ty.path "anyhow::Error"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "branch",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -28477,6 +29705,7 @@ Module serializer.
                                                                               Ty.path
                                                                                 "anyhow::Error"
                                                                             ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -28490,6 +29719,7 @@ Module serializer.
                                                                               ]
                                                                           ],
                                                                           "from_residual",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| residual |) ]
@@ -28538,7 +29768,9 @@ Module serializer.
                                           []
                                           [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -28586,6 +29818,7 @@ Module serializer.
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -28596,6 +29829,7 @@ Module serializer.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]

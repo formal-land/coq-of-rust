@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
           "basic_contract_caller::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -236,6 +244,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                 M.get_associated_function (|
                   Ty.path "basic_contract_caller::OtherContract",
                   "flip",
+                  [],
                   []
                 |),
                 [
@@ -252,6 +261,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               M.get_associated_function (|
                 Ty.path "basic_contract_caller::OtherContract",
                 "get",
+                [],
                 []
               |),
               [

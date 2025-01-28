@@ -35,6 +35,7 @@ Module check_duplication.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -47,6 +48,7 @@ Module check_duplication.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                   "verify_module_impl",
+                  [],
                   []
                 |),
                 [ M.read (| module |) ]
@@ -67,6 +69,7 @@ Module check_duplication.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -79,6 +82,7 @@ Module check_duplication.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| module |) ]
@@ -137,7 +141,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -146,6 +152,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_identifiers",
+                              [],
                               []
                             |),
                             [
@@ -153,6 +160,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "identifiers",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -186,6 +194,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -196,6 +205,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -227,7 +237,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -236,6 +248,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_address_identifiers",
+                              [],
                               []
                             |),
                             [
@@ -243,6 +256,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "address_identifiers",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -276,6 +290,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -286,6 +301,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -317,7 +333,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -326,6 +344,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_constants",
+                              [],
                               []
                             |),
                             [
@@ -333,6 +352,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "constant_pool",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -366,6 +386,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -376,6 +397,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -407,7 +429,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -416,6 +440,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_signatures",
+                              [],
                               []
                             |),
                             [
@@ -423,6 +448,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "signatures",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -456,6 +482,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -466,6 +493,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -497,7 +525,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -506,6 +536,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_module_handles",
+                              [],
                               []
                             |),
                             [
@@ -513,6 +544,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "module_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -546,6 +578,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -556,6 +589,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -587,7 +621,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -596,6 +632,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_module_handles",
+                              [],
                               []
                             |),
                             [
@@ -603,6 +640,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "friend_decls",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -636,6 +674,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -646,6 +685,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -677,7 +717,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -686,6 +728,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_struct_handles",
+                              [],
                               []
                             |),
                             [
@@ -693,6 +736,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -726,6 +770,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -736,6 +781,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -767,7 +813,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -776,6 +824,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_handles",
+                              [],
                               []
                             |),
                             [
@@ -783,6 +832,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "function_handles",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -816,6 +866,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -826,6 +877,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -857,7 +909,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -866,6 +920,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_instantiations",
+                              [],
                               []
                             |),
                             [
@@ -873,6 +928,7 @@ Module check_duplication.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "function_instantiations",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -906,6 +962,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -916,6 +973,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -953,7 +1011,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -962,6 +1022,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_field_handles",
+                              [],
                               []
                             |),
                             [ checker ]
@@ -993,6 +1054,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1003,6 +1065,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1034,7 +1097,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1043,6 +1108,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_field_instantiations",
+                              [],
                               []
                             |),
                             [ checker ]
@@ -1074,6 +1140,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1084,6 +1151,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1115,7 +1183,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1124,6 +1194,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_defintions",
+                              [],
                               []
                             |),
                             [ checker ]
@@ -1155,6 +1226,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1165,6 +1237,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1196,7 +1269,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1205,6 +1280,7 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_struct_definitions",
+                              [],
                               []
                             |),
                             [ checker ]
@@ -1236,6 +1312,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1246,6 +1323,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1271,6 +1349,7 @@ Module check_duplication.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                       "check_struct_instantiations",
+                      [],
                       []
                     |),
                     [ checker ]
@@ -1308,6 +1387,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1394,6 +1474,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1478,6 +1559,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1560,6 +1642,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1642,6 +1725,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1724,6 +1808,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
@@ -1760,7 +1845,9 @@ Module check_duplication.
                           []
                           [ Ty.path "move_binary_format::file_format::StructHandle" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -1792,6 +1879,7 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::StructHandle" ],
                             "iter",
+                            [],
                             []
                           |),
                           [ M.read (| struct_handles |) ]
@@ -1907,6 +1995,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1991,6 +2080,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
@@ -2027,7 +2117,9 @@ Module check_duplication.
                           []
                           [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -2059,6 +2151,7 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                             "iter",
+                            [],
                             []
                           |),
                           [ M.read (| function_handles |) ]
@@ -2168,6 +2261,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -2185,6 +2279,7 @@ Module check_duplication.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "field_handles",
+                        [],
                         []
                       |),
                       [
@@ -2271,6 +2366,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -2288,6 +2384,7 @@ Module check_duplication.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_instantiations",
+                        [],
                         []
                       |),
                       [
@@ -2385,6 +2482,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2405,6 +2503,7 @@ Module check_duplication.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "field_instantiations",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2552,6 +2651,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
@@ -2594,7 +2694,9 @@ Module check_duplication.
                                             "move_binary_format::file_format::StructDefinition"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path
                                           "move_binary_format::file_format::StructHandleIndex";
@@ -2626,6 +2728,7 @@ Module check_duplication.
                                                 "move_binary_format::file_format::StructDefinition"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2634,6 +2737,7 @@ Module check_duplication.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "struct_defs",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2731,7 +2835,9 @@ Module check_duplication.
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2743,7 +2849,9 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -2755,6 +2863,7 @@ Module check_duplication.
                                       [ Ty.path "move_binary_format::file_format::StructDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2762,6 +2871,7 @@ Module check_duplication.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "struct_defs",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2806,7 +2916,9 @@ Module check_duplication.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2893,6 +3005,7 @@ Module check_duplication.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "is_empty",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| fields |) ]
@@ -2948,6 +3061,7 @@ Module check_duplication.
                                                           Ty.path
                                                             "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                                           "first_duplicate_element",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
@@ -2992,7 +3106,9 @@ Module check_duplication.
                                                                     "move_binary_format::file_format::FieldDefinition"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "map",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::IdentifierIndex";
@@ -3024,6 +3140,7 @@ Module check_duplication.
                                                                         "move_binary_format::file_format::FieldDefinition"
                                                                     ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3040,7 +3157,9 @@ Module check_duplication.
                                                                             "alloc::alloc::Global"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "deref",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| fields |) ]
@@ -3139,7 +3258,9 @@ Module check_duplication.
                                     []
                                     [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -3169,6 +3290,7 @@ Module check_duplication.
                                               "move_binary_format::file_format::StructDefinition"
                                           ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3177,6 +3299,7 @@ Module check_duplication.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "struct_defs",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3209,11 +3332,13 @@ Module check_duplication.
                                                         "core::cmp::PartialEq",
                                                         Ty.path
                                                           "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::ModuleHandleIndex"
                                                         ],
                                                         "ne",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3223,6 +3348,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "struct_handle_at",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3251,6 +3377,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "self_handle_idx",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3338,7 +3465,9 @@ Module check_duplication.
                               (Ty.path "move_binary_format::file_format::StructHandleIndex")
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
@@ -3358,7 +3487,9 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "move_binary_format::file_format::StructHandleIndex";
                               Ty.function
@@ -3385,6 +3516,7 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -3392,6 +3524,7 @@ Module check_duplication.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_defs",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3450,7 +3583,9 @@ Module check_duplication.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
                                 |),
                                 [
@@ -3470,6 +3605,7 @@ Module check_duplication.
                                                     "move_binary_format::file_format::StructHandle"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3478,6 +3614,7 @@ Module check_duplication.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "struct_handles",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3514,6 +3651,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::StructHandleIndex",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.rust_cast (M.read (| x |)) ]
@@ -3526,11 +3664,13 @@ Module check_duplication.
                                                               "core::cmp::PartialEq",
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
                                                               ],
                                                               "eq",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3540,6 +3680,7 @@ Module check_duplication.
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
                                                                     "struct_handle_at",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3562,6 +3703,7 @@ Module check_duplication.
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
                                                                     "self_handle_idx",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3592,6 +3734,7 @@ Module check_duplication.
                                                                         "std::hash::random::RandomState"
                                                                     ],
                                                                   "contains",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::file_format::StructHandleIndex"
@@ -3736,6 +3879,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
@@ -3778,7 +3922,9 @@ Module check_duplication.
                                             "move_binary_format::file_format::FunctionDefinition"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path
                                           "move_binary_format::file_format::FunctionHandleIndex";
@@ -3810,6 +3956,7 @@ Module check_duplication.
                                                 "move_binary_format::file_format::FunctionDefinition"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3818,6 +3965,7 @@ Module check_duplication.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "function_defs",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3915,7 +4063,9 @@ Module check_duplication.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3927,7 +4077,9 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -3941,6 +4093,7 @@ Module check_duplication.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3948,6 +4101,7 @@ Module check_duplication.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_defs",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3992,7 +4146,9 @@ Module check_duplication.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -4033,6 +4189,7 @@ Module check_duplication.
                                                         "move_binary_format::file_format::StructDefinitionIndex"
                                                     ],
                                                   "iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4048,7 +4205,9 @@ Module check_duplication.
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
                                                       [],
+                                                      [],
                                                       "deref",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -4077,6 +4236,7 @@ Module check_duplication.
                                                               []
                                                               [ Ty.path "u16" ],
                                                             "is_some",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4086,6 +4246,7 @@ Module check_duplication.
                                                                   Ty.path
                                                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                                                   "first_duplicate_element",
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -4163,7 +4324,9 @@ Module check_duplication.
                                     [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -4193,6 +4356,7 @@ Module check_duplication.
                                               "move_binary_format::file_format::FunctionDefinition"
                                           ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4201,6 +4365,7 @@ Module check_duplication.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "function_defs",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4233,11 +4398,13 @@ Module check_duplication.
                                                         "core::cmp::PartialEq",
                                                         Ty.path
                                                           "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::ModuleHandleIndex"
                                                         ],
                                                         "ne",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4247,6 +4414,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "function_handle_at",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4275,6 +4443,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
                                                               "self_handle_idx",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4364,7 +4533,9 @@ Module check_duplication.
                               (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
@@ -4384,7 +4555,9 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "move_binary_format::file_format::FunctionHandleIndex";
                               Ty.function
@@ -4411,6 +4584,7 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -4418,6 +4592,7 @@ Module check_duplication.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "function_defs",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4476,7 +4651,9 @@ Module check_duplication.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
                                 |),
                                 [
@@ -4496,6 +4673,7 @@ Module check_duplication.
                                                     "move_binary_format::file_format::FunctionHandle"
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4504,6 +4682,7 @@ Module check_duplication.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "function_handles",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4540,6 +4719,7 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::FunctionHandleIndex",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.rust_cast (M.read (| x |)) ]
@@ -4552,11 +4732,13 @@ Module check_duplication.
                                                               "core::cmp::PartialEq",
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
                                                               ],
                                                               "eq",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4566,6 +4748,7 @@ Module check_duplication.
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
                                                                     "function_handle_at",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4588,6 +4771,7 @@ Module check_duplication.
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
                                                                     "self_handle_idx",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4618,6 +4802,7 @@ Module check_duplication.
                                                                         "std::hash::random::RandomState"
                                                                     ],
                                                                   "contains",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::file_format::FunctionHandleIndex"
@@ -4715,6 +4900,7 @@ Module check_duplication.
                           []
                           [ Ty.associated; Ty.path "std::hash::random::RandomState" ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -4732,7 +4918,9 @@ Module check_duplication.
                               []
                               [ Ty.associated ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -4741,7 +4929,9 @@ Module check_duplication.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.associated,
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -4750,7 +4940,9 @@ Module check_duplication.
                                     "core::iter::traits::collect::IntoIterator",
                                     T,
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| iter |) ]
@@ -4777,7 +4969,9 @@ Module check_duplication.
                                             []
                                             [ Ty.associated ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -4827,6 +5021,7 @@ Module check_duplication.
                                                                     "std::hash::random::RandomState"
                                                                 ],
                                                               "insert",
+                                                              [],
                                                               []
                                                             |),
                                                             [ uniq; M.read (| x |) ]

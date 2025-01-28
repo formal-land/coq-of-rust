@@ -40,7 +40,15 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
           [
             ("count",
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u32", [], "default", [] |),
+                M.get_trait_method (|
+                  "core::default::Default",
+                  Ty.path "u32",
+                  [],
+                  [],
+                  "default",
+                  [],
+                  []
+                |),
                 []
               |))
           ]))
@@ -72,7 +80,9 @@ Module Impl_set_code_hash_Incrementer.
             "core::default::Default",
             Ty.path "set_code_hash::Incrementer",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -112,7 +122,12 @@ Module Impl_set_code_hash_Incrementer.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -131,6 +146,7 @@ Module Impl_set_code_hash_Incrementer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [
@@ -202,6 +218,7 @@ Module Impl_set_code_hash_Incrementer.
                     []
                     [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
                   "unwrap_or_else",
+                  [],
                   [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ]
                 |),
                 [
@@ -259,7 +276,12 @@ Module Impl_set_code_hash_Incrementer.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
                         M.alloc (|
                           Value.Array
@@ -276,6 +298,7 @@ Module Impl_set_code_hash_Incrementer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "array")

@@ -110,6 +110,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.I32 0 ]
@@ -121,6 +122,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [
@@ -138,6 +140,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.I32 (-1) ]
@@ -209,7 +212,7 @@ Module num.
                   let~ lz :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                         [ M.read (| w |) ]
                       |)
                     |) in
@@ -706,7 +709,7 @@ Module num.
             BinOp.Wrap.add (|
               BinOp.Wrap.shr (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "wrapping_mul", [] |),
+                  M.get_associated_function (| Ty.path "i32", "wrapping_mul", [], [] |),
                   [
                     M.read (| q |);
                     BinOp.Wrap.add (|
@@ -1076,6 +1079,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u64",
                                                         "wrapping_add",
+                                                        [],
                                                         []
                                                       |),
                                                       [

@@ -8,7 +8,7 @@ Module slice.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 1 ]
             |)
           |))).
@@ -18,7 +18,7 @@ Module slice.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 128 ]
             |)
           |))).
@@ -47,7 +47,7 @@ Module slice.
             BinOp.bit_and
               (BinOp.bit_and
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                   [
                     M.read (| x |);
                     M.read (| M.get_constant (| "core::slice::memchr::LO_USIZE" |) |)
@@ -96,6 +96,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| text |) ]
@@ -185,6 +186,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| text |) ]
@@ -335,6 +337,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| text |) ]
@@ -346,6 +349,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| text |) ]
@@ -357,6 +361,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
+                        [],
                         []
                       |),
                       [
@@ -419,6 +424,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| text |) ]
@@ -470,7 +476,7 @@ Module slice.
                 let~ repeated_x :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+                      M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                       [ M.read (| x |) ]
                     |)
                   |) in
@@ -511,6 +517,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| ptr |); M.read (| offset |) ]
@@ -523,6 +530,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -624,6 +632,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -631,6 +640,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [ M.read (| text |) ]
@@ -643,6 +653,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
                             [ M.read (| text |) ]
@@ -757,6 +768,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
                       [ M.read (| text |) ]
@@ -768,6 +780,7 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| text |) ]
@@ -780,6 +793,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "align_to",
+                          [],
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                         |),
                         [ M.read (| text |) ]
@@ -800,6 +814,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| prefix |) ]
@@ -810,6 +825,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| suffix |) ]
@@ -843,7 +859,9 @@ Module slice.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "rposition",
+                                          [],
                                           [
                                             Ty.function
                                               [
@@ -859,6 +877,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "iter",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -866,6 +885,7 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::ops::index::Index",
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::RangeFrom")
@@ -873,6 +893,7 @@ Module slice.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -937,7 +958,7 @@ Module slice.
                         let~ repeated_x :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+                              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                               [ M.read (| x |) ]
                             |)
                           |) in
@@ -977,6 +998,7 @@ Module slice.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -998,6 +1020,7 @@ Module slice.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   "add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1098,7 +1121,9 @@ Module slice.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "rposition",
+                              [],
                               [
                                 Ty.function
                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
@@ -1111,6 +1136,7 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1118,6 +1144,7 @@ Module slice.
                                       M.get_trait_method (|
                                         "core::ops::index::Index",
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeTo")
@@ -1125,6 +1152,7 @@ Module slice.
                                             [ Ty.path "usize" ]
                                         ],
                                         "index",
+                                        [],
                                         []
                                       |),
                                       [

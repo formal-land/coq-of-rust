@@ -23,6 +23,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             []
             [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
           "and_then",
+          [],
           [
             Ty.path "i32";
             Ty.function
@@ -35,7 +36,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         |),
         [
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
+            M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
             [ M.read (| first_number_str |) ]
           |);
           M.closure
@@ -57,6 +58,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   []
                                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                 "map",
+                                [],
                                 [
                                   Ty.path "i32";
                                   Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
@@ -67,6 +69,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "parse",
+                                    [],
                                     [ Ty.path "i32" ]
                                   |),
                                   [ M.read (| second_number_str |) ]
@@ -135,6 +138,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -150,6 +154,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "i32" ]
                                     |),
                                     [ n ]
@@ -176,6 +181,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -192,6 +198,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "core::num::error::ParseIntError" ]
                                     |),
                                     [ e ]

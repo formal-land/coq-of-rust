@@ -23,6 +23,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size",
+                      [],
                       []
                     |),
                     [ layout ]
@@ -35,7 +36,9 @@ Module alloc.
                       "core::alloc::global::GlobalAlloc",
                       Self,
                       [],
+                      [],
                       "alloc",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| layout |) ]
@@ -55,6 +58,7 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -101,6 +105,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "from_size_align_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -109,6 +114,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "align",
+                          [],
                           []
                         |),
                         [ layout ]
@@ -123,7 +129,9 @@ Module alloc.
                       "core::alloc::global::GlobalAlloc",
                       Self,
                       [],
+                      [],
                       "alloc",
+                      [],
                       []
                     |),
                     [ M.read (| self |); M.read (| new_layout |) ]
@@ -143,6 +151,7 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -169,6 +178,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "size",
+                                        [],
                                         []
                                       |),
                                       [ layout ]
@@ -186,7 +196,9 @@ Module alloc.
                                 "core::alloc::global::GlobalAlloc",
                                 Self,
                                 [],
+                                [],
                                 "dealloc",
+                                [],
                                 []
                               |),
                               [ M.read (| self |); M.read (| ptr |); M.read (| layout |) ]

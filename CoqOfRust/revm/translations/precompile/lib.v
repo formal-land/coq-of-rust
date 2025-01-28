@@ -16,7 +16,7 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
       BinOp.Wrap.add (|
         BinOp.Wrap.mul (|
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "div_ceil", [] |),
+            M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
             [ M.rust_cast (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
           |),
           M.read (| word |)
@@ -103,7 +103,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -126,7 +128,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -184,7 +188,9 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -201,7 +207,9 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -232,6 +240,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
@@ -298,6 +307,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "homestead",
+                        [],
                         []
                       |),
                       []
@@ -312,6 +322,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "byzantium",
+                        [],
                         []
                       |),
                       []
@@ -326,6 +337,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "istanbul",
+                        [],
                         []
                       |),
                       []
@@ -340,6 +352,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "berlin",
+                        [],
                         []
                       |),
                       []
@@ -354,6 +367,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "cancun",
+                        [],
                         []
                       |),
                       []
@@ -368,6 +382,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "prague",
+                        [],
                         []
                       |),
                       []
@@ -382,6 +397,7 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "latest",
+                        [],
                         []
                       |),
                       []
@@ -421,6 +437,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -451,7 +468,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::default::Default",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "default",
+                                        [],
                                         []
                                       |),
                                       []
@@ -463,6 +482,7 @@ Module Impl_revm_precompile_Precompiles.
                                       M.get_associated_function (|
                                         Ty.path "revm_precompile::Precompiles",
                                         "extend",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -505,6 +525,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -571,6 +592,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -601,7 +623,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -609,6 +633,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "homestead",
+                                            [],
                                             []
                                           |),
                                           []
@@ -622,6 +647,7 @@ Module Impl_revm_precompile_Precompiles.
                                       M.get_associated_function (|
                                         Ty.path "revm_precompile::Precompiles",
                                         "extend",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -668,6 +694,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -713,6 +740,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -743,7 +771,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -751,6 +781,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "byzantium",
+                                            [],
                                             []
                                           |),
                                           []
@@ -764,6 +795,7 @@ Module Impl_revm_precompile_Precompiles.
                                       M.get_associated_function (|
                                         Ty.path "revm_precompile::Precompiles",
                                         "extend",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -808,6 +840,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -849,6 +882,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -879,7 +913,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -887,6 +923,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "istanbul",
+                                            [],
                                             []
                                           |),
                                           []
@@ -900,6 +937,7 @@ Module Impl_revm_precompile_Precompiles.
                                       M.get_associated_function (|
                                         Ty.path "revm_precompile::Precompiles",
                                         "extend",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -929,6 +967,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -981,6 +1020,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -1011,7 +1051,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1019,6 +1061,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "berlin",
+                                            [],
                                             []
                                           |),
                                           []
@@ -1033,7 +1076,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::PrecompileWithAddress",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1049,6 +1094,7 @@ Module Impl_revm_precompile_Precompiles.
                                       M.get_associated_function (|
                                         Ty.path "revm_precompile::Precompiles",
                                         "extend",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -1070,6 +1116,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -1116,6 +1163,7 @@ Module Impl_revm_precompile_Precompiles.
               []
               [ Ty.path "revm_precompile::Precompiles" ],
             "get_or_init",
+            [],
             [
               Ty.function
                 [ Ty.tuple [] ]
@@ -1146,7 +1194,9 @@ Module Impl_revm_precompile_Precompiles.
                                         "core::clone::Clone",
                                         Ty.path "revm_precompile::Precompiles",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1154,6 +1204,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "cancun",
+                                            [],
                                             []
                                           |),
                                           []
@@ -1170,6 +1221,7 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "extend",
+                                            [],
                                             [ Ty.associated ]
                                           |),
                                           [
@@ -1198,6 +1250,7 @@ Module Impl_revm_precompile_Precompiles.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| precompiles |) ]
@@ -1225,7 +1278,7 @@ Module Impl_revm_precompile_Precompiles.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "prague", [] |),
+          M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "prague", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1265,6 +1318,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "keys",
+            [],
             []
           |),
           [
@@ -1312,6 +1366,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "into_keys",
+            [],
             []
           |),
           [
@@ -1363,6 +1418,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "contains_key",
+            [],
             [ Ty.path "alloy_primitives::bits::address::Address" ]
           |),
           [
@@ -1412,6 +1468,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "get",
+            [],
             [ Ty.path "alloy_primitives::bits::address::Address" ]
           |),
           [
@@ -1461,6 +1518,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "get_mut",
+            [],
             [ Ty.path "alloy_primitives::bits::address::Address" ]
           |),
           [
@@ -1510,6 +1568,7 @@ Module Impl_revm_precompile_Precompiles.
                   Ty.path "std::hash::random::RandomState"
                 ],
               "len",
+              [],
               []
             |),
             [
@@ -1559,6 +1618,7 @@ Module Impl_revm_precompile_Precompiles.
                 Ty.path "std::hash::random::RandomState"
               ],
             "len",
+            [],
             []
           |),
           [
@@ -1616,7 +1676,9 @@ Module Impl_revm_precompile_Precompiles.
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1633,7 +1695,9 @@ Module Impl_revm_precompile_Precompiles.
                       "core::iter::traits::collect::IntoIterator",
                       impl_IntoIterator_Item___PrecompileWithAddress_,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| other |) ]
@@ -1653,8 +1717,10 @@ Module Impl_revm_precompile_Precompiles.
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "std::hash::random::RandomState"
                     ],
+                  [],
                   [ Ty.path "alloy_primitives::bits::address::Address" ],
                   "extend",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
@@ -1692,7 +1758,9 @@ Module Impl_revm_precompile_Precompiles.
                         []
                         [ Ty.path "revm_precompile::PrecompileWithAddress" ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.function
@@ -1716,6 +1784,7 @@ Module Impl_revm_precompile_Precompiles.
                             []
                             [ Ty.path "revm_precompile::PrecompileWithAddress" ],
                           "iter",
+                          [],
                           []
                         |),
                         [
@@ -1730,7 +1799,9 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ items ]
@@ -1754,6 +1825,7 @@ Module Impl_revm_precompile_Precompiles.
                                             M.get_associated_function (|
                                               Ty.path "revm_precompile::PrecompileWithAddress",
                                               "address",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| p |) ]
@@ -1792,6 +1864,7 @@ Module Impl_revm_precompile_Precompiles.
                           ]);
                       Ty.path "std::hash::random::RandomState"
                     ],
+                  [],
                   [
                     Ty.tuple
                       [
@@ -1811,6 +1884,7 @@ Module Impl_revm_precompile_Precompiles.
                       ]
                   ],
                   "extend",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
@@ -1864,7 +1938,9 @@ Module Impl_revm_precompile_Precompiles.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.tuple
                           [
@@ -1920,7 +1996,9 @@ Module Impl_revm_precompile_Precompiles.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| items |) ]
@@ -2008,7 +2086,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
                 "core::clone::Clone",
                 Ty.path "alloy_primitives::bits::address::Address",
                 [],
+                [],
                 "clone",
+                [],
                 []
               |),
               [
@@ -2035,7 +2115,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
                       Ty.path "revm_precompile::interface::PrecompileErrors"
                     ]),
                 [],
+                [],
                 "clone",
+                [],
                 []
               |),
               [
@@ -2072,6 +2154,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field2_finish",
+            [],
             []
           |),
           [
@@ -2334,7 +2417,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.read (| f |);
             M.read (|
@@ -2506,7 +2589,15 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "isize",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
               [ __self_discr; M.read (| state |) ]
             |)
           |)
@@ -2557,7 +2648,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [ __self_discr; __arg1_discr ]
             |)
           |)
@@ -2611,8 +2702,10 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
               [ __self_discr; __arg1_discr ]
@@ -2647,6 +2740,7 @@ Module Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precom
           M.get_associated_function (|
             Ty.path "revm_precompile::PrecompileSpecId",
             "from_spec_id",
+            [],
             []
           |),
           [ M.read (| spec_id |) ]
@@ -2744,17 +2838,16 @@ Module Impl_revm_precompile_PrecompileSpecId.
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2786,17 +2879,16 @@ Module Impl_revm_precompile_PrecompileSpecId.
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2820,17 +2912,16 @@ Module Impl_revm_precompile_PrecompileSpecId.
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2886,17 +2977,16 @@ Module Impl_revm_precompile_PrecompileSpecId.
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2925,17 +3015,16 @@ Module Impl_revm_precompile_PrecompileSpecId.
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" []
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2968,7 +3057,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
         let~ x :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "to_be_bytes", [] |),
+              M.get_associated_function (| Ty.path "u64", "to_be_bytes", [], [] |),
               [ M.read (| x |) ]
             |)
           |) in
@@ -2977,6 +3066,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
             M.get_associated_function (|
               Ty.path "alloy_primitives::bits::address::Address",
               "new",
+              [],
               []
             |),
             [

@@ -38,8 +38,10 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
               "eq",
+              [],
               []
             |),
             [
@@ -58,8 +60,10 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                 "eq",
+                [],
                 []
               |),
               [
@@ -169,7 +173,9 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             "generics_associated_types_solution::Contains",
             C,
             [],
+            [],
             "last",
+            [],
             []
           |),
           [ M.read (| container |) ]
@@ -179,7 +185,9 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             "generics_associated_types_solution::Contains",
             C,
             [],
+            [],
             "first",
+            [],
             []
           |),
           [ M.read (| container |) ]
@@ -202,7 +210,15 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       M.call_closure (|
-        M.get_trait_method (| "generics_associated_types_solution::Contains", C, [], "a", [] |),
+        M.get_trait_method (|
+          "generics_associated_types_solution::Contains",
+          C,
+          [],
+          [],
+          "a",
+          [],
+          []
+        |),
         [ M.read (| container |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -249,7 +265,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -268,6 +289,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                               |),
                               [ M.alloc (| number_1 |) ]
@@ -276,6 +298,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                               |),
                               [ M.alloc (| number_2 |) ]
@@ -284,6 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "bool" ]
                               |),
                               [
@@ -293,7 +317,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "generics_associated_types_solution::Contains",
                                       Ty.path "generics_associated_types_solution::Container",
                                       [],
+                                      [],
                                       "contains",
+                                      [],
                                       []
                                     |),
                                     [ container; number_1; number_2 ]
@@ -316,7 +342,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -333,6 +364,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -342,7 +374,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "generics_associated_types_solution::Contains",
                                       Ty.path "generics_associated_types_solution::Container",
                                       [],
+                                      [],
                                       "first",
+                                      [],
                                       []
                                     |),
                                     [ container ]
@@ -365,7 +399,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -380,6 +419,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -389,7 +429,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "generics_associated_types_solution::Contains",
                                       Ty.path "generics_associated_types_solution::Container",
                                       [],
+                                      [],
                                       "last",
+                                      [],
                                       []
                                     |),
                                     [ container ]
@@ -412,7 +454,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -429,6 +476,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [

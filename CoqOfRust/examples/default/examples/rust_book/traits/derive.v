@@ -63,8 +63,10 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
           M.get_trait_method (|
             "core::cmp::PartialOrd",
             Ty.path "f64",
+            [],
             [ Ty.path "f64" ],
             "partial_cmp",
+            [],
             []
           |),
           [
@@ -105,6 +107,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -221,7 +224,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -238,6 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [ Ty.path "derive::Inches" ]
                               |),
                               [ foot ]
@@ -268,8 +277,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "derive::Centimeters",
+                              [],
                               [ Ty.path "derive::Centimeters" ],
                               "lt",
+                              [],
                               []
                             |),
                             [
@@ -278,6 +289,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "derive::Inches",
                                     "to_centimeters",
+                                    [],
                                     []
                                   |),
                                   [ foot ]
@@ -300,7 +312,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array
@@ -317,6 +334,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
+                                [],
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               |),
                               [ cmp ]

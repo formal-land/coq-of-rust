@@ -112,6 +112,7 @@ Module bls12_381.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| out |) ]
@@ -137,6 +138,7 @@ Module bls12_381.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "split_at_mut",
+                        [],
                         []
                       |),
                       [
@@ -160,6 +162,7 @@ Module bls12_381.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "fill",
+                                [],
                                 []
                               |),
                               [ M.read (| padding |); Value.Integer IntegerKind.U8 0 ]
@@ -174,6 +177,7 @@ Module bls12_381.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| rest |) ]
@@ -232,6 +236,7 @@ Module bls12_381.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| input |) ]
@@ -276,6 +281,7 @@ Module bls12_381.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -303,6 +309,7 @@ Module bls12_381.
                                                                             []
                                                                             [ Ty.path "u8" ],
                                                                           "len",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| input |) ]
@@ -325,6 +332,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_display",
+                                                                              [],
                                                                               [ Ty.path "usize" ]
                                                                             |),
                                                                             [
@@ -341,6 +349,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_display",
+                                                                              [],
                                                                               [ Ty.path "usize" ]
                                                                             |),
                                                                             [
@@ -380,6 +389,7 @@ Module bls12_381.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "split_at",
+                        [],
                         []
                       |),
                       [
@@ -415,7 +425,9 @@ Module bls12_381.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "all",
+                                              [],
                                               [
                                                 Ty.function
                                                   [
@@ -431,6 +443,7 @@ Module bls12_381.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| padding |) ]
@@ -497,6 +510,7 @@ Module bls12_381.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_v1",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -520,6 +534,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_display",
+                                                                              [],
                                                                               [ Ty.path "usize" ]
                                                                             |),
                                                                             [
@@ -570,6 +585,7 @@ Module bls12_381.
                                       Ty.path "core::array::TryFromSliceError"
                                     ],
                                   "unwrap",
+                                  [],
                                   []
                                 |),
                                 [
@@ -580,6 +596,7 @@ Module bls12_381.
                                         (Ty.path "&")
                                         []
                                         [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -592,6 +609,7 @@ Module bls12_381.
                                           ]
                                       ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| unpadded |) ]
@@ -654,6 +672,7 @@ Module bls12_381.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| input |) ]
@@ -698,6 +717,7 @@ Module bls12_381.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -724,6 +744,7 @@ Module bls12_381.
                                                                             []
                                                                             [ Ty.path "u8" ],
                                                                           "len",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| input |) ]
@@ -746,6 +767,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_display",
+                                                                              [],
                                                                               [ Ty.path "usize" ]
                                                                             |),
                                                                             [
@@ -762,6 +784,7 @@ Module bls12_381.
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
                                                                               "new_display",
+                                                                              [],
                                                                               [ Ty.path "usize" ]
                                                                             |),
                                                                             [
@@ -802,7 +825,9 @@ Module bls12_381.
                         "core::default::Default",
                         Ty.path "blst::blst_scalar",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -818,6 +843,7 @@ Module bls12_381.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [ M.read (| input |) ]
@@ -870,7 +896,9 @@ Module bls12_381.
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -879,7 +907,9 @@ Module bls12_381.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "zip",
+                                [],
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                               |),
                               [
@@ -887,6 +917,7 @@ Module bls12_381.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| input |) ]
@@ -895,6 +926,7 @@ Module bls12_381.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -934,7 +966,9 @@ Module bls12_381.
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -970,7 +1004,9 @@ Module bls12_381.
                                                   "core::cmp::Ord",
                                                   Ty.path "u8",
                                                   [],
+                                                  [],
                                                   "cmp",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| i |); M.read (| modulo |) ]
@@ -1090,7 +1126,9 @@ Module bls12_381.
                                               "alloc::string::ToString",
                                               Ty.path "str",
                                               [],
+                                              [],
                                               "to_string",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| Value.String "non-canonical fp value" |) ]
@@ -1111,7 +1149,9 @@ Module bls12_381.
                         "core::default::Default",
                         Ty.path "blst::blst_fp",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -1128,6 +1168,7 @@ Module bls12_381.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]

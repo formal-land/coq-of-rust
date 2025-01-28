@@ -349,7 +349,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           BinOp.lt (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
+              M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
               [ M.read (| self |) ]
             |),
             M.read (| M.get_constant (| "core::f32::INFINITY" |) |)
@@ -373,7 +373,7 @@ Module f32.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f32", "classify", [] |),
+                  M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -405,7 +405,7 @@ Module f32.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f32", "classify", [] |),
+                  M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -449,7 +449,7 @@ Module f32.
             let~ b :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                  M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -539,7 +539,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           UnOp.not (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "f32", "is_sign_negative", [] |),
+              M.get_associated_function (| Ty.path "f32", "is_sign_negative", [], [] |),
               [ M.read (| self |) ]
             |)
           |)))
@@ -613,7 +613,7 @@ Module f32.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -628,7 +628,7 @@ Module f32.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "f32", "is_nan", [] |),
+                                    M.get_associated_function (| Ty.path "f32", "is_nan", [], [] |),
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
@@ -638,6 +638,7 @@ Module f32.
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| M.get_constant (| "core::f32::INFINITY" |) |) ]
@@ -712,7 +713,7 @@ Module f32.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+                    M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
                 |)
@@ -755,7 +756,7 @@ Module f32.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -770,7 +771,7 @@ Module f32.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "f32", "is_nan", [] |),
+                                    M.get_associated_function (| Ty.path "f32", "is_nan", [], [] |),
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
@@ -780,6 +781,7 @@ Module f32.
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
+                                          [],
                                           []
                                         |),
                                         [
@@ -858,7 +860,7 @@ Module f32.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+                    M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
                 |)
@@ -1040,6 +1042,7 @@ Module f32.
                                                       M.get_associated_function (|
                                                         Ty.path "f32",
                                                         "is_sign_positive",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -1049,6 +1052,7 @@ Module f32.
                                                         M.get_associated_function (|
                                                           Ty.path "f32",
                                                           "is_sign_negative",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| other |) ]
@@ -1156,6 +1160,7 @@ Module f32.
                                                       M.get_associated_function (|
                                                         Ty.path "f32",
                                                         "is_sign_negative",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -1165,6 +1170,7 @@ Module f32.
                                                         M.get_associated_function (|
                                                           Ty.path "f32",
                                                           "is_sign_positive",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| other |) ]
@@ -1251,8 +1257,10 @@ Module f32.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "f64",
+                    [],
                     [ Ty.path "f32" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1261,8 +1269,10 @@ Module f32.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "f64",
+                    [],
                     [ Ty.path "f32" ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| other |) ]
@@ -1294,8 +1304,10 @@ Module f32.
             M.get_trait_method (|
               "core::convert::num::FloatToInt",
               Ty.path "f32",
+              [],
               [ Int ],
               "to_int_unchecked",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -1366,10 +1378,10 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "to_be_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "to_be_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1390,10 +1402,10 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1414,10 +1426,10 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1438,10 +1450,10 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1463,10 +1475,10 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1488,10 +1500,10 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1546,7 +1558,7 @@ Module f32.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                    M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.read (| self |) |) ]
                   |))
               |) in
@@ -1554,7 +1566,7 @@ Module f32.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                    M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.read (| other |) |) ]
                   |))
               |) in
@@ -1586,7 +1598,7 @@ Module f32.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], "cmp", [] |),
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], [], "cmp", [], [] |),
                 [ left; right ]
               |)
             |)
@@ -1637,6 +1649,7 @@ Module f32.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1656,6 +1669,7 @@ Module f32.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
+                                            [],
                                             [ Ty.path "f32" ]
                                           |),
                                           [ min ]
@@ -1664,6 +1678,7 @@ Module f32.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
+                                            [],
                                             [ Ty.path "f32" ]
                                           |),
                                           [ max ]

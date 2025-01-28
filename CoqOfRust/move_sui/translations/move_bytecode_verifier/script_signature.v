@@ -137,7 +137,9 @@ Module script_signature.
                                 (Ty.path "bool")
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -155,7 +157,9 @@ Module script_signature.
                                     ]
                                 ],
                               [],
+                              [],
                               "filter",
+                              [],
                               [
                                 Ty.function
                                   [
@@ -192,7 +196,9 @@ Module script_signature.
                                     [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ],
                                   [],
+                                  [],
                                   "enumerate",
+                                  [],
                                   []
                                 |),
                                 [
@@ -206,6 +212,7 @@ Module script_signature.
                                             "move_binary_format::file_format::FunctionDefinition"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -213,6 +220,7 @@ Module script_signature.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "function_defs",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| module |) ]
@@ -308,7 +316,9 @@ Module script_signature.
                                               (Ty.path "bool")
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -347,7 +357,9 @@ Module script_signature.
                                                     Ty.path "move_binary_format::errors::VMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -393,6 +405,7 @@ Module script_signature.
                                                                 Ty.path
                                                                   "move_binary_format::errors::VMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -405,6 +418,7 @@ Module script_signature.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -490,7 +504,9 @@ Module script_signature.
                             [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                         ],
                       [],
+                      [],
                       "find",
+                      [],
                       [
                         Ty.function
                           [
@@ -527,7 +543,9 @@ Module script_signature.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             [],
+                            [],
                             "enumerate",
+                            [],
                             []
                           |),
                           [
@@ -538,6 +556,7 @@ Module script_signature.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -545,6 +564,7 @@ Module script_signature.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "function_defs",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| module |) ]
@@ -576,6 +596,7 @@ Module script_signature.
                                               (Ty.path "&")
                                               []
                                               [ Ty.path "move_core_types::identifier::IdentStr" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -583,6 +604,7 @@ Module script_signature.
                                                 [ Ty.path "move_core_types::identifier::IdentStr" ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [
@@ -592,6 +614,7 @@ Module script_signature.
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
                                                   "identifier_at",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -603,6 +626,7 @@ Module script_signature.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "function_handle_at",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -654,7 +678,9 @@ Module script_signature.
                             Ty.path "move_binary_format::errors::VMError"
                           ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -677,6 +703,7 @@ Module script_signature.
                                   ]
                               ],
                             "ok_or_else",
+                            [],
                             [
                               Ty.path "move_binary_format::errors::VMError";
                               Ty.function
@@ -702,6 +729,7 @@ Module script_signature.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
                                                   "finish",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -710,6 +738,7 @@ Module script_signature.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
                                                       "with_message",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -718,6 +747,7 @@ Module script_signature.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
                                                           "new",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -731,7 +761,9 @@ Module script_signature.
                                                           "alloc::string::ToString",
                                                           Ty.path "str",
                                                           [],
+                                                          [],
                                                           "to_string",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -751,6 +783,7 @@ Module script_signature.
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
                                                           "self_id",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| module |) ]
@@ -789,6 +822,7 @@ Module script_signature.
                                       []
                                       [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -799,6 +833,7 @@ Module script_signature.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -896,6 +931,7 @@ Module script_signature.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "function_def_at",
+                  [],
                   []
                 |),
                 [ M.read (| module |); M.read (| idx |) ]
@@ -907,6 +943,7 @@ Module script_signature.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "function_handle_at",
+                  [],
                   []
                 |),
                 [
@@ -945,6 +982,7 @@ Module script_signature.
                   []
                   [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 "map_err",
+                [],
                 [
                   Ty.path "move_binary_format::errors::VMError";
                   Ty.function
@@ -989,6 +1027,7 @@ Module script_signature.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "finish",
+                                      [],
                                       []
                                     |),
                                     [
@@ -996,6 +1035,7 @@ Module script_signature.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "at_index",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1020,6 +1060,7 @@ Module script_signature.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "self_id",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| module |) ]
@@ -1079,6 +1120,7 @@ Module script_signature.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::CompiledModule",
                           "version",
+                          [],
                           []
                         |),
                         [ M.read (| module |) ]
@@ -1113,7 +1155,9 @@ Module script_signature.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1158,6 +1202,7 @@ Module script_signature.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1169,6 +1214,7 @@ Module script_signature.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1308,6 +1354,7 @@ Module script_signature.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -1321,6 +1368,7 @@ Module script_signature.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "signature_at",
+                    [],
                     []
                   |),
                   [ M.read (| module |); M.read (| parameters_idx |) ]
@@ -1351,6 +1399,7 @@ Module script_signature.
                         ]
                     ],
                   "unwrap_or",
+                  [],
                   []
                 |),
                 [
@@ -1361,6 +1410,7 @@ Module script_signature.
                         []
                         [ Ty.path "move_binary_format::file_format::SignatureIndex" ],
                       "map",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&")
@@ -1410,6 +1460,7 @@ Module script_signature.
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
                                               "signature_at",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| module |); M.read (| idx |) ]
@@ -1442,6 +1493,7 @@ Module script_signature.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| module |) ]
@@ -1487,7 +1539,9 @@ Module script_signature.
                                   (Ty.path "bool")
                               ],
                             [],
+                            [],
                             "all",
+                            [],
                             [
                               Ty.function
                                 [
@@ -1513,7 +1567,9 @@ Module script_signature.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   [],
+                                  [],
                                   "skip_while",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -1545,6 +1601,7 @@ Module script_signature.
                                         [ Ty.path "move_binary_format::file_format::SignatureToken"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1560,7 +1617,9 @@ Module script_signature.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| parameters |) ]
@@ -1654,6 +1713,7 @@ Module script_signature.
                                                   Ty.path
                                                     "move_binary_format::file_format::SignatureToken",
                                                   "is_valid_for_constant",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| typ |) ]
@@ -1700,7 +1760,9 @@ Module script_signature.
                                   (Ty.path "bool")
                               ],
                             [],
+                            [],
                             "all",
+                            [],
                             [
                               Ty.function
                                 [
@@ -1726,7 +1788,9 @@ Module script_signature.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   [],
+                                  [],
                                   "skip_while",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -1758,6 +1822,7 @@ Module script_signature.
                                         [ Ty.path "move_binary_format::file_format::SignatureToken"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1773,7 +1838,9 @@ Module script_signature.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "deref",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| parameters |) ]
@@ -1836,6 +1903,7 @@ Module script_signature.
                                                   Ty.path
                                                     "move_binary_format::file_format::SignatureToken",
                                                   "is_valid_for_constant",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| typ |) ]
@@ -1862,6 +1930,7 @@ Module script_signature.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "is_empty",
+                  [],
                   []
                 |),
                 [ M.read (| return_types |) ]
@@ -1889,6 +1958,7 @@ Module script_signature.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [

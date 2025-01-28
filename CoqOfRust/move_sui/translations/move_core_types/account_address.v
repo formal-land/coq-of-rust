@@ -36,7 +36,9 @@ Module account_address.
               "core::cmp::Ord",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
@@ -77,9 +79,11 @@ Module account_address.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+              [],
               [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -162,9 +166,11 @@ Module account_address.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+              [],
               [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -206,7 +212,9 @@ Module account_address.
               "core::hash::Hash",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
               [],
+              [],
               "hash",
+              [],
               [ __H ]
             |),
             [
@@ -317,6 +325,7 @@ Module account_address.
               M.get_associated_function (|
                 Ty.path "move_core_types::account_address::AccountAddress",
                 "get_hex_address_one",
+                [],
                 []
               |),
               []
@@ -335,6 +344,7 @@ Module account_address.
               M.get_associated_function (|
                 Ty.path "move_core_types::account_address::AccountAddress",
                 "get_hex_address_two",
+                [],
                 []
               |),
               []
@@ -445,7 +455,9 @@ Module account_address.
                     "rand::rng::Rng",
                     Ty.path "rand_core::os::OsRng",
                     [],
+                    [],
                     "gen",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -479,13 +491,22 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let with_prefix := M.alloc (| with_prefix |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::string::ToString", Ty.associated, [], "to_string", [] |),
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.associated,
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
             [
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "move_core_types::account_address::AccountAddress",
                     "to_canonical_display",
+                    [],
                     []
                   |),
                   [ M.read (| self |); M.read (| with_prefix |) ]
@@ -567,7 +588,9 @@ Module account_address.
                     "alloc::string::ToString",
                     Ty.path "str",
                     [],
+                    [],
                     "to_string",
+                    [],
                     []
                   |),
                   [
@@ -575,6 +598,7 @@ Module account_address.
                       M.get_associated_function (|
                         Ty.path "str",
                         "trim_start_matches",
+                        [],
                         [ Ty.path "char" ]
                       |),
                       [
@@ -583,7 +607,9 @@ Module account_address.
                             "core::ops::deref::Deref",
                             Ty.path "alloc::string::String",
                             [],
+                            [],
                             "deref",
+                            [],
                             []
                           |),
                           [
@@ -630,6 +656,7 @@ Module account_address.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "is_empty",
+                              [],
                               []
                             |),
                             [ hex_str ]
@@ -642,7 +669,9 @@ Module account_address.
                           "alloc::string::ToString",
                           Ty.path "str",
                           [],
+                          [],
                           "to_string",
+                          [],
                           []
                         |),
                         [ M.read (| Value.String "0" |) ]
@@ -672,6 +701,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
+              [],
               []
             |),
             [
@@ -752,6 +782,7 @@ Module account_address.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "starts_with",
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
                                     [ M.read (| literal |); M.read (| Value.String "0x" |) ]
@@ -782,7 +813,7 @@ Module account_address.
                   M.alloc (|
                     BinOp.Wrap.sub (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                        M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.read (| literal |) ]
                       |),
                       Value.Integer IntegerKind.Usize 2
@@ -814,6 +845,7 @@ Module account_address.
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "with_capacity",
+                                [],
                                 []
                               |),
                               [
@@ -838,7 +870,9 @@ Module account_address.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -879,7 +913,9 @@ Module account_address.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -910,6 +946,7 @@ Module account_address.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [ hex_str; Value.UnicodeChar 48 ]
@@ -928,6 +965,7 @@ Module account_address.
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "push_str",
+                                [],
                                 []
                               |),
                               [
@@ -936,6 +974,7 @@ Module account_address.
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.path "str",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeFrom")
@@ -943,6 +982,7 @@ Module account_address.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [
@@ -960,6 +1000,7 @@ Module account_address.
                             M.get_associated_function (|
                               Ty.path "move_core_types::account_address::AccountAddress",
                               "from_hex",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [ M.read (| hex_str |) ]
@@ -972,6 +1013,7 @@ Module account_address.
                             M.get_associated_function (|
                               Ty.path "move_core_types::account_address::AccountAddress",
                               "from_hex",
+                              [],
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [
@@ -979,6 +1021,7 @@ Module account_address.
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.path "str",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
@@ -986,6 +1029,7 @@ Module account_address.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1031,6 +1075,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -1042,6 +1087,7 @@ Module account_address.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -1051,6 +1097,7 @@ Module account_address.
                                             Ty.path
                                               "move_core_types::account_address::AccountAddress",
                                             "short_str_lossless",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -1100,6 +1147,7 @@ Module account_address.
                   Ty.path "move_core_types::account_address::AccountAddressParseError"
                 ],
               "map",
+              [],
               [
                 Ty.path "move_core_types::account_address::AccountAddress";
                 Ty.function
@@ -1131,6 +1179,7 @@ Module account_address.
                       Ty.path "hex::error::FromHexError"
                     ],
                   "map_err",
+                  [],
                   [
                     Ty.path "move_core_types::account_address::AccountAddressParseError";
                     Ty.function
@@ -1147,7 +1196,9 @@ Module account_address.
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
                       [],
+                      [],
                       "from_hex",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| hex |) ]
@@ -1203,6 +1254,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
@@ -1214,6 +1266,7 @@ Module account_address.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_lower_hex",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1267,6 +1320,7 @@ Module account_address.
                   Ty.path "move_core_types::account_address::AccountAddressParseError"
                 ],
               "map",
+              [],
               [
                 Ty.path "move_core_types::account_address::AccountAddress";
                 Ty.function
@@ -1298,6 +1352,7 @@ Module account_address.
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "map_err",
+                  [],
                   [
                     Ty.path "move_core_types::account_address::AccountAddressParseError";
                     Ty.function
@@ -1313,9 +1368,11 @@ Module account_address.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                       "try_from",
+                      [],
                       []
                     |),
                     [
@@ -1323,8 +1380,10 @@ Module account_address.
                         M.get_trait_method (|
                           "core::convert::AsRef",
                           T,
+                          [],
                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           "as_ref",
+                          [],
                           []
                         |),
                         [ bytes ]
@@ -1380,6 +1439,7 @@ Module account_address.
                 []
                 [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
               "new",
+              [],
               []
             |),
             [
@@ -1478,11 +1538,11 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -1492,6 +1552,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_lower_hex",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&")
@@ -1533,11 +1594,11 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
                   M.alloc (|
@@ -1547,6 +1608,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_lower_hex",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&")
@@ -1611,6 +1673,7 @@ Module account_address.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "alternate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |) ]
@@ -1629,7 +1692,9 @@ Module account_address.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1637,6 +1702,7 @@ Module account_address.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1645,6 +1711,7 @@ Module account_address.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1679,6 +1746,7 @@ Module account_address.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1689,6 +1757,7 @@ Module account_address.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1730,7 +1799,9 @@ Module account_address.
                                   [ Ty.path "u8" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1759,7 +1830,9 @@ Module account_address.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -1796,7 +1869,9 @@ Module account_address.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1804,6 +1879,7 @@ Module account_address.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "write_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1812,6 +1888,7 @@ Module account_address.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1_formatted",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1827,6 +1904,7 @@ Module account_address.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_lower_hex",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -1846,6 +1924,7 @@ Module account_address.
                                                                       Ty.path
                                                                         "core::fmt::rt::Placeholder",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1877,6 +1956,7 @@ Module account_address.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               []
@@ -1912,6 +1992,7 @@ Module account_address.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -1923,6 +2004,7 @@ Module account_address.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -2002,6 +2084,7 @@ Module account_address.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "alternate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |) ]
@@ -2020,7 +2103,9 @@ Module account_address.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2028,6 +2113,7 @@ Module account_address.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2036,6 +2122,7 @@ Module account_address.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2070,6 +2157,7 @@ Module account_address.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -2080,6 +2168,7 @@ Module account_address.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -2121,7 +2210,9 @@ Module account_address.
                                   [ Ty.path "u8" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2150,7 +2241,9 @@ Module account_address.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2187,7 +2280,9 @@ Module account_address.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2195,6 +2290,7 @@ Module account_address.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "write_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2203,6 +2299,7 @@ Module account_address.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1_formatted",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2218,6 +2315,7 @@ Module account_address.
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
                                                                       "new_upper_hex",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -2237,6 +2335,7 @@ Module account_address.
                                                                       Ty.path
                                                                         "core::fmt::rt::Placeholder",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2268,6 +2367,7 @@ Module account_address.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               []
@@ -2303,6 +2403,7 @@ Module account_address.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -2314,6 +2415,7 @@ Module account_address.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -2372,6 +2474,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "new",
+              [],
               []
             |),
             [ M.read (| bytes |) ]
@@ -2418,6 +2521,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_bytes",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
             |),
             [ M.read (| bytes |) ]
@@ -2456,6 +2560,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_bytes",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -2499,6 +2604,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
+              [],
               []
             |),
             [
@@ -2539,6 +2645,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
+              [],
               []
             |),
             [
@@ -2665,8 +2772,10 @@ Module account_address.
                 M.get_trait_method (|
                   "core::convert::AsRef",
                   Ty.path "move_core_types::account_address::AccountAddress",
+                  [],
                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   "as_ref",
+                  [],
                   []
                 |),
                 [ M.read (| addr |) ]
@@ -2709,6 +2818,7 @@ Module account_address.
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_hex",
+              [],
               [ Ty.path "alloc::string::String" ]
             |),
             [ M.read (| s |) ]
@@ -2758,6 +2868,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "move_core_types::account_address::AccountAddress",
                             "from_hex_literal",
+                            [],
                             []
                           |),
                           [ M.read (| s |) ]
@@ -2776,6 +2887,7 @@ Module account_address.
                         M.get_associated_function (|
                           Ty.path "move_core_types::account_address::AccountAddress",
                           "from_hex",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| s |) ]
@@ -2841,7 +2953,9 @@ Module account_address.
                                   "serde::de::Deserializer",
                                   D,
                                   [],
+                                  [],
                                   "is_human_readable",
+                                  [],
                                   []
                                 |),
                                 [ deserializer ]
@@ -2861,7 +2975,9 @@ Module account_address.
                                       []
                                       [ Ty.path "alloc::string::String"; Ty.associated ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2870,7 +2986,9 @@ Module account_address.
                                         "serde::de::Deserialize",
                                         Ty.path "alloc::string::String",
                                         [],
+                                        [],
                                         "deserialize",
+                                        [],
                                         [ D ]
                                       |),
                                       [ M.read (| deserializer |) ]
@@ -2903,6 +3021,7 @@ Module account_address.
                                                       "move_core_types::account_address::AccountAddress";
                                                     Ty.associated
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -2913,6 +3032,7 @@ Module account_address.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -2946,6 +3066,7 @@ Module account_address.
                                     "move_core_types::account_address::AccountAddressParseError"
                                 ],
                               "map_err",
+                              [],
                               [
                                 Ty.associated;
                                 Ty.function
@@ -2962,7 +3083,9 @@ Module account_address.
                                   "core::str::traits::FromStr",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "from_str",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2971,7 +3094,9 @@ Module account_address.
                                       "core::ops::deref::Deref",
                                       Ty.path "alloc::string::String",
                                       [],
+                                      [],
                                       "deref",
+                                      [],
                                       []
                                     |),
                                     [ s ]
@@ -2982,7 +3107,9 @@ Module account_address.
                                 "serde::de::Error",
                                 Ty.associated,
                                 [],
+                                [],
                                 "custom",
+                                [],
                                 [
                                   Ty.path
                                     "move_core_types::account_address::AccountAddressParseError"
@@ -3009,7 +3136,9 @@ Module account_address.
                                         Ty.associated
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3019,7 +3148,9 @@ Module account_address.
                                         Ty.path
                                           "move_core_types::account_address::deserialize::Value",
                                         [],
+                                        [],
                                         "deserialize",
+                                        [],
                                         [ D ]
                                       |),
                                       [ M.read (| deserializer |) ]
@@ -3052,6 +3183,7 @@ Module account_address.
                                                       "move_core_types::account_address::AccountAddress";
                                                     Ty.associated
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3062,6 +3194,7 @@ Module account_address.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -3091,6 +3224,7 @@ Module account_address.
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3156,7 +3290,9 @@ Module account_address.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "is_human_readable",
+                              [],
                               []
                             |),
                             [ serializer ]
@@ -3169,7 +3305,9 @@ Module account_address.
                           "serde::ser::Serialize",
                           Ty.path "alloc::string::String",
                           [],
+                          [],
                           "serialize",
+                          [],
                           [ S ]
                         |),
                         [
@@ -3178,6 +3316,7 @@ Module account_address.
                               M.get_associated_function (|
                                 Ty.path "move_core_types::account_address::AccountAddress",
                                 "to_hex",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -3195,7 +3334,9 @@ Module account_address.
                           "serde::ser::Serializer",
                           S,
                           [],
+                          [],
                           "serialize_newtype_struct",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "array")
@@ -3279,7 +3420,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| f |); M.read (| Value.String "AccountAddressParseError" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3312,11 +3453,11 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -3335,6 +3476,7 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ M.get_constant (| "move_core_types::account_address::LENGTH" |) ]

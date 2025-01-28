@@ -84,8 +84,10 @@ Module blake2.
                     M.get_trait_method (|
                       "core::ops::index::Index",
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [],
                       [ Ty.path "core::ops::range::RangeFull" ],
                       "index",
+                      [],
                       []
                     |),
                     [
@@ -94,7 +96,9 @@ Module blake2.
                           "core::ops::deref::Deref",
                           Ty.path "bytes::bytes::Bytes",
                           [],
+                          [],
                           "deref",
+                          [],
                           []
                         |),
                         [
@@ -103,7 +107,9 @@ Module blake2.
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
                               [],
+                              [],
                               "deref",
+                              [],
                               []
                             |),
                             [ M.read (| input |) ]
@@ -128,6 +134,7 @@ Module blake2.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| input |) ]
@@ -150,8 +157,10 @@ Module blake2.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -172,7 +181,7 @@ Module blake2.
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
+                      M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -187,6 +196,7 @@ Module blake2.
                                 Ty.path "core::array::TryFromSliceError"
                               ],
                             "unwrap",
+                            [],
                             []
                           |),
                           [
@@ -197,6 +207,7 @@ Module blake2.
                                   (Ty.path "&")
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "array")
@@ -204,6 +215,7 @@ Module blake2.
                                     [ Ty.path "u8" ]
                                 ],
                                 "try_into",
+                                [],
                                 []
                               |),
                               [
@@ -211,6 +223,7 @@ Module blake2.
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
@@ -218,6 +231,7 @@ Module blake2.
                                         [ Ty.path "usize" ]
                                     ],
                                     "index",
+                                    [],
                                     []
                                   |),
                                   [
@@ -265,8 +279,10 @@ Module blake2.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -320,9 +336,11 @@ Module blake2.
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "revm_precompile::interface::PrecompileError",
+                                          [],
                                           [ Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ],
                                           "into",
+                                          [],
                                           []
                                         |),
                                         [
@@ -369,7 +387,9 @@ Module blake2.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -386,7 +406,9 @@ Module blake2.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -398,7 +420,9 @@ Module blake2.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "step_by",
+                                  [],
                                   []
                                 |),
                                 [
@@ -443,7 +467,9 @@ Module blake2.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -476,6 +502,7 @@ Module blake2.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "from_le_bytes",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -492,6 +519,7 @@ Module blake2.
                                                         Ty.path "core::array::TryFromSliceError"
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -507,6 +535,7 @@ Module blake2.
                                                               []
                                                               [ Ty.path "u8" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "array")
@@ -514,6 +543,7 @@ Module blake2.
                                                             [ Ty.path "u8" ]
                                                         ],
                                                         "try_into",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -524,6 +554,7 @@ Module blake2.
                                                               (Ty.path "slice")
                                                               []
                                                               [ Ty.path "u8" ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::ops::range::Range")
@@ -531,6 +562,7 @@ Module blake2.
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -585,7 +617,9 @@ Module blake2.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -602,7 +636,9 @@ Module blake2.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -614,7 +650,9 @@ Module blake2.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "step_by",
+                                  [],
                                   []
                                 |),
                                 [
@@ -659,7 +697,9 @@ Module blake2.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -692,6 +732,7 @@ Module blake2.
                                               M.get_associated_function (|
                                                 Ty.path "u64",
                                                 "from_le_bytes",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -708,6 +749,7 @@ Module blake2.
                                                         Ty.path "core::array::TryFromSliceError"
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -723,6 +765,7 @@ Module blake2.
                                                               []
                                                               [ Ty.path "u8" ]
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "array")
@@ -730,6 +773,7 @@ Module blake2.
                                                             [ Ty.path "u8" ]
                                                         ],
                                                         "try_into",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -740,6 +784,7 @@ Module blake2.
                                                               (Ty.path "slice")
                                                               []
                                                               [ Ty.path "u8" ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::ops::range::Range")
@@ -747,6 +792,7 @@ Module blake2.
                                                                 [ Ty.path "usize" ]
                                                             ],
                                                             "index",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -784,7 +830,7 @@ Module blake2.
                   Value.Array
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                        M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -799,6 +845,7 @@ Module blake2.
                                   Ty.path "core::array::TryFromSliceError"
                                 ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -809,6 +856,7 @@ Module blake2.
                                     (Ty.path "&")
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "array")
@@ -816,6 +864,7 @@ Module blake2.
                                       [ Ty.path "u8" ]
                                   ],
                                   "try_into",
+                                  [],
                                   []
                                 |),
                                 [
@@ -823,6 +872,7 @@ Module blake2.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -830,6 +880,7 @@ Module blake2.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -853,7 +904,7 @@ Module blake2.
                         ]
                       |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                        M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -868,6 +919,7 @@ Module blake2.
                                   Ty.path "core::array::TryFromSliceError"
                                 ],
                               "unwrap",
+                              [],
                               []
                             |),
                             [
@@ -878,6 +930,7 @@ Module blake2.
                                     (Ty.path "&")
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "array")
@@ -885,6 +938,7 @@ Module blake2.
                                       [ Ty.path "u8" ]
                                   ],
                                   "try_into",
+                                  [],
                                   []
                                 |),
                                 [
@@ -892,6 +946,7 @@ Module blake2.
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -899,6 +954,7 @@ Module blake2.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index",
+                                      [],
                                       []
                                     |),
                                     [
@@ -957,7 +1013,9 @@ Module blake2.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -974,7 +1032,9 @@ Module blake2.
                                     [ Ty.path "usize" ]
                                 ],
                               [],
+                              [],
                               "zip",
+                              [],
                               [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ] ]
                             |),
                             [
@@ -986,7 +1046,9 @@ Module blake2.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "step_by",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1003,6 +1065,7 @@ Module blake2.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [ h ]
@@ -1043,7 +1106,9 @@ Module blake2.
                                               [ Ty.path "u64" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -1075,6 +1140,7 @@ Module blake2.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "copy_from_slice",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1085,6 +1151,7 @@ Module blake2.
                                                       (Ty.path "array")
                                                       [ Value.Integer IntegerKind.Usize 64 ]
                                                       [ Ty.path "u8" ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
@@ -1092,6 +1159,7 @@ Module blake2.
                                                         [ Ty.path "usize" ]
                                                     ],
                                                     "index_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1113,6 +1181,7 @@ Module blake2.
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "to_le_bytes",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| M.read (| h |) |) ]
@@ -1136,6 +1205,7 @@ Module blake2.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -1147,8 +1217,10 @@ Module blake2.
                               (Ty.path "array")
                               [ Value.Integer IntegerKind.Usize 64 ]
                               [ Ty.path "u8" ],
+                            [],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| out |) ]
@@ -1409,10 +1481,10 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), a |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (| M.SubPointer.get_array_field (| M.read (| v |), a |) |);
                         M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |)
@@ -1426,7 +1498,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), d |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                  M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                   [
                     BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |))
@@ -1439,7 +1511,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), c |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                   [
                     M.read (| M.SubPointer.get_array_field (| M.read (| v |), c |) |);
                     M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |)
@@ -1450,7 +1522,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), b |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                  M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                   [
                     BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |))
@@ -1463,10 +1535,10 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), a |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (| M.SubPointer.get_array_field (| M.read (| v |), a |) |);
                         M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |)
@@ -1480,7 +1552,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), d |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                  M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                   [
                     BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |))
@@ -1493,7 +1565,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), c |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                  M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                   [
                     M.read (| M.SubPointer.get_array_field (| M.read (| v |), c |) |);
                     M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |)
@@ -1504,7 +1576,7 @@ Module blake2.
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| v |), b |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                  M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                   [
                     BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |))
@@ -1571,6 +1643,7 @@ Module blake2.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                     "copy_from_slice",
+                    [],
                     []
                   |),
                   [
@@ -1581,8 +1654,10 @@ Module blake2.
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u64" ],
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                         "index_mut",
+                        [],
                         []
                       |),
                       [
@@ -1595,6 +1670,7 @@ Module blake2.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| h |) ]
@@ -1612,6 +1688,7 @@ Module blake2.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                     "copy_from_slice",
+                    [],
                     []
                   |),
                   [
@@ -1622,8 +1699,10 @@ Module blake2.
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u64" ],
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
                         "index_mut",
+                        [],
                         []
                       |),
                       [
@@ -1636,6 +1715,7 @@ Module blake2.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| h |) ]
@@ -1715,7 +1795,9 @@ Module blake2.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -1745,7 +1827,9 @@ Module blake2.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -2077,7 +2161,9 @@ Module blake2.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -2107,7 +2193,9 @@ Module blake2.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [ iter ]

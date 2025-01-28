@@ -38,10 +38,18 @@ Module Impl_flipper_Flipper.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
+          M.get_associated_function (| Ty.path "flipper::Flipper", "new", [], [] |),
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "bool",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]

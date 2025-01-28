@@ -71,7 +71,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -247,7 +247,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| f |); M.read (| Value.String "Error" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -415,11 +415,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let c := M.alloc (| c |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", Self, [], "write_str", [] |),
+            M.get_trait_method (| "core::fmt::Write", Self, [], [], "write_str", [], [] |),
             [
               M.read (| self |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
+                M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                 [
                   M.read (| c |);
                   M.alloc (|
@@ -444,7 +444,9 @@ Module fmt.
               "core::fmt::Write::write_fmt::SpecWriteFmt",
               Ty.apply (Ty.path "&mut") [] [ Self ],
               [],
+              [],
               "spec_write_fmt",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| args |) ]
@@ -471,7 +473,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_str", [] |),
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_str", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -490,7 +492,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let c := M.alloc (| c |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_char", [] |),
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_char", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| c |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -509,7 +511,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_fmt", [] |),
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -612,6 +614,7 @@ Module fmt.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
+                    [],
                     [
                       Ty.tuple
                         [
@@ -622,6 +625,7 @@ Module fmt.
                         ]
                     ],
                     "call_once",
+                    [],
                     []
                   |),
                   [
@@ -764,7 +768,7 @@ Module fmt.
                 let~ width :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
                       [ M.read (| buf |) ]
                     |)
                   |) in
@@ -807,6 +811,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "sign_plus",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -853,6 +858,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "alternate",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -871,12 +877,19 @@ Module fmt.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.path "core::str::iter::Chars",
                                       [],
+                                      [],
                                       "count",
+                                      [],
                                       []
                                     |),
                                     [
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "str", "chars", [] |),
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "chars",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| prefix |) ]
                                       |)
                                     ]
@@ -913,7 +926,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -921,6 +936,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
@@ -949,6 +965,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -959,6 +976,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -985,7 +1003,9 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
@@ -1024,7 +1044,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1032,6 +1054,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
@@ -1060,6 +1083,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1070,6 +1094,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1096,7 +1121,9 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
@@ -1126,6 +1153,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "sign_aware_zero_pad",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -1176,7 +1204,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1184,6 +1214,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
@@ -1212,6 +1243,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1222,6 +1254,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1255,7 +1288,9 @@ Module fmt.
                                       [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1263,6 +1298,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "padding",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1295,6 +1331,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1305,6 +1342,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1337,7 +1375,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1346,7 +1386,9 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1384,6 +1426,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1394,6 +1437,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1425,7 +1469,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1433,6 +1479,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::PostPadding",
                                       "write",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| post_padding |); M.read (| self |) ]
@@ -1461,6 +1508,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1471,6 +1519,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1534,7 +1583,9 @@ Module fmt.
                                       [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1542,6 +1593,7 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "padding",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1574,6 +1626,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1584,6 +1637,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1616,7 +1670,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1624,6 +1680,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
@@ -1652,6 +1709,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1662,6 +1720,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1693,7 +1752,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1702,7 +1763,9 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1740,6 +1803,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1750,6 +1814,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1775,6 +1840,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::PostPadding",
                               "write",
+                              [],
                               []
                             |),
                             [ M.read (| post_padding |); M.read (| self |) ]
@@ -1863,6 +1929,7 @@ Module fmt.
                                         []
                                         [ Ty.path "usize" ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1881,6 +1948,7 @@ Module fmt.
                                           []
                                           [ Ty.path "usize" ],
                                         "is_none",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1904,7 +1972,9 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1957,7 +2027,9 @@ Module fmt.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.path "core::str::iter::CharIndices",
                                             [],
+                                            [],
                                             "nth",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1966,6 +2038,7 @@ Module fmt.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "char_indices",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| s |) ]
@@ -1992,6 +2065,7 @@ Module fmt.
                                             []
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           "unwrap_or",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1999,6 +2073,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "get",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -2040,7 +2115,9 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
@@ -2071,12 +2148,14 @@ Module fmt.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.path "core::str::iter::Chars",
                                 [],
+                                [],
                                 "count",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "chars", [] |),
+                                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                                   [ M.read (| s |) ]
                                 |)
                               ]
@@ -2103,7 +2182,9 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2137,7 +2218,9 @@ Module fmt.
                                                 Ty.path "core::fmt::Error"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2145,6 +2228,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "padding",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2181,6 +2265,7 @@ Module fmt.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2191,6 +2276,7 @@ Module fmt.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2223,7 +2309,9 @@ Module fmt.
                                             []
                                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2232,7 +2320,9 @@ Module fmt.
                                               "core::fmt::Write",
                                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                               [],
+                                              [],
                                               "write_str",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2270,6 +2360,7 @@ Module fmt.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2280,6 +2371,7 @@ Module fmt.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2305,6 +2397,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::PostPadding",
                                       "write",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| post_padding |); M.read (| self |) ]
@@ -2444,7 +2537,9 @@ Module fmt.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2474,7 +2569,9 @@ Module fmt.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -2513,7 +2610,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2524,7 +2623,9 @@ Module fmt.
                                                                   [ ("core::fmt::Write::Trait", [])
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "write_char",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2574,6 +2675,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2587,6 +2689,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2622,6 +2725,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::PostPadding",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2724,7 +2828,9 @@ Module fmt.
                                 "core::clone::Clone",
                                 Ty.path "core::num::fmt::Formatted",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
                               [ M.read (| formatted |) ]
@@ -2759,6 +2865,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "sign_aware_zero_pad",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| self |) ]
@@ -2788,7 +2895,9 @@ Module fmt.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2797,7 +2906,9 @@ Module fmt.
                                                 "core::fmt::Write",
                                                 Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                                 [],
+                                                [],
                                                 "write_str",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2836,6 +2947,7 @@ Module fmt.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2846,6 +2958,7 @@ Module fmt.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2882,6 +2995,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "saturating_sub",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2890,6 +3004,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| sign |) ]
@@ -2925,6 +3040,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::num::fmt::Formatted",
                                 "len",
+                                [],
                                 []
                               |),
                               [ formatted ]
@@ -2952,6 +3068,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "write_formatted_parts",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| self |); formatted ]
@@ -2974,7 +3091,9 @@ Module fmt.
                                                     Ty.path "core::fmt::Error"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2982,6 +3101,7 @@ Module fmt.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Formatter",
                                                     "padding",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3022,6 +3142,7 @@ Module fmt.
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -3033,6 +3154,7 @@ Module fmt.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3066,7 +3188,9 @@ Module fmt.
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3074,6 +3198,7 @@ Module fmt.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Formatter",
                                                     "write_formatted_parts",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |); formatted ]
@@ -3105,6 +3230,7 @@ Module fmt.
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -3116,6 +3242,7 @@ Module fmt.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3142,6 +3269,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::PostPadding",
                                           "write",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| post_padding |); M.read (| self |) ]
@@ -3176,6 +3304,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_formatted_parts",
+                              [],
                               []
                             |),
                             [ M.read (| self |); M.read (| formatted |) ]
@@ -3258,7 +3387,12 @@ Module fmt.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                    M.get_associated_function (|
+                                      Ty.path "str",
+                                      "is_empty",
+                                      [],
+                                      []
+                                    |),
                                     [
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -3284,7 +3418,9 @@ Module fmt.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3293,7 +3429,9 @@ Module fmt.
                                         "core::fmt::Write",
                                         Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                         [],
+                                        [],
                                         "write_str",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3337,6 +3475,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3347,6 +3486,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -3383,7 +3523,9 @@ Module fmt.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::num::fmt::Part" ] ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3414,7 +3556,9 @@ Module fmt.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -3469,6 +3613,7 @@ Module fmt.
                                                                           M.get_associated_function (|
                                                                             Ty.path "str",
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3502,7 +3647,9 @@ Module fmt.
                                                                                 "core::fmt::Error"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3515,7 +3662,9 @@ Module fmt.
                                                                                     [])
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "write_str",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3564,6 +3713,7 @@ Module fmt.
                                                                                           Ty.path
                                                                                             "core::fmt::Error"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -3577,6 +3727,7 @@ Module fmt.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -3612,6 +3763,7 @@ Module fmt.
                                                                         M.get_associated_function (|
                                                                           Ty.path "str",
                                                                           "len",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3678,7 +3830,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3691,7 +3845,9 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3706,6 +3862,7 @@ Module fmt.
                                                                           M.get_trait_method (|
                                                                             "core::ops::index::Index",
                                                                             Ty.path "str",
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3714,6 +3871,7 @@ Module fmt.
                                                                                 [ Ty.path "usize" ]
                                                                             ],
                                                                             "index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -3764,6 +3922,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -3777,6 +3936,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3829,6 +3989,7 @@ Module fmt.
                                                         M.get_associated_function (|
                                                           Ty.path "core::num::fmt::Part",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| part |) ]
@@ -3853,7 +4014,9 @@ Module fmt.
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [],
+                                                              [],
                                                               "into_iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3866,7 +4029,9 @@ Module fmt.
                                                                     []
                                                                     [ Ty.path "u8" ],
                                                                   [],
+                                                                  [],
                                                                   "rev",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3877,6 +4042,7 @@ Module fmt.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "iter_mut",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -3891,6 +4057,7 @@ Module fmt.
                                                                                 5
                                                                             ]
                                                                             [ Ty.path "u8" ],
+                                                                          [],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
@@ -3899,6 +4066,7 @@ Module fmt.
                                                                               [ Ty.path "usize" ]
                                                                           ],
                                                                           "index_mut",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3942,7 +4110,9 @@ Module fmt.
                                                                                   [ Ty.path "u8" ]
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "next",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ iter ]
@@ -4025,7 +4195,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4033,6 +4205,7 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "write_bytes.write_formatted_parts",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -4054,6 +4227,7 @@ Module fmt.
                                                                           5
                                                                       ]
                                                                       [ Ty.path "u8" ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -4062,6 +4236,7 @@ Module fmt.
                                                                         [ Ty.path "usize" ]
                                                                     ],
                                                                     "index",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4102,6 +4277,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4115,6 +4291,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4159,7 +4336,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4167,6 +4346,7 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "write_bytes.write_formatted_parts",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -4209,6 +4389,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4222,6 +4403,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4276,7 +4458,9 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_str",
+              [],
               []
             |),
             [
@@ -4322,6 +4506,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "as_statically_known_str",
+                            [],
                             []
                           |),
                           [ fmt ]
@@ -4340,7 +4525,9 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                           [],
+                          [],
                           "write_str",
+                          [],
                           []
                         |),
                         [
@@ -4768,6 +4955,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name1 |); M.read (| value1 |) ]
@@ -4778,6 +4966,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -4833,6 +5022,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name1 |); M.read (| value1 |) ]
@@ -4844,6 +5034,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name2 |); M.read (| value2 |) ]
@@ -4854,6 +5045,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -4914,6 +5106,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name1 |); M.read (| value1 |) ]
@@ -4925,6 +5118,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name2 |); M.read (| value2 |) ]
@@ -4936,6 +5130,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name3 |); M.read (| value3 |) ]
@@ -4946,6 +5141,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5011,6 +5207,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name1 |); M.read (| value1 |) ]
@@ -5022,6 +5219,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name2 |); M.read (| value2 |) ]
@@ -5033,6 +5231,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name3 |); M.read (| value3 |) ]
@@ -5044,6 +5243,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name4 |); M.read (| value4 |) ]
@@ -5054,6 +5254,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5127,6 +5328,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name1 |); M.read (| value1 |) ]
@@ -5138,6 +5340,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name2 |); M.read (| value2 |) ]
@@ -5149,6 +5352,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name3 |); M.read (| value3 |) ]
@@ -5160,6 +5364,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name4 |); M.read (| value4 |) ]
@@ -5171,6 +5376,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| name5 |); M.read (| value5 |) ]
@@ -5181,6 +5387,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5234,6 +5441,7 @@ Module fmt.
                               []
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| names |) ]
@@ -5252,6 +5460,7 @@ Module fmt.
                                   [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| values |) ]
@@ -5349,7 +5558,9 @@ Module fmt.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5419,7 +5630,9 @@ Module fmt.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -5451,6 +5664,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugStruct",
                                               "field",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5472,6 +5686,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5536,6 +5751,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value1 |) ]
@@ -5546,6 +5762,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5597,6 +5814,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value1 |) ]
@@ -5608,6 +5826,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value2 |) ]
@@ -5618,6 +5837,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5672,6 +5892,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value1 |) ]
@@ -5683,6 +5904,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value2 |) ]
@@ -5694,6 +5916,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value3 |) ]
@@ -5704,6 +5927,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5761,6 +5985,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value1 |) ]
@@ -5772,6 +5997,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value2 |) ]
@@ -5783,6 +6009,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value3 |) ]
@@ -5794,6 +6021,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value4 |) ]
@@ -5804,6 +6032,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5864,6 +6093,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value1 |) ]
@@ -5875,6 +6105,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value2 |) ]
@@ -5886,6 +6117,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value3 |) ]
@@ -5897,6 +6129,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value4 |) ]
@@ -5908,6 +6141,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
                   [ builder; M.read (| value5 |) ]
@@ -5918,6 +6152,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -5984,7 +6219,9 @@ Module fmt.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| values |) ]
@@ -6012,7 +6249,9 @@ Module fmt.
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [ iter ]
@@ -6041,6 +6280,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugTuple",
                                               "field",
+                                              [],
                                               []
                                             |),
                                             [ builder; M.read (| value |) ]
@@ -6058,6 +6298,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [ builder ]
@@ -6354,7 +6595,9 @@ Module fmt.
                           (Ty.path "usize")
                       ],
                     [],
+                    [],
                     "sum",
+                    [],
                     [ Ty.path "usize" ]
                   |),
                   [
@@ -6366,7 +6609,9 @@ Module fmt.
                           []
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.path "usize";
                           Ty.function
@@ -6390,6 +6635,7 @@ Module fmt.
                               []
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "iter",
+                            [],
                             []
                           |),
                           [
@@ -6418,6 +6664,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| M.read (| x |) |) ]
@@ -6443,6 +6690,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
                               "is_empty",
+                              [],
                               []
                             |),
                             [
@@ -6478,6 +6726,7 @@ Module fmt.
                                               []
                                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6496,6 +6745,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "str",
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6531,6 +6781,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "unwrap_or",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6538,6 +6789,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "checked_mul",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| pieces_length |); Value.Integer IntegerKind.Usize 2
@@ -6640,7 +6892,7 @@ Module fmt.
             let~ s :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -6666,6 +6918,7 @@ Module fmt.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [ s ]
@@ -6729,7 +6982,9 @@ Module fmt.
               "core::fmt::Display",
               Ty.path "core::fmt::Arguments",
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| fmt |) ]
@@ -6872,7 +7127,7 @@ Module fmt.
               let~ formatter :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
+                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [], [] |),
                     [ M.read (| output |) ]
                   |)
                 |) in
@@ -6900,7 +7155,9 @@ Module fmt.
                                         [ Ty.path "core::fmt::rt::Argument" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6912,7 +7169,9 @@ Module fmt.
                                         []
                                         [ Ty.path "core::fmt::rt::Argument" ],
                                       [],
+                                      [],
                                       "enumerate",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6923,6 +7182,7 @@ Module fmt.
                                             []
                                             [ Ty.path "core::fmt::rt::Argument" ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -6963,7 +7223,9 @@ Module fmt.
                                                       [ Ty.path "core::fmt::rt::Argument" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -7008,6 +7270,7 @@ Module fmt.
                                                               [ Ty.path "str" ]
                                                           ],
                                                         "get_unchecked",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -7036,6 +7299,7 @@ Module fmt.
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7066,7 +7330,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7079,7 +7345,9 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -7125,6 +7393,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -7138,6 +7407,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7183,7 +7453,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7191,6 +7463,7 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| arg |); formatter ]
@@ -7224,6 +7497,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -7237,6 +7511,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -7299,7 +7574,9 @@ Module fmt.
                                         [ Ty.path "core::fmt::rt::Placeholder" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7311,7 +7588,9 @@ Module fmt.
                                         []
                                         [ Ty.path "core::fmt::rt::Placeholder" ],
                                       [],
+                                      [],
                                       "enumerate",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7322,6 +7601,7 @@ Module fmt.
                                             []
                                             [ Ty.path "core::fmt::rt::Placeholder" ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fmt |) ]
@@ -7354,7 +7634,9 @@ Module fmt.
                                                       [ Ty.path "core::fmt::rt::Placeholder" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
                                               [ iter ]
@@ -7399,6 +7681,7 @@ Module fmt.
                                                               [ Ty.path "str" ]
                                                           ],
                                                         "get_unchecked",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -7427,6 +7710,7 @@ Module fmt.
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7457,7 +7741,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7470,7 +7756,9 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -7516,6 +7804,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -7529,6 +7818,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7573,7 +7863,9 @@ Module fmt.
                                                               Ty.path "core::fmt::Error"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7623,6 +7915,7 @@ Module fmt.
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -7636,6 +7929,7 @@ Module fmt.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -7689,6 +7983,7 @@ Module fmt.
                                   []
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "get",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
@@ -7721,7 +8016,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7730,7 +8027,9 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7768,6 +8067,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -7778,6 +8078,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -7959,6 +8260,7 @@ Module fmt.
                                               []
                                               [ Ty.path "core::fmt::rt::Argument" ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| args |) ]
@@ -7996,6 +8298,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
                   "get_unchecked",
+                  [],
                   [ Ty.path "usize" ]
                 |),
                 [
@@ -8012,7 +8315,7 @@ Module fmt.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "fmt", [], [] |),
               [ M.read (| value |); M.read (| fmt |) ]
             |)
           |)
@@ -8089,6 +8392,7 @@ Module fmt.
                                                       []
                                                       [ Ty.path "core::fmt::rt::Argument" ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| args |) ]
@@ -8125,6 +8429,7 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.path "core::fmt::rt::Argument",
                         "as_usize",
+                        [],
                         []
                       |),
                       [
@@ -8132,6 +8437,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
                             "get_unchecked",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [ M.read (| args |); M.read (| i |) ]
@@ -8203,7 +8509,9 @@ Module fmt.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -8240,7 +8548,9 @@ Module fmt.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -8276,7 +8586,9 @@ Module fmt.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8285,7 +8597,9 @@ Module fmt.
                                                         "core::fmt::Write",
                                                         Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                                         [],
+                                                        [],
                                                         "write_char",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -8332,6 +8646,7 @@ Module fmt.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -8343,6 +8658,7 @@ Module fmt.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -8399,7 +8715,9 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_str",
+              [],
               []
             |),
             [
@@ -8432,7 +8750,9 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_char",
+              [],
               []
             |),
             [
@@ -8476,6 +8796,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "as_statically_known_str",
+                            [],
                             []
                           |),
                           [ args ]
@@ -8494,7 +8815,9 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                           [],
+                          [],
                           "write_str",
+                          [],
                           []
                         |),
                         [
@@ -8560,7 +8883,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
               M.read (| Value.String "an error occurred when formatting an argument" |);
               M.read (| f |)
@@ -8589,7 +8912,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8616,7 +8939,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8643,7 +8966,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8670,7 +8993,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8697,7 +9020,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8724,7 +9047,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8751,7 +9074,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8778,7 +9101,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8805,7 +9128,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8832,7 +9155,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8859,7 +9182,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8886,7 +9209,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8913,7 +9236,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8940,7 +9263,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8967,7 +9290,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8994,7 +9317,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9082,7 +9405,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "bool", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "bool", [], [], "fmt", [], [] |),
             [ M.read (| self |); M.read (| f |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9111,7 +9434,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
               M.read (|
                 M.match_operator (|
@@ -9212,7 +9535,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9221,7 +9546,9 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.path "core::fmt::Formatter",
                               [],
+                              [],
                               "write_char",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.UnicodeChar 34 ]
@@ -9250,6 +9577,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9260,6 +9588,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9303,7 +9632,12 @@ Module fmt.
                                   (M.alloc (|
                                     BinOp.gt (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "len",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| rest |) ]
                                       |),
                                       Value.Integer IntegerKind.Usize 0
@@ -9324,7 +9658,9 @@ Module fmt.
                                         []
                                         [ Ty.path "u8" ],
                                       [],
+                                      [],
                                       "position",
+                                      [],
                                       [
                                         Ty.function
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
@@ -9338,6 +9674,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -9345,6 +9682,7 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "as_bytes",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| rest |) ]
@@ -9369,6 +9707,7 @@ Module fmt.
                                                           M.get_associated_function (|
                                                             Self,
                                                             "needs_escape.fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| b |) ]
@@ -9411,6 +9750,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "get_unchecked",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeFrom")
@@ -9432,6 +9772,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "chars",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| rest |) ]
@@ -9450,7 +9791,9 @@ Module fmt.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.path "core::str::iter::Chars",
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
                                                       [ chars ]
@@ -9469,6 +9812,7 @@ Module fmt.
                                                       M.get_associated_function (|
                                                         Ty.path "char",
                                                         "escape_debug_ext",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9501,7 +9845,9 @@ Module fmt.
                                                                       Ty.path
                                                                         "core::char::EscapeDebug",
                                                                       [],
+                                                                      [],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ esc ]
@@ -9529,7 +9875,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9538,6 +9886,7 @@ Module fmt.
                                                                         Ty.path
                                                                           "core::fmt::Formatter",
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -9546,6 +9895,7 @@ Module fmt.
                                                                           M.get_trait_method (|
                                                                             "core::ops::index::Index",
                                                                             Ty.path "str",
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -9554,6 +9904,7 @@ Module fmt.
                                                                                 [ Ty.path "usize" ]
                                                                             ],
                                                                             "index",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -9568,7 +9919,9 @@ Module fmt.
                                                                                   [ Ty.path "usize"
                                                                                   ],
                                                                                 [],
+                                                                                [],
                                                                                 "clone",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ printable_range ]
@@ -9607,6 +9960,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -9620,6 +9974,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9659,7 +10014,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9669,7 +10026,9 @@ Module fmt.
                                                                         Ty.path
                                                                           "core::char::EscapeDebug",
                                                                         [],
+                                                                        [],
                                                                         "fmt",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ esc; M.read (| f |) ]
@@ -9704,6 +10063,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -9717,6 +10077,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9760,6 +10121,7 @@ Module fmt.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "len_utf8",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| c |) ]
@@ -9787,6 +10149,7 @@ Module fmt.
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "len_utf8",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| c |) ]
@@ -9804,6 +10167,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "core::str::iter::Chars",
                                               "as_str",
+                                              [],
                                               []
                                             |),
                                             [ chars ]
@@ -9839,7 +10203,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9847,6 +10213,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [
@@ -9855,6 +10222,7 @@ Module fmt.
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.path "str",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -9862,6 +10230,7 @@ Module fmt.
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| printable_range |) ]
@@ -9892,6 +10261,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9902,6 +10272,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9928,7 +10299,9 @@ Module fmt.
                       "core::fmt::Write",
                       Ty.path "core::fmt::Formatter",
                       [],
+                      [],
                       "write_char",
+                      [],
                       []
                     |),
                     [ M.read (| f |); Value.UnicodeChar 34 ]
@@ -9962,7 +10335,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
             [ M.read (| f |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10011,7 +10384,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -10020,7 +10395,9 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.path "core::fmt::Formatter",
                               [],
+                              [],
                               "write_char",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.UnicodeChar 39 ]
@@ -10049,6 +10426,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -10059,6 +10437,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -10082,7 +10461,7 @@ Module fmt.
                 let~ esc :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "char", "escape_debug_ext", [] |),
+                      M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
                       [
                         M.read (| M.read (| self |) |);
                         Value.StructRecord
@@ -10106,7 +10485,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -10115,7 +10496,9 @@ Module fmt.
                               "core::fmt::Display",
                               Ty.path "core::char::EscapeDebug",
                               [],
+                              [],
                               "fmt",
+                              [],
                               []
                             |),
                             [ esc; M.read (| f |) ]
@@ -10144,6 +10527,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -10154,6 +10538,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -10180,7 +10565,9 @@ Module fmt.
                       "core::fmt::Write",
                       Ty.path "core::fmt::Formatter",
                       [],
+                      [],
                       "write_char",
+                      [],
                       []
                     |),
                     [ M.read (| f |); Value.UnicodeChar 39 ]
@@ -10231,6 +10618,7 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "is_none",
+                                [],
                                 []
                               |),
                               [
@@ -10246,6 +10634,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
@@ -10265,7 +10654,9 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.path "core::fmt::Formatter",
                           [],
+                          [],
                           "write_char",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| M.read (| self |) |) ]
@@ -10275,11 +10666,16 @@ Module fmt.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "pad",
+                          [],
+                          []
+                        |),
                         [
                           M.read (| f |);
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
+                            M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                             [
                               M.read (| M.read (| self |) |);
                               M.alloc (|
@@ -10329,6 +10725,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   "expose_provenance",
+                  [],
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
@@ -10410,6 +10807,7 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "alternate",
+                              [],
                               []
                             |),
                             [ M.read (| f |) ]
@@ -10447,6 +10845,7 @@ Module fmt.
                                         []
                                         [ Ty.path "usize" ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
@@ -10506,7 +10905,15 @@ Module fmt.
           let~ ret :=
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::fmt::LowerHex", Ty.path "usize", [], "fmt", [] |),
+                M.get_trait_method (|
+                  "core::fmt::LowerHex",
+                  Ty.path "usize",
+                  [],
+                  [],
+                  "fmt",
+                  [],
+                  []
+                |),
                 [ ptr_addr; M.read (| f |) ]
               |)
             |) in
@@ -10555,7 +10962,9 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
@@ -10598,7 +11007,9 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
@@ -10635,7 +11046,9 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
@@ -10672,7 +11085,9 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| f |) ]
@@ -10709,7 +11124,9 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*mut") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [ M.read (| self |); M.read (| f |) ]
@@ -10757,7 +11174,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -10796,6 +11218,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_E ]
@@ -10807,6 +11230,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_D ]
@@ -10818,6 +11242,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_C ]
@@ -10829,6 +11254,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_B ]
@@ -10840,6 +11266,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_A ]
@@ -10851,6 +11278,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -10862,6 +11290,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -10873,6 +11302,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -10884,6 +11314,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -10895,6 +11326,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -10906,6 +11338,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -10917,6 +11350,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -10927,6 +11361,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -10978,7 +11413,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11015,6 +11455,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_D ]
@@ -11026,6 +11467,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_C ]
@@ -11037,6 +11479,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_B ]
@@ -11048,6 +11491,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_A ]
@@ -11059,6 +11503,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -11070,6 +11515,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11081,6 +11527,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11092,6 +11539,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11103,6 +11551,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11114,6 +11563,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11125,6 +11575,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11135,6 +11586,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -11186,7 +11638,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11221,6 +11678,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_C ]
@@ -11232,6 +11690,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_B ]
@@ -11243,6 +11702,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_A ]
@@ -11254,6 +11714,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -11265,6 +11726,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11276,6 +11738,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11287,6 +11750,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11298,6 +11762,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11309,6 +11774,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11320,6 +11786,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11330,6 +11797,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -11380,7 +11848,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11413,6 +11886,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_B ]
@@ -11424,6 +11898,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_A ]
@@ -11435,6 +11910,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -11446,6 +11922,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11457,6 +11934,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11468,6 +11946,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11479,6 +11958,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11490,6 +11970,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11501,6 +11982,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11511,6 +11993,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -11561,7 +12044,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11592,6 +12080,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_A ]
@@ -11603,6 +12092,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -11614,6 +12104,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11625,6 +12116,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11636,6 +12128,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11647,6 +12140,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11658,6 +12152,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11669,6 +12164,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11679,6 +12175,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -11729,7 +12226,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11758,6 +12260,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Z ]
@@ -11769,6 +12272,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11780,6 +12284,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11791,6 +12296,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11802,6 +12308,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11813,6 +12320,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11824,6 +12332,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11834,6 +12343,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -11879,7 +12389,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -11906,6 +12421,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_Y ]
@@ -11917,6 +12433,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -11928,6 +12445,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -11939,6 +12457,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -11950,6 +12469,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -11961,6 +12481,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -11971,6 +12492,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12016,7 +12538,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -12041,6 +12568,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_X ]
@@ -12052,6 +12580,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -12063,6 +12592,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -12074,6 +12604,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -12085,6 +12616,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -12095,6 +12627,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12140,7 +12673,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -12163,6 +12701,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_W ]
@@ -12174,6 +12713,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -12185,6 +12725,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -12196,6 +12737,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -12206,6 +12748,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12251,7 +12794,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -12272,6 +12820,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_V ]
@@ -12283,6 +12832,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -12294,6 +12844,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -12304,6 +12855,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12349,7 +12901,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -12368,6 +12925,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_U ]
@@ -12379,6 +12937,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -12389,6 +12948,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12434,7 +12994,12 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
                   [ M.read (| f |); M.read (| Value.String "" |) ]
                 |)
               |) in
@@ -12451,6 +13016,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
                           [ builder; value_T ]
@@ -12461,6 +13027,7 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
                         [ builder ]
@@ -12497,12 +13064,18 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::builders::DebugList", "finish", [] |),
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugList",
+              "finish",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugList",
                   "entries",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
@@ -12514,13 +13087,19 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_list",
+                        [],
                         []
                       |),
                       [ M.read (| f |) ]
                     |)
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter",
+                      [],
+                      []
+                    |),
                     [ M.read (| self |) ]
                   |)
                 ]
@@ -12554,7 +13133,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
             [ M.read (| f |); M.read (| Value.String "()" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12584,11 +13163,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.read (| f |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.alloc (|
                     Value.Array
@@ -12601,6 +13180,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::Argument",
                             "new_display",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [
@@ -12649,6 +13229,7 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish",
+              [],
               []
             |),
             [
@@ -12656,6 +13237,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "field",
+                  [],
                   []
                 |),
                 [
@@ -12664,6 +13246,7 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
+                        [],
                         []
                       |),
                       [ M.read (| f |); M.read (| Value.String "Cell" |) ]
@@ -12675,6 +13258,7 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -12723,6 +13307,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "RefCell" |) ]
@@ -12735,6 +13320,7 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                       "try_borrow",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -12755,6 +13341,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [ d; M.read (| Value.String "value" |); borrow ]
@@ -12773,6 +13360,7 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
@@ -12783,6 +13371,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12802,6 +13391,7 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [ d ]
@@ -12836,14 +13426,16 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -12879,14 +13471,16 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -12925,6 +13519,7 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -12933,6 +13528,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "UnsafeCell" |) ]
@@ -12971,6 +13567,7 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
@@ -12979,6 +13576,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
                   [ M.read (| f |); M.read (| Value.String "SyncUnsafeCell" |) ]

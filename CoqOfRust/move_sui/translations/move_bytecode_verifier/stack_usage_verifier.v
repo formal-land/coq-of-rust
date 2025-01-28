@@ -72,6 +72,7 @@ Module stack_usage_verifier.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "index",
+                              [],
                               []
                             |),
                             [ M.read (| function_context |) ]
@@ -81,6 +82,7 @@ Module stack_usage_verifier.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "code",
+                              [],
                               []
                             |),
                             [ M.read (| function_context |) ]
@@ -90,6 +92,7 @@ Module stack_usage_verifier.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "return_",
+                              [],
                               []
                             |),
                             [ M.read (| function_context |) ]
@@ -108,7 +111,9 @@ Module stack_usage_verifier.
                               []
                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -118,7 +123,9 @@ Module stack_usage_verifier.
                                 Ty.path
                                   "move_binary_format::control_flow_graph::VMControlFlowGraph",
                                 [],
+                                [],
                                 "blocks",
+                                [],
                                 []
                               |),
                               [
@@ -126,6 +133,7 @@ Module stack_usage_verifier.
                                   M.get_associated_function (|
                                     Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                     "cfg",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| function_context |) ]
@@ -152,7 +160,9 @@ Module stack_usage_verifier.
                                             []
                                             [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -192,7 +202,9 @@ Module stack_usage_verifier.
                                                         "move_binary_format::errors::PartialVMError"
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -201,6 +213,7 @@ Module stack_usage_verifier.
                                                       Ty.path
                                                         "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                       "verify_block",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -212,6 +225,7 @@ Module stack_usage_verifier.
                                                           Ty.path
                                                             "move_bytecode_verifier::absint::FunctionContext",
                                                           "cfg",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| function_context |) ]
@@ -246,6 +260,7 @@ Module stack_usage_verifier.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
@@ -258,6 +273,7 @@ Module stack_usage_verifier.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -393,7 +409,9 @@ Module stack_usage_verifier.
                           [ ("move_binary_format::control_flow_graph::ControlFlowGraph::Trait", [])
                           ],
                         [],
+                        [],
                         "block_start",
+                        [],
                         []
                       |),
                       [ M.read (| cfg |); M.read (| block_id |) ]
@@ -412,7 +430,9 @@ Module stack_usage_verifier.
                               []
                               [ Ty.path "u16" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -423,6 +443,7 @@ Module stack_usage_verifier.
                                   []
                                   [ Ty.path "u16" ],
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -436,7 +457,9 @@ Module stack_usage_verifier.
                                           [])
                                       ],
                                     [],
+                                    [],
                                     "block_end",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| cfg |); M.read (| block_id |) ]
@@ -463,7 +486,9 @@ Module stack_usage_verifier.
                                             []
                                             [ Ty.path "u16" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -504,7 +529,9 @@ Module stack_usage_verifier.
                                                           "move_binary_format::errors::PartialVMError"
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -513,6 +540,7 @@ Module stack_usage_verifier.
                                                         Ty.path
                                                           "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                         "instruction_effect",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -528,8 +556,10 @@ Module stack_usage_verifier.
                                                                   "move_binary_format::file_format::Bytecode";
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
+                                                            [],
                                                             [ Ty.path "usize" ],
                                                             "index",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -567,6 +597,7 @@ Module stack_usage_verifier.
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -579,6 +610,7 @@ Module stack_usage_verifier.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -620,6 +652,7 @@ Module stack_usage_verifier.
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_add",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -699,6 +732,7 @@ Module stack_usage_verifier.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
                                                                                     "at_code_offset",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -707,6 +741,7 @@ Module stack_usage_verifier.
                                                                                         Ty.path
                                                                                           "move_binary_format::errors::PartialVMError",
                                                                                         "new",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -720,6 +755,7 @@ Module stack_usage_verifier.
                                                                                         Ty.path
                                                                                           "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                                                         "current_function",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -781,6 +817,7 @@ Module stack_usage_verifier.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_code_offset",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -789,6 +826,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -802,6 +840,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                                                 "current_function",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| self |) ]
@@ -831,6 +870,7 @@ Module stack_usage_verifier.
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_sub",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -866,6 +906,7 @@ Module stack_usage_verifier.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_code_offset",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -874,6 +915,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -887,6 +929,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                                                 "current_function",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| self |) ]
@@ -913,6 +956,7 @@ Module stack_usage_verifier.
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_add",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -948,6 +992,7 @@ Module stack_usage_verifier.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
                                                                             "at_code_offset",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -956,6 +1001,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
                                                                                 "new",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -969,6 +1015,7 @@ Module stack_usage_verifier.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                                                 "current_function",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| self |) ]
@@ -1020,6 +1067,7 @@ Module stack_usage_verifier.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
                                                                           "at_code_offset",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -1028,6 +1076,7 @@ Module stack_usage_verifier.
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
                                                                               "new",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1041,6 +1090,7 @@ Module stack_usage_verifier.
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                                                               "current_function",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| self |) ]
@@ -1094,6 +1144,7 @@ Module stack_usage_verifier.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "at_code_offset",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1101,6 +1152,7 @@ Module stack_usage_verifier.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1114,6 +1166,7 @@ Module stack_usage_verifier.
                                       Ty.path
                                         "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
                                       "current_function",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| self |) ]
@@ -1353,21 +1406,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 1;
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 1;
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1503,21 +1555,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 0;
-                                          Value.Integer IntegerKind.U64 1
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 0;
+                                        Value.Integer IntegerKind.U64 1
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1746,21 +1797,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 1;
-                                          Value.Integer IntegerKind.U64 1
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 1;
+                                        Value.Integer IntegerKind.U64 1
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1930,21 +1980,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 2;
-                                          Value.Integer IntegerKind.U64 1
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 2;
+                                        Value.Integer IntegerKind.U64 1
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2012,21 +2061,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 2;
-                                          Value.Integer IntegerKind.U64 1
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 2;
+                                        Value.Integer IntegerKind.U64 1
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2073,21 +2121,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 2;
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 2;
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2127,21 +2174,20 @@ Module stack_usage_verifier.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Integer IntegerKind.U64 0;
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Value.Tuple
+                                      [
+                                        Value.Integer IntegerKind.U64 0;
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2157,6 +2203,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::Signature",
                                 "len",
+                                [],
                                 []
                               |),
                               [
@@ -2193,6 +2240,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
+                                [],
                                 []
                               |),
                               [
@@ -2214,6 +2262,7 @@ Module stack_usage_verifier.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2221,6 +2270,7 @@ Module stack_usage_verifier.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2250,6 +2300,7 @@ Module stack_usage_verifier.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2257,6 +2308,7 @@ Module stack_usage_verifier.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2298,6 +2350,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -2318,6 +2371,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
+                                [],
                                 []
                               |),
                               [
@@ -2345,6 +2399,7 @@ Module stack_usage_verifier.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2352,6 +2407,7 @@ Module stack_usage_verifier.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2381,6 +2437,7 @@ Module stack_usage_verifier.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2388,6 +2445,7 @@ Module stack_usage_verifier.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2429,6 +2487,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -2485,6 +2544,7 @@ Module stack_usage_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fields |) ]
@@ -2516,6 +2576,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -2536,6 +2597,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -2598,6 +2660,7 @@ Module stack_usage_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fields |) ]
@@ -2629,6 +2692,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -2685,6 +2749,7 @@ Module stack_usage_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fields |) ]
@@ -2716,6 +2781,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
+                                [],
                                 []
                               |),
                               [
@@ -2736,6 +2802,7 @@ Module stack_usage_verifier.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
+                                [],
                                 []
                               |),
                               [
@@ -2798,6 +2865,7 @@ Module stack_usage_verifier.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| fields |) ]
@@ -2840,6 +2908,7 @@ Module stack_usage_verifier.
                 []
                 [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
               "unwrap_or",
+              [],
               []
             |),
             [

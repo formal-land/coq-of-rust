@@ -169,7 +169,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+                M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                 [
                   M.rust_cast
                     (BinOp.bit_and (M.read (| v |)) (Value.Integer IntegerKind.U64 4294967295))
@@ -223,7 +223,7 @@ Module num.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -328,7 +328,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "classify", [] |),
+                M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -529,7 +529,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f64", "from_bits", [] |),
+                M.get_associated_function (| Ty.path "f64", "from_bits", [], [] |),
                 [ M.read (| v |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -584,7 +584,7 @@ Module num.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -687,7 +687,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f64", "classify", [] |),
+                M.get_associated_function (| Ty.path "f64", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

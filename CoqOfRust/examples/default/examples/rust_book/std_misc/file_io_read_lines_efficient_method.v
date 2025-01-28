@@ -30,12 +30,19 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                           []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "std::fs::File", "open", [ P ] |),
+                          M.get_associated_function (|
+                            Ty.path "std::fs::File",
+                            "open",
+                            [],
+                            [ P ]
+                          |),
                           [ M.read (| filename |) ]
                         |)
                       ]
@@ -73,6 +80,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                                           ];
                                         Ty.path "std::io::error::Error"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -83,6 +91,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -116,7 +125,9 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                         []
                         [ Ty.path "std::fs::File" ],
                       [],
+                      [],
                       "lines",
+                      [],
                       []
                     |),
                     [
@@ -127,6 +138,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                             []
                             [ Ty.path "std::fs::File" ],
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| file |) ]
@@ -196,7 +208,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [ Ty.path "std::fs::File" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| lines |) ]
@@ -224,7 +238,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               [ Ty.path "std::fs::File" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [ iter ]
@@ -274,6 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -293,6 +310,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
                                                                         "new_display",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "alloc::string::String"

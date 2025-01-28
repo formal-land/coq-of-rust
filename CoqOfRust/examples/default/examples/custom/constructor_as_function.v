@@ -68,6 +68,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
@@ -121,7 +122,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
                   ],
                 [],
+                [],
                 "collect",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -139,7 +142,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "map",
+                    [],
                     [
                       Ty.path "constructor_as_function::Constructor";
                       Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
@@ -154,7 +159,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -162,6 +169,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                             "into_vec",
+                            [],
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
@@ -179,6 +187,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
@@ -210,7 +219,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
                       M.alloc (|
                         Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
@@ -223,6 +237,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_debug",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")

@@ -32,6 +32,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [ M.alloc (| Value.Array [ M.read (| Value.String "some
@@ -53,6 +54,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [ M.alloc (| Value.Array [ M.read (| Value.String "nothing
@@ -101,6 +103,7 @@ Module tests.
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -108,6 +111,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
@@ -115,6 +119,7 @@ Module tests.
                         M.get_associated_function (|
                           Ty.path "std::fs::OpenOptions",
                           "create",
+                          [],
                           []
                         |),
                         [
@@ -122,6 +127,7 @@ Module tests.
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
                               "append",
+                              [],
                               []
                             |),
                             [
@@ -130,6 +136,7 @@ Module tests.
                                   M.get_associated_function (|
                                     Ty.path "std::fs::OpenOptions",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   []
@@ -156,7 +163,9 @@ Module tests.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -183,7 +192,9 @@ Module tests.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -212,6 +223,7 @@ Module tests.
                                             []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -220,7 +232,9 @@ Module tests.
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
                                               [],
+                                              [],
                                               "write_all",
+                                              [],
                                               []
                                             |),
                                             [
@@ -229,6 +243,7 @@ Module tests.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "as_bytes",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| Value.String "Ferris
@@ -283,6 +298,7 @@ Module tests.
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -290,6 +306,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
@@ -297,6 +314,7 @@ Module tests.
                         M.get_associated_function (|
                           Ty.path "std::fs::OpenOptions",
                           "create",
+                          [],
                           []
                         |),
                         [
@@ -304,6 +322,7 @@ Module tests.
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
                               "append",
+                              [],
                               []
                             |),
                             [
@@ -312,6 +331,7 @@ Module tests.
                                   M.get_associated_function (|
                                     Ty.path "std::fs::OpenOptions",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   []
@@ -338,7 +358,9 @@ Module tests.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -365,7 +387,9 @@ Module tests.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
                                 [ iter ]
@@ -394,6 +418,7 @@ Module tests.
                                             []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -402,7 +427,9 @@ Module tests.
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
                                               [],
+                                              [],
                                               "write_all",
+                                              [],
                                               []
                                             |),
                                             [
@@ -411,6 +438,7 @@ Module tests.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "as_bytes",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| Value.String "Corro

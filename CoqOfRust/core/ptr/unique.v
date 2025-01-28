@@ -61,6 +61,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "dangling",
+                      [],
                       []
                     |),
                     []
@@ -98,6 +99,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| ptr |) ]
@@ -138,6 +140,7 @@ Module ptr.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -190,6 +193,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -256,6 +260,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ref",
+                [],
                 []
               |),
               [
@@ -290,6 +295,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_mut",
+                [],
                 []
               |),
               [
@@ -328,6 +334,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "cast",
+                      [],
                       [ U ]
                     |),
                     [
@@ -450,7 +457,9 @@ Module ptr.
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
@@ -459,6 +468,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| self |) |) ]
@@ -499,7 +509,9 @@ Module ptr.
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
@@ -508,6 +520,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                       "as_ptr",
+                      [],
                       []
                     |),
                     [ M.read (| M.read (| self |) |) ]
@@ -546,8 +559,10 @@ Module ptr.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                 "from",
+                [],
                 []
               |),
               [
@@ -555,8 +570,10 @@ Module ptr.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    [],
                     [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                     "from",
+                    [],
                     []
                   |),
                   [ M.read (| reference |) ]

@@ -37,7 +37,7 @@ Module pin.
             [
               ("__pointer",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ptr, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", Ptr, [], [], "clone", [], [] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -78,8 +78,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "eq",
+              [],
               []
             |),
             [
@@ -88,7 +90,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -98,7 +102,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -124,8 +130,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "ne",
+              [],
               []
             |),
             [
@@ -134,7 +142,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -144,7 +154,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -200,8 +212,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "partial_cmp",
+              [],
               []
             |),
             [
@@ -210,7 +224,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -220,7 +236,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -246,8 +264,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "lt",
+              [],
               []
             |),
             [
@@ -256,7 +276,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -266,7 +288,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -292,8 +316,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "le",
+              [],
               []
             |),
             [
@@ -302,7 +328,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -312,7 +340,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -338,8 +368,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "gt",
+              [],
               []
             |),
             [
@@ -348,7 +380,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -358,7 +392,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -384,8 +420,10 @@ Module pin.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "ge",
+              [],
               []
             |),
             [
@@ -394,7 +432,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -404,7 +444,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -446,14 +488,16 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], [], "cmp", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -463,7 +507,9 @@ Module pin.
                   "core::ops::deref::Deref",
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   [],
+                  [],
                   "deref",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -501,14 +547,24 @@ Module pin.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.associated,
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ H ]
+                  |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                         [],
+                        [],
                         "deref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -551,6 +607,7 @@ Module pin.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
               "new_unchecked",
+              [],
               []
             |),
             [ M.read (| pointer |) ]
@@ -625,11 +682,12 @@ Module pin.
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
               "new_unchecked",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (| "core::ops::deref::Deref", Ptr, [], "deref", [] |),
+                M.get_trait_method (| "core::ops::deref::Deref", Ptr, [], [], "deref", [], [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -665,11 +723,20 @@ Module pin.
                 []
                 [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
               "new_unchecked",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (| "core::ops::deref::DerefMut", Ptr, [], "deref_mut", [] |),
+                M.get_trait_method (|
+                  "core::ops::deref::DerefMut",
+                  Ptr,
+                  [],
+                  [],
+                  "deref_mut",
+                  [],
+                  []
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -731,6 +798,7 @@ Module pin.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
               "as_mut",
+              [],
               []
             |),
             [
@@ -746,6 +814,7 @@ Module pin.
                         [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ]
                     ],
                   "get_unchecked_mut",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -778,7 +847,15 @@ Module pin.
             let~ _ :=
               M.write (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::ops::deref::DerefMut", Ptr, [], "deref_mut", [] |),
+                  M.get_trait_method (|
+                    "core::ops::deref::DerefMut",
+                    Ptr,
+                    [],
+                    [],
+                    "deref_mut",
+                    [],
+                    []
+                  |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -865,8 +942,10 @@ Module pin.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
+                    [],
                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                     "call_once",
+                    [],
                     []
                   |),
                   [ M.read (| func |); Value.Tuple [ M.read (| pointer |) ] ]
@@ -877,6 +956,7 @@ Module pin.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
                   "new_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| new_pointer |) ]
@@ -927,6 +1007,7 @@ Module pin.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "new_unchecked",
+              [],
               []
             |),
             [ M.read (| r |) ]
@@ -1053,6 +1134,7 @@ Module pin.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                     "get_unchecked_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1064,8 +1146,10 @@ Module pin.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
+                    [],
                     [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                     "call_once",
+                    [],
                     []
                   |),
                   [ M.read (| func |); Value.Tuple [ M.read (| pointer |) ] ]
@@ -1076,6 +1160,7 @@ Module pin.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
                   "new_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| new_pointer |) ]
@@ -1105,6 +1190,7 @@ Module pin.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "new_unchecked",
+              [],
               []
             |),
             [ M.read (| r |) ]
@@ -1143,6 +1229,7 @@ Module pin.
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
               "get_ref",
+              [],
               []
             |),
             [
@@ -1150,6 +1237,7 @@ Module pin.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   "as_ref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1190,6 +1278,7 @@ Module pin.
                 []
                 [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
               "get_mut",
+              [],
               []
             |),
             [
@@ -1197,6 +1286,7 @@ Module pin.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                   "as_mut",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1255,7 +1345,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", Ptr, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", Ptr, [], [], "fmt", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -1293,7 +1383,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ptr, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ptr, [], [], "fmt", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -1331,7 +1421,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Pointer", Ptr, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Pointer", Ptr, [], [], "fmt", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),

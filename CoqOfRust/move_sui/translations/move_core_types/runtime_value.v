@@ -36,6 +36,7 @@ Module runtime_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -92,6 +93,7 @@ Module runtime_value.
                   Ty.path "move_core_types::runtime_value::MoveValue";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -102,6 +104,7 @@ Module runtime_value.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
@@ -182,7 +185,9 @@ Module runtime_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -310,6 +315,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
@@ -330,6 +336,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
@@ -350,6 +357,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
@@ -370,6 +378,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |); __self_0 ]
@@ -390,6 +399,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
@@ -410,6 +420,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -430,6 +441,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
@@ -450,6 +462,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |); __self_0 ]
@@ -470,6 +483,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
@@ -490,6 +504,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
@@ -510,6 +525,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
@@ -606,8 +622,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -638,8 +656,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -670,8 +690,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -702,8 +724,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -737,6 +761,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -744,6 +769,7 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -785,6 +811,7 @@ Module runtime_value.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -800,6 +827,7 @@ Module runtime_value.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -833,6 +861,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::runtime_value::MoveStruct" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -840,6 +869,7 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::runtime_value::MoveStruct" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -873,6 +903,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -880,6 +911,7 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -910,8 +942,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -942,8 +976,10 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -977,6 +1013,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -984,6 +1021,7 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -1149,7 +1187,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1175,7 +1215,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1201,7 +1243,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1227,7 +1271,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "bool",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1253,7 +1299,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1285,7 +1333,9 @@ Module runtime_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1311,7 +1361,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1337,7 +1389,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1363,7 +1417,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1389,7 +1445,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1415,7 +1473,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -1467,6 +1527,7 @@ Module runtime_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
@@ -1515,7 +1576,9 @@ Module runtime_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
@@ -1554,7 +1617,9 @@ Module runtime_value.
                 "serde::ser::Serializer",
                 __S,
                 [],
+                [],
                 "serialize_newtype_struct",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -1599,7 +1664,9 @@ Module runtime_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_newtype_struct",
+                [],
                 [ Ty.path "move_core_types::runtime_value::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -1650,7 +1717,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1674,7 +1743,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1698,7 +1769,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1722,7 +1795,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1746,7 +1821,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1772,7 +1849,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -1807,7 +1886,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::runtime_value::MoveStructLayout" ]
                           |),
                           [
@@ -1832,7 +1913,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1856,7 +1939,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1880,7 +1965,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1904,7 +1991,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1942,7 +2031,9 @@ Module runtime_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::runtime_value::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -2075,6 +2166,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Bool" |) ]
@@ -2093,6 +2185,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U8" |) ]
@@ -2111,6 +2204,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U64" |) ]
@@ -2129,6 +2223,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U128" |) ]
@@ -2147,6 +2242,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Address" |) ]
@@ -2167,6 +2263,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
@@ -2187,6 +2284,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
@@ -2205,6 +2303,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Signer" |) ]
@@ -2223,6 +2322,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U16" |) ]
@@ -2241,6 +2341,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U32" |) ]
@@ -2259,6 +2360,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "U256" |) ]
@@ -2371,7 +2473,9 @@ Module runtime_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2397,7 +2501,9 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::runtime_value::MoveStructLayout",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
                             [ M.read (| __self_0 |) ]
@@ -2497,7 +2603,9 @@ Module runtime_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2541,6 +2649,7 @@ Module runtime_value.
                                             Ty.path "move_core_types::runtime_value::MoveValue";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2551,6 +2660,7 @@ Module runtime_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2603,6 +2713,7 @@ Module runtime_value.
                   Ty.path "bcs::error::Error"
                 ],
               "ok",
+              [],
               []
             |),
             [
@@ -2651,7 +2762,9 @@ Module runtime_value.
                         (Ty.path "move_core_types::runtime_value::MoveValue")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2671,7 +2784,9 @@ Module runtime_value.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_core_types::runtime_value::MoveValue";
                         Ty.function
@@ -2688,7 +2803,9 @@ Module runtime_value.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -2741,6 +2858,7 @@ Module runtime_value.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "with_capacity",
+                        [],
                         []
                       |),
                       [
@@ -2754,6 +2872,7 @@ Module runtime_value.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [ vec ]
@@ -2776,7 +2895,9 @@ Module runtime_value.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| vec |) ]
@@ -2802,7 +2923,9 @@ Module runtime_value.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -2852,6 +2975,7 @@ Module runtime_value.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
                                                         [ vec_u8; M.read (| u8 |) ]
@@ -2884,7 +3008,9 @@ Module runtime_value.
                                                                                 "alloc::string::ToString",
                                                                                 Ty.path "str",
                                                                                 [],
+                                                                                [],
                                                                                 "to_string",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -2906,6 +3032,7 @@ Module runtime_value.
                                                                                       Ty.path
                                                                                         "anyhow::kind::Adhoc",
                                                                                       "new",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -2924,7 +3051,9 @@ Module runtime_value.
                                                                                                 "alloc::string::String"
                                                                                             ],
                                                                                           [],
+                                                                                          [],
                                                                                           "anyhow_kind",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -3000,7 +3129,9 @@ Module runtime_value.
                         (Ty.path "move_core_types::runtime_value::MoveValue")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3023,7 +3154,9 @@ Module runtime_value.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_core_types::runtime_value::MoveValue";
                         Ty.function
@@ -3043,7 +3176,9 @@ Module runtime_value.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -3119,6 +3254,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               "decorate",
+                              [],
                               []
                             |),
                             [ M.read (| s |); M.read (| l |) ]
@@ -3170,7 +3306,9 @@ Module runtime_value.
                                     (Ty.path "move_core_types::annotated_value::MoveValue")
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -3193,7 +3331,9 @@ Module runtime_value.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "map",
+                                  [],
                                   [
                                     Ty.path "move_core_types::annotated_value::MoveValue";
                                     Ty.function
@@ -3216,7 +3356,9 @@ Module runtime_value.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| vals |) ]
@@ -3238,6 +3380,7 @@ Module runtime_value.
                                                         Ty.path
                                                           "move_core_types::runtime_value::MoveValue",
                                                         "decorate",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| v |); M.read (| M.read (| t |) |)
@@ -3408,6 +3551,7 @@ Module runtime_value.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
@@ -3471,7 +3615,9 @@ Module runtime_value.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
               ],
             [],
+            [],
             "collect",
+            [],
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -3491,7 +3637,9 @@ Module runtime_value.
                 "core::iter::traits::iterator::Iterator",
                 Ty.associated,
                 [],
+                [],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -3519,7 +3667,9 @@ Module runtime_value.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| vals |) ]
@@ -3548,6 +3698,7 @@ Module runtime_value.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                         ],
                                       "expect",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3555,6 +3706,7 @@ Module runtime_value.
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::runtime_value::MoveValue",
                                           "simple_serialize",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| val |) ]
@@ -3625,7 +3777,9 @@ Module runtime_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3669,6 +3823,7 @@ Module runtime_value.
                                             Ty.path "move_core_types::runtime_value::MoveStruct";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3679,6 +3834,7 @@ Module runtime_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3771,7 +3927,9 @@ Module runtime_value.
                                         "core::clone::Clone",
                                         Ty.path "move_core_types::language_storage::StructTag",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| type_ |) ]
@@ -3830,7 +3988,9 @@ Module runtime_value.
                                                 ])
                                           ],
                                         [],
+                                        [],
                                         "collect",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -3871,7 +4031,9 @@ Module runtime_value.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "map",
+                                            [],
                                             [
                                               Ty.tuple
                                                 [
@@ -3919,7 +4081,9 @@ Module runtime_value.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 [],
+                                                [],
                                                 "zip",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -3949,7 +4113,9 @@ Module runtime_value.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| vals |) ]
@@ -3988,7 +4154,9 @@ Module runtime_value.
                                                                       Ty.path
                                                                         "move_core_types::identifier::Identifier",
                                                                       [],
+                                                                      [],
                                                                       "clone",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4004,6 +4172,7 @@ Module runtime_value.
                                                                       Ty.path
                                                                         "move_core_types::runtime_value::MoveValue",
                                                                       "decorate",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4057,7 +4226,9 @@ Module runtime_value.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -4138,7 +4309,9 @@ Module runtime_value.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "deref",
+              [],
               []
             |),
             [
@@ -4238,6 +4411,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "bool"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4251,7 +4425,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "bool",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4277,6 +4453,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u8"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4290,7 +4467,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4316,6 +4495,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u16"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4329,7 +4509,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4355,6 +4537,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u32"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4368,7 +4551,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4394,6 +4579,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u64"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4407,7 +4593,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4433,6 +4621,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u128"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4446,7 +4635,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u128",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4472,6 +4663,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "move_core_types::u256::U256"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4485,7 +4677,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::u256::U256",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4514,6 +4708,7 @@ Module runtime_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4527,7 +4722,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4556,6 +4753,7 @@ Module runtime_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4569,7 +4767,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4611,7 +4811,9 @@ Module runtime_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4626,7 +4828,9 @@ Module runtime_value.
                                                       "move_core_types::runtime_value::MoveStructLayout"
                                                   ],
                                                 [],
+                                                [],
                                                 "deserialize",
+                                                [],
                                                 [ D ]
                                               |),
                                               [ M.read (| ty |); M.read (| deserializer |) ]
@@ -4659,6 +4863,7 @@ Module runtime_value.
                                                               "move_core_types::runtime_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -4669,6 +4874,7 @@ Module runtime_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -4731,7 +4937,9 @@ Module runtime_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4740,7 +4948,9 @@ Module runtime_value.
                                                 "serde::de::Deserializer",
                                                 D,
                                                 [],
+                                                [],
                                                 "deserialize_seq",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_core_types::runtime_value::VectorElementVisitor"
@@ -4781,6 +4991,7 @@ Module runtime_value.
                                                               "move_core_types::runtime_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -4791,6 +5002,7 @@ Module runtime_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -4862,7 +5074,7 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4901,6 +5113,7 @@ Module runtime_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -4932,7 +5145,9 @@ Module runtime_value.
                                             Ty.associated
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4941,7 +5156,9 @@ Module runtime_value.
                                             "serde::de::SeqAccess",
                                             A,
                                             [],
+                                            [],
                                             "next_element_seed",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -4997,6 +5214,7 @@ Module runtime_value.
                                                           ];
                                                         Ty.associated
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5007,6 +5225,7 @@ Module runtime_value.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -5045,6 +5264,7 @@ Module runtime_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
                                   [ vals; M.read (| elem |) ]
@@ -5126,7 +5346,7 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5168,6 +5388,7 @@ Module runtime_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -5190,7 +5411,9 @@ Module runtime_value.
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -5202,7 +5425,9 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -5213,6 +5438,7 @@ Module runtime_value.
                                       []
                                       [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5255,7 +5481,9 @@ Module runtime_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -5304,7 +5532,9 @@ Module runtime_value.
                                                         Ty.associated
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5313,7 +5543,9 @@ Module runtime_value.
                                                         "serde::de::SeqAccess",
                                                         A,
                                                         [],
+                                                        [],
                                                         "next_element_seed",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -5361,6 +5593,7 @@ Module runtime_value.
                                                                       ];
                                                                     Ty.associated
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -5372,6 +5605,7 @@ Module runtime_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -5414,6 +5648,7 @@ Module runtime_value.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
                                                       [ val; M.read (| elem |) ]
@@ -5438,7 +5673,9 @@ Module runtime_value.
                                                                   "serde::de::Error",
                                                                   Ty.associated,
                                                                   [],
+                                                                  [],
                                                                   "invalid_length",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| i |); self ]
@@ -5527,7 +5764,9 @@ Module runtime_value.
                                     Ty.associated
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -5536,7 +5775,9 @@ Module runtime_value.
                                     "serde::de::Deserializer",
                                     D,
                                     [],
+                                    [],
                                     "deserialize_tuple",
+                                    [],
                                     [ Ty.path "move_core_types::runtime_value::StructFieldVisitor" ]
                                   |),
                                   [
@@ -5552,6 +5793,7 @@ Module runtime_value.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5577,7 +5819,9 @@ Module runtime_value.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "deref",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5619,6 +5863,7 @@ Module runtime_value.
                                                   "move_core_types::runtime_value::MoveStruct";
                                                 Ty.associated
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -5627,6 +5872,7 @@ Module runtime_value.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -5717,7 +5963,9 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| s |); M.read (| serializer |) ]
@@ -5739,7 +5987,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_bool",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| b |) |) ]
@@ -5761,7 +6011,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u8",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -5783,7 +6035,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u16",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -5805,7 +6059,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u32",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -5827,7 +6083,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u64",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -5849,7 +6107,9 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u128",
+                              [],
                               []
                             |),
                             [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
@@ -5871,7 +6131,9 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| i |); M.read (| serializer |) ]
@@ -5893,7 +6155,9 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| a |); M.read (| serializer |) ]
@@ -5915,7 +6179,9 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
                             [ M.read (| a |); M.read (| serializer |) ]
@@ -5943,7 +6209,9 @@ Module runtime_value.
                                       []
                                       [ Ty.associated; Ty.associated ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5952,7 +6220,9 @@ Module runtime_value.
                                         "serde::ser::Serializer",
                                         S,
                                         [],
+                                        [],
                                         "serialize_seq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5971,6 +6241,7 @@ Module runtime_value.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| v |) ]
@@ -6002,6 +6273,7 @@ Module runtime_value.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.associated; Ty.associated ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6012,6 +6284,7 @@ Module runtime_value.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6053,7 +6326,9 @@ Module runtime_value.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| v |) ]
@@ -6079,7 +6354,9 @@ Module runtime_value.
                                                         "move_core_types::runtime_value::MoveValue"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
                                                 [ iter ]
@@ -6116,7 +6393,9 @@ Module runtime_value.
                                                               []
                                                               [ Ty.tuple []; Ty.associated ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6125,7 +6404,9 @@ Module runtime_value.
                                                                 "serde::ser::SerializeSeq",
                                                                 Ty.associated,
                                                                 [],
+                                                                [],
                                                                 "serialize_element",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_core_types::runtime_value::MoveValue"
@@ -6161,6 +6442,7 @@ Module runtime_value.
                                                                             Ty.associated;
                                                                             Ty.associated
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -6173,6 +6455,7 @@ Module runtime_value.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -6206,7 +6489,9 @@ Module runtime_value.
                               "serde::ser::SerializeSeq",
                               Ty.associated,
                               [],
+                              [],
                               "end",
+                              [],
                               []
                             |),
                             [ M.read (| t |) ]
@@ -6260,7 +6545,9 @@ Module runtime_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -6269,7 +6556,9 @@ Module runtime_value.
                                 "serde::ser::Serializer",
                                 S,
                                 [],
+                                [],
                                 "serialize_tuple",
+                                [],
                                 []
                               |),
                               [
@@ -6284,6 +6573,7 @@ Module runtime_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6320,6 +6610,7 @@ Module runtime_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.associated ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -6327,6 +6618,7 @@ Module runtime_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -6360,7 +6652,9 @@ Module runtime_value.
                               []
                               [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -6371,6 +6665,7 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
@@ -6385,7 +6680,9 @@ Module runtime_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [
@@ -6418,7 +6715,9 @@ Module runtime_value.
                                             []
                                             [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -6455,7 +6754,9 @@ Module runtime_value.
                                                       []
                                                       [ Ty.tuple []; Ty.associated ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6464,7 +6765,9 @@ Module runtime_value.
                                                         "serde::ser::SerializeTuple",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "serialize_element",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_core_types::runtime_value::MoveValue"
@@ -6496,6 +6799,7 @@ Module runtime_value.
                                                                   (Ty.path "core::result::Result")
                                                                   []
                                                                   [ Ty.associated; Ty.associated ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -6507,6 +6811,7 @@ Module runtime_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -6540,7 +6845,9 @@ Module runtime_value.
                       "serde::ser::SerializeTuple",
                       Ty.associated,
                       [],
+                      [],
                       "end",
+                      [],
                       []
                     |),
                     [ M.read (| t |) ]
@@ -6605,6 +6912,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6613,6 +6921,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
@@ -6633,6 +6942,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6641,6 +6951,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
@@ -6661,6 +6972,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6669,6 +6981,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
@@ -6689,6 +7002,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6697,6 +7011,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
@@ -6717,6 +7032,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6725,6 +7041,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
@@ -6745,6 +7062,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6753,6 +7071,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
@@ -6773,6 +7092,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6781,6 +7101,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
@@ -6801,6 +7122,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6809,6 +7131,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
@@ -6829,6 +7152,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6837,6 +7161,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
@@ -6860,6 +7185,7 @@ Module runtime_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
                           [ M.read (| f |) ]
@@ -6871,6 +7197,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6879,6 +7206,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -6896,6 +7224,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -6923,6 +7252,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6940,6 +7270,7 @@ Module runtime_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -6964,6 +7295,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -6972,6 +7304,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -6989,6 +7322,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -7030,6 +7364,7 @@ Module runtime_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
                           [ M.read (| f |) ]
@@ -7041,6 +7376,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7049,6 +7385,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -7060,6 +7397,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -7081,6 +7419,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7098,6 +7437,7 @@ Module runtime_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -7122,6 +7462,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7130,6 +7471,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7141,6 +7483,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -7215,6 +7558,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "alternate",
+                              [],
                               []
                             |),
                             [ M.read (| f |) ]
@@ -7226,6 +7570,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7234,6 +7579,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
@@ -7245,6 +7591,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ]
                                       |),
                                       [
@@ -7264,6 +7611,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Placeholder",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7281,6 +7629,7 @@ Module runtime_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -7297,6 +7646,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7305,6 +7655,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7316,6 +7667,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ]
                                       |),
                                       [
@@ -7384,7 +7736,9 @@ Module runtime_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -7392,6 +7746,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
@@ -7400,6 +7755,7 @@ Module runtime_value.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [ M.alloc (| Value.Array [ M.read (| Value.String "struct " |) ] |)
@@ -7431,6 +7787,7 @@ Module runtime_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7441,6 +7798,7 @@ Module runtime_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -7467,6 +7825,7 @@ Module runtime_value.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_map",
+                        [],
                         []
                       |),
                       [ M.read (| f |) ]
@@ -7489,7 +7848,9 @@ Module runtime_value.
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -7501,7 +7862,9 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -7512,6 +7875,7 @@ Module runtime_value.
                                       []
                                       [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -7527,7 +7891,9 @@ Module runtime_value.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "deref",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7570,7 +7936,9 @@ Module runtime_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -7605,6 +7973,7 @@ Module runtime_value.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugMap",
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7630,6 +7999,7 @@ Module runtime_value.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugMap",
                       "finish",
+                      [],
                       []
                     |),
                     [ map ]
@@ -7694,6 +8064,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7702,6 +8073,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7716,6 +8088,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                       |),
                                       [ u ]
@@ -7742,6 +8115,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7750,6 +8124,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7764,6 +8139,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       |),
                                       [ u ]
@@ -7790,6 +8166,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7798,6 +8175,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7812,6 +8190,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                       |),
                                       [ u ]
@@ -7838,6 +8217,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7846,6 +8226,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7860,6 +8241,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                       |),
                                       [ u ]
@@ -7886,6 +8268,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7894,6 +8277,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7908,6 +8292,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
                                       |),
                                       [ u ]
@@ -7934,6 +8319,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7942,6 +8328,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -7956,6 +8343,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -7988,6 +8376,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -7996,6 +8385,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |) ]
@@ -8019,6 +8409,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8027,6 +8418,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [ M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |) ]
@@ -8049,6 +8441,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8057,6 +8450,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -8068,6 +8462,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -8077,6 +8472,7 @@ Module runtime_value.
                                               Ty.path
                                                 "move_core_types::account_address::AccountAddress",
                                               "to_hex_literal",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| a |) ]
@@ -8106,6 +8502,7 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
@@ -8114,6 +8511,7 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
@@ -8131,6 +8529,7 @@ Module runtime_value.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -8140,6 +8539,7 @@ Module runtime_value.
                                               Ty.path
                                                 "move_core_types::account_address::AccountAddress",
                                               "to_hex_literal",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| a |) ]
@@ -8212,7 +8612,9 @@ Module runtime_value.
                           "core::fmt::Display",
                           Ty.path "move_core_types::runtime_value::MoveStruct",
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
                         [ M.read (| s |); M.read (| f |) ]

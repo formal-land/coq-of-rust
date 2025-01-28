@@ -76,7 +76,7 @@ Module state.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.read (| f |);
               M.read (|
@@ -231,6 +231,7 @@ Module state.
                   [ Ty.path "move_core_types::state::VMState" ]
               ],
             "with",
+            [],
             [
               Ty.function
                 [
@@ -272,6 +273,7 @@ Module state.
                                     []
                                     [ Ty.path "move_core_types::state::VMState" ],
                                   "replace",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| s |); M.read (| state |) ]
@@ -308,6 +310,7 @@ Module state.
                   [ Ty.path "move_core_types::state::VMState" ]
               ],
             "with",
+            [],
             [
               Ty.function
                 [
@@ -351,7 +354,9 @@ Module state.
                                       []
                                       [ Ty.path "move_core_types::state::VMState" ],
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [
@@ -363,6 +368,7 @@ Module state.
                                             []
                                             [ Ty.path "move_core_types::state::VMState" ],
                                           "borrow",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| s |) ]

@@ -114,8 +114,10 @@ Module result.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -146,8 +148,10 @@ Module result.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ E ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ E ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ __self_0; __arg1_0 ]
@@ -243,8 +247,10 @@ Module result.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -275,8 +281,10 @@ Module result.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           E,
+                          [],
                           [ E ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
@@ -289,8 +297,10 @@ Module result.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [ __self_discr; __arg1_discr ]
@@ -389,7 +399,7 @@ Module result.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [ __self_discr; __arg1_discr ]
                 |)
               |),
@@ -422,7 +432,7 @@ Module result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                               |)
                             |)));
@@ -448,7 +458,7 @@ Module result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", E, [], "cmp", [] |),
+                                M.get_trait_method (| "core::cmp::Ord", E, [], [], "cmp", [], [] |),
                                 [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                               |)
                             |)));
@@ -509,6 +519,7 @@ Module result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Ok" |); __self_0 ]
@@ -525,6 +536,7 @@ Module result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [ M.read (| f |); M.read (| Value.String "Err" |); __self_0 ]
@@ -571,7 +583,15 @@ Module result.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [ __self_discr; M.read (| state |) ]
                 |)
               |) in
@@ -586,7 +606,7 @@ Module result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
+                        M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
                       |)
                     |)));
@@ -598,7 +618,7 @@ Module result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ __H ] |),
+                        M.get_trait_method (| "core::hash::Hash", E, [], [], "hash", [], [ __H ] |),
                         [ M.read (| __self_0 |); M.read (| state |) ]
                       |)
                     |)))
@@ -685,8 +705,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           impl_FnOnce_T__arrow_bool,
+                          [],
                           [ Ty.tuple [ T ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
@@ -718,6 +740,7 @@ Module result.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                 "is_ok",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -764,8 +787,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           impl_FnOnce_E__arrow_bool,
+                          [],
                           [ Ty.tuple [ E ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -975,8 +1000,10 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ T ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| op |); Value.Tuple [ M.read (| t |) ] ]
@@ -1029,8 +1056,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
+                          [],
                           [ Ty.tuple [ T ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -1081,8 +1110,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
+                          [],
                           [ Ty.tuple [ T ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -1098,8 +1129,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           D,
+                          [],
                           [ Ty.tuple [ E ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| default |); Value.Tuple [ M.read (| e |) ] ]
@@ -1153,8 +1186,10 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               O,
+                              [],
                               [ Ty.tuple [ E ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
@@ -1208,8 +1243,10 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -1265,8 +1302,10 @@ Module result.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ E ] ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -1306,6 +1345,7 @@ Module result.
                 []
                 [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
               "map",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.associated ];
                 Ty.function
@@ -1318,6 +1358,7 @@ Module result.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                   "as_ref",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1339,7 +1380,9 @@ Module result.
                                     "core::ops::deref::Deref",
                                     T,
                                     [],
+                                    [],
                                     "deref",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| t |) ]
@@ -1383,6 +1426,7 @@ Module result.
                 []
                 [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
               "map",
+              [],
               [
                 Ty.apply (Ty.path "&mut") [] [ Ty.associated ];
                 Ty.function
@@ -1395,6 +1439,7 @@ Module result.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                   "as_mut",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -1416,7 +1461,9 @@ Module result.
                                     "core::ops::deref::DerefMut",
                                     T,
                                     [],
+                                    [],
                                     "deref_mut",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| t |) ]
@@ -1456,6 +1503,7 @@ Module result.
                       []
                       [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
                     "ok",
+                    [],
                     []
                   |),
                   [
@@ -1463,6 +1511,7 @@ Module result.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                         "as_ref",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1499,6 +1548,7 @@ Module result.
                       []
                       [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
                     "ok",
+                    [],
                     []
                   |),
                   [
@@ -1506,6 +1556,7 @@ Module result.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                         "as_mut",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -1662,7 +1713,15 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          T,
+                          [],
+                          [],
+                          "default",
+                          [],
+                          []
+                        |),
                         []
                       |)
                     |)))
@@ -1820,8 +1879,10 @@ Module result.
                           M.get_trait_method (|
                             "core::convert::Into",
                             E,
+                            [],
                             [ Ty.path "never" ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| e |) ]
@@ -1870,8 +1931,10 @@ Module result.
                           M.get_trait_method (|
                             "core::convert::Into",
                             T,
+                            [],
                             [ Ty.path "never" ],
                             "into",
+                            [],
                             []
                           |),
                           [ M.read (| x |) ]
@@ -1963,8 +2026,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
+                          [],
                           [ Ty.tuple [ T ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| op |); Value.Tuple [ M.read (| t |) ] ]
@@ -2061,8 +2126,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           O,
+                          [],
                           [ Ty.tuple [ E ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
@@ -2158,8 +2225,10 @@ Module result.
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
+                          [],
                           [ Ty.tuple [ E ] ],
                           "call_once",
+                          [],
                           []
                         |),
                         [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
@@ -2348,6 +2417,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
               "map",
+              [],
               [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
             |),
             [
@@ -2365,7 +2435,15 @@ Module result.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    T,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| t |) ]
                                 |)))
                           ]
@@ -2453,6 +2531,7 @@ Module result.
                 []
                 [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
               "map",
+              [],
               [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
             |),
             [
@@ -2470,7 +2549,15 @@ Module result.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    T,
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| t |) ]
                                 |)))
                           ]
@@ -2620,7 +2707,7 @@ Module result.
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.alloc (|
                   Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
@@ -2632,6 +2719,7 @@ Module result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_display",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ msg ]
@@ -2640,6 +2728,7 @@ Module result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::Argument",
                           "new_debug",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                           ]
                         |),
@@ -2688,7 +2777,15 @@ Module result.
                         "core::result::Result::Ok"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              T,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [ M.read (| x |) ]
                           |)
                         ]
@@ -2704,7 +2801,15 @@ Module result.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", E, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              E,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [ M.read (| x |) ]
                           |)
                         ]
@@ -2757,7 +2862,15 @@ Module result.
                     let from := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          T,
+                          [],
+                          [],
+                          "clone_from",
+                          [],
+                          []
+                        |),
                         [ M.read (| to |); M.read (| from |) ]
                       |)
                     |)));
@@ -2783,7 +2896,15 @@ Module result.
                     let from := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", E, [], "clone_from", [] |),
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          E,
+                          [],
+                          [],
+                          "clone_from",
+                          [],
+                          []
+                        |),
                         [ M.read (| to |); M.read (| from |) ]
                       |)
                     |)));
@@ -2800,7 +2921,9 @@ Module result.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [ M.read (| from |) ]
@@ -2854,6 +2977,7 @@ Module result.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                     "ok",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2901,6 +3025,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
               "iter",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -2947,6 +3072,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
               "iter_mut",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -2995,6 +3121,7 @@ Module result.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -3043,6 +3170,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "take",
+              [],
               []
             |),
             [
@@ -3086,6 +3214,7 @@ Module result.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3145,6 +3274,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "take",
+              [],
               []
             |),
             [
@@ -3268,6 +3398,7 @@ Module result.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -3316,6 +3447,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "take",
+              [],
               []
             |),
             [
@@ -3359,6 +3491,7 @@ Module result.
                                     []
                                     [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3418,6 +3551,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "take",
+              [],
               []
             |),
             [
@@ -3503,7 +3637,9 @@ Module result.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
@@ -3542,6 +3678,7 @@ Module result.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
@@ -3590,6 +3727,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "take",
+              [],
               []
             |),
             [
@@ -3630,6 +3768,7 @@ Module result.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3689,6 +3828,7 @@ Module result.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "take",
+              [],
               []
             |),
             [
@@ -3798,7 +3938,9 @@ Module result.
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]
@@ -3829,7 +3971,9 @@ Module result.
                                           [ Ty.path "core::convert::Infallible"; E ]
                                       ],
                                     [],
+                                    [],
                                     "collect",
+                                    [],
                                     [ V ]
                                   |),
                                   [ M.read (| i |) ]
@@ -3972,7 +4116,15 @@ Module result.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::convert::From", F, [ E ], "from", [] |),
+                            M.get_trait_method (|
+                              "core::convert::From",
+                              F,
+                              [],
+                              [ E ],
+                              "from",
+                              [],
+                              []
+                            |),
                             [ M.read (| e |) ]
                           |)
                         ]
@@ -4027,7 +4179,15 @@ Module result.
                     "core::result::Result::Err"
                     [
                       M.call_closure (|
-                        M.get_trait_method (| "core::convert::From", F, [ E ], "from", [] |),
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          F,
+                          [],
+                          [ E ],
+                          "from",
+                          [],
+                          []
+                        |),
                         [ M.read (| e |) ]
                       |)
                     ]))

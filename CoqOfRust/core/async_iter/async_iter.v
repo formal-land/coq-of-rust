@@ -48,7 +48,9 @@ Module async_iter.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "poll_next",
+                [],
                 []
               |),
               [
@@ -56,6 +58,7 @@ Module async_iter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -68,7 +71,9 @@ Module async_iter.
                             []
                             [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ] ],
                           [],
+                          [],
                           "deref_mut",
+                          [],
                           []
                         |),
                         [ self ]
@@ -98,7 +103,9 @@ Module async_iter.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [ M.read (| M.read (| self |) |) ]
@@ -143,7 +150,9 @@ Module async_iter.
                 "core::async_iter::async_iter::AsyncIterator",
                 Ty.associated,
                 [],
+                [],
                 "poll_next",
+                [],
                 []
               |),
               [
@@ -151,6 +160,7 @@ Module async_iter.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -177,7 +187,9 @@ Module async_iter.
                 "core::async_iter::async_iter::AsyncIterator",
                 Ty.associated,
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
@@ -186,7 +198,9 @@ Module async_iter.
                     "core::ops::deref::Deref",
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     [],
+                    [],
                     "deref",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]

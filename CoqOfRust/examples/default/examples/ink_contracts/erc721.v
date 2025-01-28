@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -150,7 +154,15 @@ Module Impl_core_default_Default_for_erc721_AccountId.
           "erc721::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -310,7 +322,9 @@ Module Impl_core_default_Default_for_erc721_Erc721.
                     []
                     [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -324,7 +338,9 @@ Module Impl_core_default_Default_for_erc721_Erc721.
                     []
                     [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -338,7 +354,9 @@ Module Impl_core_default_Default_for_erc721_Erc721.
                     []
                     [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -355,7 +373,9 @@ Module Impl_core_default_Default_for_erc721_Erc721.
                       Ty.tuple []
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -648,7 +668,7 @@ Module Impl_erc721_Erc721.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "erc721::Erc721", "init_env", [] |),
+          M.get_associated_function (| Ty.path "erc721::Erc721", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -670,7 +690,9 @@ Module Impl_erc721_Erc721.
             "core::default::Default",
             Ty.path "erc721::Erc721",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -695,6 +717,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -705,6 +728,7 @@ Module Impl_erc721_Erc721.
                   []
                   [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
                 "get",
+                [],
                 []
               |),
               [
@@ -746,6 +770,7 @@ Module Impl_erc721_Erc721.
                     []
                     [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                   "remove",
+                  [],
                   []
                 |),
                 [
@@ -786,6 +811,7 @@ Module Impl_erc721_Erc721.
               [ Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ]; Ty.tuple []
               ],
             "contains",
+            [],
             []
           |),
           [
@@ -818,6 +844,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "get",
+            [],
             []
           |),
           [
@@ -857,7 +884,7 @@ Module Impl_erc721_Erc721.
           let~ owner :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [] |),
+                M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
                 [ M.read (| self |); M.read (| id |) ]
               |)
             |) in
@@ -867,8 +894,10 @@ Module Impl_erc721_Erc721.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
+                  [],
                   [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ] ],
                   "ne",
+                  [],
                   []
                 |),
                 [
@@ -881,6 +910,7 @@ Module Impl_erc721_Erc721.
                           M.get_trait_method (|
                             "core::convert::From",
                             Ty.path "erc721::AccountId",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "array")
@@ -888,6 +918,7 @@ Module Impl_erc721_Erc721.
                                 [ Ty.path "u8" ]
                             ],
                             "from",
+                            [],
                             []
                           |),
                           [
@@ -911,6 +942,7 @@ Module Impl_erc721_Erc721.
                           (Ty.path "core::option::Option")
                           []
                           [ Ty.path "erc721::AccountId" ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -918,6 +950,7 @@ Module Impl_erc721_Erc721.
                             [ Ty.path "erc721::AccountId" ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [ from; owner ]
@@ -930,6 +963,7 @@ Module Impl_erc721_Erc721.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "erc721::AccountId" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -937,6 +971,7 @@ Module Impl_erc721_Erc721.
                               [ Ty.path "erc721::AccountId" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
@@ -949,6 +984,7 @@ Module Impl_erc721_Erc721.
                                   []
                                   [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                                 "get",
+                                [],
                                 []
                               |),
                               [
@@ -969,6 +1005,7 @@ Module Impl_erc721_Erc721.
                       M.get_associated_function (|
                         Ty.path "erc721::Erc721",
                         "approved_for_all",
+                        [],
                         []
                       |),
                       [
@@ -980,6 +1017,7 @@ Module Impl_erc721_Erc721.
                               []
                               [ Ty.path "erc721::AccountId" ],
                             "expect",
+                            [],
                             []
                           |),
                           [ M.read (| owner |); M.read (| Value.String "Error with AccountId" |) ]
@@ -991,6 +1029,7 @@ Module Impl_erc721_Erc721.
                               []
                               [ Ty.path "erc721::AccountId" ],
                             "expect",
+                            [],
                             []
                           |),
                           [ M.read (| from |); M.read (| Value.String "Error with AccountId" |) ]
@@ -1022,6 +1061,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "contains",
+            [],
             []
           |),
           [
@@ -1050,7 +1090,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "erc721::Erc721", "balance_of_or_zero", [] |),
+          M.get_associated_function (| Ty.path "erc721::Erc721", "balance_of_or_zero", [], [] |),
           [ M.read (| self |); owner ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1073,6 +1113,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "get",
+            [],
             []
           |),
           [
@@ -1102,7 +1143,7 @@ Module Impl_erc721_Erc721.
         let owner := M.alloc (| owner |) in
         let operator := M.alloc (| operator |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "erc721::Erc721", "approved_for_all", [] |),
+          M.get_associated_function (| Ty.path "erc721::Erc721", "approved_for_all", [], [] |),
           [ M.read (| self |); M.read (| owner |); M.read (| operator |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1145,11 +1186,11 @@ Module Impl_erc721_Erc721.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -1169,8 +1210,10 @@ Module Impl_erc721_Erc721.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc721::AccountId",
+                                  [],
                                   [ Ty.path "erc721::AccountId" ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [ to; caller ]
@@ -1195,11 +1238,11 @@ Module Impl_erc721_Erc721.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -1239,6 +1282,7 @@ Module Impl_erc721_Erc721.
                                     Ty.tuple []
                                   ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
@@ -1268,6 +1312,7 @@ Module Impl_erc721_Erc721.
                                     Ty.tuple []
                                   ],
                                 "remove",
+                                [],
                                 []
                               |),
                               [
@@ -1319,7 +1364,9 @@ Module Impl_erc721_Erc721.
                           []
                           [ Ty.tuple []; Ty.path "erc721::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1327,6 +1374,7 @@ Module Impl_erc721_Erc721.
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "approve_for_all",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| to |); M.read (| approved |) ]
@@ -1355,6 +1403,7 @@ Module Impl_erc721_Erc721.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1365,6 +1414,7 @@ Module Impl_erc721_Erc721.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1436,11 +1486,11 @@ Module Impl_erc721_Erc721.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -1450,7 +1500,7 @@ Module Impl_erc721_Erc721.
               let~ owner :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
                     [ M.read (| self |); M.read (| id |) ]
                   |)
                 |) in
@@ -1472,6 +1522,7 @@ Module Impl_erc721_Erc721.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "erc721::AccountId" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1479,6 +1530,7 @@ Module Impl_erc721_Erc721.
                                           [ Ty.path "erc721::AccountId" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1495,6 +1547,7 @@ Module Impl_erc721_Erc721.
                                       M.get_associated_function (|
                                         Ty.path "erc721::Erc721",
                                         "approved_for_all",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1506,6 +1559,7 @@ Module Impl_erc721_Erc721.
                                               []
                                               [ Ty.path "erc721::AccountId" ],
                                             "expect",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1548,8 +1602,10 @@ Module Impl_erc721_Erc721.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc721::AccountId",
+                                  [],
                                   [ Ty.path "erc721::AccountId" ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1559,6 +1615,7 @@ Module Impl_erc721_Erc721.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "erc721::AccountId",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -1566,6 +1623,7 @@ Module Impl_erc721_Erc721.
                                             [ Ty.path "u8" ]
                                         ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1611,6 +1669,7 @@ Module Impl_erc721_Erc721.
                                     []
                                     [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1647,6 +1706,7 @@ Module Impl_erc721_Erc721.
                                   []
                                   [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
@@ -1666,11 +1726,11 @@ Module Impl_erc721_Erc721.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -1723,7 +1783,9 @@ Module Impl_erc721_Erc721.
                           []
                           [ Ty.tuple []; Ty.path "erc721::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1731,6 +1793,7 @@ Module Impl_erc721_Erc721.
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "approve_for",
+                            [],
                             []
                           |),
                           [ M.read (| self |); to; M.read (| id |) ]
@@ -1759,6 +1822,7 @@ Module Impl_erc721_Erc721.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1769,6 +1833,7 @@ Module Impl_erc721_Erc721.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1866,6 +1931,7 @@ Module Impl_erc721_Erc721.
                                               []
                                               [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                                             "contains",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| token_owner |); id ]
@@ -1903,7 +1969,9 @@ Module Impl_erc721_Erc721.
                                     []
                                     [ Ty.path "u32"; Ty.path "erc721::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1914,6 +1982,7 @@ Module Impl_erc721_Erc721.
                                         []
                                         [ Ty.path "u32" ],
                                       "ok_or",
+                                      [],
                                       [ Ty.path "erc721::Error" ]
                                     |),
                                     [
@@ -1924,6 +1993,7 @@ Module Impl_erc721_Erc721.
                                             []
                                             [ Ty.path "u32" ],
                                           "map",
+                                          [],
                                           [
                                             Ty.path "u32";
                                             Ty.function
@@ -1939,6 +2009,7 @@ Module Impl_erc721_Erc721.
                                                 []
                                                 [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
                                               "get",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| owned_tokens_count |); M.read (| from |) ]
@@ -1997,6 +2068,7 @@ Module Impl_erc721_Erc721.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -2007,6 +2079,7 @@ Module Impl_erc721_Erc721.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -2037,6 +2110,7 @@ Module Impl_erc721_Erc721.
                                 []
                                 [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
                               "insert",
+                              [],
                               []
                             |),
                             [
@@ -2055,6 +2129,7 @@ Module Impl_erc721_Erc721.
                                 []
                                 [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                               "remove",
+                              [],
                               []
                             |),
                             [ M.read (| token_owner |); M.read (| id |) ]
@@ -2154,11 +2229,11 @@ Module Impl_erc721_Erc721.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -2176,7 +2251,9 @@ Module Impl_erc721_Erc721.
                           []
                           [ Ty.tuple []; Ty.path "erc721::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2184,6 +2261,7 @@ Module Impl_erc721_Erc721.
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "transfer_token_from",
+                            [],
                             []
                           |),
                           [ M.read (| self |); caller; destination; M.read (| id |) ]
@@ -2212,6 +2290,7 @@ Module Impl_erc721_Erc721.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2222,6 +2301,7 @@ Module Impl_erc721_Erc721.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2283,7 +2363,9 @@ Module Impl_erc721_Erc721.
                           []
                           [ Ty.tuple []; Ty.path "erc721::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2291,6 +2373,7 @@ Module Impl_erc721_Erc721.
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "transfer_token_from",
+                            [],
                             []
                           |),
                           [ M.read (| self |); from; to; M.read (| id |) ]
@@ -2319,6 +2402,7 @@ Module Impl_erc721_Erc721.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2329,6 +2413,7 @@ Module Impl_erc721_Erc721.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2382,11 +2467,11 @@ Module Impl_erc721_Erc721.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |)
@@ -2404,7 +2489,9 @@ Module Impl_erc721_Erc721.
                           []
                           [ Ty.tuple []; Ty.path "erc721::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -2412,6 +2499,7 @@ Module Impl_erc721_Erc721.
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "add_token_to",
+                            [],
                             []
                           |),
                           [ M.read (| self |); caller; M.read (| id |) ]
@@ -2440,6 +2528,7 @@ Module Impl_erc721_Erc721.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -2450,6 +2539,7 @@ Module Impl_erc721_Erc721.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2473,11 +2563,11 @@ Module Impl_erc721_Erc721.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [] |),
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                           [ M.read (| self |) ]
                         |)
                       |);
@@ -2495,6 +2585,7 @@ Module Impl_erc721_Erc721.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "erc721::AccountId",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "array")
@@ -2502,6 +2593,7 @@ Module Impl_erc721_Erc721.
                                             [ Ty.path "u8" ]
                                         ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [

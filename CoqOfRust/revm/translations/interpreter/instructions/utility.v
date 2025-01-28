@@ -84,6 +84,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| slice |) ]
@@ -112,6 +113,7 @@ Module instructions.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| slice |) ]
@@ -131,6 +133,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
@@ -154,6 +157,7 @@ Module instructions.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
                           [ M.read (| slice |) ]
@@ -169,6 +173,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [
@@ -182,6 +187,8 @@ Module instructions.
                               ]
                               [],
                             "as_limbs_mut",
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ],
                             []
                           |),
                           [ M.read (| dest |) ]
@@ -196,6 +203,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "chunks_exact",
+                        [],
                         []
                       |),
                       [ M.read (| slice |); Value.Integer IntegerKind.Usize 32 ]
@@ -207,6 +215,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
+                        [],
                         []
                       |),
                       [ words ]
@@ -221,7 +230,9 @@ Module instructions.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| words |) ]
@@ -244,7 +255,9 @@ Module instructions.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -281,7 +294,9 @@ Module instructions.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -292,6 +307,7 @@ Module instructions.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "rchunks_exact",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -320,7 +336,9 @@ Module instructions.
                                                                     []
                                                                     [ Ty.path "u8" ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ iter ]
@@ -357,6 +375,7 @@ Module instructions.
                                                                             []
                                                                             [ Ty.path "u64" ],
                                                                           "write",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -367,6 +386,7 @@ Module instructions.
                                                                                 []
                                                                                 [ Ty.path "u64" ],
                                                                               "add",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -378,6 +398,7 @@ Module instructions.
                                                                             M.get_associated_function (|
                                                                               Ty.path "u64",
                                                                               "from_be_bytes",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -404,6 +425,7 @@ Module instructions.
                                                                                         "core::array::TryFromSliceError"
                                                                                     ],
                                                                                   "unwrap",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -424,6 +446,7 @@ Module instructions.
                                                                                                 "u8"
                                                                                             ]
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -439,6 +462,7 @@ Module instructions.
                                                                                           ]
                                                                                       ],
                                                                                       "try_into",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ M.read (| l |)
@@ -488,6 +512,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| partial_last_word |) ]
@@ -507,6 +532,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "rchunks_exact",
+                        [],
                         []
                       |),
                       [ M.read (| partial_last_word |); Value.Integer IntegerKind.Usize 8 ]
@@ -518,6 +544,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
+                        [],
                         []
                       |),
                       [ limbs ]
@@ -535,7 +562,9 @@ Module instructions.
                               []
                               [ Ty.path "u8" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| limbs |) ]
@@ -558,7 +587,9 @@ Module instructions.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
                                         [ iter ]
@@ -590,6 +621,7 @@ Module instructions.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                                   "write",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -600,6 +632,7 @@ Module instructions.
                                                         []
                                                         [ Ty.path "u64" ],
                                                       "add",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| dst |); M.read (| i |) ]
@@ -608,6 +641,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "from_be_bytes",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -626,6 +660,7 @@ Module instructions.
                                                                 "core::array::TryFromSliceError"
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -641,6 +676,7 @@ Module instructions.
                                                                     []
                                                                     [ Ty.path "u8" ]
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "array")
@@ -652,6 +688,7 @@ Module instructions.
                                                                   [ Ty.path "u8" ]
                                                               ],
                                                               "try_into",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| l |) ]
@@ -693,6 +730,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| partial_last_limb |) ]
@@ -714,6 +752,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "copy_from_slice",
+                                  [],
                                   []
                                 |),
                                 [
@@ -724,6 +763,7 @@ Module instructions.
                                         (Ty.path "array")
                                         [ Value.Integer IntegerKind.Usize 8 ]
                                         [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeFrom")
@@ -731,6 +771,7 @@ Module instructions.
                                           [ Ty.path "usize" ]
                                       ],
                                       "index_mut",
+                                      [],
                                       []
                                     |),
                                     [
@@ -745,6 +786,7 @@ Module instructions.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| partial_last_limb |) ]
@@ -763,6 +805,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -770,6 +813,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| dst |); M.read (| i |) ]
@@ -778,6 +822,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "from_be_bytes",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| tmp |) ]
@@ -875,6 +920,7 @@ Module instructions.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_const",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -927,6 +973,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                 "write_bytes",
+                                [],
                                 []
                               |),
                               [
@@ -934,6 +981,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| dst |); M.read (| i |) ]
@@ -982,7 +1030,9 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [],
                 [],
+                [],
                 "into_u256",
+                [],
                 []
               |),
               [
@@ -990,6 +1040,7 @@ Module instructions.
                   M.get_associated_function (|
                     Ty.path "alloy_primitives::bits::address::Address",
                     "into_word",
+                    [],
                     []
                   |),
                   [ self ]
@@ -1031,6 +1082,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_be_bytes",
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                 []
               |),
               [
@@ -1078,6 +1130,7 @@ Module instructions.
               M.get_associated_function (|
                 Ty.path "alloy_primitives::bits::address::Address",
                 "from_word",
+                [],
                 []
               |),
               [
@@ -1088,6 +1141,7 @@ Module instructions.
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                       [ Value.Integer IntegerKind.Usize 32 ]
                       [],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -1095,6 +1149,7 @@ Module instructions.
                         [ Ty.path "u8" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -1105,6 +1160,7 @@ Module instructions.
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
                         "to_be_bytes",
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                         []
                       |),
                       [ self ]
